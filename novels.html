@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الروايات - سيف الإسلام زحاف</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+        /* ============================================================
+           VARIABLES
+           ============================================================ */
+        :root {
+            --bg-body: #f0f4f8;
+            --bg-card: rgba(255, 255, 255, 0.65);
+            --bg-header: rgba(255, 255, 255, 0.60);
+            --bg-nav: rgba(255, 255, 255, 0.40);
+            --text-primary: #1a2a3a;
+            --text-secondary: #3a5a6a;
+            --text-muted: #7a8a9a;
+            --accent: #2b6c8c;
+            --accent-light: #4a9fc7;
+            --accent-focus: #1a8fbf;
+            --accent-gradient: linear-gradient(135deg, #2b6c8c, #4a9fc7);
+            --shadow: 0 2px 20px rgba(43, 108, 140, 0.06);
+            --shadow-hover: 0 6px 30px rgba(43, 108, 140, 0.10);
+            --border: 1px solid rgba(43, 108, 140, 0.06);
+            --radius: 14px;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        body.dark {
+            --bg-body: #121a24;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --bg-header: rgba(255, 255, 255, 0.03);
+            --bg-nav: rgba(255, 255, 255, 0.03);
+            --text-primary: #e8eef2;
+            --text-secondary: #b0c8d8;
+            --text-muted: #708090;
+            --accent: #4a9fc7;
+            --accent-light: #6bc2e8;
+            --accent-focus: #6bc2e8;
+            --accent-gradient: linear-gradient(135deg, #4a9fc7, #6bc2e8);
+            --shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 6px 30px rgba(0, 0, 0, 0.5);
+            --border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 14px 16px 12px;
+            transition: background 0.5s ease, color 0.5s ease;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .animate-in {
+            animation: fadeSlide 0.5s ease both;
+        }
+        .animate-in-1 {
+            animation-delay: 0.05s;
+        }
+        .animate-in-2 {
+            animation-delay: 0.10s;
+        }
+        .animate-in-3 {
+            animation-delay: 0.15s;
+        }
+        .animate-in-4 {
+            animation-delay: 0.20s;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 18px;
+            background: var(--bg-header);
+            border-radius: var(--radius);
+            border: var(--border);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+            animation: fadeSlide 0.5s ease;
+        }
+
+        .header:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            font-weight: 900;
+        }
+
+        .logo .flag {
+            font-size: 1.1rem;
+        }
+
+        .logo .name {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            transition: all var(--transition);
+        }
+
+        .lang-btn:hover {
+            color: var(--text-primary);
+            background: rgba(43, 108, 140, 0.04);
+        }
+
+        body.dark .lang-btn:hover {
+            background: rgba(74, 159, 199, 0.06);
+        }
+
+        .lang-btn.active {
+            color: #fff;
+            background: var(--accent-gradient);
+            box-shadow: 0 2px 12px rgba(43, 108, 140, 0.15);
+        }
+
+        body.dark .lang-btn.active {
+            box-shadow: 0 2px 12px rgba(74, 159, 199, 0.15);
+        }
+
+        .theme-btn {
+            background: transparent;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .theme-btn:hover {
+            color: var(--accent);
+            transform: rotate(20deg);
+        }
+
+        /* ===== NAV ===== */
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin-bottom: 16px;
+            padding: 4px 6px;
+            background: var(--bg-nav);
+            border-radius: var(--radius);
+            border: var(--border);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            justify-content: center;
+            transition: all var(--transition);
+            animation: fadeSlide 0.5s ease 0.05s both;
+        }
+
+        .nav a {
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            border-radius: 2px;
+            transition: width var(--transition);
+        }
+
+        .nav a:hover::after {
+            width: 60%;
+        }
+
+        .nav a i {
+            font-size: 0.7rem;
+            opacity: 0.4;
+            transition: opacity var(--transition);
+        }
+
+        .nav a:hover {
+            color: var(--text-primary);
+            background: rgba(43, 108, 140, 0.04);
+        }
+
+        body.dark .nav a:hover {
+            background: rgba(74, 159, 199, 0.04);
+        }
+
+        .nav a.active {
+            color: #fff;
+            background: var(--accent-gradient);
+            box-shadow: 0 2px 16px rgba(43, 108, 140, 0.15);
+        }
+
+        body.dark .nav a.active {
+            box-shadow: 0 2px 16px rgba(74, 159, 199, 0.15);
+        }
+
+        .nav a.active::after {
+            width: 0;
+        }
+
+        .nav a.active i {
+            opacity: 1;
+        }
+
+        /* ===== LANG SECTIONS ===== */
+        .lang-section {
+            display: none;
+            animation: fadeSlide 0.5s ease;
+        }
+
+        .lang-section.active {
+            display: block;
+        }
+
+        .lang-section[dir="ltr"] {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .lang-section[dir="ltr"] .btn-link i {
+            transform: rotate(180deg);
+        }
+
+        .lang-section[dir="ltr"] .btn-link:hover i {
+            transform: rotate(180deg) translateX(4px);
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 14px;
+            border: var(--border);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .card .tag {
+            font-size: 0.55rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--accent);
+            display: inline-block;
+            margin-bottom: 2px;
+        }
+
+        .card h1 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h1 i {
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
+
+        .card .sub {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+        }
+
+        /* ===== NOVELS GRID ===== */
+        .novels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .novel-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: var(--border);
+            overflow: hidden;
+            transition: all var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .novel-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent);
+        }
+
+        .novel-card .cover {
+            width: 100%;
+            aspect-ratio: 2/3;
+            overflow: hidden;
+            background: var(--accent-gradient);
+            position: relative;
+        }
+
+        .novel-card .cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform var(--transition);
+        }
+
+        .novel-card:hover .cover img {
+            transform: scale(1.04);
+        }
+
+        .novel-card .cover .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .novel-card .cover .badge-top {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            padding: 3px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .novel-card .body {
+            padding: 16px 18px 18px;
+        }
+
+        .novel-card .body .num {
+            font-size: 0.55rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+
+        .novel-card .body h3 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .novel-card .body .desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .novel-card .body .status {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: rgba(43, 108, 140, 0.06);
+            padding: 3px 14px;
+            border-radius: 20px;
+            border: var(--border);
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        body.dark .novel-card .body .status {
+            background: rgba(74, 159, 199, 0.06);
+        }
+
+        .novel-card .body .btn-link {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all var(--transition);
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .novel-card .body .btn-link:hover {
+            gap: 12px;
+            color: var(--accent-focus);
+        }
+
+        .novel-card .body .btn-link i {
+            font-size: 0.6rem;
+            transition: transform var(--transition);
+        }
+
+        .novel-card .body .btn-link:hover i {
+            transform: translateX(-4px);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 14px 0 4px;
+            margin-top: 18px;
+            border-top: var(--border);
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            transition: all var(--transition);
+        }
+
+        .footer .links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .footer .links a {
+            font-size: 0.65rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-muted);
+            transition: color var(--transition);
+        }
+
+        .footer .links a:hover {
+            color: var(--accent);
+        }
+
+        .footer .heart {
+            color: #d21034;
+            display: inline-block;
+            animation: pulseHeart 1.8s ease-in-out infinite;
+        }
+
+        @keyframes pulseHeart {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        .footer .flag {
+            display: inline-block;
+            margin: 0 2px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px 12px 10px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                gap: 6px;
+                padding: 10px 14px;
+            }
+
+            .logo {
+                justify-content: center;
+                font-size: 0.9rem;
+            }
+
+            .header-actions {
+                justify-content: center;
+            }
+
+            .lang-btn {
+                font-size: 0.6rem;
+                padding: 3px 10px;
+            }
+
+            .theme-btn {
+                font-size: 0.7rem;
+                padding: 3px 8px;
+            }
+
+            .nav {
+                justify-content: center;
+                padding: 4px;
+                gap: 2px;
+            }
+
+            .nav a {
+                font-size: 0.65rem;
+                padding: 4px 12px;
+                gap: 4px;
+            }
+
+            .nav a i {
+                font-size: 0.6rem;
+            }
+
+            .card {
+                padding: 14px 14px;
+            }
+
+            .card h1 {
+                font-size: 1.2rem;
+            }
+
+            .novels-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .novel-card .body {
+                padding: 12px 14px 14px;
+            }
+
+            .novel-card .body h3 {
+                font-size: 0.9rem;
+            }
+
+            .novel-card .body .desc {
+                font-size: 0.75rem;
+            }
+
+            .footer .links {
+                gap: 6px;
+            }
+
+            .footer .links a {
+                font-size: 0.55rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .novels-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav a {
+                font-size: 0.55rem;
+                padding: 3px 8px;
+            }
+
+            .card {
+                padding: 10px 10px;
+            }
+
+            .card h1 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <header class="header">
+            <div class="logo">
+                <span class="flag">🇩🇿</span>
+                <span class="name">سيف الإسلام زحاف</span>
+            </div>
+            <div class="header-actions">
+                <button class="lang-btn active" data-lang="ar">عربي</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="fr">FR</button>
+                <button class="theme-btn" id="themeBtn"><i class="fas fa-moon"></i></button>
+            </div>
+        </header>
+
+        <!-- ===== NAV ===== -->
+        <nav class="nav">
+            <a href="index.html"><i class="fas fa-home"></i> <span data-i18n="home">الرئيسية</span></a>
+            <a href="novels.html" class="active"><i class="fas fa-book"></i> <span data-i18n="novels">الروايات</span></a>
+            <a href="contact.html"><i class="fas fa-envelope"></i> <span data-i18n="contact">التواصل</span></a>
+            <a href="https://SaivCORE.github.io" target="_blank"><i class="fas fa-building"></i> SaivCORE</a>
+            <a href="https://SaivCORE.github.io/saivtube" target="_blank"><i class="fas fa-video"></i> SaivTUBE</a>
+        </nav>
+
+        <!-- ============================================================
+        ARABIC
+        ============================================================ -->
+        <div class="lang-section active" id="lang-ar" dir="rtl">
+
+            <div class="card animate-in animate-in-1">
+                <span class="tag">✦ مكتبتي</span>
+                <h1><i class="fas fa-feather-alt"></i> رواياتي</h1>
+                <p class="sub">ثلاث روايات تعكس رؤيتي للسيادة والوعي والتغيير.</p>
+
+                <div class="novels-grid">
+
+                    <!-- رواية 1 -->
+                    <div class="novel-card animate-in animate-in-2">
+                        <div class="cover">
+                            <img src="images/cover-1.jpg" alt="غلاف رواية بتر اللسان" onerror="this.style.display='none'" />
+                            <div class="placeholder" style="display:none;"><i class="fas fa-book"></i></div>
+                            <span class="badge-top"><i class="fas fa-check-circle"></i> جاهزة</span>
+                        </div>
+                        <div class="body">
+                            <div class="num">#01</div>
+                            <h3>بتر اللسان</h3>
+                            <div class="desc">رواية عن السيادة والوعي والتغيير، يخوض بطلها رحلة لاستعادة هوية وطنه.</div>
+                            <div class="status"><i class="fas fa-check-circle"></i> جاهزة للقراءة</div>
+                            <a href="pages/novel-1.html" class="btn-link">اقرأ التفاصيل <i class="fas fa-arrow-left"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- رواية 2 -->
+                    <div class="novel-card animate-in animate-in-3">
+                        <div class="cover">
+                            <img src="images/cover-2.jpg" alt="غلاف رواية شيفرة النبض" onerror="this.style.display='none'" />
+                            <div class="placeholder" style="display:none;"><i class="fas fa-bolt"></i></div>
+                            <span class="badge-top"><i class="fas fa-check-circle"></i> جاهزة</span>
+                        </div>
+                        <div class="body">
+                            <div class="num">#02</div>
+                            <h3>شيفرة النبض</h3>
+                            <div class="desc">رواية عن الذكاء الاصطناعي والثورة الرقمية، تتناول الصراع بين التكنولوجيا والهوية.</div>
+                            <div class="status"><i class="fas fa-check-circle"></i> جاهزة للقراءة</div>
+                            <a href="pages/novel-2.html" class="btn-link">اقرأ التفاصيل <i class="fas fa-arrow-left"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- رواية 3 -->
+                    <div class="novel-card animate-in animate-in-4">
+                        <div class="cover">
+                            <img src="images/cover-3.jpg" alt="غلاف رواية سيمفونية المرادية الأخيرة" onerror="this.style.display='none'" />
+                            <div class="placeholder" style="display:none;"><i class="fas fa-music"></i></div>
+                            <span class="badge-top"><i class="fas fa-check-circle"></i> جاهزة</span>
+                        </div>
+                        <div class="body">
+                            <div class="num">#03</div>
+                            <h3>سيمفونية المرادية الأخيرة</h3>
+                            <div class="desc">رواية عن الصراع السياسي والأمني، تدور أحداثها في دهاليز القصر الرئاسي.</div>
+                            <div class="status"><i class="fas fa-check-circle"></i> جاهزة للقراءة</div>
+                            <a href="pages/novel-3.html" class="btn-link">اقرأ التفاصيل <i class="fas fa-arrow-left"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- ===== نهاية العربي ===== -->
+
+
+        <!-- ============================================================
+        ENGLISH
+        ============================================================ -->
+        <div class="lang-section" id="lang-en" dir="ltr">
+
+            <div class="card animate-in animate-in-1">
+                <span class="tag">✦ My Library</span>
+                <h1><i class="fas fa-feather-alt"></i> My Novels</h1>
+                <p class="sub">Three novels reflecting my vision of sovereignty, awareness, and change.</p>
+
+                <div class="novels-grid">
+
+                    <div class="novel-card animate-in animate-in-2">
+                        <div class="cover">
+                            <img src="images/cover-1.jpg" alt="Batar Al-Lisan cover" onerror="this.style.display='none'" />
+                            <div class="placeholder" style="display:none;"><i class="fas fa-book"></i></div>
+                            <span class="badge-top"><i class="fas fa-check-circle"></i> Available</span>
+                        </div>
+                        <div class="body">
+                            <div class="num">#01</div>
+                            <h3>Batar Al-Lisan</h3>
+                            <div class="desc">A novel about sovereignty, awareness, and change, where the hero embarks on a journey to reclaim his nation's identity.</div>
+                            <div class="status"><i class="fas fa-check-circle"></i> Ready to read</div>
+                            <a href="pages/novel-1.html" class="btn-link">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="novel-card animate-in animate-in-3">
+                        <div class="cover">
+                            <img src="images/cover-2.jpg" alt="Shifrat Al-Nabd cover" onerror="this.style.display='none'" />
+                            <div class="placeholder" style="display:none;"><i class="fas fa-bolt"></i></div>
+                            <span class="badge-top"><i class="fas fa-check-circle"></i> Available</span>
+                        </div>
+                        <div class="body">
+                            <div class="num">#02</div>
+                            <h3>Shifrat Al-Nabd</h3>
+                            <div class="desc">A novel about AI and the digital revolution, exploring the conflict between technology and identity.</div>
+                            <div class="status"><i class="fas fa-check-circle"></i> Ready to read</div>
+                            <a href="pages/novel-2.html" class="btn-link">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="novel-card animate-in animate-in-4">
+                        <div class="cover">
+                            <img src="images/cover-3.jpg" alt="Symphony of the Last Muradia cover" onerror="this.style.display='none'" />
+                            <div class="placeholder" style="display:none;"><i class="fas fa-music"></i></div>
+                            <span class="badge-top"><i class="fas fa-check-circle"></i> Available</span>
+                        </div>
+                        <div class="body">
+                            <div class="num">#03</div>
+                            <h3>Symphony of the Last Muradia</h3>
+                            <div class="desc">A novel about political and security conflict, set in the corridors of the presidential palace.</div>
+                            <div class="status"><i class="fas fa-check-circle"></i> Ready to read</div>
+                            <a href="pages/novel-3.html" class="btn-link">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- ===== نهاية الإنجليزي ===== -->
+
+
+        <!-- ============================================================
+        FRENCH
+        ============================================================ -->
+        <div class="lang-section" id="lang-fr" dir="ltr">
+
+            <div class="card animate-in animate-in-1">
+                <span class="tag">✦ Ma bibliothèque</span>
+                <h1><i class="fas fa-feather-alt"></i> Mes romans</h1>
+                <p class="sub">Trois romans reflétant ma vision de la souveraineté, de la conscience et du changement.</p>
+
+                <div class="novels-grid">
+
+                    <div class="novel-card animate-in animate-in-2">
+                        <div class="cover">
+                            <img src="images/cover-1.jpg" alt="Couverture Batar Al-Lisan" onerror="this.style.display='none'" />
+                            <div class="placeholder" style="display:none;"><i class="fas fa-book"></i></div>
+                            <span class="badge-top"><i class="fas fa-check-circle"></i> Disponible</span>
+                        </div>
+                        <div class="body">
+                            <div class="num">#01</div>
+                            <h3>Batar Al-Lisan</h3>
+                            <div class="desc">Un roman sur la souveraineté, la conscience et le changement, où le héros entreprend un voyage pour retrouver l'identité de sa nation.</div>
+                            <div class="status"><i class="fas fa-check-circle"></i> Prêt à lire</div>
+                            <a href="pages/novel-1.html" class="btn-link">Lire la suite <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="novel-card animate-in animate-in-3">
+                        <div class="cover">
+                            <img src="images/cover-2.jpg" alt="Couverture Shifrat Al-Nabd" onerror="this.style.display='none'" />
+                            <div class="placeholder" style="display:none;"><i class="fas fa-bolt"></i></div>
+                            <span class="badge-top"><i class="fas fa-check-circle"></i> Disponible</span>
+                        </div>
+                        <div class="body">
+                            <div class="num">#02</div>
+                            <h3>Shifrat Al-Nabd</h3>
+                            <div class="desc">Un roman sur l'IA et la révolution numérique, explorant le conflit entre la technologie et l'identité.</div>
+                            <div class="status"><i class="fas fa-check-circle"></i> Prêt à lire</div>
+                            <a href="pages/novel-2.html" class="btn-link">Lire la suite <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="novel-card animate-in animate-in-4">
+                        <div class="cover">
+                            <img src="images/cover-3.jpg" alt="Couverture Symphonie de la dernière Muradia" onerror="this.style.display='none'" />
+                            <div class="placeholder" style="display:none;"><i class="fas fa-music"></i></div>
+                            <span class="badge-top"><i class="fas fa-check-circle"></i> Disponible</span>
+                        </div>
+                        <div class="body">
+                            <div class="num">#03</div>
+                            <h3>Symphonie de la dernière Muradia</h3>
+                            <div class="desc">Un roman sur le conflit politique et sécuritaire, se déroulant dans les couloirs du palais présidentiel.</div>
+                            <div class="status"><i class="fas fa-check-circle"></i> Prêt à lire</div>
+                            <a href="pages/novel-3.html" class="btn-link">Lire la suite <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- ===== نهاية الفرنسي ===== -->
+
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="footer">
+            <div class="links">
+                <a href="index.html"><i class="fas fa-home"></i> <span data-i18n="footer-home">الرئيسية</span></a>
+                <a href="novels.html"><i class="fas fa-book"></i> <span data-i18n="footer-novels">الروايات</span></a>
+                <a href="contact.html"><i class="fas fa-envelope"></i> <span data-i18n="footer-contact">التواصل</span></a>
+                <a href="https://SaivCORE.github.io" target="_blank"><i class="fas fa-building"></i> SaivCORE</a>
+            </div>
+            <p>
+                <i class="fas fa-code"></i>
+                <span data-i18n="footer-made">صُنع بـ</span>
+                <i class="fas fa-heart heart"></i>
+                <span data-i18n="footer-by">بواسطة</span>
+                <strong>سيف الإسلام زحاف</strong>
+                <span class="flag">🇩🇿</span>
+                · 2025
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        (function() {
+
+            const langBtns = document.querySelectorAll('.lang-btn');
+            const langSections = {
+                ar: document.getElementById('lang-ar'),
+                en: document.getElementById('lang-en'),
+                fr: document.getElementById('lang-fr')
+            };
+            const themeBtn = document.getElementById('themeBtn');
+            const body = document.body;
+
+            const t = {
+                ar: {
+                    home: 'الرئيسية',
+                    novels: 'الروايات',
+                    contact: 'التواصل',
+                    'footer-home': 'الرئيسية',
+                    'footer-novels': 'الروايات',
+                    'footer-contact': 'التواصل',
+                    'footer-made': 'صُنع بـ',
+                    'footer-by': 'بواسطة'
+                },
+                en: {
+                    home: 'Home',
+                    novels: 'Novels',
+                    contact: 'Contact',
+                    'footer-home': 'Home',
+                    'footer-novels': 'Novels',
+                    'footer-contact': 'Contact',
+                    'footer-made': 'Made with',
+                    'footer-by': 'by'
+                },
+                fr: {
+                    home: 'Accueil',
+                    novels: 'Romans',
+                    contact: 'Contact',
+                    'footer-home': 'Accueil',
+                    'footer-novels': 'Romans',
+                    'footer-contact': 'Contact',
+                    'footer-made': 'Fait avec',
+                    'footer-by': 'par'
+                }
+            };
+
+            function applyTranslation(lang) {
+                const data = t[lang];
+                if (!data) return;
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (data[key]) el.textContent = data[key];
+                });
+            }
+
+            function switchLanguage(lang) {
+                langBtns.forEach(btn => btn.classList.remove('active'));
+                langBtns.forEach(btn => {
+                    if (btn.dataset.lang === lang) btn.classList.add('active');
+                });
+                Object.keys(langSections).forEach(key => {
+                    langSections[key].classList.toggle('active', key === lang);
+                });
+                applyTranslation(lang);
+                localStorage.setItem('lang', lang);
+            }
+
+            langBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchLanguage(this.dataset.lang);
+                });
+            });
+
+            const savedLang = localStorage.getItem('lang');
+            if (savedLang && langSections[savedLang]) {
+                switchLanguage(savedLang);
+            } else {
+                applyTranslation('ar');
+            }
+
+            function toggleTheme() {
+                body.classList.toggle('dark');
+                const isDark = body.classList.contains('dark');
+                themeBtn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            }
+
+            themeBtn.addEventListener('click', toggleTheme);
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark');
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+
+            if (!localStorage.getItem('theme')) {
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    body.classList.add('dark');
+                    themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                }
+            }
+
+        })();
+    </script>
+
+</body>
+</html>
