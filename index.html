@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>سيف الإسلام زحاف - مبرمج وروائي جزائري</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+        /* ============================================================
+           المتغيرات الأساسية
+           ============================================================ */
+        :root {
+            --bg-body: #0a0a0f;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --bg-card-hover: rgba(255, 255, 255, 0.07);
+            --bg-header: rgba(10, 10, 15, 0.92);
+            --border-color: rgba(255, 255, 255, 0.06);
+            --border-glow: rgba(108, 92, 231, 0.25);
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --accent-1: #6c5ce7;
+            --accent-2: #00d4ff;
+            --accent-gradient: linear-gradient(135deg, #6c5ce7, #00d4ff);
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --font-ar: 'Cairo', system-ui, sans-serif;
+            --font-en: 'Inter', system-ui, sans-serif;
+        }
+
+        /* ============================================================
+           إعادة تعيين
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-ar);
+            background: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 0 24px 40px;
+            overflow-x: hidden;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        /* ============================================================
+           الوضع الفاتح
+           ============================================================ */
+        body.light-mode {
+            --bg-body: #f0f2f8;
+            --bg-card: rgba(255, 255, 255, 0.7);
+            --bg-card-hover: rgba(255, 255, 255, 0.9);
+            --bg-header: rgba(255, 255, 255, 0.92);
+            --border-color: rgba(0, 0, 0, 0.06);
+            --border-glow: rgba(108, 92, 231, 0.2);
+            --text-primary: #0d0d1a;
+            --text-secondary: #3a3a4a;
+            --text-muted: #8a8a9a;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+        }
+
+        /* ============================================================
+           خلفيات متحركة
+           ============================================================ */
+        .bg-glow {
+            position: fixed;
+            top: -30%;
+            right: -10%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(ellipse, rgba(108, 92, 231, 0.06), transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+            animation: floatGlow 20s ease-in-out infinite alternate;
+        }
+
+        .bg-glow-2 {
+            position: fixed;
+            bottom: -30%;
+            left: -10%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(ellipse, rgba(0, 212, 255, 0.04), transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+            animation: floatGlow 25s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes floatGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(40px, -40px) scale(1.1);
+            }
+        }
+
+        /* ============================================================
+           الحاوية
+           ============================================================ */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============================================================
+           الهيدر
+           ============================================================ */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border-color);
+            gap: 12px;
+            animation: slideDown 0.6s ease both;
+        }
+
+        @keyframes slideDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo .logo-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: inline-block;
+            animation: pulseDot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseDot {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.6;
+            }
+        }
+
+        .logo span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all var(--transition);
+            font-family: var(--font-ar);
+        }
+
+        .lang-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-card);
+        }
+
+        .lang-btn.active {
+            color: #fff;
+            background: var(--accent-gradient);
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .theme-toggle:hover {
+            color: var(--text-primary);
+            background: var(--bg-card);
+        }
+
+        /* ============================================================
+           قائمة التنقل
+           ============================================================ */
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 32px;
+            padding: 4px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            animation: fadeUp 0.8s ease 0.1s both;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav a {
+            color: var(--text-secondary);
+            padding: 8px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav a i {
+            font-size: 0.85rem;
+            opacity: 0.5;
+            transition: opacity var(--transition);
+        }
+
+        .nav a:hover {
+            color: #fff;
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+
+        .nav a.active {
+            color: #fff;
+            background: var(--accent-gradient);
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
+        }
+
+        .nav a.active i {
+            opacity: 1;
+        }
+
+        /* ============================================================
+           أقسام اللغة
+           ============================================================ */
+        .lang-section {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .lang-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================================
+           اللغة الإنجليزية والفرنسية (من اليسار إلى اليمين)
+           ============================================================ */
+        .lang-section[dir="ltr"] {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .lang-section[dir="ltr"] .card h2 i {
+            margin-left: 0;
+            margin-right: 10px;
+        }
+
+        .lang-section[dir="ltr"] .card ul li {
+            flex-direction: row;
+        }
+
+        .lang-section[dir="ltr"] .novel-card .btn i {
+            transform: rotate(180deg);
+        }
+
+        .lang-section[dir="ltr"] .novel-card .btn:hover i {
+            transform: rotate(180deg) translateX(4px);
+        }
+
+        .lang-section[dir="ltr"] .project-card .btn i {
+            transform: rotate(180deg);
+        }
+
+        .lang-section[dir="ltr"] .project-card .btn:hover i {
+            transform: rotate(180deg) translateX(4px);
+        }
+
+        /* ============================================================
+           البطاقات
+           ============================================================ */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 32px 36px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+            backdrop-filter: blur(10px);
+            animation: scaleIn 0.6s ease both;
+        }
+
+        .card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        .card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+        .card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes scaleIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .card:hover {
+            border-color: var(--border-glow);
+            background: var(--bg-card-hover);
+            transform: translateY(-3px);
+        }
+
+        .card .tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-1);
+            margin-bottom: 8px;
+        }
+
+        .card h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .card h2 i {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.3rem;
+            margin-left: 10px;
+        }
+
+        .card .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        .card .highlight {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card ul li {
+            padding: 4px 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .card ul li i {
+            color: var(--accent-1);
+            font-size: 0.8rem;
+            width: 18px;
+        }
+
+        /* ============================================================
+           الصورة الشخصية
+           ============================================================ */
+        .profile-wrap {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .profile-img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 0 40px rgba(108, 92, 231, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            transition: all var(--transition);
+            overflow: hidden;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 60px rgba(108, 92, 231, 0.3);
+        }
+
+        .profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-img .placeholder {
+            font-size: 3.5rem;
+            opacity: 0.8;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info .name {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-info .title {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* ============================================================
+           البادجز
+           ============================================================ */
+        .badge-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 14px 0 4px;
+        }
+
+        .badge {
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            background: transparent;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge i {
+            font-size: 0.75rem;
+        }
+
+        .badge:hover {
+            border-color: var(--accent-1);
+            color: #fff;
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+
+        .badge.accent {
+            border-color: var(--accent-1);
+            color: #fff;
+            background: rgba(108, 92, 231, 0.15);
+        }
+
+        .badge.accent:hover {
+            background: var(--accent-gradient);
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
+        }
+
+        /* ============================================================
+           شبكة الروايات
+           ============================================================ */
+        .novels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .novel-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .novel-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+
+        .novel-card:hover::before {
+            opacity: 1;
+        }
+
+        .novel-card:hover {
+            border-color: var(--border-glow);
+            transform: translateY(-6px);
+            background: var(--bg-card-hover);
+            box-shadow: var(--shadow);
+        }
+
+        .novel-card .number {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent-1);
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .novel-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .novel-card .desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .novel-card .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-1);
+            transition: all var(--transition);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: var(--font-ar);
+        }
+
+        .novel-card .btn:hover {
+            color: var(--accent-2);
+            gap: 12px;
+        }
+
+        .novel-card .btn i {
+            font-size: 0.7rem;
+            transition: transform var(--transition);
+        }
+
+        .novel-card .btn:hover i {
+            transform: translateX(-4px);
+        }
+
+        /* ============================================================
+           شبكة المشاريع
+           ============================================================ */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+        }
+
+        .project-card:hover {
+            border-color: var(--border-glow);
+            transform: translateY(-6px);
+            background: var(--bg-card-hover);
+            box-shadow: var(--shadow);
+        }
+
+        .project-card .icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            display: inline-block;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .project-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .project-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .project-card .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: var(--font-ar);
+        }
+
+        .project-card .btn:hover {
+            color: var(--accent-1);
+            gap: 12px;
+        }
+
+        .project-card .btn i {
+            font-size: 0.7rem;
+            transition: transform var(--transition);
+        }
+
+        .project-card .btn:hover i {
+            transform: translateX(-4px);
+        }
+
+        /* ============================================================
+           التواصل - الهاتف + السوشيال ميديا
+           ============================================================ */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+        }
+
+        .contact-item:hover {
+            border-color: var(--border-glow);
+            background: var(--bg-card-hover);
+            transform: translateY(-3px);
+        }
+
+        .contact-item .icon-wrap {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(108, 92, 231, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-1);
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            transition: all var(--transition);
+        }
+
+        .contact-item:hover .icon-wrap {
+            background: var(--accent-gradient);
+            color: #fff;
+        }
+
+        .contact-item .info .label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-item .info .value {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .contact-item .info .value a {
+            color: var(--text-primary);
+            transition: color var(--transition);
+        }
+
+        .contact-item .info .value a:hover {
+            color: var(--accent-1);
+        }
+
+        /* ============================================================
+           السوشيال ميديا (أزرار منفصلة)
+           ============================================================ */
+        .social-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all var(--transition);
+            background: transparent;
+            cursor: pointer;
+            font-family: var(--font-ar);
+            text-decoration: none;
+        }
+
+        .social-btn i {
+            font-size: 1rem;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            color: #fff;
+        }
+
+        .social-btn.whatsapp:hover {
+            background: #25D366;
+            border-color: #25D366;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        .social-btn.facebook:hover {
+            background: #1877F2;
+            border-color: #1877F2;
+            box-shadow: 0 4px 20px rgba(24, 119, 242, 0.3);
+        }
+
+        .social-btn.instagram:hover {
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            border-color: #dc2743;
+            box-shadow: 0 4px 20px rgba(220, 39, 67, 0.3);
+        }
+
+        .social-btn.youtube:hover {
+            background: #FF0000;
+            border-color: #FF0000;
+            box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .social-btn.tiktok:hover {
+            background: #000000;
+            border-color: #000000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ============================================================
+           الفوتر - مع الترجمة
+           ============================================================ */
+        .footer {
+            text-align: center;
+            padding: 24px 20px;
+            margin-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            animation: fadeUp 0.8s ease 0.5s both;
+        }
+
+        .footer a {
+            color: var(--text-secondary);
+            transition: color var(--transition);
+        }
+
+        .footer a:hover {
+            color: var(--accent-1);
+        }
+
+        .footer .heart {
+            color: #e74c3c;
+            display: inline-block;
+            animation: pulseHeart 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseHeart {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        .footer .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .footer .footer-links a {
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .footer .flag {
+            display: inline-block;
+            margin: 0 4px;
+        }
+
+        /* ============================================================
+           استجابة
+           ============================================================ */
+        @media (max-width: 768px) {
+            body {
+                padding: 0 16px 30px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                gap: 8px;
+            }
+
+            .logo {
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .header-controls {
+                justify-content: center;
+            }
+
+            .nav {
+                justify-content: center;
+                padding: 4px;
+                gap: 2px;
+            }
+
+            .nav a {
+                font-size: 0.75rem;
+                padding: 6px 14px;
+                gap: 4px;
+            }
+
+            .nav a i {
+                font-size: 0.7rem;
+            }
+
+            .card {
+                padding: 20px 18px;
+            }
+
+            .card h2 {
+                font-size: 1.3rem;
+            }
+
+            .novels-grid,
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .profile-wrap {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-img {
+                width: 90px;
+                height: 90px;
+                font-size: 2.5rem;
+            }
+
+            .profile-info .name {
+                font-size: 1.5rem;
+            }
+
+            .social-grid {
+                justify-content: center;
+            }
+
+            .social-btn {
+                font-size: 0.7rem;
+                padding: 6px 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .lang-btn {
+                font-size: 0.65rem;
+                padding: 4px 10px;
+            }
+
+            .theme-toggle {
+                font-size: 0.75rem;
+                padding: 4px 10px;
+            }
+
+            .card {
+                padding: 16px 14px;
+            }
+
+            .card h2 {
+                font-size: 1.1rem;
+            }
+
+            .badge {
+                font-size: 0.6rem;
+                padding: 3px 10px;
+            }
+
+            .profile-img {
+                width: 75px;
+                height: 75px;
+                font-size: 2rem;
+            }
+
+            .profile-info .name {
+                font-size: 1.2rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .social-btn {
+                font-size: 0.65rem;
+                padding: 5px 12px;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== خلفيات متحركة ===== -->
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+
+    <div class="container">
+
+        <!-- ===== الهيدر ===== -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-dot"></span>
+                <span>سيف الإسلام زحاف</span>
+            </div>
+            <div class="header-controls">
+                <button class="lang-btn active" data-lang="ar">🇸🇦 عربي</button>
+                <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+                <button class="lang-btn" data-lang="fr">🇫🇷 Français</button>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- ===== قائمة التنقل ===== -->
+        <nav class="nav">
+            <a href="index.html" class="active"><i class="fas fa-home"></i> <span class="nav-home" data-i18n="home">الرئيسية</span></a>
+            <a href="novels.html"><i class="fas fa-book"></i> <span class="nav-novels" data-i18n="novels">الروايات</span></a>
+            <a href="contact.html"><i class="fas fa-envelope"></i> <span class="nav-contact" data-i18n="contact">التواصل</span></a>
+            <a href="https://SaivCORE.github.io" target="_blank"><i class="fas fa-building"></i> SaivCORE</a>
+            <a href="https://SaivCORE.github.io/saivtube" target="_blank"><i class="fas fa-video"></i> SaivTUBE</a>
+        </nav>
+
+        <!-- ============================================================
+        ===== القسم العربي =====
+        ============================================================ -->
+        <div class="lang-section active" id="lang-ar" dir="rtl">
+
+            <!-- ===== التعريف ===== -->
+            <div class="card">
+                <div class="tag">✦ من أنا</div>
+                <div class="profile-wrap">
+                    <div class="profile-img">
+                        <span class="placeholder"><i class="fas fa-user"></i></span>
+                    </div>
+                    <div class="profile-info">
+                        <div class="name">سيف الإسلام زحاف</div>
+                        <div class="title">مبرمج · روائي · مؤسس SaivCORE</div>
+                    </div>
+                </div>
+                <p>
+                    أنا شخص يجمع بين <span class="highlight">عالمين</span>:
+                </p>
+                <ul>
+                    <li><i class="fas fa-microchip"></i> <strong>التقني:</strong> مبرمج بـ <strong>C#</strong>، <strong>.NET</strong>، <strong>WPF</strong>، مؤسس <strong>SaivCORE</strong>.</li>
+                    <li><i class="fas fa-feather-alt"></i> <strong>الأدبي:</strong> روائي جزائري، كتبت <strong>3 روايات</strong>.</li>
+                </ul>
+                <div class="badge-group">
+                    <span class="badge"><i class="fas fa-code"></i> C#</span>
+                    <span class="badge"><i class="fas fa-code"></i> .NET</span>
+                    <span class="badge"><i class="fas fa-code"></i> WPF</span>
+                    <span class="badge"><i class="fab fa-python"></i> Python</span>
+                    <span class="badge"><i class="fab fa-git-alt"></i> Git</span>
+                    <span class="badge"><i class="fab fa-github"></i> GitHub</span>
+                    <span class="badge accent"><i class="fas fa-pen-fancy"></i> 3 روايات</span>
+                    <span class="badge accent"><i class="fas fa-building"></i> SaivCORE</span>
+                    <span class="badge accent"><i class="fas fa-video"></i> SaivTUBE</span>
+                </div>
+            </div>
+
+            <!-- ===== الروايات ===== -->
+            <div class="card">
+                <div class="tag">✦ إبداع</div>
+                <h2><i class="fas fa-feather-alt"></i> رواياتي</h2>
+                <p class="subtitle">ثلاث روايات تعكس رؤيتي للسيادة والوعي.</p>
+                <div class="novels-grid">
+
+                    <!-- رواية 1: بتر اللسان -->
+                    <div class="novel-card">
+                        <div class="number">#01</div>
+                        <h3>بتر اللسان</h3>
+                        <div class="desc">رواية عن السيادة والوعي والتغيير، حيث يخوض بطلها رحلة لاستعادة هوية وطنه.</div>
+                        <a href="pages/novel-1.html" class="btn">اقرأ التفاصيل <i class="fas fa-arrow-left"></i></a>
+                    </div>
+
+                    <!-- رواية 2: شيفرة النبض -->
+                    <div class="novel-card">
+                        <div class="number">#02</div>
+                        <h3>شيفرة النبض</h3>
+                        <div class="desc">رواية عن الذكاء الاصطناعي والثورة الرقمية، تتناول الصراع بين التكنولوجيا والهوية.</div>
+                        <a href="pages/novel-2.html" class="btn">اقرأ التفاصيل <i class="fas fa-arrow-left"></i></a>
+                    </div>
+
+                    <!-- رواية 3: سيمفونية المرادية الأخيرة -->
+                    <div class="novel-card">
+                        <div class="number">#03</div>
+                        <h3>سيمفونية المرادية الأخيرة</h3>
+                        <div class="desc">رواية عن الصراع السياسي والأمني، تدور أحداثها في دهاليز القصر الرئاسي.</div>
+                        <a href="pages/novel-3.html" class="btn">اقرأ التفاصيل <i class="fas fa-arrow-left"></i></a>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ===== المشاريع ===== -->
+            <div class="card">
+                <div class="tag">✦ مشاريع</div>
+                <h2><i class="fas fa-cogs"></i> مشاريعي التقنية</h2>
+                <p class="subtitle">حلول تقنية محلية تعزز السيادة الرقمية.</p>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="icon"><i class="fas fa-building"></i></div>
+                        <h3>SaivCORE</h3>
+                        <p>شركة برمجيات جزائرية ناشئة تهدف لتقديم حلول تقنية مبتكرة.</p>
+                        <a href="https://SaivCORE.github.io" target="_blank" class="btn">زيارة <i class="fas fa-arrow-left"></i></a>
+                    </div>
+                    <div class="project-card">
+                        <div class="icon"><i class="fas fa-download"></i></div>
+                        <h3>SaivTUBE</h3>
+                        <p>تطبيق سطح مكتب احترافي لتحميل فيديوهات YouTube بجودة عالية.</p>
+                        <a href="https://SaivCORE.github.io/saivtube" target="_blank" class="btn">زيارة <i class="fas fa-arrow-left"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== التواصل ===== -->
+            <div class="card">
+                <div class="tag">✦ تواصل</div>
+                <h2><i class="fas fa-phone-alt"></i> تواصل معي</h2>
+                <p class="subtitle">أنا هنا للإجابة على استفساراتك.</p>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <div class="icon-wrap"><i class="fas fa-phone-alt"></i></div>
+                        <div class="info">
+                            <div class="label">الهاتف</div>
+                            <div class="value">0792390349</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-wrap"><i class="fas fa-envelope"></i></div>
+                        <div class="info">
+                            <div class="label">البريد</div>
+                            <div class="value"><a href="mailto:seizhf@gmail.com">seizhf@gmail.com</a></div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-wrap"><i class="fas fa-building"></i></div>
+                        <div class="info">
+                            <div class="label">الشركة</div>
+                            <div class="value">SaivCORE</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-wrap"><i class="fab fa-github"></i></div>
+                        <div class="info">
+                            <div class="label">GitHub</div>
+                            <div class="value"><a href="https://github.com/SEIZHF" target="_blank">@SEIZHF</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== أزرار السوشيال ميديا ===== -->
+                <div class="social-grid">
+                    <a href="https://wa.me/213792390349" target="_blank" class="social-btn whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="https://facebook.com/seizhf" target="_blank" class="social-btn facebook">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </a>
+                    <a href="https://instagram.com/sei.zhf" target="_blank" class="social-btn instagram">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                    <a href="https://youtube.com/@seizhf" target="_blank" class="social-btn youtube">
+                        <i class="fab fa-youtube"></i> YouTube
+                    </a>
+                    <a href="https://tiktok.com/@seizhf" target="_blank" class="social-btn tiktok">
+                        <i class="fab fa-tiktok"></i> TikTok
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <!-- ===== نهاية العربي ===== -->
+
+        <!-- ============================================================
+        ===== القسم الإنجليزي (LTR) =====
+        ============================================================ -->
+        <div class="lang-section" id="lang-en" dir="ltr">
+
+            <div class="card">
+                <div class="tag">✦ About</div>
+                <div class="profile-wrap">
+                    <div class="profile-img">
+                        <span class="placeholder"><i class="fas fa-user"></i></span>
+                    </div>
+                    <div class="profile-info">
+                        <div class="name">Saif El Islem Zahaf</div>
+                        <div class="title">Developer · Novelist · Founder of SaivCORE</div>
+                    </div>
+                </div>
+                <p>
+                    I'm a unique blend of <span class="highlight">two worlds</span>:
+                </p>
+                <ul>
+                    <li><i class="fas fa-microchip"></i> <strong>Tech:</strong> Programmer in <strong>C#</strong>, <strong>.NET</strong>, <strong>WPF</strong>, founder of <strong>SaivCORE</strong>.</li>
+                    <li><i class="fas fa-feather-alt"></i> <strong>Literature:</strong> Algerian novelist, author of <strong>3 novels</strong>.</li>
+                </ul>
+                <div class="badge-group">
+                    <span class="badge"><i class="fas fa-code"></i> C#</span>
+                    <span class="badge"><i class="fas fa-code"></i> .NET</span>
+                    <span class="badge"><i class="fas fa-code"></i> WPF</span>
+                    <span class="badge"><i class="fab fa-python"></i> Python</span>
+                    <span class="badge"><i class="fab fa-git-alt"></i> Git</span>
+                    <span class="badge"><i class="fab fa-github"></i> GitHub</span>
+                    <span class="badge accent"><i class="fas fa-pen-fancy"></i> 3 Novels</span>
+                    <span class="badge accent"><i class="fas fa-building"></i> SaivCORE</span>
+                    <span class="badge accent"><i class="fas fa-video"></i> SaivTUBE</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="tag">✦ Creativity</div>
+                <h2><i class="fas fa-feather-alt"></i> My Novels</h2>
+                <p class="subtitle">Three novels reflecting my vision of sovereignty and awareness.</p>
+                <div class="novels-grid">
+
+                    <div class="novel-card">
+                        <div class="number">#01</div>
+                        <h3>Batar Al-Lisan</h3>
+                        <div class="desc">A novel about sovereignty, awareness, and change, where the hero embarks on a journey to reclaim his nation's identity.</div>
+                        <a href="pages/novel-1.html" class="btn">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <div class="novel-card">
+                        <div class="number">#02</div>
+                        <h3>Shifrat Al-Nabd</h3>
+                        <div class="desc">A novel about AI and the digital revolution, exploring the conflict between technology and identity.</div>
+                        <a href="pages/novel-2.html" class="btn">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <div class="novel-card">
+                        <div class="number">#03</div>
+                        <h3>Symphony of the Last Muradia</h3>
+                        <div class="desc">A novel about political and security conflict, set in the corridors of the presidential palace.</div>
+                        <a href="pages/novel-3.html" class="btn">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="tag">✦ Projects</div>
+                <h2><i class="fas fa-cogs"></i> My Tech Projects</h2>
+                <p class="subtitle">Local tech solutions enhancing digital sovereignty.</p>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="icon"><i class="fas fa-building"></i></div>
+                        <h3>SaivCORE</h3>
+                        <p>An emerging Algerian software company providing innovative tech solutions.</p>
+                        <a href="https://SaivCORE.github.io" target="_blank" class="btn">Visit <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="project-card">
+                        <div class="icon"><i class="fas fa-download"></i></div>
+                        <h3>SaivTUBE</h3>
+                        <p>A professional desktop app for downloading YouTube videos in high quality.</p>
+                        <a href="https://SaivCORE.github.io/saivtube" target="_blank" class="btn">Visit <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="tag">✦ Contact</div>
+                <h2><i class="fas fa-phone-alt"></i> Contact Me</h2>
+                <p class="subtitle">I'm here to answer your questions.</p>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <div class="icon-wrap"><i class="fas fa-phone-alt"></i></div>
+                        <div class="info">
+                            <div class="label">Phone</div>
+                            <div class="value">0792390349</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-wrap"><i class="fas fa-envelope"></i></div>
+                        <div class="info">
+                            <div class="label">Email</div>
+                            <div class="value"><a href="mailto:seizhf@gmail.com">seizhf@gmail.com</a></div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-wrap"><i class="fas fa-building"></i></div>
+                        <div class="info">
+                            <div class="label">Company</div>
+                            <div class="value">SaivCORE</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-wrap"><i class="fab fa-github"></i></div>
+                        <div class="info">
+                            <div class="label">GitHub</div>
+                            <div class="value"><a href="https://github.com/SEIZHF" target="_blank">@SEIZHF</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-grid">
+                    <a href="https://wa.me/213792390349" target="_blank" class="social-btn whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="https://facebook.com/seizhf" target="_blank" class="social-btn facebook">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </a>
+                    <a href="https://instagram.com/sei.zhf" target="_blank" class="social-btn instagram">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                    <a href="https://youtube.com/@seizhf" target="_blank" class="social-btn youtube">
+                        <i class="fab fa-youtube"></i> YouTube
+                    </a>
+                    <a href="https://tiktok.com/@seizhf" target="_blank" class="social-btn tiktok">
+                        <i class="fab fa-tiktok"></i> TikTok
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <!-- ===== نهاية الإنجليزي ===== -->
+
+        <!-- ============================================================
+        ===== القسم الفرنسي (LTR) =====
+        ============================================================ -->
+        <div class="lang-section" id="lang-fr" dir="ltr">
+
+            <div class="card">
+                <div class="tag">✦ À propos</div>
+                <div class="profile-wrap">
+                    <div class="profile-img">
+                        <span class="placeholder"><i class="fas fa-user"></i></span>
+                    </div>
+                    <div class="profile-info">
+                        <div class="name">Saif El Islem Zahaf</div>
+                        <div class="title">Développeur · Romancier · Fondateur de SaivCORE</div>
+                    </div>
+                </div>
+                <p>
+                    Je suis un mélange unique de <span class="highlight">deux mondes</span>:
+                </p>
+                <ul>
+                    <li><i class="fas fa-microchip"></i> <strong>Tech:</strong> Programmeur en <strong>C#</strong>, <strong>.NET</strong>, <strong>WPF</strong>, fondateur de <strong>SaivCORE</strong>.</li>
+                    <li><i class="fas fa-feather-alt"></i> <strong>Littérature:</strong> Romancier algérien, auteur de <strong>3 romans</strong>.</li>
+                </ul>
+                <div class="badge-group">
+                    <span class="badge"><i class="fas fa-code"></i> C#</span>
+                    <span class="badge"><i class="fas fa-code"></i> .NET</span>
+                    <span class="badge"><i class="fas fa-code"></i> WPF</span>
+                    <span class="badge"><i class="fab fa-python"></i> Python</span>
+                    <span class="badge"><i class="fab fa-git-alt"></i> Git</span>
+                    <span class="badge"><i class="fab fa-github"></i> GitHub</span>
+                    <span class="badge accent"><i class="fas fa-pen-fancy"></i> 3 Romans</span>
+                    <span class="badge accent"><i class="fas fa-building"></i> SaivCORE</span>
+                    <span class="badge accent"><i class="fas fa-video"></i> SaivTUBE</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="tag">✦ Créativité</div>
+                <h2><i class="fas fa-feather-alt"></i> Mes romans</h2>
+                <p class="subtitle">Trois romans reflétant ma vision de la souveraineté.</p>
+                <div class="novels-grid">
+
+                    <div class="novel-card">
+                        <div class="number">#01</div>
+                        <h3>Batar Al-Lisan</h3>
+                        <div class="desc">Un roman sur la souveraineté, la conscience et le changement, où le héros entreprend un voyage pour retrouver l'identité de sa nation.</div>
+                        <a href="pages/novel-1.html" class="btn">Lire la suite <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <div class="novel-card">
+                        <div class="number">#02</div>
+                        <h3>Shifrat Al-Nabd</h3>
+                        <div class="desc">Un roman sur l'IA et la révolution numérique, explorant le conflit entre la technologie et l'identité.</div>
+                        <a href="pages/novel-2.html" class="btn">Lire la suite <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <div class="novel-card">
+                        <div class="number">#03</div>
+                        <h3>Symphonie de la dernière Muradia</h3>
+                        <div class="desc">Un roman sur le conflit politique et sécuritaire, se déroulant dans les couloirs du palais présidentiel.</div>
+                        <a href="pages/novel-3.html" class="btn">Lire la suite <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="tag">✦ Projets</div>
+                <h2><i class="fas fa-cogs"></i> Mes projets techniques</h2>
+                <p class="subtitle">Des solutions techniques locales renforçant la souveraineté numérique.</p>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="icon"><i class="fas fa-building"></i></div>
+                        <h3>SaivCORE</h3>
+                        <p>Une entreprise algérienne de logiciels fournissant des solutions techniques innovantes.</p>
+                        <a href="https://SaivCORE.github.io" target="_blank" class="btn">Visiter <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="project-card">
+                        <div class="icon"><i class="fas fa-download"></i></div>
+                        <h3>SaivTUBE</h3>
+                        <p>Une application bureau professionnelle pour télécharger des vidéos YouTube en haute qualité.</p>
+                        <a href="https://SaivCORE.github.io/saivtube" target="_blank" class="btn">Visiter <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="tag">✦ Contact</div>
+                <h2><i class="fas fa-phone-alt"></i> Contactez-moi</h2>
+                <p class="subtitle">Je suis là pour répondre à vos questions.</p>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <div class="icon-wrap"><i class="fas fa-phone-alt"></i></div>
+                        <div class="info">
+                            <div class="label">Téléphone</div>
+                            <div class="value">0792390349</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-wrap"><i class="fas fa-envelope"></i></div>
+                        <div class="info">
+                            <div class="label">Email</div>
+                            <div class="value"><a href="mailto:seizhf@gmail.com">seizhf@gmail.com</a></div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-wrap"><i class="fas fa-building"></i></div>
+                        <div class="info">
+                            <div class="label">Société</div>
+                            <div class="value">SaivCORE</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-wrap"><i class="fab fa-github"></i></div>
+                        <div class="info">
+                            <div class="label">GitHub</div>
+                            <div class="value"><a href="https://github.com/SEIZHF" target="_blank">@SEIZHF</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-grid">
+                    <a href="https://wa.me/213792390349" target="_blank" class="social-btn whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="https://facebook.com/seizhf" target="_blank" class="social-btn facebook">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </a>
+                    <a href="https://instagram.com/sei.zhf" target="_blank" class="social-btn instagram">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                    <a href="https://youtube.com/@seizhf" target="_blank" class="social-btn youtube">
+                        <i class="fab fa-youtube"></i> YouTube
+                    </a>
+                    <a href="https://tiktok.com/@seizhf" target="_blank" class="social-btn tiktok">
+                        <i class="fab fa-tiktok"></i> TikTok
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <!-- ===== نهاية الفرنسي ===== -->
+
+        <!-- ===== الفوتر ===== -->
+        <div class="footer">
+            <div class="footer-links">
+                <a href="index.html"><i class="fas fa-home"></i> <span data-i18n="footer-home">الرئيسية</span></a>
+                <a href="novels.html"><i class="fas fa-book"></i> <span data-i18n="footer-novels">الروايات</span></a>
+                <a href="contact.html"><i class="fas fa-envelope"></i> <span data-i18n="footer-contact">التواصل</span></a>
+                <a href="https://SaivCORE.github.io" target="_blank"><i class="fas fa-building"></i> SaivCORE</a>
+            </div>
+            <p>
+                <i class="fas fa-code"></i>
+                <span data-i18n="footer-made">صُنع بـ</span>
+                <i class="fas fa-heart heart"></i>
+                <span data-i18n="footer-by">بواسطة</span>
+                <strong>سيف الإسلام زحاف</strong>
+                <span class="flag">🇩🇿</span>
+                &nbsp;·&nbsp; 2025
+            </p>
+            <p style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">
+                <span data-i18n="footer-pride">صُنع بكل فخر في الجزائر</span> 🇩🇿
+            </p>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+    جافا سكريبت
+    ============================================================ -->
+    <script>
+        (function() {
+
+            // ===== العناصر =====
+            const langButtons = document.querySelectorAll('.lang-btn');
+            const langSections = {
+                ar: document.getElementById('lang-ar'),
+                en: document.getElementById('lang-en'),
+                fr: document.getElementById('lang-fr')
+            };
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+
+            // ===== الترجمات =====
+            const translations = {
+                ar: {
+                    home: 'الرئيسية',
+                    novels: 'الروايات',
+                    contact: 'التواصل',
+                    'footer-home': 'الرئيسية',
+                    'footer-novels': 'الروايات',
+                    'footer-contact': 'التواصل',
+                    'footer-made': 'صُنع بـ',
+                    'footer-by': 'بواسطة',
+                    'footer-pride': 'صُنع بكل فخر في الجزائر'
+                },
+                en: {
+                    home: 'Home',
+                    novels: 'Novels',
+                    contact: 'Contact',
+                    'footer-home': 'Home',
+                    'footer-novels': 'Novels',
+                    'footer-contact': 'Contact',
+                    'footer-made': 'Made with',
+                    'footer-by': 'by',
+                    'footer-pride': 'Made with pride in Algeria'
+                },
+                fr: {
+                    home: 'Accueil',
+                    novels: 'Romans',
+                    contact: 'Contact',
+                    'footer-home': 'Accueil',
+                    'footer-novels': 'Romans',
+                    'footer-contact': 'Contact',
+                    'footer-made': 'Fait avec',
+                    'footer-by': 'par',
+                    'footer-pride': 'Fait avec fierté en Algérie'
+                }
+            };
+
+            // ===== تطبيق الترجمة =====
+            function applyTranslation(lang) {
+                const t = translations[lang];
+                if (!t) return;
+
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (t[key]) {
+                        el.textContent = t[key];
+                    }
+                });
+            }
+
+            // ===== تبديل اللغة =====
+            function switchLanguage(lang) {
+                langButtons.forEach(btn => btn.classList.remove('active'));
+                langButtons.forEach(btn => {
+                    if (btn.dataset.lang === lang) btn.classList.add('active');
+                });
+                for (const [key, section] of Object.entries(langSections)) {
+                    section.classList.toggle('active', key === lang);
+                }
+                applyTranslation(lang);
+                localStorage.setItem('preferred-lang', lang);
+            }
+
+            langButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchLanguage(this.dataset.lang);
+                });
+            });
+
+            // ===== استعادة اللغة =====
+            const savedLang = localStorage.getItem('preferred-lang');
+            if (savedLang && langSections[savedLang]) {
+                switchLanguage(savedLang);
+            } else {
+                applyTranslation('ar');
+            }
+
+            // ===== تبديل الوضع =====
+            function toggleTheme() {
+                body.classList.toggle('light-mode');
+                const isLight = body.classList.contains('light-mode');
+                const icon = themeToggle.querySelector('i');
+                icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+                localStorage.setItem('theme-pref', isLight ? 'light' : 'dark');
+            }
+
+            themeToggle.addEventListener('click', toggleTheme);
+
+            // ===== استعادة الوضع =====
+            const savedTheme = localStorage.getItem('theme-pref');
+            if (savedTheme === 'light') {
+                body.classList.add('light-mode');
+                themeToggle.querySelector('i').className = 'fas fa-sun';
+            } else if (savedTheme === 'dark') {
+                body.classList.remove('light-mode');
+                themeToggle.querySelector('i').className = 'fas fa-moon';
+            }
+
+            if (!localStorage.getItem('theme-pref')) {
+                if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+                    body.classList.add('light-mode');
+                    themeToggle.querySelector('i').className = 'fas fa-sun';
+                }
+            }
+
+        })();
+    </script>
+
+</body>
+</html>
