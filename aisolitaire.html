@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a3a26">
+<title>SaivSOLT — Klondike Solitaire</title>
+<style>
+/* ============ BASE ============ */
+:root{
+  --cw: 80px;
+  --ch: 114px;
+  --gap: 10px;
+  --gold: #ffd76a;
+  --felt1: #2b8a5f;
+  --felt2: #14603f;
+}
+*,*::before,*::after{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  background:
+    radial-gradient(1200px 720px at 50% -12%, var(--felt1) 0%, var(--felt2) 42%, #0a3a26 72%, #05231a 100%);
+  color:#eafff5;
+  overflow:hidden;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  height:100vh;
+  height:100dvh;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  position:relative;
+}
+body::before{
+  content:'';
+  position:fixed; inset:0;
+  background-image:
+    radial-gradient(rgba(255,255,255,.045) 1px, transparent 1px);
+  background-size: 4px 4px;
+  pointer-events:none;
+  opacity:.6;
+  z-index:0;
+}
+
+/* ============ TOP BAR ============ */
+.topbar{
+  position:relative;
+  z-index:5;
+  width:100%;
+  max-width:940px;
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 10px 5px;
+}
+.brand{
+  font-weight:900;
+  font-size:clamp(15px, 3.9vw, 22px);
+  letter-spacing:.4px;
+  background:linear-gradient(92deg,#ffe89a 0%,#ffb347 42%,#ff7ac1 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  white-space:nowrap;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.45));
+}
+.brand span{
+  background:linear-gradient(92deg,#8ff0c4,#5ad1ff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.stats{
+  flex:1 1 auto;
+  display:flex;
+  justify-content:center;
+  gap:5px;
+  min-width:0;
+}
+.stat{
+  display:flex;
+  align-items:center;
+  gap:3px;
+  padding:4px 8px;
+  border-radius:999px;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-size:clamp(10px,2.6vw,13px);
+  font-weight:700;
+  letter-spacing:.3px;
+  color:#d9fff0;
+  white-space:nowrap;
+}
+.stat i{ font-style:normal; opacity:.7; font-size:.9em; }
+.actions{ display:flex; gap:6px; flex:0 0 auto; }
+.actions button{
+  width:clamp(30px,8vw,38px);
+  height:clamp(30px,8vw,38px);
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.18);
+  background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.06));
+  color:#eafff5;
+  font-size:clamp(14px,3.6vw,18px);
+  font-weight:800;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  transition:transform .12s ease, background .2s ease, box-shadow .2s ease;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px -6px rgba(0,0,0,.8);
+  touch-action:manipulation;
+}
+.actions button:hover{ background:rgba(255,255,255,.24); }
+.actions button:active{ transform:scale(.9); }
+.actions button:disabled{ opacity:.35; cursor:default; }
+
+/* ============ BOARD ============ */
+.board{
+  position:relative;
+  z-index:2;
+  flex:1 1 auto;
+  min-height:0;
+  width:100%;
+  max-width:940px;
+  display:flex;
+  flex-direction:column;
+  gap:var(--gap);
+  padding:0 6px 8px;
+  touch-action:none;
+}
+.row{
+  display:grid;
+  grid-template-columns: repeat(7, var(--cw));
+  gap: var(--gap);
+  justify-content:center;
+}
+.top-row{ flex:0 0 auto; }
+.top-row .pile{ height:var(--ch); }
+.tableau{
+  flex:1 1 auto;
+  min-height:0;
+}
+.tab{ height:100%; }
+
+/* ============ PILES ============ */
+.pile{ position:relative; }
+.pile.hl::before{
+  content:'';
+  position:absolute;
+  inset:-3px;
+  border-radius: calc(var(--cw) * 0.12);
+  border:3px solid var(--gold);
+  box-shadow: 0 0 18px rgba(255,215,106,.55), inset 0 0 24px rgba(255,215,106,.12);
+  pointer-events:none;
+  z-index:200;
+  animation: pulseHL .8s ease-in-out infinite alternate;
+}
+@keyframes pulseHL{ from{opacity:.55;} to{opacity:1;} }
+
+.ph{
+  position:absolute;
+  inset:0;
+  border-radius: calc(var(--cw) * 0.085);
+  border:2px dashed rgba(255,255,255,.16);
+  background:rgba(0,0,0,.10);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: calc(var(--cw) * 0.42);
+  color:rgba(255,255,255,.13);
+  pointer-events:none;
+}
+.recycle{
+  position:absolute;
+  inset:0;
+  border-radius: calc(var(--cw) * 0.085);
+  border:2px dashed rgba(255,255,255,.22);
+  background:rgba(0,0,0,.10);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: calc(var(--cw) * 0.48);
+  color:rgba(255,255,255,.4);
+  cursor:pointer;
+  transition: background .2s, color .2s;
+}
+.recycle:hover{ background:rgba(255,255,255,.08); color:rgba(255,255,255,.75); }
+
+/* ============ CARDS ============ */
+.card{
+  position:absolute;
+  top:0; left:0;
+  width:var(--cw);
+  height:var(--ch);
+  border-radius: calc(var(--cw) * 0.085);
+  will-change:transform;
+  transform:translateZ(0);
+}
+.card.up{
+  background:linear-gradient(158deg,#ffffff 0%,#f4f6fb 55%,#e8ecf6 100%);
+  border:1px solid rgba(0,0,0,.20);
+  box-shadow:
+    0 1px 1px rgba(0,0,0,.30),
+    0 6px 14px -8px rgba(0,0,0,.75);
+  color:#181820;
+  overflow:hidden;
+}
+.card.up::after{
+  content:'';
+  position:absolute; inset:0;
+  border-radius:inherit;
+  background:linear-gradient(120deg, rgba(255,255,255,.9) 0%, rgba(255,255,255,0) 35%);
+  pointer-events:none;
+}
+.card.up.red{ color:#d92b3a; }
+.card.up.black{ color:#17171f; }
+
+.corner{
+  position:absolute;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  line-height:1;
+  font-weight:900;
+  font-size: calc(var(--cw) * 0.245);
+  letter-spacing:-.5px;
+}
+.corner .s{ font-size: calc(var(--cw) * 0.205); margin-top: calc(var(--cw) * 0.015); }
+.corner.tl{ top: calc(var(--cw) * 0.065); left: calc(var(--cw) * 0.075); }
+.corner.br{ bottom: calc(var(--cw) * 0.065); right: calc(var(--cw) * 0.075); transform:rotate(180deg); }
+
+.center{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: calc(var(--cw) * 0.55);
+  opacity:.9;
+  text-shadow: 0 1px 0 rgba(255,255,255,.7);
+}
+
+.card.back{
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.10) 0 5px, rgba(255,255,255,0) 5px 10px),
+    linear-gradient(150deg,#3a5bff 0%, #7b3ff2 48%, #d2389a 100%);
+  border:1px solid rgba(255,255,255,.35);
+  box-shadow:
+    inset 0 0 0 3px rgba(255,255,255,.13),
+    0 1px 1px rgba(0,0,0,.30),
+    0 6px 14px -8px rgba(0,0,0,.75);
+}
+.card.back::after{
+  content:'';
+  position:absolute; inset:11%;
+  border-radius: calc(var(--cw) * 0.06);
+  border:2px solid rgba(255,255,255,.42);
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.22), transparent 68%);
+}
+.card.back::before{
+  content:'✦';
+  position:absolute;
+  inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size: calc(var(--cw) * 0.34);
+  color:rgba(255,255,255,.75);
+  text-shadow:0 0 12px rgba(255,255,255,.6);
+  z-index:2;
+}
+
+/* ============ DRAG GHOST ============ */
+.ghost{
+  position:fixed;
+  left:0; top:0;
+  width:var(--cw);
+  z-index:9999;
+  pointer-events:none;
+  transform:translate3d(-9999px,-9999px,0);
+  filter: drop-shadow(0 20px 24px rgba(0,0,0,.55));
+}
+.ghost .card{
+  box-shadow:0 2px 5px rgba(0,0,0,.45);
+}
+
+/* ============ WIN OVERLAY ============ */
+.overlay{
+  position:fixed; inset:0;
+  z-index:10000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(3,22,15,.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .35s ease;
+  padding:20px;
+}
+.overlay.show{ opacity:1; pointer-events:auto; }
+.win-box{
+  text-align:center;
+  padding:30px 34px;
+  border-radius:26px;
+  background:linear-gradient(160deg, rgba(255,255,255,.16), rgba(255,255,255,.05));
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 30px 70px -20px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.35);
+  transform:scale(.85) translateY(14px);
+  transition:transform .45s cubic-bezier(.18,1.3,.5,1);
+  max-width:90vw;
+}
+.overlay.show .win-box{ transform:scale(1) translateY(0); }
+.win-box h2{
+  margin:0 0 6px;
+  font-size:clamp(24px,7vw,38px);
+  background:linear-gradient(92deg,#ffe89a,#ffb347,#ff7ac1);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  letter-spacing:.5px;
+}
+.win-box p{ margin:0 0 18px; color:#c8f5e3; font-size:clamp(12px,3.4vw,15px); }
+.win-stats{
+  display:flex; gap:10px; justify-content:center; margin-bottom:20px; flex-wrap:wrap;
+}
+.win-stats div{
+  background:rgba(0,0,0,.28);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:14px;
+  padding:8px 16px;
+  font-size:clamp(11px,3vw,13px);
+  color:#bfeeda;
+}
+.win-stats b{ display:block; font-size:clamp(16px,5vw,22px); color:#fff; margin-top:2px; }
+.win-box button{
+  padding:12px 30px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  font-weight:900;
+  font-size:clamp(13px,3.6vw,16px);
+  letter-spacing:.4px;
+  color:#0a3a26;
+  background:linear-gradient(92deg,#ffe89a,#ffc247);
+  box-shadow:0 12px 26px -10px rgba(255,194,71,.9);
+  transition:transform .15s ease, box-shadow .2s ease;
+}
+.win-box button:hover{ transform:translateY(-2px); box-shadow:0 16px 32px -10px rgba(255,194,71,1); }
+.win-box button:active{ transform:scale(.96); }
+
+#confetti{
+  position:fixed; inset:0;
+  z-index:10001;
+  pointer-events:none;
+}
+
+@media (max-width:420px){
+  .stat i{ display:none; }
+  .stat{ padding:4px 7px; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">Saiv<span>SOLT</span></div>
+  <div class="stats">
+    <div class="stat"><i>⏱</i><b id="time">00:00</b></div>
+    <div class="stat"><i>↕</i><b id="moves">0</b></div>
+    <div class="stat"><i>★</i><b id="score">0</b></div>
+  </div>
+  <div class="actions">
+    <button id="btnUndo" aria-label="Undo" title="Undo">↺</button>
+    <button id="btnNew" aria-label="New game" title="New game">＋</button>
+  </div>
+</header>
+
+<main class="board" id="board">
+  <div class="row top-row">
+    <div class="pile" id="stock"></div>
+    <div class="pile" id="waste"></div>
+    <div class="pile" style="visibility:hidden"></div>
+    <div class="pile foundation" data-f="0"></div>
+    <div class="pile foundation" data-f="1"></div>
+    <div class="pile foundation" data-f="2"></div>
+    <div class="pile foundation" data-f="3"></div>
+  </div>
+  <div class="row tableau" id="tableau">
+    <div class="pile tab" data-t="0"></div>
+    <div class="pile tab" data-t="1"></div>
+    <div class="pile tab" data-t="2"></div>
+    <div class="pile tab" data-t="3"></div>
+    <div class="pile tab" data-t="4"></div>
+    <div class="pile tab" data-t="5"></div>
+    <div class="pile tab" data-t="6"></div>
+  </div>
+</main>
+
+<div class="overlay" id="overlay">
+  <div class="win-box">
+    <h2>🎉 You Win! 🎉</h2>
+    <p>Ktebti l7al! SaivSOLT mabghach ykhsr.</p>
+    <div class="win-stats">
+      <div>Time<b id="wTime">00:00</b></div>
+      <div>Moves<b id="wMoves">0</b></div>
+      <div>Score<b id="wScore">0</b></div>
+    </div>
+    <button id="btnAgain">Play Again</button>
+  </div>
+</div>
+<canvas id="confetti"></canvas>
+
+<script>
+/* =====================================================
+   SaivSOLT — Klondike Solitaire
+   ===================================================== */
+(function(){
+'use strict';
+
+/* ---------- Constants ---------- */
+const SUITS = ['♠','♥','♦','♣'];
+const RANKS = [null,'A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+const RED   = [false,true,true,false];
+
+/* ---------- DOM ---------- */
+const boardEl     = document.getElementById('board');
+const stockEl     = document.getElementById('stock');
+const wasteEl     = document.getElementById('waste');
+const tableauEl   = document.getElementById('tableau');
+const foundationEls = [...document.querySelectorAll('.foundation')];
+const tabEls      = [...document.querySelectorAll('.tab')];
+const timeEl      = document.getElementById('time');
+const movesEl     = document.getElementById('moves');
+const scoreEl     = document.getElementById('score');
+const overlay     = document.getElementById('overlay');
+const btnUndo     = document.getElementById('btnUndo');
+const btnNew      = document.getElementById('btnNew');
+const btnAgain    = document.getElementById('btnAgain');
+
+/* ---------- State ---------- */
+let stock = [], waste = [], foundations = [[],[],[],[]], tableau = [[],[],[],[],[],[],[]];
+let score = 0, moves = 0, seconds = 0, won = false;
+let history = [];
+let timerId = null;
+let CW = 80, CH = 114, GAP = 10, OFF = 22;
+let drag = null, ghost = null;
+let stopConfetti = null;
+const elMap = new Map();
+
+/* =====================================================
+   LAYOUT
+   ===================================================== */
+function layout(){
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const topbarH = document.querySelector('.topbar').offsetHeight || 52;
+
+  GAP = Math.max(4, Math.min(14, Math.round(vw * 0.014)));
+
+  const availW = Math.min(vw - 12, 940);
+  let cw = Math.floor((availW - 6 * GAP) / 7);
+
+  const availH = vh - topbarH - 22;
+  const maxCH  = (availH - GAP) / 2.42;
+  let ch = Math.round(cw * 1.42);
+  if (ch > maxCH) { ch = Math.floor(maxCH); cw = Math.floor(ch / 1.42); }
+
+  CW = Math.max(30, cw);
+  CH = Math.round(CW * 1.42);
+
+  const root = document.documentElement.style;
+  root.setProperty('--cw', CW + 'px');
+  root.setProperty('--ch', CH + 'px');
+  root.setProperty('--gap', GAP + 'px');
+}
+
+/* =====================================================
+   GAME SETUP
+   ===================================================== */
+function newGame(){
+  const deck = [];
+  let id = 0;
+  for (let s = 0; s < 4; s++)
+    for (let r = 1; r <= 13; r++)
+      deck.push({ id: id++, s, r, up: false });
+
+  /* Fisher–Yates */
+  for (let i = deck.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+
+  stock = []; waste = [];
+  foundations = [[],[],[],[]];
+  tableau = [[],[],[],[],[],[],[]];
+
+  for (let i = 0; i < 7; i++){
+    for (let k = 0; k <= i; k++){
+      const c = deck.pop();
+      c.up = (k === i);
+      tableau[i].push(c);
+    }
+  }
+  stock = deck;                 // 24 cards left
+
+  score = 0; moves = 0; seconds = 0; won = false;
+  history = [];
+  clearInterval(timerId); timerId = null;
+  overlay.classList.remove('show');
+  if (stopConfetti) { stopConfetti(); stopConfetti = null; }
+
+  updateStats();
+  render();
+}
+
+/* =====================================================
+   RENDER
+   ===================================================== */
+function computeOffsets(){
+  const areaH = tableauEl.clientHeight || 400;
+  let coef = 0;
+  tableau.forEach(p => {
+    let s = 0;
+    for (let i = 1; i < p.length; i++) s += p[i].up ? 1 : 0.55;
+    if (s > coef) coef = s;
+  });
+  if (coef <= 0) return Math.round(CH * 0.30);
+  let off = (areaH - CH) / coef;
+  off = Math.min(off, CH * 0.32);
+  off = Math.max(off, CH * 0.10);
+  return off;
+}
+
+function makeCard(card){
+  const el = document.createElement('div');
+  el.className = 'card';
+  if (card.up){
+    el.classList.add('up', RED[card.s] ? 'red' : 'black');
+    el.dataset.id = card.id;
+    const r = RANKS[card.r], s = SUITS[card.s];
+    el.innerHTML =
+      '<div class="corner tl"><span class="r">' + r + '</span><span class="s">' + s + '</span></div>' +
+      '<div class="center">' + s + '</div>' +
+      '<div class="corner br"><span class="r">' + r + '</span><span class="s">' + s + '</span></div>';
+  } else {
+    el.classList.add('back');
+  }
+  return el;
+}
+
+function render(){
+  elMap.clear();
+  OFF = computeOffsets();
+
+  /* ---- STOCK ---- */
+  stockEl.innerHTML = '';
+  if (stock.length > 0){
+    stockEl.appendChild(makeCard({ up: false }));
+  } else {
+    const el = document.createElement('div');
+    el.className = 'recycle';
+    el.textContent = '↻';
+    stockEl.appendChild(el);
+  }
+
+  /* ---- WASTE ---- */
+  wasteEl.innerHTML = '';
+  if (waste.length > 0){
+    const top = waste[waste.length - 1];
+    const el = makeCard(top);
+    elMap.set(top.id, el);
+    wasteEl.appendChild(el);
+  }
+
+  /* ---- FOUNDATIONS ---- */
+  foundationEls.forEach((fEl, i) => {
+    fEl.innerHTML = '';
+    if (foundations[i].length === 0){
+      const ph = document.createElement('div');
+      ph.className = 'ph';
+      ph.textContent = SUITS[i];
+      fEl.appendChild(ph);
+    }
+    foundations[i].forEach(c => {
+      const el = makeCard(c);
+      elMap.set(c.id, el);
+      fEl.appendChild(el);
+    });
+  });
+
+  /* ---- TABLEAU ---- */
+  tabEls.forEach((tEl, i) => {
+    tEl.innerHTML = '';
+    let y = 0;
+    tableau[i].forEach((c, k) => {
+      if (k > 0) y += c.up ? OFF : OFF * 0.55;
+      const el = makeCard(c);
+      el.style.top = y + 'px';
+      el.style.zIndex = k + 1;
+      elMap.set(c.id, el);
+      tEl.appendChild(el);
+    });
+  });
+}
+
+/* =====================================================
+   RULES
+   ===================================================== */
+function canStackFoundation(card, pile){
+  if (pile.length === 0) return card.r === 1;
+  const top = pile[pile.length - 1];
+  return top.s === card.s && card.r === top.r + 1;
+}
+
+function canStackTableau(card, topCard){
+  if (!topCard) return card.r === 13;
+  if (!topCard.up) return false;
+  return card.r === topCard.r - 1 && RED[card.s] !== RED[topCard.s];
+}
+
+function locate(id){
+  for (let i = 0; i < 7; i++){
+    const k = tableau[i].findIndex(c => c.id === id);
+    if (k >= 0) return { type:'tab', idx:i, pos:k, card:tableau[i][k] };
+  }
+  for (let i = 0; i < 4; i++){
+    const k = foundations[i].findIndex(c => c.id === id);
+    if (k >= 0) return { type:'found', idx:i, pos:k, card:foundations[i][k] };
+  }
+  const k = waste.findIndex(c => c.id === id);
+  if (k >= 0) return { type:'waste', idx:0, pos:k, card:waste[k] };
+  return null;
+}
+
+function grabbable(loc){
+  if (loc.type === 'tab'){
+    const p = tableau[loc.idx];
+    if (!p[loc.pos] || !p[loc.pos].up) return null;
+    return p.slice(loc.pos);
+  }
+  if (loc.type === 'waste'){
+    if (loc.pos !== waste.length - 1) return null;
+    return [waste[loc.pos]];
+  }
+  if (loc.type === 'found'){
+    if (loc.pos !== foundations[loc.idx].length - 1) return null;
+    return [foundations[loc.idx][loc.pos]];
+  }
+  return null;
+}
+
+/* =====================================================
+   HISTORY
+   ===================================================== */
+function pushHistory(){
+  history.push(JSON.stringify({ stock, waste, foundations, tableau, score, moves }));
+  if (history.length > 250) history.shift();
+  btnUndo.disabled = false;
+}
+
+function undo(){
+  if (!history.length || won) return;
+  const s = history.pop();
+  const o = JSON.parse(s);
+  stock = o.stock;
+  waste = o.waste;
+  foundations = o.foundations;
+  tableau = o.tableau;
+  score = o.score;
+  moves = o.moves;
+  btnUndo.disabled = history.length === 0;
+  updateStats();
+  render();
+}
+
+/* =====================================================
+   MOVES
+   ===================================================== */
+function tryMove(loc, cards, destType, destIdx){
+  const first = cards[0];
+
+  if (destType === 'found'){
+    if (cards.length !== 1) return false;
+    if (!canStackFoundation(first, foundations[destIdx])) return false;
+  } else {
+    if (loc.type === 'tab' && loc.idx === destIdx) return false;
+    const pile = tableau[destIdx];
+    const top = pile.length ? pile[pile.length - 1] : null;
+    if (!canStackTableau(first, top)) return false;
+  }
+
+  pushHistory();
+
+  /* remove from source */
+  if (loc.type === 'tab')        tableau[loc.idx].splice(loc.pos);
+  else if (loc.type === 'waste') waste.pop();
+  else if (loc.type === 'found') foundations[loc.idx].pop();
+
+  /* add to destination */
+  if (destType === 'found'){
+    foundations[destIdx].push(first);
+    score += 10;
+  } else {
+    tableau[destIdx].push.apply(tableau[destIdx], cards);
+    if (loc.type === 'waste') score += 5;
+    if (loc.type === 'found') score -= 15;
+  }
+
+  /* flip newly exposed card */
+  if (loc.type === 'tab'){
+    const p = tableau[loc.idx];
+    if (p.length && !p[p.length - 1].up){
+      p[p.length - 1].up = true;
+      score += 5;
+    }
+  }
+
+  if (score < 0) score = 0;
+  moves++;
+  startTimer();
+  updateStats();
+  render();
+  checkWin();
+  return true;
+}
+
+function handleStock(){
+  if (won) return;
+  if (stock.length === 0 && waste.length === 0) return;
+
+  pushHistory();
+  if (stock.length === 0){
+    while (waste.length){
+      const c = waste.pop();
+      c.up = false;
+      stock.push(c);
+    }
+  } else {
+    const c = stock.pop();
+    c.up = true;
+    waste.push(c);
+  }
+  moves++;
+  startTimer();
+  updateStats();
+  render();
+}
+
+/* =====================================================
+   STATS / TIMER
+   ===================================================== */
+function fmt(s){
+  const m = Math.floor(s / 60), x = s % 60;
+  return String(m).padStart(2,'0') + ':' + String(x).padStart(2,'0');
+}
+
+function updateStats(){
+  timeEl.textContent  = fmt(seconds);
+  movesEl.textContent = moves;
+  scoreEl.textContent = score;
+}
+
+function startTimer(){
+  if (timerId) return;
+  timerId = setInterval(() => {
+    if (won) return;
+    seconds++;
+    updateStats();
+  }, 1000);
+}
+
+/* =====================================================
+   WIN
+   ===================================================== */
+function checkWin(){
+  if (foundations.every(f => f.length === 13)){
+    won = true;
+    clearInterval(timerId); timerId = null;
+    updateStats();
+
+    document.getElementById('wTime').textContent  = fmt(seconds);
+    document.getElementById('wMoves').textContent = moves;
+    document.getElementById('wScore').textContent = score;
+
+    setTimeout(() => {
+      overlay.classList.add('show');
+      stopConfetti = startConfetti();
+    }, 320);
+  }
+}
+
+function startConfetti(){
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width  = window.innerWidth  * dpr;
+  canvas.height = window.innerHeight * dpr;
+  canvas.style.width  = window.innerWidth + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const W = window.innerWidth, H = window.innerHeight;
+  const colors = ['#ffd700','#ff4d6d','#4dd2ff','#7dff8a','#c084fc','#ffffff','#ffa94d'];
+  const parts = [];
+  for (let i = 0; i < 170; i++){
+    parts.push({
+      x: Math.random() * W,
+      y: Math.random() * -H,
+      w: 5 + Math.random() * 7,
+      h: 8 + Math.random() * 9,
+      vx: -1.6 + Math.random() * 3.2,
+      vy: 2 + Math.random() * 4.5,
+      rot: Math.random() * Math.PI,
+      vr: -0.16 + Math.random() * 0.32,
+      c: colors[(Math.random() * colors.length) | 0]
+    });
+  }
+
+  let raf;
+  function loop(){
+    ctx.clearRect(0, 0, W, H);
+    for (const p of parts){
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.vr;
+      if (p.y > H + 24){
+        p.y = -24;
+        p.x = Math.random() * W;
+      }
+      if (p.x < -30) p.x = W + 30;
+      if (p.x > W + 30) p.x = -30;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.fillStyle = p.c;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    }
+    raf = requestAnimationFrame(loop);
+  }
+  loop();
+  return function(){
+    cancelAnimationFrame(raf);
+    ctx.clearRect(0, 0, W, H);
+  };
+}
+
+/* =====================================================
+   INPUT — POINTER
+   ===================================================== */
+function onDown(e){
+  if (won) return;
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+  /* stock click */
+  if (e.target.closest('#stock')){
+    handleStock();
+    return;
+  }
+
+  const cardNode = e.target.closest('.card');
+  if (!cardNode) return;
+
+  const id = Number(cardNode.dataset.id);
+  if (!Number.isFinite(id)) return;
+
+  const loc = locate(id);
+  if (!loc) return;
+
+  const cards = grabbable(loc);
+  if (!cards) return;
+
+  const els = cards.map(c => elMap.get(c.id)).filter(Boolean);
+  if (!els.length) return;
+
+  const rects = els.map(el => el.getBoundingClientRect());
+  const base = rects[0];
+
+  drag = {
+    loc, cards, els, rects, base,
+    startX: e.clientX, startY: e.clientY,
+    grabDX: e.clientX - base.left,
+    grabDY: e.clientY - base.top,
+    moved: false
+  };
+
+  window.addEventListener('pointermove', onMove, { passive: false });
+  window.addEventListener('pointerup', onUp);
+  window.addEventListener('pointercancel', onUp);
+}
+
+function onMove(e){
+  if (!drag) return;
+  const dx = e.clientX - drag.startX;
+  const dy = e.clientY - drag.startY;
+
+  if (!drag.moved){
+    if (Math.hypot(dx, dy) < 6) return;
+    drag.moved = true;
+    createGhost();
+    drag.els.forEach(el => { el.style.visibility = 'hidden'; });
+  }
+
+  e.preventDefault();
+  ghost.style.transform =
+    'translate3d(' + (e.clientX - drag.grabDX) + 'px,' + (e.clientY - drag.grabDY) + 'px,0)';
+
+  highlightAt(e.clientX - drag.grabDX + CW / 2, e.clientY - drag.grabDY + CH / 2);
+}
+
+function createGhost(){
+  ghost = document.createElement('div');
+  ghost.className = 'ghost';
+  drag.cards.forEach((c, i) => {
+    const el = makeCard(c);
+    const r = drag.rects[i];
+    el.style.left = (r.left - drag.base.left) + 'px';
+    el.style.top  = (r.top  - drag.base.top ) + 'px';
+    el.style.position = 'absolute';
+    ghost.appendChild(el);
+  });
+  document.body.appendChild(ghost);
+}
+
+function onUp(e){
+  window.removeEventListener('pointermove', onMove);
+  window.removeEventListener('pointerup', onUp);
+  window.removeEventListener('pointercancel', onUp);
+
+  if (!drag) return;
+  const d = drag;
+  drag = null;
+
+  if (ghost){ ghost.remove(); ghost = null; }
+  clearHighlight();
+
+  if (!d.moved){
+    handleTap(d);
+    return;
+  }
+
+  const px = e.clientX - d.grabDX + CW / 2;
+  const py = e.clientY - d.grabDY + CH / 2;
+  const target = findTarget(px, py);
+
+  if (target && tryMove(d.loc, d.cards, target.type, target.idx)){
+    return; // re-rendered
+  }
+  d.els.forEach(el => { el.style.visibility = ''; });
+}
+
+function handleTap(d){
+  const cards = d.cards;
+  if (cards.length !== 1) return;
+  const c = cards[0];
+
+  /* try foundation first */
+  for (let i = 0; i < 4; i++){
+    if (canStackFoundation(c, foundations[i])){
+      if (tryMove(d.loc, cards, 'found', i)) return;
+    }
+  }
+  /* waste → tableau */
+  if (d.loc.type === 'waste'){
+    for (let i = 0; i < 7; i++){
+      const top = tableau[i].length ? tableau[i][tableau[i].length - 1] : null;
+      if (canStackTableau(c, top)){
+        if (tryMove(d.loc, cards, 'tab', i)) return;
+      }
+    }
+  }
+}
+
+/* ---------- Drop targets ---------- */
+function allTargets(){
+  const arr = [];
+  foundationEls.forEach((el, i) => arr.push({ el, type:'found', idx:i }));
+  tabEls.forEach((el, i) => arr.push({ el, type:'tab', idx:i }));
+  return arr;
+}
+
+function findTarget(x, y){
+  let best = null, bestD = Infinity;
+  for (const t of allTargets()){
+    const r = t.el.getBoundingClientRect();
+    if (x >= r.left - 6 && x <= r.right + 6 && y >= r.top - 6 && y <= r.bottom + 6){
+      return t;
+    }
+    const cx = Math.max(r.left, Math.min(x, r.right));
+    const cy = Math.max(r.top,  Math.min(y, r.bottom));
+    const dist = Math.hypot(x - cx, y - cy);
+    if (dist < bestD){ bestD = dist; best = t; }
+  }
+  return bestD < 70 ? best : null;
+}
+
+let hlEl = null;
+function highlightAt(x, y){
+  const t = findTarget(x, y);
+  const el = t ? t.el : null;
+  if (el === hlEl) return;
+  clearHighlight();
+  if (el){ el.classList.add('hl'); hlEl = el; }
+}
+function clearHighlight(){
+  if (hlEl){ hlEl.classList.remove('hl'); hlEl = null; }
+}
+
+/* =====================================================
+   EVENTS
+   ===================================================== */
+boardEl.addEventListener('pointerdown', onDown, { passive: true });
+boardEl.addEventListener('contextmenu', e => e.preventDefault());
+
+btnUndo.addEventListener('click', undo);
+btnNew.addEventListener('click', () => { newGame(); });
+btnAgain.addEventListener('click', () => {
+  overlay.classList.remove('show');
+  if (stopConfetti){ stopConfetti(); stopConfetti = null; }
+  newGame();
+});
+
+let resizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    layout();
+    render();
+  }, 80);
+});
+window.addEventListener('orientationchange', () => {
+  setTimeout(() => { layout(); render(); }, 250);
+});
+
+/* =====================================================
+   BOOT
+   ===================================================== */
+layout();
+newGame();
+btnUndo.disabled = true;
+
+})();
+</script>
+</body>
+</html>
