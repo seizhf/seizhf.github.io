@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b1a1d">
-<title>SaivDOMI</title>
+<title>Domino Pro — دومينو برو</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;}
 html,body{margin:0;padding:0;height:100%;}
@@ -35,14 +35,14 @@ body::after{
   --red:#e05555;
   --panel:rgba(255,255,255,.055);
   --border:rgba(255,255,255,.10);
-  --hand-ts:42px;
+  --hand-ts:40px;
   --board-ts:30px;
-  --board-max-ts:44px;
-  --board-min-ts:14px;
+  --board-max-ts:46px;
+  --board-min-ts:12px;
 }
-@media(min-width:820px){ :root{ --hand-ts:52px; --board-ts:38px; --board-max-ts:52px; } }
-@media(min-width:1200px){ :root{ --hand-ts:60px; --board-ts:44px; --board-max-ts:60px; } }
-@media(max-height:680px){ :root{ --hand-ts:34px; --board-ts:24px; --board-max-ts:34px; } }
+@media(min-width:820px){ :root{ --hand-ts:50px; --board-ts:38px; --board-max-ts:54px; } }
+@media(min-width:1200px){ :root{ --hand-ts:56px; --board-ts:44px; --board-max-ts:60px; } }
+@media(max-height:680px){ :root{ --hand-ts:32px; --board-ts:22px; --board-max-ts:34px; } }
 
 #app{height:100vh;height:100dvh;display:flex;flex-direction:column;position:relative;overflow:hidden;}
 
@@ -185,7 +185,7 @@ body::after{
 .pl-item .tag.host{background:rgba(233,185,73,.16);color:#ffd976;border-color:rgba(233,185,73,.35);}
 .hint{font-size:12px;color:#8fa9ae;margin:0;line-height:1.6;}
 
-#screen-game{padding:0;}
+#screen-game{padding:0;min-height:0;}
 .game-top{
   flex:none;display:flex;gap:6px;padding:7px 8px;overflow-x:auto;
   scrollbar-width:none;border-bottom:1px solid rgba(255,255,255,.05);
@@ -243,7 +243,7 @@ body::after{
 @keyframes bubbleOut{ to{transform:translateY(-14px) scale(.85);opacity:0;} }
 
 .comment-bar{
-  position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 130px);
+  position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 150px);
   transform:translate(-50%,20px);
   display:flex;gap:6px;flex-wrap:wrap;justify-content:center;align-items:center;
   padding:8px;max-width:96vw;
@@ -290,30 +290,41 @@ body::after{
   align-self:center;padding:0 6px;
 }
 
+/* ===================== BOARD ===================== */
 .board-area{flex:1;position:relative;min-height:0;overflow:hidden;}
 .board-scroll{
-  position:absolute;inset:0;overflow-x:auto;overflow-y:hidden;
-  display:flex;align-items:center;justify-content:center;
-  padding:0 24px;scrollbar-width:thin;
-  scroll-behavior:smooth;
+  position:absolute;inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px;
+  overflow:hidden;
   direction:ltr;
 }
-.board-scroll::-webkit-scrollbar{height:5px;}
-.board-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:8px;}
 .chain{
-  display:flex;align-items:center;gap:3px;padding:6px 2px;direction:ltr;
-  flex:none;max-width:none;
+  position:relative;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-content:center;
+  align-items:center;
+  gap:4px;
+  max-width:100%;
+  max-height:100%;
+  padding:2px;
+  direction:ltr;
 }
 .chain:empty::after{
-  content:'';width:120px;height:64px;border-radius:14px;
+  content:'';
+  width:120px;height:64px;border-radius:14px;
   border:2px dashed rgba(255,255,255,.10);
 }
 #chain .tile{--ts:var(--board-ts);}
 
 .chain .tile.drop-target{
   box-shadow:
-    0 0 0 3px rgba(55,201,120,.85),
-    0 0 26px rgba(55,201,120,.5),
+    0 0 0 3px rgba(55,201,120,.9),
+    0 0 28px rgba(55,201,120,.55),
     inset 0 1px 0 rgba(255,255,255,.95),
     0 6px 14px rgba(0,0,0,.4);
   transition:box-shadow .18s ease;
@@ -329,12 +340,16 @@ body::after{
 .turn-banner.show{opacity:1;animation:pulseBanner 1.6s ease-in-out infinite;}
 @keyframes pulseBanner{0%,100%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.045);}}
 
+/* ===================== HAND ===================== */
 .hand-area{
   flex:none;padding:6px 8px calc(8px + env(safe-area-inset-bottom,0px));
   background:linear-gradient(180deg,rgba(0,0,0,.10),rgba(0,0,0,.35));
   border-top:1px solid rgba(255,255,255,.06);
+  max-height:42vh;
+  display:flex;
+  flex-direction:column;
 }
-.me-bar{display:flex;align-items:center;gap:7px;padding:0 3px 6px;font-size:12px;}
+.me-bar{display:flex;align-items:center;gap:7px;padding:0 3px 6px;font-size:12px;flex:none;}
 .me-name{font-weight:800;color:#dceef1;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .me-score{
   font-weight:900;color:#ffd976;background:rgba(233,185,73,.14);
@@ -342,19 +357,28 @@ body::after{
 }
 .me-bar .spacer{flex:1;}
 .hand{
-  display:flex;gap:6px;justify-content:center;justify-content:safe center;
-  overflow-x:auto;overflow-y:visible;padding:14px 4px 6px;
-  scrollbar-width:none;min-height:calc(var(--hand-ts) * 2 + 22px);
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-content:flex-start;
+  gap:6px;
+  padding:10px 4px 6px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:thin;
+  flex:1;
+  min-height:calc(var(--hand-ts) * 2 + 20px);
 }
-.hand::-webkit-scrollbar{display:none;}
+.hand::-webkit-scrollbar{width:5px;}
+.hand::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:8px;}
 .hand .tile{--ts:var(--hand-ts);cursor:grab;touch-action:none;}
-.hand .tile:hover{transform:translateY(-9px);}
-.hand .tile:active{cursor:grabbing;}
+.hand .tile.playable:hover{transform:translateY(-9px);}
+.hand .tile:not(.playable){cursor:not-allowed;}
 .hand .tile.playable{
   box-shadow:0 0 0 2px rgba(55,201,120,.85),0 0 20px rgba(55,201,120,.35),
              inset 0 1px 0 rgba(255,255,255,.9),0 8px 18px rgba(0,0,0,.4);
 }
-.hand .tile.dim{opacity:.42;filter:grayscale(.55);}
+.hand .tile.dim{opacity:.45;filter:grayscale(.55);}
 .hand .tile.picked{
   transform:translateY(-18px) scale(1.06);
   box-shadow:0 0 0 3px rgba(233,185,73,.9),0 0 22px rgba(233,185,73,.5),
@@ -373,6 +397,7 @@ body::after{
   transition:transform .12s ease,box-shadow .15s ease;
 }
 
+/* ===================== TILE ===================== */
 .tile{
   --ts:var(--hand-ts);
   --tl:calc(var(--ts) * 2);
@@ -542,7 +567,7 @@ body::after{
   <header class="topbar">
     <div class="brand">
       <span class="brand-dot"></span>
-      <span data-i18n="appName">SaivDOMI</span>
+      <span data-i18n="appName">دومينو برو</span>
     </div>
     <div class="top-actions">
       <span class="conn-dot hidden" id="connDot"></span>
@@ -700,7 +725,7 @@ function uid(len){
    ============================================================ */
 const STR = {
   ar: {
-    appName: 'SaivDOMI',
+    appName: 'دومينو برو',
     tagline: 'اللعبة الكلاسيكية — ذكاء اصطناعي وأونلاين',
     playBots: 'اللعب ضد الحاسوب',
     playOnline: 'اللعب أونلاين مع الأصدقاء',
@@ -720,8 +745,8 @@ const STR = {
     leave: 'خروج',
     startGame: 'بدء اللعبة',
     waiting: 'بانتظار اللاعبين...',
-    shareHint: 'شارك هذا الرمز مع صديقك ليدخل نفس الغرفة من أي جهاز',
-    onlineHint: 'أنشئ غرفة وشارك الرمز، أو أدخل رمز غرفة صديقك للانضمام.',
+    shareHint: 'شارك هذا الرمز مع صديقك ليدخل نفس الغرفة من أي جهاز ومن أي اتصال',
+    onlineHint: 'أنشئ غرفة وشارك الرمز، أو أدخل رمز غرفة صديقك للانضمام. يعمل عبر الإنترنت من أي شبكة.',
     players: 'اللاعبون',
     you: 'أنت',
     bot: 'روبوت',
@@ -751,7 +776,7 @@ const STR = {
     passDevice: 'مرّر الجهاز إلى {0}',
     info: 'معلومات',
     infoTitle: 'كيفية اللعب',
-    infoBody: 'الهدف: التخلّص من كل أحجارك قبل الآخرين.\n\n• اسحب الحجر وضعه في المكان الذي تريده (يسار أو يمين السلسلة).\n• أو اضغط عليه وسيُوضع تلقائياً في أفضل مكان.\n• في وضع 2 ضد 2: بعد لعب الحجر، اختر تعليقاً أو اضغط ✕.\n• إذا لم تستطع اللعب، اسحب من البنك؛ وإن كان فارغاً مرّر الدور.\n• أول من يصل إلى ١٠٠ نقطة يفوز بالمباراة.',
+    infoBody: 'الهدف: التخلّص من كل أحجارك قبل الآخرين.\n\n• فقط الأحجار القابلة للعب يمكن سحبها (تظهر بإطار أخضر).\n• اسحب الحجر وضعه في المكان الذي تريده (يسار أو يمين السلسلة).\n• أو اضغط عليه وسيُوضع تلقائياً في أفضل مكان.\n• في وضع 2 ضد 2: بعد لعب الحجر، اختر تعليقاً أو اضغط ✕.\n• إذا لم تستطع اللعب، اسحب من البنك؛ وإن كان فارغاً مرّر الدور.\n• أول من يصل إلى ١٠٠ نقطة يفوز بالمباراة.',
     close: 'إغلاق',
     round: 'الجولة',
     drew: 'سحبت ورقة',
@@ -786,10 +811,12 @@ const STR = {
     teamA: 'الفريق أ',
     teamB: 'الفريق ب',
     playerJoined: 'انضم لاعب: {0}',
-    botsWillFill: 'المقاعد الفارغة ستمتلئ بروبوتات'
+    botsWillFill: 'المقاعد الفارغة ستمتلئ بروبوتات',
+    notPlayable: 'هذا الحجر لا يمكن لعبه الآن',
+    connectingFailed: 'تعذّر الاتصال — تأكد من الرمز أو اتصالك بالإنترنت'
   },
   fr: {
-    appName: 'SaivDOMI',
+    appName: 'DOMINO PRO',
     tagline: 'Le jeu classique — IA et multijoueur en ligne',
     playBots: 'Jouer contre l\'ordinateur',
     playOnline: 'Jouer en ligne avec des amis',
@@ -809,8 +836,8 @@ const STR = {
     leave: 'Quitter',
     startGame: 'Démarrer la partie',
     waiting: 'En attente des joueurs...',
-    shareHint: 'Partagez ce code avec votre ami pour qu\'il rejoigne depuis n\'importe quel appareil',
-    onlineHint: 'Créez un salon et partagez le code, ou entrez le code d\'un ami.',
+    shareHint: 'Partagez ce code — ils peuvent rejoindre depuis n\'importe quel appareil ou réseau',
+    onlineHint: 'Créez un salon et partagez le code, ou entrez un code. Fonctionne via Internet.',
     players: 'Joueurs',
     you: 'Vous',
     bot: 'Robot',
@@ -840,7 +867,7 @@ const STR = {
     passDevice: 'Passez l\'appareil à {0}',
     info: 'Infos',
     infoTitle: 'Comment jouer',
-    infoBody: 'But : se débarrasser de tous ses dominos avant les autres.\n\n• Faites glisser un domino et déposez-le où vous voulez.\n• Ou cliquez : il sera placé automatiquement.\n• En 2 vs 2 : après avoir joué, choisissez un commentaire ou ✕.\n• Premier à 100 points remporte la partie.',
+    infoBody: 'But : se débarrasser de tous ses dominos.\n\n• Seuls les dominos jouables peuvent être glissés (contour vert).\n• Faites glisser un domino et déposez-le où vous voulez.\n• Ou cliquez : il sera placé automatiquement.\n• En 2 vs 2 : après avoir joué, choisissez un commentaire ou ✕.\n• Premier à 100 points remporte la partie.',
     close: 'Fermer',
     round: 'Manche',
     drew: 'A pioché',
@@ -863,7 +890,7 @@ const STR = {
     onlineMode4ffa: '4 joueurs (libre)',
     onlineMode4ffaDesc: 'Chacun pour soi',
     onlineMode4team: '4 joueurs (2 vs 2)',
-    onlineMode4teamDesc: 'Deux équipes — votre ami en face avec commentaires',
+    onlineMode4teamDesc: 'Deux équipes — votre ami en face, avec commentaires',
     connecting: 'Connexion...',
     creatingRoom: 'Création du salon...',
     waitingForPlayers: 'En attente des joueurs',
@@ -875,10 +902,12 @@ const STR = {
     teamA: 'Équipe A',
     teamB: 'Équipe B',
     playerJoined: 'Joueur rejoint : {0}',
-    botsWillFill: 'Les places libres seront remplies par des robots'
+    botsWillFill: 'Les places libres seront remplies par des robots',
+    notPlayable: 'Ce domino ne peut pas être joué',
+    connectingFailed: 'Connexion impossible — vérifiez le code ou votre réseau'
   },
   en: {
-    appName: 'SaivDOMI',
+    appName: 'DOMINO PRO',
     tagline: 'The classic game — AI and online multiplayer',
     playBots: 'Play against the computer',
     playOnline: 'Play online with friends',
@@ -898,8 +927,8 @@ const STR = {
     leave: 'Leave',
     startGame: 'Start game',
     waiting: 'Waiting for players...',
-    shareHint: 'Share this code with your friend — they can join from any device',
-    onlineHint: 'Create a room and share the code, or enter a friend\'s code to join.',
+    shareHint: 'Share this code — they can join from any device or network',
+    onlineHint: 'Create a room and share the code, or enter a friend\'s code. Works over the Internet.',
     players: 'Players',
     you: 'You',
     bot: 'Robot',
@@ -929,7 +958,7 @@ const STR = {
     passDevice: 'Pass the device to {0}',
     info: 'Info',
     infoTitle: 'How to play',
-    infoBody: 'Goal: get rid of all your tiles before the others.\n\n• Drag a tile and drop it where you want.\n• Or tap it and it will be placed automatically.\n• In 2 vs 2: after playing, pick a comment or click ✕.\n• First to 100 points wins the match.',
+    infoBody: 'Goal: get rid of all your tiles.\n\n• Only playable tiles can be dragged (green outline).\n• Drag a tile and drop it where you want.\n• Or tap it and it will be placed automatically.\n• In 2 vs 2: after playing, pick a comment or click ✕.\n• First to 100 points wins the match.',
     close: 'Close',
     round: 'Round',
     drew: 'Drew a tile',
@@ -964,7 +993,9 @@ const STR = {
     teamA: 'Team A',
     teamB: 'Team B',
     playerJoined: 'Player joined: {0}',
-    botsWillFill: 'Empty seats will be filled with robots'
+    botsWillFill: 'Empty seats will be filled with robots',
+    notPlayable: 'This tile cannot be played right now',
+    connectingFailed: 'Connection failed — check the code or your network'
   }
 };
 
@@ -1299,8 +1330,18 @@ function botChooseMove(state, seat){
 }
 
 /* ============================================================
-   §6  NET — PeerJS wrapper
+   §6  NET — PeerJS wrapper with STUN for cross-network play
    ============================================================ */
+const ICE_SERVERS = [
+  { urls: 'stun:stun.l.google.com:19302' },
+  { urls: 'stun:stun1.l.google.com:19302' },
+  { urls: 'stun:stun2.l.google.com:19302' },
+  { urls: 'stun:stun3.l.google.com:19302' },
+  { urls: 'stun:stun4.l.google.com:19302' },
+  { urls: 'stun:global.stun.twilio.com:3478' },
+  { urls: 'stun:stun.cloudflare.com:3478' }
+];
+
 const Net = {
   peer: null,
   hostConn: null,
@@ -1315,7 +1356,18 @@ const Net = {
   onClose: null,
   _ready: false,
 
-  peerIdFor: function(code){ return 'dmnpro-' + code; },
+  peerIdFor: function(code){ return 'dmnpro-x7k-' + code; },
+
+  peerOptions: function(){
+    return {
+      debug: 0,
+      config: {
+        iceServers: ICE_SERVERS,
+        iceTransportPolicy: 'all',
+        iceCandidatePoolSize: 4
+      }
+    };
+  },
 
   initHost: function(code, cbs){
     Net.close();
@@ -1332,7 +1384,7 @@ const Net = {
       return;
     }
     try {
-      Net.peer = new Peer(Net.peerIdFor(code), { debug: 0 });
+      Net.peer = new Peer(Net.peerIdFor(code), Net.peerOptions());
     } catch (e){
       if (Net.onError) Net.onError({ type: 'init-failed', error: e });
       return;
@@ -1377,7 +1429,7 @@ const Net = {
       return;
     }
     try {
-      Net.peer = new Peer({ debug: 0 });
+      Net.peer = new Peer(Net.peerOptions());
     } catch (e){
       if (Net.onError) Net.onError({ type: 'init-failed', error: e });
       return;
@@ -1510,7 +1562,7 @@ function toast(msg, kind){
   D.toast.textContent = msg;
   D.toast.className = 'toast show' + (kind ? ' ' + kind : '');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(function(){ D.toast.className = 'toast'; }, 2400);
+  toastTimer = setTimeout(function(){ D.toast.className = 'toast'; }, 2600);
 }
 
 /* ============================================================
@@ -1533,7 +1585,7 @@ D.modalMask.addEventListener('click', function(e){
 });
 
 /* ============================================================
-   §11  DYNAMIC BOARD SCALE
+   §11  DYNAMIC BOARD SCALE (fits vertically & horizontally)
    ============================================================ */
 let boardAdjustRaf = null;
 function scheduleAdjustBoard(){
@@ -1553,29 +1605,34 @@ function adjustBoardScale(){
   const scroll = D.boardScroll;
   if (!chain || !scroll) return;
   const tiles = chain.querySelectorAll('.tile');
-  if (tiles.length === 0){ chain.style.removeProperty('--board-ts'); return; }
-  const maxTs = getCSSVar('--board-max-ts', 44);
-  const minTs = getCSSVar('--board-min-ts', 14);
-  const availW = scroll.clientWidth - 48;
-  const availH = scroll.clientHeight - 24;
-  if (availW <= 0 || availH <= 0) return;
-  chain.style.setProperty('--board-ts', maxTs + 'px');
-  void chain.offsetWidth;
-  let w = chain.getBoundingClientRect().width;
-  let h = chain.getBoundingClientRect().height;
-  if (w <= availW && h <= availH) return;
-  const ratioW = availW / w;
-  const ratioH = h > 0 ? availH / h : 1;
-  const ratio = Math.min(ratioW, ratioH, 1);
-  let newTs = Math.max(minTs, Math.floor(maxTs * ratio));
-  chain.style.setProperty('--board-ts', newTs + 'px');
-  void chain.offsetWidth;
-  w = chain.getBoundingClientRect().width;
-  if (w > availW){
-    const r2 = availW / w;
-    newTs = Math.max(minTs, Math.floor(newTs * r2));
-    chain.style.setProperty('--board-ts', newTs + 'px');
+  if (tiles.length === 0){
+    chain.style.removeProperty('--board-ts');
+    chain.style.width = '';
+    chain.style.height = '';
+    return;
   }
+  const maxTs = getCSSVar('--board-max-ts', 46);
+  const minTs = getCSSVar('--board-min-ts', 12);
+  const availW = scroll.clientWidth - 16;
+  const availH = scroll.clientHeight - 16;
+  if (availW <= 0 || availH <= 0) return;
+
+  // Binary search for the largest tile size that fits both width AND height
+  let lo = minTs, hi = maxTs, best = minTs;
+  while (lo <= hi){
+    const mid = Math.floor((lo + hi) / 2);
+    chain.style.setProperty('--board-ts', mid + 'px');
+    void chain.offsetWidth;
+    const w = chain.getBoundingClientRect().width;
+    const h = chain.getBoundingClientRect().height;
+    if (w <= availW && h <= availH){
+      best = mid;
+      lo = mid + 1;
+    } else {
+      hi = mid - 1;
+    }
+  }
+  chain.style.setProperty('--board-ts', best + 'px');
 }
 
 /* ============================================================
@@ -1592,25 +1649,29 @@ function render(){
   scheduleAdjustBoard();
 }
 
+function isTeamsGame(){
+  if (!S || S.numPlayers !== 4) return false;
+  const t0 = S.players[0].team;
+  const t1 = S.players[1].team;
+  const t2 = S.players[2].team;
+  const t3 = S.players[3].team;
+  return (t0 === t2 && t1 === t3 && t0 !== t1);
+}
+
 function renderTop(){
   const top = D.gameTop;
   top.innerHTML = '';
-  // Visual order: [opp1, teammate, opp2] — so teammate sits opposite (in middle)
-  // Determine seat order to display
   const seatsInOrder = [];
   const meSeat = viewerSeat;
   if (S.numPlayers === 4 && isTeamsGame()){
-    // Find teammate
     let teammateSeat = -1;
     for (let i = 0; i < S.numPlayers; i++){
       if (i !== meSeat && Engine.isTeammate(S, i, meSeat)){ teammateSeat = i; break; }
     }
-    // Opponents (the other two)
     const oppSeats = [];
     for (let i = 0; i < S.numPlayers; i++){
       if (i !== meSeat && i !== teammateSeat) oppSeats.push(i);
     }
-    // Visual order: opp1, teammate, opp2 -> teammate opposite
     if (oppSeats.length === 2 && teammateSeat >= 0){
       seatsInOrder.push(oppSeats[0], teammateSeat, oppSeats[1]);
     } else {
@@ -1627,13 +1688,11 @@ function renderTop(){
     card.dataset.seat = String(i);
     if (S.turn === i && S.phase === 'play') card.classList.add('active');
     if (isTeamsGame() && Engine.isTeammate(S, i, viewerSeat)) card.classList.add('teammate');
-
     const head = el('div', 'opp-head');
     const av = el('div', 'avatar', p.name.charAt(0).toUpperCase());
     const nm = el('span', 'opp-name', p.name);
     const ct = el('span', 'opp-count', String(p.hand.length));
     head.appendChild(av); head.appendChild(nm); head.appendChild(ct);
-
     const tiles = el('div', 'opp-tiles');
     const shown = Math.min(p.hand.length, 7);
     for (let j = 0; j < shown; j++) tiles.appendChild(makeTile(0, 0, { back: true }));
@@ -1646,16 +1705,6 @@ function renderTop(){
     card.appendChild(tiles);
     top.appendChild(card);
   }
-}
-
-function isTeamsGame(){
-  if (!S || S.numPlayers !== 4) return false;
-  // Detect if teams are balanced (2 vs 2)
-  const t0 = S.players[0].team;
-  const t1 = S.players[1].team;
-  const t2 = S.players[2].team;
-  const t3 = S.players[3].team;
-  return (t0 === t2 && t1 === t3 && t0 !== t1);
 }
 
 function renderChain(){
@@ -1768,7 +1817,6 @@ function sendComment(seat, key){
   showCommentBubble(seat, key);
 }
 function broadcastComment(seat, key){
-  // Send comment to all connected clients
   Net.send({ t:'comment', seat: seat, key: key });
 }
 function showCommentBubble(seat, key){
@@ -1796,7 +1844,6 @@ function maybeBotComment(seat){
   setTimeout(function(){
     const key = COMMENT_KEYS[rnd(COMMENT_KEYS.length)];
     showCommentBubble(seat, key);
-    // Broadcast bot comments so online players see them too
     if (mode === 'online' && isHost) broadcastComment(seat, key);
   }, 500 + rnd(600));
 }
@@ -1930,7 +1977,6 @@ function humanPlay(tileIdx, side){
   if (!S || S.phase !== 'play') return;
   if (S.turn !== viewerSeat){ toast(t('notYourTurn'), 'err'); return; }
   if (pendingPlay) return;
-
   if (commentsEnabled && !privacyBlocking){
     pendingPlay = { tileIdx: tileIdx, side: side, seat: viewerSeat };
     const node = $('.hand .tile[data-idx="' + tileIdx + '"]');
@@ -1965,7 +2011,6 @@ function confirmPendingPlay(commentKey){
   hideCommentBar();
   applyHumanPlay(p.tileIdx, p.side);
   if (commentKey){
-    // Any real player — host or guest — can send a comment
     if (mode === 'online'){
       if (isHost) broadcastComment(p.seat, commentKey);
       else Net.send({ t:'comment', from: PLAYER_ID, seat: p.seat, key: commentKey });
@@ -2037,21 +2082,35 @@ D.btnPrivacyReady.addEventListener('click', function(){
 });
 
 /* ============================================================
-   §17  DRAG & DROP
+   §17  DRAG & DROP — only playable tiles are draggable
    ============================================================ */
-function computeDropSide(clientX){
+
+/* Determine which side of the chain the pointer is over.
+   Works with wrapping/snake layout by comparing to tile positions. */
+function computeDropSide(clientX, clientY){
   const tiles = D.chain.querySelectorAll('.tile');
   if (tiles.length === 0) return 'right';
-  const firstRect = tiles[0].getBoundingClientRect();
-  const lastRect  = tiles[tiles.length - 1].getBoundingClientRect();
-  const midX = (firstRect.left + lastRect.right) / 2;
-  return (clientX < midX) ? 'left' : 'right';
+  if (tiles.length === 1){
+    const r = tiles[0].getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    return (clientX < cx) ? 'left' : 'right';
+  }
+  const first = tiles[0].getBoundingClientRect();
+  const last  = tiles[tiles.length - 1].getBoundingClientRect();
+  const cxF = first.left + first.width / 2;
+  const cyF = first.top + first.height / 2;
+  const cxL = last.left + last.width / 2;
+  const cyL = last.top + last.height / 2;
+  const dF = Math.hypot(clientX - cxF, clientY - cyF);
+  const dL = Math.hypot(clientX - cxL, clientY - cyL);
+  return (dF < dL) ? 'left' : 'right';
 }
+
 function clearDropTargets(){
   const old = D.chain.querySelectorAll('.tile.drop-target');
   for (let i = 0; i < old.length; i++) old[i].classList.remove('drop-target');
 }
-function updateDropTarget(clientX){
+function updateDropTarget(clientX, clientY){
   clearDropTargets();
   if (!drag) return;
   const tiles = D.chain.querySelectorAll('.tile');
@@ -2062,7 +2121,7 @@ function updateDropTarget(clientX){
     tiles[idx].classList.add('drop-target');
     return;
   }
-  const side = computeDropSide(clientX);
+  const side = computeDropSide(clientX, clientY);
   if (drag.sides.indexOf(side) === -1){
     const fallback = drag.sides[0];
     const idx = (fallback === 'left') ? 0 : tiles.length - 1;
@@ -2077,18 +2136,20 @@ function updateGhostHint(){
   let color = '#37c978';
   if (drag.sides.length === 0) color = '#e05555';
   else if (drag.sides.length === 2){
-    const side = computeDropSide(drag.x);
+    const side = computeDropSide(drag.x, drag.y);
     color = (drag.sides.indexOf(side) !== -1) ? '#37c978' : '#e05555';
   }
   drag.ghost.style.boxShadow =
     '0 18px 40px rgba(0,0,0,.6), 0 0 0 3px ' + color + ', 0 0 24px ' + color + '55';
 }
+
 function onHandPointerDown(e){
   if (!S || S.phase !== 'play') return;
   if (S.turn !== viewerSeat) return;
   if (privacyBlocking) return;
   if (pendingPlay) return;
   if (mode === 'online' && !isHost && !isMyTurnOnline()) return;
+
   const tileEl = e.target.closest ? e.target.closest('.hand .tile') : null;
   if (!tileEl) return;
   const idx = parseInt(tileEl.dataset.idx, 10);
@@ -2096,7 +2157,17 @@ function onHandPointerDown(e){
   const me = S.players[viewerSeat];
   const tile = me.hand[idx];
   if (!tile) return;
+
+  // ===== Only playable tiles are draggable =====
   const sides = Engine.legalSides(S, tile);
+  if (sides.length === 0){
+    toast(t('notPlayable'), 'err');
+    tileEl.classList.remove('shake');
+    void tileEl.offsetWidth;
+    tileEl.classList.add('shake');
+    return;
+  }
+
   e.preventDefault();
   drag = {
     idx: idx, el: tileEl, tile: tile, sides: sides,
@@ -2138,7 +2209,7 @@ function onHandPointerMove(e){
     e.preventDefault();
     moveGhost();
     updateGhostHint();
-    updateDropTarget(e.clientX);
+    updateDropTarget(e.clientX, e.clientY);
   }
 }
 function onHandPointerUp(e){
@@ -2155,7 +2226,7 @@ function onHandPointerUp(e){
     let side;
     if (d.sides.length === 1) side = d.sides[0];
     else {
-      side = computeDropSide(e.clientX);
+      side = computeDropSide(e.clientX, e.clientY);
       if (d.sides.indexOf(side) === -1) side = d.sides[0];
     }
     humanPlay(d.idx, side);
@@ -2270,7 +2341,7 @@ function startBotGameWithSetup(modeKey, humansCount, botsCount){
 }
 
 /* ============================================================
-   §20  ONLINE — CREATE ROOM FLOW
+   §20  ONLINE — CREATE
    ============================================================ */
 function showCreateRoomDialog(){
   const html =
@@ -2372,7 +2443,6 @@ function handleHostMessage(msg, fromId){
   } else if (msg.t === 'action'){
     handleRemoteAction(msg, fromId);
   } else if (msg.t === 'comment'){
-    // ANY real player can send a comment — relay it to everyone
     if (msg.seat != null && msg.key){
       broadcastComment(msg.seat, msg.key);
       showCommentBubble(msg.seat, msg.key);
@@ -2407,12 +2477,7 @@ function handleHello(msg, fromId){
     return;
   }
 
-  /* =========================================================
-     TEAM-AWARE SEAT ASSIGNMENT
-     In 2v2 mode, prefer filling Team A first (seats 0 & 2)
-     so the host's teammate sits opposite (seat 2), not beside.
-     Join order: 0 (host) → 2 (teammate) → 1 → 3
-     ========================================================= */
+  // TEAM-AWARE SEAT ASSIGNMENT: prefer [0, 2, 1, 3] so teammate sits opposite
   const used = {};
   for (let i = 0; i < lobby.members.length; i++) used[lobby.members[i].seat] = true;
   let seat = -1;
@@ -2428,7 +2493,6 @@ function handleHello(msg, fromId){
   }
   if (seat < 0){ Net.sendTo(fromId, { t: 'full' }); return; }
 
-  // Default team: even seat -> Team A (0), odd seat -> Team B (1)
   const team = (lobby.teamsMode) ? (seat % 2) : 0;
 
   lobby.members.push({
@@ -2449,7 +2513,7 @@ function broadcastLobby(){
 }
 
 /* ============================================================
-   §21  ONLINE — JOIN ROOM FLOW
+   §21  ONLINE — JOIN
    ============================================================ */
 function joinRoom(code){
   code = String(code || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -2484,6 +2548,8 @@ function joinRoom(code){
       } else if (err && err.type === 'lib-missing'){
         toast('PeerJS failed to load.', 'err');
         leaveToMenu();
+      } else if (err && err.type === 'network'){
+        toast(t('connectingFailed'), 'err');
       }
     },
     onClose: function(){
@@ -2499,7 +2565,7 @@ function joinRoom(code){
       toast(t('roomNotFound'), 'err');
       leaveToMenu();
     }
-  }, 7000);
+  }, 9000);
   saveSession();
 }
 
@@ -2538,9 +2604,8 @@ function handleClientMessage(msg){
     toast(t('roomFull'), 'err');
     leaveToMenu();
   } else if (msg.t === 'comment'){
-    // Comment from anyone (host or another guest)
     if (msg.seat != null && msg.key) showCommentBubble(msg.seat, msg.key);
-  } else if (msg.t === 'pong'){ /* heartbeat ok */ }
+  } else if (msg.t === 'pong'){}
 }
 
 /* ============================================================
@@ -2574,7 +2639,6 @@ function renderLobby(){
         if (m.team === 0) aList.appendChild(item);
         else bList.appendChild(item);
       } else {
-        // Empty seats: seat parity decides team
         if (i % 2 === 0) aList.appendChild(item);
         else bList.appendChild(item);
       }
@@ -2622,7 +2686,7 @@ function makeLobbyItem(m, seat, teamsMode){
 }
 
 /* ============================================================
-   §23  START ONLINE GAME
+   §23  START ONLINE
    ============================================================ */
 function startOnlineGame(){
   if (!isHost || !lobby) return;
@@ -2864,12 +2928,19 @@ window.addEventListener('beforeunload', function(){
 function boot(){
   applyLang();
   showScreen('menu');
+  // Delay first board layout until DOM is ready
   window.addEventListener('resize', function(){
     if (S){ render(); scheduleAdjustBoard(); }
   });
   window.addEventListener('orientationchange', function(){
-    setTimeout(function(){ if (S) scheduleAdjustBoard(); }, 260);
+    setTimeout(function(){ if (S) scheduleAdjustBoard(); }, 300);
   });
+  // Also handle visual viewport (mobile keyboard etc.)
+  if (window.visualViewport){
+    window.visualViewport.addEventListener('resize', function(){
+      if (S) scheduleAdjustBoard();
+    });
+  }
 }
 boot();
 
