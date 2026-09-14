@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
-<meta name="theme-color" content="#06301f"/>
-<title>🁫 دومينو أونلاين</title>
+<meta name="theme-color" content="#0a2a1f"/>
+<title>Domino · دومينو</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;margin:0;padding:0;overflow:hidden;}
@@ -19,16 +19,24 @@ body{
 .hidden{display:none!important;}
 button{font-family:inherit;cursor:pointer;border:0;outline:0;}
 
-/* ============ MENU ============ */
+.langPicker{position:absolute;top:10px;right:10px;display:flex;gap:4px;z-index:100;}
+.langPicker button{
+  padding:5px 9px;border-radius:8px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);color:#dfe9f5;font-size:11.5px;font-weight:700;
+  transition:.15s;
+}
+.langPicker button.on{background:#39d68b;color:#04311f;border-color:#39d68b;}
+.langPicker button:hover{background:rgba(255,255,255,.18);}
+
 #menu{
-  align-items:center;justify-content:flex-start;gap:12px;padding:18px 14px 30px;
+  align-items:center;justify-content:flex-start;gap:12px;padding:56px 14px 30px;
   background:radial-gradient(circle at 50% 15%,#12503a 0%,#07231a 45%,#04140d 100%);
   overflow-y:auto;
 }
-.logo{font-size:clamp(26px,7vw,42px);font-weight:800;letter-spacing:1px;
+.logo{font-size:clamp(24px,6.5vw,38px);font-weight:800;letter-spacing:1px;
   background:linear-gradient(180deg,#fff2cf,#e0a84e);
   -webkit-background-clip:text;background-clip:text;color:transparent;
-  text-shadow:0 6px 24px rgba(224,168,78,.25);margin-top:8px;}
+  text-shadow:0 6px 24px rgba(224,168,78,.25);margin-top:4px;text-align:center;}
 .sub{opacity:.65;font-size:13px;margin:-6px 0 10px;text-align:center;max-width:420px;line-height:1.7;}
 .card{width:min(460px,94vw);background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);
   border-radius:18px;padding:14px;backdrop-filter:blur(8px);box-shadow:0 18px 44px rgba(0,0,0,.45);}
@@ -47,16 +55,19 @@ button{font-family:inherit;cursor:pointer;border:0;outline:0;}
 .big:active{transform:translateY(3px);box-shadow:0 3px 0 #06432c;}
 .big.alt{background:linear-gradient(180deg,#3b6ea5,#22456b);box-shadow:0 6px 0 #16304a;}
 .big.alt:active{box-shadow:0 3px 0 #16304a;}
-.row{display:flex;gap:8px;margin-top:10px;}
-.row input{flex:1;min-width:0;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);
+.big.danger{background:linear-gradient(180deg,#a83a3a,#6b1e1e);box-shadow:0 6px 0 #3d0e0e;}
+.big.danger:active{box-shadow:0 3px 0 #3d0e0e;}
+.row{display:flex;gap:8px;margin-top:10px;align-items:center;}
+.row label{font-size:13px;opacity:.75;white-space:nowrap;}
+.row input[type=text],.row input[type=number]{flex:1;min-width:0;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);
   background:rgba(0,0,0,.3);color:#fff;font-family:inherit;font-size:15px;text-align:center;
-  letter-spacing:3px;font-weight:700;outline:0;}
-.row input:focus{border-color:#39d68b;}
+  letter-spacing:2px;font-weight:700;outline:0;}
+.row input[type=text]:focus,.row input[type=number]:focus{border-color:#39d68b;}
 .row input::placeholder{letter-spacing:0;font-weight:400;font-size:13px;}
+.row input[type=number]{max-width:80px;letter-spacing:0;}
 .hint{font-size:12px;opacity:.55;text-align:center;margin-top:8px;line-height:1.7;}
 
-/* ============ LOBBY ============ */
-#lobby{align-items:center;justify-content:center;gap:14px;padding:20px;
+#lobby{align-items:center;justify-content:center;gap:14px;padding:56px 20px 20px;
   background:radial-gradient(circle at 50% 20%,#12503a,#04140d 75%);}
 .codebox{display:flex;align-items:center;gap:10px;font-size:15px;background:rgba(0,0,0,.35);
   padding:10px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.12);}
@@ -64,14 +75,19 @@ button{font-family:inherit;cursor:pointer;border:0;outline:0;}
 .codebox button{background:rgba(255,255,255,.12);color:#fff;padding:7px 12px;border-radius:9px;font-size:12px;}
 #lobbyPlayers{display:flex;flex-direction:column;gap:7px;width:min(420px,94vw);}
 .lseat{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:11px 13px;font-size:14px;}
+  border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:11px 13px;font-size:14px;
+  transition:.25s;}
 .lseat.me{border-color:#39d68b;background:rgba(57,214,139,.12);}
+.lseat.host{border-color:#ffd166;box-shadow:0 0 0 1px rgba(255,209,102,.3);}
+.lseat.waiting{opacity:.55;animation:breathe 1.8s ease-in-out infinite;}
+@keyframes breathe{0%,100%{opacity:.45}50%{opacity:.85}}
+.lseat.waiting .lnum{background:rgba(255,209,102,.3);}
 .lnum{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.12);
   display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
 .lname{flex:1;}
 .ltag{font-size:11px;background:rgba(255,255,255,.13);padding:3px 8px;border-radius:20px;opacity:.8;}
+.ltag.host{background:rgba(255,209,102,.3);color:#ffe8b0;opacity:1;}
 
-/* ============ GAME ============ */
 #game{background:radial-gradient(ellipse at 50% 35%,#0f6b45 0%,#083c27 55%,#04200f 100%);}
 #topbar{display:flex;align-items:center;gap:8px;padding:7px 10px;
   background:rgba(0,0,0,.3);backdrop-filter:blur(8px);font-size:13px;
@@ -98,11 +114,9 @@ button{font-family:inherit;cursor:pointer;border:0;outline:0;}
 .mtile{width:6px;height:14px;border-radius:2px;
   background:linear-gradient(160deg,#efe6d0,#b3a78a);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18);}
 
-/* ============ BOARD ============ */
 #boardWrap{flex:1;position:relative;display:flex;align-items:center;justify-content:center;
   overflow:hidden;padding:6px 52px;min-height:0;}
-#board{--cell:var(--bcell,28px);display:flex;flex-wrap:wrap;gap:4px;align-items:center;
-  justify-content:center;align-content:center;direction:ltr;max-width:100%;}
+#board{position:relative;direction:ltr;transform-origin:center center;}
 .board-empty{opacity:.35;font-size:14px;letter-spacing:1px;direction:rtl;}
 
 .dz{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:62%;border-radius:14px;
@@ -116,21 +130,21 @@ button{font-family:inherit;cursor:pointer;border:0;outline:0;}
 .dz.clickable{pointer-events:auto;opacity:.9;border-color:#7ef0b0;background:rgba(126,240,176,.16);}
 .dz.clickable:active{background:rgba(126,240,176,.4);}
 
-/* ============ TILES ============ */
 .tile{
-  --c:30px;position:relative;display:flex;flex-direction:row;
-  width:calc(var(--c)*2);height:var(--c);
+  --c:30px;position:relative;display:flex;
   background:linear-gradient(158deg,#fffdf6 0%,#f3ecda 45%,#ded2b6 100%);
   border-radius:calc(var(--c)*0.17);
   box-shadow:0 2px 0 rgba(0,0,0,.3),0 4px 10px rgba(0,0,0,.35),inset 0 1px 0 #fff;
   padding:calc(var(--c)*0.075);flex:0 0 auto;
   transition:transform .16s ease,box-shadow .16s ease;
+  overflow:hidden;
 }
-.tile.vert{flex-direction:column;width:var(--c);height:calc(var(--c)*2);}
+.tile.horiz{flex-direction:row;}
+.tile.vert{flex-direction:column;}
 .tile .half{flex:1 1 0;min-width:0;min-height:0;display:grid;
   grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:5%;}
-.tile .half+.half{border-left:1px solid rgba(70,52,25,.32);}
-.tile.vert .half+.half{border-left:0;border-top:1px solid rgba(70,52,25,.32);}
+.tile.horiz .half+.half{border-left:1px solid rgba(70,52,25,.32);}
+.tile.vert .half+.half{border-top:1px solid rgba(70,52,25,.32);}
 .tile .half i{width:62%;height:62%;border-radius:50%;place-self:center;
   background:radial-gradient(circle at 34% 28%,#575757,#0d0d0d 72%);
   box-shadow:inset 0 -1px 1px rgba(255,255,255,.14);}
@@ -139,11 +153,10 @@ button{font-family:inherit;cursor:pointer;border:0;outline:0;}
 .ghost{position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%) scale(1.12);
   opacity:.92;filter:drop-shadow(0 12px 18px rgba(0,0,0,.6));}
 
-/* ============ HAND ============ */
 #handWrap{padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));
   background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.42));
   border-top:1px solid rgba(255,255,255,.07);}
-#hand{--cell:26px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:flex-end;
+#hand{--c:26px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:flex-end;
   min-height:56px;direction:rtl;}
 #hand .tile{cursor:grab;touch-action:none;}
 #hand .tile.playable{box-shadow:0 0 0 2px #7ef0b0,0 5px 12px rgba(0,0,0,.45);}
@@ -151,7 +164,6 @@ button{font-family:inherit;cursor:pointer;border:0;outline:0;}
 #hand .tile.dragging{opacity:.25;}
 #hand .tile:active{cursor:grabbing;}
 
-/* ============ OVERLAY ============ */
 #overlay{position:absolute;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(5px);
   display:flex;align-items:center;justify-content:center;z-index:60;animation:fade .25s;}
 @keyframes fade{from{opacity:0}to{opacity:1}}
@@ -168,6 +180,13 @@ button{font-family:inherit;cursor:pointer;border:0;outline:0;}
   opacity:0;transition:.3s;pointer-events:none;z-index:70;white-space:nowrap;max-width:90vw;
   overflow:hidden;text-overflow:ellipsis;}
 #toast.show{opacity:1;}
+
+#connBadge{position:absolute;top:56px;left:10px;font-size:11px;
+  padding:3px 9px;border-radius:20px;background:rgba(0,0,0,.5);z-index:80;
+  display:flex;align-items:center;gap:5px;opacity:0;transition:.3s;}
+#connBadge.show{opacity:1;}
+#connBadge .dot{width:7px;height:7px;border-radius:50%;background:#7ef0b0;}
+#connBadge.stale .dot{background:#ffb84a;animation:pulse 1s infinite;}
 
 @media (max-width:400px){
   .modes{grid-template-columns:1fr;}
@@ -186,65 +205,73 @@ button{font-family:inherit;cursor:pointer;border:0;outline:0;}
 <body>
 <div id="app">
 
-  <!-- ================= MENU ================= -->
   <div id="menu" class="screen">
-    <div class="logo">🁫 دومينو أونلاين</div>
-    <div class="sub">لعب مباشر ضد الروبوتات، ولا أونلاين مع صحابك بكود دعوة. جرّب الحجر بالفأرة ولا بالصبع.</div>
+    <div class="langPicker" id="langPicker1"></div>
+    <div class="logo" data-i18n="appName">دومينو أونلاين</div>
+    <div class="sub" data-i18n="tagline"></div>
 
     <div class="card">
-      <h3>1 · اختر النمط</h3>
+      <h3 data-i18n="modeTitle"></h3>
       <div class="modes" id="modeList">
-        <button class="modeBtn on" data-mode="1v1">👤 1 ضد 1</button>
-        <button class="modeBtn" data-mode="2v2">👥 2 ضد 2</button>
-        <button class="modeBtn" data-mode="1v3">🤖 1 ضد 3 روبوتات</button>
-        <button class="modeBtn" data-mode="3v1">🤖 3 ضد 1 روبوت</button>
-        <button class="modeBtn" data-mode="4p">🎯 4 لاعبين (كل واحد بوحدو)</button>
-        <button class="modeBtn" data-mode="3p">🎲 3 لاعبين</button>
+        <button class="modeBtn on" data-mode="1v1" data-i18n="mode1v1"></button>
+        <button class="modeBtn" data-mode="2v2" data-i18n="mode2v2"></button>
+        <button class="modeBtn" data-mode="1v3" data-i18n="mode1v3"></button>
+        <button class="modeBtn" data-mode="3v1" data-i18n="mode3v1"></button>
+        <button class="modeBtn" data-mode="4p" data-i18n="mode4p"></button>
+        <button class="modeBtn" data-mode="3p" data-i18n="mode3p"></button>
       </div>
     </div>
 
     <div class="card">
-      <h3>2 · لعب أونلاين</h3>
+      <h3 data-i18n="onlineTitle"></h3>
       <div class="row">
-        <input id="inpName" maxlength="10" placeholder="سميتك" value="لاعب"/>
+        <input id="inpName" type="text" maxlength="10" data-i18n-ph="yourName"/>
       </div>
-      <button class="big" id="btnCreate">➕ إنشاء غرفة (كود دعوة)</button>
       <div class="row">
-        <input id="inpCode" maxlength="6" placeholder="كود الغرفة"/>
-        <button class="big alt" id="btnJoin" style="width:auto;padding:13px 20px;margin:0;">دخول</button>
+        <label data-i18n="humansLabel"></label>
+        <input id="inpHumans" type="number" min="1" max="4" value="2"/>
+        <span class="hint" style="margin:0;" data-i18n="humansHint"></span>
       </div>
-      <div class="hint">الغرفة تخدم بين التابات/النوافذ ديال نفس المتصفح (BroadcastChannel).<br>عيّط لصاحبك، عطيه الكود، وهو يدخل.</div>
+      <button class="big" id="btnCreate" data-i18n="createRoom"></button>
+      <div class="row">
+        <input id="inpCode" type="text" maxlength="6" data-i18n-ph="roomCode" style="letter-spacing:6px;text-transform:uppercase;"/>
+        <button class="big alt" id="btnJoin" style="width:auto;padding:13px 20px;margin:0;" data-i18n="joinBtn"></button>
+      </div>
+      <div class="hint" data-i18n="menuHint"></div>
     </div>
 
     <div class="card">
-      <h3>3 · لعب فوري</h3>
-      <button class="big alt" id="btnSolo">▶ ابدا دابا ضد الروبوتات</button>
+      <h3 data-i18n="quickTitle"></h3>
+      <button class="big alt" id="btnSolo" data-i18n="quickPlay"></button>
     </div>
   </div>
 
-  <!-- ================= LOBBY ================= -->
   <div id="lobby" class="screen hidden">
-    <div class="codebox">كود الدعوة: <b id="lobbyCode">------</b>
-      <button id="btnCopy">نسخ</button>
+    <div class="langPicker" id="langPicker2"></div>
+    <div class="codebox">
+      <span data-i18n="roomCodeLabel"></span>
+      <b id="lobbyCode">------</b>
+      <button id="btnCopy" data-i18n="copyBtn"></button>
     </div>
     <div id="lobbyPlayers"></div>
-    <button class="big" id="btnStart" style="width:min(420px,94vw);">🚀 بدء اللعب</button>
-    <button class="big alt" id="btnLeave" style="width:min(420px,94vw);">← رجوع</button>
-    <div class="hint">الكراسي الخاوية كيتعمرو بالروبوتات أوتوماتيكياً.</div>
+    <button class="big" id="btnStart" style="width:min(420px,94vw);" data-i18n="startBtn"></button>
+    <button class="big danger" id="btnLeave" style="width:min(420px,94vw);" data-i18n="leaveBtn"></button>
+    <div class="hint" data-i18n="lobbyHint"></div>
   </div>
 
-  <!-- ================= GAME ================= -->
   <div id="game" class="screen hidden">
+    <div class="langPicker" id="langPicker3"></div>
     <div id="topbar">
       <div id="turnInfo"></div>
       <div id="myScore">0</div>
       <div class="tools">
-        <button id="btnZoomIn" title="تكبير">＋</button>
-        <button id="btnZoomOut" title="تصغير">－</button>
-        <button id="btnRot" title="دوران 90°">↻</button>
-        <button id="btnMenu" title="القائمة">☰</button>
+        <button id="btnZoomIn" title="+">＋</button>
+        <button id="btnZoomOut" title="−">－</button>
+        <button id="btnRot" title="↻">↻</button>
+        <button id="btnMenu" title="☰">☰</button>
       </div>
     </div>
+    <div id="connBadge"><span class="dot"></span><span id="connText"></span></div>
     <div id="opponents"></div>
     <div id="boardWrap">
       <div id="board"></div>
@@ -265,130 +292,539 @@ button{font-family:inherit;cursor:pointer;border:0;outline:0;}
 </div>
 
 <script>
-"use strict";
-/* =========================================================
-   🁫 DOMINO ONLINE — single file, no dependencies
-   ========================================================= */
+'use strict';
 
 const $  = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
-const rnd = n => Math.floor(Math.random()*n);
-const uid = () => Math.random().toString(36).slice(2,10);
-const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const pipsOf = hand => hand.reduce((s,t)=>s+t.a+t.b,0);
+const rnd = n => Math.floor(Math.random() * n);
+const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-3);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g,
+  c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-function shuffle(a){for(let i=a.length-1;i>0;i--){const j=rnd(i+1);const t=a[i];a[i]=a[j];a[j]=t;}return a;}
-function genCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<6;i++)s+=c[rnd(c.length)];return s;}
+function shuffle(a){
+  for(let i = a.length - 1; i > 0; i--){
+    const j = rnd(i + 1); const t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function genCode(){
+  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let s = '';
+  for(let i = 0; i < 6; i++) s += c[rnd(c.length)];
+  return s;
+}
 
-const PIPS = {
-  0:[], 1:[[2,2]],
-  2:[[1,1],[3,3]],
-  3:[[1,1],[2,2],[3,3]],
-  4:[[1,1],[1,3],[3,1],[3,3]],
-  5:[[1,1],[1,3],[2,2],[3,1],[3,3]],
-  6:[[1,1],[1,2],[1,3],[3,1],[3,2],[3,3]]
+/* ===== الترجمة ===== */
+const I18N = {
+  ar: {
+    dir:'rtl', appName:'دومينو أونلاين',
+    tagline:'العب ضد الحاسوب أو مع أصدقائك عبر رمز دعوة',
+    modeTitle:'نمط اللعب',
+    mode1v1:'لاعب ضد لاعب', mode2v2:'فريقان (2×2)',
+    mode1v3:'لاعب ضد 3 روبوتات', mode3v1:'ثلاثة لاعبين ضد روبوت',
+    mode4p:'أربعة لاعبين (فردي)', mode3p:'ثلاثة لاعبين (فردي)',
+    onlineTitle:'اللعب الجماعي',
+    yourName:'اسمك هنا', createRoom:'إنشاء غرفة جديدة',
+    roomCode:'رمز الدعوة', joinBtn:'دخول',
+    humansLabel:'لاعبون حقيقيون:',
+    humansHint:'البقية روبوتات',
+    menuHint:'الغرفة تعمل بين تبويبات المتصفح نفسه. شارك الرمز مع صديق.',
+    quickTitle:'لعب سريع',
+    quickPlay:'ابدأ الآن ضد الحاسوب',
+    roomCodeLabel:'رمز الغرفة:',
+    copyBtn:'نسخ', startBtn:'بدء اللعب', leaveBtn:'خروج',
+    lobbyHint:'المقاعد الفارغة المخصّصة للبشر تنتظر… وعند البدء تُملأ بالروبوتات.',
+    emptySeat:'مقعد فارغ', botTag:'روبوت', onlineTag:'متصل', youTag:'أنت', hostTag:'المضيف',
+    waitingTag:'في الانتظار…',
+    myTurn:'دورك', hisTurn:'دور',
+    roundEnded:'انتهت الجولة…', gameEnded:'انتهت اللعبة',
+    yourScore:'أنت', playerName:'اللاعب',
+    wonGame:'فاز باللعبة', wonRound:'فاز بالجولة',
+    blockedRound:'الجولة سُدّت — ', plusPoints:'نقطة',
+    youAreHost:'أنت الآن المضيف',
+    roomCreated:'تم إنشاء الغرفة',
+    roomNotFound:'لم يُعثر على الغرفة',
+    invalidCode:'رمز غير صحيح',
+    roomFull:'الغرفة ممتلئة',
+    copied:'تم نسخ الرمز',
+    connectionStale:'في انتظار المضيف…', connectionOk:'متصل',
+    confirmLeave:'هل تريد الخروج إلى القائمة؟',
+    points:'نقطة'
+  },
+  fr: {
+    dir:'ltr', appName:'Domino en ligne',
+    tagline:'Jouez contre l\'ordinateur ou avec des amis via un code',
+    modeTitle:'Mode de jeu',
+    mode1v1:'1 contre 1', mode2v2:'2 contre 2',
+    mode1v3:'1 contre 3 robots', mode3v1:'3 contre 1 robot',
+    mode4p:'4 joueurs (chacun)', mode3p:'3 joueurs (chacun)',
+    onlineTitle:'Multijoueur',
+    yourName:'Votre nom', createRoom:'Créer une salle',
+    roomCode:'Code d\'invitation', joinBtn:'Rejoindre',
+    humansLabel:'Joueurs réels :',
+    humansHint:'le reste en robots',
+    menuHint:'La salle fonctionne entre les onglets du même navigateur. Partagez le code.',
+    quickTitle:'Partie rapide',
+    quickPlay:'Démarrer contre l\'IA',
+    roomCodeLabel:'Code :',
+    copyBtn:'Copier', startBtn:'Démarrer', leaveBtn:'Quitter',
+    lobbyHint:'Les sièges humains vides attendent… au démarrage ils seront des robots.',
+    emptySeat:'Siège vide', botTag:'Robot', onlineTag:'En ligne', youTag:'Vous', hostTag:'Hôte',
+    waitingTag:'En attente…',
+    myTurn:'À vous', hisTurn:'Tour de',
+    roundEnded:'Manche terminée…', gameEnded:'Partie terminée',
+    yourScore:'Vous', playerName:'Joueur',
+    wonGame:'a gagné la partie', wonRound:'a gagné la manche',
+    blockedRound:'Manche bloquée — ', plusPoints:'pts',
+    youAreHost:'Vous êtes l\'hôte',
+    roomCreated:'Salle créée',
+    roomNotFound:'Salle introuvable',
+    invalidCode:'Code invalide',
+    roomFull:'Salle complète',
+    copied:'Code copié',
+    connectionStale:'En attente de l\'hôte…', connectionOk:'Connecté',
+    confirmLeave:'Retourner au menu ?',
+    points:'pts'
+  },
+  en: {
+    dir:'ltr', appName:'Domino Online',
+    tagline:'Play against the computer or with friends via invite code',
+    modeTitle:'Game mode',
+    mode1v1:'1 vs 1', mode2v2:'2 vs 2',
+    mode1v3:'1 vs 3 bots', mode3v1:'3 vs 1 bot',
+    mode4p:'4 players (solo)', mode3p:'3 players (solo)',
+    onlineTitle:'Multiplayer',
+    yourName:'Your name', createRoom:'Create room',
+    roomCode:'Invite code', joinBtn:'Join',
+    humansLabel:'Real players:',
+    humansHint:'rest are bots',
+    menuHint:'The room works between tabs of the same browser. Share the code.',
+    quickTitle:'Quick play',
+    quickPlay:'Start now vs AI',
+    roomCodeLabel:'Room code:',
+    copyBtn:'Copy', startBtn:'Start game', leaveBtn:'Leave',
+    lobbyHint:'Empty human seats are waiting… at start they become bots.',
+    emptySeat:'Empty seat', botTag:'Bot', onlineTag:'Online', youTag:'You', hostTag:'Host',
+    waitingTag:'Waiting…',
+    myTurn:'Your turn', hisTurn:'Turn of',
+    roundEnded:'Round ended…', gameEnded:'Game over',
+    yourScore:'You', playerName:'Player',
+    wonGame:'won the game', wonRound:'won the round',
+    blockedRound:'Round blocked — ', plusPoints:'pts',
+    youAreHost:'You are now the host',
+    roomCreated:'Room created',
+    roomNotFound:'Room not found',
+    invalidCode:'Invalid code',
+    roomFull:'Room is full',
+    copied:'Code copied',
+    connectionStale:'Waiting for host…', connectionOk:'Connected',
+    confirmLeave:'Return to menu?',
+    points:'pts'
+  }
 };
 
+let LANG = 'ar';
+function t(k){ return (I18N[LANG] && I18N[LANG][k]) || I18N.en[k] || k; }
+
+function applyStaticTranslations(){
+  $$('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
+  $$('[data-i18n-ph]').forEach(el => el.placeholder = t(el.dataset.i18nPh));
+}
+
+function setLang(lang){
+  if(!I18N[lang]) lang = 'en';
+  LANG = lang;
+  try{ localStorage.setItem('domino_lang', lang); }catch(e){}
+  document.documentElement.lang = lang;
+  document.documentElement.dir  = I18N[lang].dir;
+  applyStaticTranslations();
+  renderLangPickers();
+  if(currentScreen === 'lobby') renderLobby();
+  else if(currentScreen === 'game') render();
+  else renderMenuMode();
+}
+
+function renderLangPickers(){
+  const html =
+    '<button data-lang="ar"' + (LANG==='ar'?' class="on"':'') + '>العربية</button>' +
+    '<button data-lang="fr"' + (LANG==='fr'?' class="on"':'') + '>FR</button>' +
+    '<button data-lang="en"' + (LANG==='en'?' class="on"':'') + '>EN</button>';
+  ['#langPicker1','#langPicker2','#langPicker3'].forEach(sel => {
+    const el = $(sel);
+    if(!el) return;
+    el.innerHTML = html;
+    el.querySelectorAll('button').forEach(b =>
+      b.addEventListener('click', () => setLang(b.dataset.lang)));
+  });
+}
+
+/* ===== التخزين ===== */
+const KEYS = {
+  session:'domino_session_v3',
+  room: code => 'domino_room_v3_' + code
+};
+const store = {
+  getSession(){ try{ return JSON.parse(localStorage.getItem(KEYS.session) || 'null'); }catch(e){ return null; } },
+  setSession(s){ try{ localStorage.setItem(KEYS.session, JSON.stringify(s)); }catch(e){} },
+  clearSession(){ try{ localStorage.removeItem(KEYS.session); }catch(e){} },
+  getRoom(code){
+    if(!code) return null;
+    try{ return JSON.parse(localStorage.getItem(KEYS.room(code)) || 'null'); }catch(e){ return null; }
+  },
+  setRoom(room){
+    if(!room || !room.code) return;
+    try{ localStorage.setItem(KEYS.room(room.code), JSON.stringify(room)); }catch(e){}
+  }
+};
+
+/* ===== الشبكة ===== */
+let NET = null;
+function openNet(code){
+  closeNet();
+  try{
+    NET = new BroadcastChannel('domino_bc_v3_' + code);
+    NET.onmessage = e => onNetMessage(e.data);
+  }catch(e){ NET = null; }
+}
+function closeNet(){ if(NET){ try{ NET.close(); }catch(e){} NET = null; } }
+function broadcast(msg){ if(NET){ try{ NET.postMessage(msg); }catch(e){} } }
+
+/* ===== الحالة العامة ===== */
+let MY_CID = null;
+let MY_NAME = '';
+let MY_SEAT = 0;
+let ROOM = null;
+let IS_HOST = false;
+let ONLINE = false;
+let currentScreen = 'menu';
+let selectedMode = '1v1';
+
+let heartbeatTimer = null;
+let hostCheckTimer = null;
+let tickTimer = null;
+let helloInterval = null;
+
+const HEARTBEAT_MS = 1500;
+const HOST_STALE_MS = 5000;
+const TARGET_SCORE = 100;
+
+const App = { zoom: 1, selectedTile: null, drag: null };
+
+/* ===== الأنماط ===== */
 const MODES = {
-  '1v1': {players:2, teams:[[0],[1]],       label:'1 ضد 1'},
-  '2v2': {players:4, teams:[[0,2],[1,3]],   label:'2 ضد 2'},
-  '1v3': {players:4, teams:[[0],[1,2,3]],   label:'1 ضد 3'},
-  '3v1': {players:4, teams:[[0,1,2],[3]],   label:'3 ضد 1'},
-  '4p' : {players:4, teams:[[0],[1],[2],[3]], label:'4 لاعبين'},
-  '3p' : {players:3, teams:[[0],[1],[2]],   label:'3 لاعبين'}
+  '1v1': { players:2, teams:[[0],[1]] },
+  '2v2': { players:4, teams:[[0,2],[1,3]] },
+  '1v3': { players:4, teams:[[0],[1,2,3]] },
+  '3v1': { players:4, teams:[[0,1,2],[3]] },
+  '4p' : { players:4, teams:[[0],[1],[2],[3]] },
+  '3p' : { players:3, teams:[[0],[1],[2]] }
+};
+const BOT_NAMES = {
+  ar: ['آمين','كريم','ياسين','رشيد','سامي','نبيل'],
+  fr: ['Ami','Karim','Yassine','Rachid','Sami','Nabil'],
+  en: ['Ami','Karim','Yassine','Rachid','Sami','Nabil']
 };
 
-const BOT_NAMES = ['روبوت · أمين','روبوت · كريم','روبوت · ياسين','روبوت · رشيد'];
+/* ===== إقلاع ===== */
+function boot(){
+  let savedLang = null;
+  try{ savedLang = localStorage.getItem('domino_lang'); }catch(e){}
+  LANG = I18N[savedLang] ? savedLang : 'ar';
+  document.documentElement.lang = LANG;
+  document.documentElement.dir  = I18N[LANG].dir;
+  applyStaticTranslations();
+  renderLangPickers();
 
-/* =========================================================
-   APP STATE
-   ========================================================= */
-const App = {
-  G:null, isHost:false, mySeat:0, mode:'1v1', code:'', net:null, cid:uid(),
-  online:false, lobby:null, zoom:1, allVert:false, selectedTile:null,
-  drag:null, tickTimer:null, myName:'لاعب'
-};
+  try{
+    const n = localStorage.getItem('domino_name');
+    if(n) $('#inpName').value = n;
+  }catch(e){}
 
-/* =========================================================
-   TILE RENDERING
-   ========================================================= */
-function pipsHTML(n){
-  return PIPS[n].map(([r,c])=>`<i style="grid-row:${r};grid-column:${c}"></i>`).join('');
+  const s = store.getSession();
+  if(s && s.cid && s.code){
+    const room = store.getRoom(s.code);
+    if(room && room.players){
+      const me = room.players.find(p => p.cid === s.cid);
+      if(me){
+        MY_CID = s.cid;
+        MY_NAME = me.name || s.name || t('playerName');
+        MY_SEAT = me.seat;
+        ROOM = room;
+        ONLINE = true;
+        IS_HOST = (room.hostId === MY_CID);
+        openNet(room.code);
+        if(IS_HOST){
+          const fresh = store.getRoom(room.code);
+          if(fresh){ fresh.heartbeat = Date.now(); fresh.hostId = MY_CID; store.setRoom(fresh); ROOM = fresh; }
+          startHeartbeat(); startHostTick();
+        } else if(Date.now() - (room.heartbeat || 0) > HOST_STALE_MS){
+          claimHost();
+        }
+        startHostCheck(); startHello();
+        if(room.game && room.game.phase){
+          showScreen('game'); render();
+        } else {
+          showScreen('lobby'); renderLobby();
+        }
+        return;
+      }
+    }
+    store.clearSession();
+  }
+  showScreen('menu');
 }
-function tileEl(a,b,opts){
-  opts = opts || {};
-  const d = document.createElement('div');
-  d.className = 'tile' + (opts.vert?' vert':'') + (opts.cls?' '+opts.cls:'');
-  const h1 = document.createElement('div'); h1.className='half'; h1.innerHTML = pipsHTML(a);
-  const h2 = document.createElement('div'); h2.className='half'; h2.innerHTML = pipsHTML(b);
-  d.appendChild(h1); d.appendChild(h2);
-  return d;
+
+/* ===== إنشاء / انضمام ===== */
+function buildSeats(mode, humans, hostCid, hostName){
+  const n = MODES[mode].players;
+  const pool = BOT_NAMES[LANG] || BOT_NAMES.en;
+  humans = Math.max(1, Math.min(n, humans | 0));
+  const seats = [];
+  let b = 0;
+  for(let i = 0; i < n; i++){
+    if(i === 0){
+      seats.push({ seat:i, cid:hostCid, name:hostName, bot:false, humanSlot:true,
+                   connected:true, lastSeen:Date.now() });
+    } else if(i < humans){
+      seats.push({ seat:i, cid:null, name:'', bot:false, humanSlot:true,
+                   connected:false, lastSeen:0 });
+    } else {
+      seats.push({ seat:i, cid:null, name:pool[b++ % pool.length], bot:true, humanSlot:false,
+                   connected:false, lastSeen:0 });
+    }
+  }
+  return seats;
 }
 
-/* =========================================================
-   GAME LOGIC  (host authoritative)
-   ========================================================= */
+function createRoom(){
+  const name = ($('#inpName').value || '').trim().slice(0, 10) || t('playerName');
+  try{ localStorage.setItem('domino_name', name); }catch(e){}
+  MY_NAME = name;
+  MY_CID = uid();
+  const code = genCode();
+  const mode = selectedMode;
+  const n = MODES[mode].players;
+  let humans = parseInt($('#inpHumans').value, 10);
+  if(isNaN(humans)) humans = 2;
+  humans = Math.max(1, Math.min(n, humans));
+
+  const room = {
+    code: code,
+    createdAt: Date.now(),
+    hostId: MY_CID,
+    heartbeat: Date.now(),
+    mode: mode,
+    humansReserved: humans,
+    players: buildSeats(mode, humans, MY_CID, MY_NAME),
+    game: null,
+    version: 0
+  };
+  store.setRoom(room);
+  store.setSession({ cid:MY_CID, name:MY_NAME, code:code, seat:0 });
+
+  ROOM = room; MY_SEAT = 0; IS_HOST = true; ONLINE = true;
+  openNet(code);
+  startHeartbeat(); startHostCheck(); startHello();
+  showScreen('lobby'); renderLobby();
+  broadcast({ t:'sync' });
+  toast(t('roomCreated') + ' · ' + code);
+}
+
+function joinRoom(){
+  const raw = ($('#inpCode').value || '').trim().toUpperCase();
+  if(raw.length < 4){ toast(t('invalidCode')); return; }
+  const name = ($('#inpName').value || '').trim().slice(0, 10) || t('playerName');
+  try{ localStorage.setItem('domino_name', name); }catch(e){}
+
+  const room = store.getRoom(raw);
+  if(!room){ toast(t('roomNotFound')); return; }
+
+  let existingCid = null;
+  const s = store.getSession();
+  if(s && s.code === raw && s.cid) existingCid = s.cid;
+
+  let mySeat = -1;
+  if(existingCid){
+    const me = room.players.find(p => p.cid === existingCid);
+    if(me) mySeat = me.seat;
+  }
+  if(mySeat < 0){
+    for(const p of room.players){
+      if(p.humanSlot && !p.cid){ mySeat = p.seat; break; }
+    }
+  }
+  if(mySeat < 0){ toast(t('roomFull')); return; }
+
+  MY_CID = existingCid || uid();
+  MY_NAME = name;
+  MY_SEAT = mySeat;
+
+  const seatObj = room.players[mySeat];
+  seatObj.cid = MY_CID;
+  seatObj.name = MY_NAME;
+  seatObj.bot = false;
+  seatObj.connected = true;
+  seatObj.lastSeen = Date.now();
+
+  store.setRoom(room);
+  store.setSession({ cid:MY_CID, name:MY_NAME, code:raw, seat:mySeat });
+
+  ROOM = room;
+  IS_HOST = (room.hostId === MY_CID);
+  ONLINE = true;
+  openNet(raw);
+  startHostCheck(); startHello();
+  if(!IS_HOST && Date.now() - (room.heartbeat || 0) > HOST_STALE_MS) claimHost();
+  if(IS_HOST){ startHeartbeat(); startHostTick(); }
+
+  if(room.game && room.game.phase){
+    showScreen('game'); render();
+  } else {
+    showScreen('lobby'); renderLobby();
+  }
+  broadcast({ t:'sync' });
+}
+
+/* ===== نبض وانتخاب المضيف ===== */
+function startHeartbeat(){
+  stopHeartbeat();
+  heartbeatTimer = setInterval(() => {
+    if(!IS_HOST || !ROOM || !ONLINE) return;
+    const fresh = store.getRoom(ROOM.code);
+    if(!fresh) return;
+    fresh.heartbeat = Date.now();
+    fresh.hostId = MY_CID;
+    store.setRoom(fresh);
+    ROOM = fresh;
+  }, HEARTBEAT_MS);
+}
+function stopHeartbeat(){ if(heartbeatTimer){ clearInterval(heartbeatTimer); heartbeatTimer = null; } }
+
+function startHostCheck(){
+  stopHostCheck();
+  hostCheckTimer = setInterval(() => {
+    if(IS_HOST || !ROOM || !ONLINE) return;
+    const fresh = store.getRoom(ROOM.code);
+    if(!fresh) return;
+    ROOM = fresh;
+    if(Date.now() - (fresh.heartbeat || 0) > HOST_STALE_MS) claimHost();
+    updateConnBadge();
+  }, 2500);
+}
+function stopHostCheck(){ if(hostCheckTimer){ clearInterval(hostCheckTimer); hostCheckTimer = null; } }
+
+function claimHost(){
+  if(!ROOM) return;
+  const fresh = store.getRoom(ROOM.code);
+  if(!fresh) return;
+  if(Date.now() - (fresh.heartbeat || 0) < HOST_STALE_MS) return;
+  fresh.claimLock = { cid:MY_CID, at:Date.now() };
+  fresh.hostId = MY_CID;
+  fresh.heartbeat = Date.now();
+  store.setRoom(fresh);
+  setTimeout(() => {
+    const check = store.getRoom(ROOM.code);
+    if(!check) return;
+    if(check.hostId === MY_CID && check.claimLock && check.claimLock.cid === MY_CID){
+      IS_HOST = true;
+      ROOM = check;
+      startHeartbeat(); startHostTick();
+      toast(t('youAreHost'));
+      broadcast({ t:'sync' });
+      if(currentScreen === 'game') render();
+      else if(currentScreen === 'lobby') renderLobby();
+    } else {
+      ROOM = check; IS_HOST = false;
+    }
+  }, 140);
+}
+
+function startHello(){
+  stopHello();
+  helloInterval = setInterval(() => {
+    if(ONLINE && ROOM && !IS_HOST) broadcast({ t:'hello' });
+  }, 8000);
+}
+function stopHello(){ if(helloInterval){ clearInterval(helloInterval); helloInterval = null; } }
+
+/* ===== رسائل قناة البث ===== */
+function onNetMessage(m){
+  if(!m || typeof m !== 'object') return;
+  if(m.t === 'sync'){
+    if(!ROOM) return;
+    const fresh = store.getRoom(ROOM.code);
+    if(!fresh) return;
+    ROOM = fresh;
+    const wasHost = IS_HOST;
+    IS_HOST = (fresh.hostId === MY_CID);
+    if(IS_HOST && !wasHost){ startHeartbeat(); startHostTick(); }
+    if(currentScreen === 'game') render();
+    else if(currentScreen === 'lobby') renderLobby();
+  }
+  else if(m.t === 'action'){
+    if(!IS_HOST || !ROOM || !ROOM.game) return;
+    hostApplyAction(m.seat, m.action);
+  }
+  else if(m.t === 'hello'){
+    if(IS_HOST) broadcast({ t:'sync' });
+  }
+}
+
+/* ===== منطق اللعبة ===== */
 function createDeck(){
-  const d=[]; let id=0;
-  for(let a=0;a<=6;a++) for(let b=a;b<=6;b++) d.push({a:a,b:b,id:id++});
+  const d = []; let id = 0;
+  for(let a = 0; a <= 6; a++)
+    for(let b = a; b <= 6; b++) d.push({ a:a, b:b, id:id++ });
   return d;
 }
 
 function makeGame(mode, names, bots){
   const cfg = MODES[mode];
-  const n = cfg.players;
   const players = [];
-  for(let i=0;i<n;i++){
+  for(let i = 0; i < cfg.players; i++){
     let team = 0;
-    for(let t=0;t<cfg.teams.length;t++) if(cfg.teams[t].indexOf(i)>=0) team = t;
+    for(let k = 0; k < cfg.teams.length; k++)
+      if(cfg.teams[k].indexOf(i) >= 0) team = k;
     players.push({
-      name: names[i] || ('لاعب '+(i+1)),
-      bot: !!bots[i],
-      team: team,
-      hand: [],
-      score: 0
+      name: names[i] || ('P' + (i + 1)),
+      bot: !!bots[i], team: team, hand: [], score: 0
     });
   }
   return {
     mode: mode, players: players, board: [], boneyard: [],
-    turn: 0, leftEnd: null, rightEnd: null, phase: 'playing',
-    passStreak: 0, round: 1, target: 100, log: [], lastPlaced: null,
-    roundResult: null
+    turn: 0, leftEnd: null, rightEnd: null,
+    phase: 'playing', passStreak: 0, round: 1,
+    target: TARGET_SCORE, lastPlaced: null,
+    roundResult: null, gameOver: false, log: [],
+    anchorIdx: 0
   };
 }
 
-function log(G, txt){
-  G.log.push(txt);
-  if(G.log.length > 40) G.log.shift();
-}
-
-function deal(G){
+function dealRound(G){
   const deck = shuffle(createDeck());
   G.board = []; G.boneyard = []; G.leftEnd = null; G.rightEnd = null;
   G.passStreak = 0; G.phase = 'playing'; G.roundResult = null;
-  G.lastPlaced = null; G.log = [];
+  G.lastPlaced = null; G.log = []; G.anchorIdx = 0;
   G.players.forEach(p => p.hand = []);
-  const n = G.players.length, per = 7;
-  for(let r=0;r<per;r++){
-    for(let i=0;i<n;i++){
-      const t = deck.pop();
-      if(t) G.players[i].hand.push(t);
+  const per = 7;
+  for(let r = 0; r < per; r++){
+    for(let i = 0; i < G.players.length; i++){
+      const tile = deck.pop();
+      if(tile) G.players[i].hand.push(tile);
     }
   }
   G.boneyard = deck;
   G.turn = findStarter(G);
-  log(G, 'الجولة ' + G.round + ' — البداية عند ' + G.players[G.turn].name);
 }
 
 function findStarter(G){
-  const n = G.players.length;
-  for(let d=6; d>=0; d--){
-    for(let p=0;p<n;p++){
-      if(G.players[p].hand.some(t => t.a===d && t.b===d)) return p;
+  for(let d = 6; d >= 0; d--){
+    for(let p = 0; p < G.players.length; p++){
+      if(G.players[p].hand.some(t => t.a === d && t.b === d)) return p;
     }
   }
   let best = -1, bp = 0;
-  for(let p=0;p<n;p++){
+  for(let p = 0; p < G.players.length; p++){
     for(const t of G.players[p].hand){
       const s = t.a + t.b;
       if(s > best){ best = s; bp = p; }
@@ -404,39 +840,37 @@ function sidesFor(G, t){
   if(t.a === G.rightEnd || t.b === G.rightEnd) s.push('right');
   return s;
 }
+function playableTiles(G, hand){ return hand.filter(t => sidesFor(G, t).length > 0); }
 
-function playableTiles(G, hand){
-  return hand.filter(t => sidesFor(G,t).length > 0);
-}
-
-function placeTile(G, t, side){
+function placeTile(G, tile, side){
   if(G.board.length === 0){
-    G.board.push({a:t.a, b:t.b, vert:(t.a===t.b), id:t.id});
-    G.leftEnd = t.a; G.rightEnd = t.b;
+    G.board.push({ a:tile.a, b:tile.b, vert:(tile.a === tile.b), id:tile.id });
+    G.leftEnd = tile.a; G.rightEnd = tile.b;
+    G.anchorIdx = 0;
     return;
   }
   if(side === 'left'){
     const cur = G.leftEnd;
-    const v = (t.a === cur) ? t.b : t.a;
-    G.board.unshift({a:v, b:cur, vert:(v===cur), id:t.id});
+    const v = (tile.a === cur) ? tile.b : tile.a;
+    G.board.unshift({ a:v, b:cur, vert:(v === cur), id:tile.id });
     G.leftEnd = v;
+    G.anchorIdx++;
   } else {
     const cur = G.rightEnd;
-    const v = (t.a === cur) ? t.b : t.a;
-    G.board.push({a:cur, b:v, vert:(v===cur), id:t.id});
+    const v = (tile.a === cur) ? tile.b : tile.a;
+    G.board.push({ a:cur, b:v, vert:(v === cur), id:tile.id });
     G.rightEnd = v;
   }
 }
 
 function doPlay(G, seat, tile, side){
   const p = G.players[seat];
-  const idx = p.hand.findIndex(t => t.id === tile.id);
+  const idx = p.hand.findIndex(x => x.id === tile.id);
   if(idx < 0) return false;
-  p.hand.splice(idx,1);
+  p.hand.splice(idx, 1);
   placeTile(G, tile, side);
   G.passStreak = 0;
   G.lastPlaced = tile.id;
-  log(G, p.name + ' لعب [' + tile.a + '|' + tile.b + ']');
   if(p.hand.length === 0){ endRound(G, 'win', seat); return true; }
   G.turn = (G.turn + 1) % G.players.length;
   return true;
@@ -449,14 +883,12 @@ function drawLoop(G){
     const t = G.boneyard.pop();
     p.hand.push(t);
     drew++;
-    if(sidesFor(G,t).length > 0) break;
+    if(sidesFor(G, t).length > 0) break;
   }
-  if(drew > 0) log(G, p.name + ' سحب ' + drew + ' حجرة');
   return drew;
 }
 
 function passTurn(G){
-  log(G, G.players[G.turn].name + ' ما لقاش، داز الدور');
   G.passStreak++;
   if(G.passStreak >= G.players.length){ endRound(G, 'blocked', -1); return; }
   G.turn = (G.turn + 1) % G.players.length;
@@ -467,34 +899,36 @@ function endRound(G, reason, winner){
   G.phase = 'ended';
   let pts = 0;
   if(reason === 'blocked'){
-    let low = 1e9, w = 0;
-    G.players.forEach((p,i)=>{ const v = pipsOf(p.hand); if(v < low){ low = v; w = i; } });
+    let low = Infinity, w = 0;
+    G.players.forEach((p, i) => {
+      const v = p.hand.reduce((s, t) => s + t.a + t.b, 0);
+      if(v < low){ low = v; w = i; }
+    });
     winner = w;
   }
-  G.players.forEach((p,i)=>{ if(i !== winner) pts += pipsOf(p.hand); });
+  G.players.forEach((p, i) => { if(i !== winner) pts += p.hand.reduce((s, t) => s + t.a + t.b, 0); });
   G.players[winner].score += pts;
   G.roundResult = { winner: winner, pts: pts, reason: reason };
-  log(G, '🏆 ' + G.players[winner].name + ' ربح الجولة بـ ' + pts + ' نقطة');
 
-  if(App.isHost){
-    setTimeout(()=>{
-      if(App.G !== G) return;
-      if(G.players.some(p => p.score >= G.target)){
-        G.gameOver = true;
-        if(App.isHost) afterChange();
-        return;
-      }
-      G.round++;
-      deal(G);
-      afterChange();
-      scheduleTick();
-    }, 3600);
+  if(G.players.some(p => p.score >= G.target)){
+    G.gameOver = true;
+    if(IS_HOST) saveAndSync();
+    return;
   }
+
+  setTimeout(() => {
+    if(!IS_HOST || !ROOM || !ROOM.game) return;
+    if(ROOM.game.phase !== 'ended' || ROOM.game.gameOver) return;
+    ROOM.game.round++;
+    dealRound(ROOM.game);
+    saveAndSync();
+    startHostTick();
+  }, 3600);
+
+  if(IS_HOST) saveAndSync();
 }
 
-/* =========================================================
-   BOT AI
-   ========================================================= */
+/* ===== ذكاء الروبوت ===== */
 function botMove(G){
   const p = G.players[G.turn];
   let opts = playableTiles(G, p.hand);
@@ -504,289 +938,292 @@ function botMove(G){
     if(opts.length === 0){ passTurn(G); return; }
   }
   let best = null, bestScore = -1e9, bestSide = null;
-  for(const t of opts){
-    const sides = sidesFor(G, t);
+  for(const tile of opts){
+    const sides = sidesFor(G, tile);
     for(const s of sides){
-      let sc = t.a + t.b;
-      if(t.a === t.b) sc += 6;
+      let sc = tile.a + tile.b;
+      if(tile.a === tile.b) sc += 6;
       if(sides.length > 1) sc += 4;
       if(s === 'first') sc += 2;
-      if(sc > bestScore){ bestScore = sc; best = t; bestSide = s; }
+      if(sc > bestScore){ bestScore = sc; best = tile; bestSide = s; }
     }
   }
   if(best) doPlay(G, G.turn, best, bestSide);
 }
 
-/* =========================================================
-   TICK LOOP (host)
-   ========================================================= */
-function scheduleTick(){
-  if(!App.isHost) return;
-  clearTimeout(App.tickTimer);
-  App.tickTimer = setTimeout(tick, 850);
-}
+/* ===== حلقة المضيف ===== */
+function startHostTick(){ stopHostTick(); tickTimer = setTimeout(hostTick, 800); }
+function stopHostTick(){ if(tickTimer){ clearTimeout(tickTimer); tickTimer = null; } }
 
-function tick(){
-  const G = App.G;
-  if(!App.isHost || !G || G.phase !== 'playing' || G.gameOver) return;
+function hostTick(){
+  if(!IS_HOST || !ROOM || !ROOM.game) return;
+  const G = ROOM.game;
+  if(G.phase !== 'playing' || G.gameOver) return;
   const p = G.players[G.turn];
-
-  if(p.bot){
-    botMove(G);
-    afterChange();
-    scheduleTick();
-    return;
-  }
+  if(p.bot){ botMove(G); saveAndSync(); startHostTick(); return; }
 
   const opts = playableTiles(G, p.hand);
   if(opts.length === 0){
-    if(G.boneyard.length > 0){
-      drawLoop(G);
-      afterChange();
-      scheduleTick();
-    } else {
-      passTurn(G);
-      afterChange();
-      scheduleTick();
-    }
+    if(G.boneyard.length > 0){ drawLoop(G); saveAndSync(); startHostTick(); }
+    else { passTurn(G); saveAndSync(); startHostTick(); }
   }
 }
 
-/* =========================================================
-   VIEW / SYNC
-   ========================================================= */
-function viewFor(G, seat){
-  return {
-    mode: G.mode, phase: G.phase, turn: G.turn,
-    leftEnd: G.leftEnd, rightEnd: G.rightEnd,
-    board: G.board, boneyard: G.boneyard.length,
-    round: G.round, target: G.target,
-    lastPlaced: G.lastPlaced, roundResult: G.roundResult,
-    gameOver: !!G.gameOver,
-    log: G.log.slice(-6),
-    players: G.players.map((p,i)=>({
-      name: p.name, bot: p.bot, team: p.team, score: p.score,
-      handCount: p.hand.length,
-      hand: (i === seat) ? p.hand : null
-    }))
-  };
-}
-
-function afterChange(){
+function saveAndSync(){
+  if(!IS_HOST || !ROOM) return;
+  ROOM.version = (ROOM.version || 0) + 1;
+  ROOM.heartbeat = Date.now();
+  if(ONLINE) store.setRoom(ROOM);
+  broadcast({ t:'sync' });
   render();
-  broadcastState();
 }
 
-function broadcastState(){
-  if(!App.isHost || !App.net || !App.G) return;
-  const G = App.G;
-  for(let i=0;i<G.players.length;i++){
-    if(G.players[i].bot) continue;
-    if(i === App.mySeat) continue;
-    try{
-      App.net.postMessage({t:'state', to:i, s:viewFor(G,i)});
-    }catch(e){}
-  }
-}
-
-/* =========================================================
-   NETWORKING
-   ========================================================= */
-function makeNet(code){
-  const ch = new BroadcastChannel('domino-v1-' + code);
-  ch.onmessage = e => onNet(e.data);
-  return ch;
-}
-
-function onNet(m){
-  if(!m || typeof m !== 'object') return;
-
-  if(App.isHost){
-    if(m.t === 'join')      hostAddClient(m.cid, m.name);
-    else if(m.t === 'act')  hostApply(m.seat, m.a);
-    else if(m.t === 'leave')hostRemoveClient(m.cid);
-    else if(m.t === 'sync') broadcastState();
-  } else {
-    if(m.t === 'lobby'){
-      App.lobby = m.seats;
-      App.mode = m.mode;
-      renderLobby();
-    } else if(m.t === 'start'){
-      App.mode = m.mode;
-      App.lobby = m.seats;
-      let seat = 0;
-      for(const s of m.seats){ if(s.cid === App.cid) seat = s.seat; }
-      App.mySeat = seat;
-      showScreen('game');
-    } else if(m.t === 'state'){
-      if(m.to === App.mySeat){
-        App.G = m.s;
-        render();
-      }
-    } else if(m.t === 'full'){
-      if(m.to === App.cid){ toast('الغرفة عامرة'); backToMenu(); }
-    }
-  }
-}
-
-function hostAddClient(cid, name){
-  if(!App.isHost || !App.lobby) return;
-  let free = null;
-  for(const s of App.lobby){ if(!s.cid && s.seat !== 0){ free = s; break; } }
-  if(!free){ try{ App.net.postMessage({t:'full', to:cid}); }catch(e){} return; }
-  free.cid = cid;
-  free.name = (name || ('لاعب ' + (free.seat+1))).slice(0,10);
-  free.bot = false;
-  broadcastLobby();
-}
-
-function hostRemoveClient(cid){
-  if(!App.isHost || !App.lobby) return;
-  for(const s of App.lobby){
-    if(s.cid === cid){ s.cid = null; s.name = 'فارغ'; s.bot = true; }
-  }
-  broadcastLobby();
-}
-
-function broadcastLobby(){
-  if(App.net){
-    try{ App.net.postMessage({t:'lobby', mode:App.mode, seats:App.lobby}); }catch(e){}
-  }
-  renderLobby();
-}
-
-/* =========================================================
-   ACTIONS
-   ========================================================= */
-function hostApply(seat, a){
-  const G = App.G;
-  if(!G || G.phase !== 'playing' || G.gameOver) return;
-  if(a.type !== 'play') return;
+function hostApplyAction(seat, action){
+  if(!IS_HOST || !ROOM || !ROOM.game) return;
+  const G = ROOM.game;
+  if(G.phase !== 'playing' || G.gameOver) return;
   if(G.turn !== seat) return;
+  if(action.type !== 'play') return;
   const p = G.players[seat];
   if(!p) return;
-  const t = p.hand.find(x => x.id === a.tileId);
-  if(!t) return;
-  const sides = sidesFor(G, t);
-  if(sides.indexOf(a.side) < 0) return;
-  doPlay(G, seat, t, a.side);
-  afterChange();
-  scheduleTick();
+  const tile = p.hand.find(x => x.id === action.tileId);
+  if(!tile) return;
+  const sides = sidesFor(G, tile);
+  if(sides.indexOf(action.side) < 0) return;
+  doPlay(G, seat, tile, action.side);
+  saveAndSync();
+  startHostTick();
 }
 
-function sendPlay(tile, side){
-  const a = {type:'play', tileId:tile.id, side:side};
+function submitPlay(tile, side){
+  if(!ROOM || !ROOM.game) return;
+  const action = { type:'play', tileId: tile.id, side: side };
+  if(IS_HOST) hostApplyAction(MY_SEAT, action);
+  else broadcast({ t:'action', seat: MY_SEAT, action: action });
   App.selectedTile = null;
-  if(App.isHost) hostApply(App.mySeat, a);
-  else if(App.net){
-    try{ App.net.postMessage({t:'act', seat:App.mySeat, a:a}); }catch(e){}
+}
+
+/* ===== مغادرة ===== */
+function leaveRoom(){
+  if(ROOM && MY_CID){
+    const room = store.getRoom(ROOM.code);
+    if(room){
+      const p = room.players.find(x => x.cid === MY_CID);
+      if(p){ p.connected = false; p.lastSeen = Date.now(); }
+      store.setRoom(room);
+    }
   }
+  stopHeartbeat(); stopHostCheck(); stopHostTick(); stopHello();
+  closeNet();
+  ROOM = null; IS_HOST = false; ONLINE = false;
+  showScreen('menu');
+}
+
+/* ===== النقاط ===== */
+const PIPS = {
+  0:[], 1:[[2,2]], 2:[[1,1],[3,3]],
+  3:[[1,1],[2,2],[3,3]],
+  4:[[1,1],[1,3],[3,1],[3,3]],
+  5:[[1,1],[1,3],[2,2],[3,1],[3,3]],
+  6:[[1,1],[1,2],[1,3],[3,1],[3,2],[3,3]]
+};
+function pipsHTML(n){
+  return PIPS[n].map(([r, c]) => '<i style="grid-row:' + r + ';grid-column:' + c + '"></i>').join('');
+}
+function halfEl(num){
+  const d = document.createElement('div');
+  d.className = 'half';
+  d.innerHTML = pipsHTML(num);
+  return d;
 }
 
 /* =========================================================
-   RENDER
+   ★ خوارزمية الثعبان مع دعم المزدوجات العمودية ★
    ========================================================= */
-function render(){
-  const G = App.G;
-  if(!G) return;
-  renderTop();
-  renderOpponents();
-  renderBoard();
-  renderHand();
-  renderOverlay();
-}
+function dx(dir){ return dir === 'E' ? 1 : dir === 'W' ? -1 : 0; }
+function dy(dir){ return dir === 'S' ? 1 : dir === 'N' ? -1 : 0; }
+function turnCW(d){  return d === 'E' ? 'S' : d === 'S' ? 'W' : d === 'W' ? 'N' : 'E'; }
+function turnCCW(d){ return d === 'E' ? 'N' : d === 'N' ? 'W' : d === 'W' ? 'S' : 'E'; }
 
-function renderTop(){
-  const G = App.G, me = App.mySeat;
-  const p = G.players[me];
-  let txt;
-  if(G.gameOver) txt = '🏁 اللعبة كملات';
-  else if(G.phase === 'ended') txt = '⏳ الجولة سالات...';
-  else if(G.turn === me) txt = '<b class="me">▶ دورك!</b>';
-  else txt = 'دور: ' + esc(G.players[G.turn].name);
-  $('#turnInfo').innerHTML = txt;
-  $('#myScore').textContent = 'أنت: ' + (p ? p.score : 0);
-}
+function computeSnake(board, anchorIdx, rowLen){
+  const n = board.length;
+  if(!n) return null;
+  anchorIdx = Math.max(0, Math.min(n - 1, anchorIdx));
 
-function renderOpponents(){
-  const G = App.G, me = App.mySeat, n = G.players.length;
-  const box = $('#opponents');
-  box.innerHTML = '';
-  const myTeam = G.players[me].team;
+  const dirs = new Array(n);
+  const startPos = new Array(n);
+  const chainLen = new Array(n);
 
-  for(let k=1;k<n;k++){
-    const i = (me + k) % n;
-    const p = G.players[i];
-    const cnt = (p.hand ? p.hand.length : p.handCount) || 0;
-    const d = document.createElement('div');
-    d.className = 'opp'
-      + (G.turn === i && G.phase === 'playing' ? ' active' : '')
-      + (n > 2 && p.team === myTeam ? ' mate' : '');
-
-    let mini = '';
-    const show = Math.min(cnt, 6);
-    for(let m=0;m<show;m++) mini += '<span class="mtile"></span>';
-
-    d.innerHTML =
-      '<span class="oname">' + esc(p.name) + '</span>' +
-      '<span class="ocount">🁢 ' + cnt + '</span>' +
-      '<div class="mini">' + mini + '</div>' +
-      '<div class="oscore">' + p.score + ' نقطة</div>';
-    box.appendChild(d);
+  for(let i = 0; i < n; i++){
+    chainLen[i] = (board[i].a === board[i].b) ? 1 : 2;
   }
+
+  // المرساة
+  dirs[anchorIdx] = 'E';
+  startPos[anchorIdx] = { x: 0, y: 0 };
+
+  // الجانب الأيمن
+  let run = 1;
+  for(let i = anchorIdx + 1; i < n; i++){
+    const prevDir = dirs[i - 1];
+    const prevStart = startPos[i - 1];
+    const prevLen = chainLen[i - 1];
+    startPos[i] = {
+      x: prevStart.x + dx(prevDir) * prevLen,
+      y: prevStart.y + dy(prevDir) * prevLen
+    };
+    if(run >= rowLen){
+      dirs[i] = turnCW(prevDir);
+      run = 1;
+    } else {
+      dirs[i] = prevDir;
+      run++;
+    }
+  }
+
+  // الجانب الأيسر
+  run = 1;
+  for(let i = anchorIdx - 1; i >= 0; i--){
+    const nxtDir = dirs[i + 1];
+    const nxtStart = startPos[i + 1];
+    let myDir;
+    if(run >= rowLen){
+      myDir = turnCCW(nxtDir);
+      run = 1;
+    } else {
+      myDir = nxtDir;
+      run++;
+    }
+    dirs[i] = myDir;
+    startPos[i] = {
+      x: nxtStart.x - dx(myDir) * chainLen[i],
+      y: nxtStart.y - dy(myDir) * chainLen[i]
+    };
+  }
+
+  // حساب الخانات لكل حجر
+  const cells = new Array(n);
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+
+  for(let i = 0; i < n; i++){
+    const tile = board[i];
+    const d = dirs[i];
+    const s = startPos[i];
+    const isDouble = (tile.a === tile.b);
+
+    let c2x, c2y;
+    if(isDouble){
+      // المزدوج: الخانة الثانية عمودية على اتجاه السلسلة
+      if(dx(d) !== 0){ c2x = 0; c2y = -1; }
+      else            { c2x = -1; c2y = 0; }
+    } else {
+      c2x = dx(d); c2y = dy(d);
+    }
+
+    const c1 = { x: s.x, y: s.y };
+    const c2 = { x: s.x + c2x, y: s.y + c2y };
+
+    const x0 = Math.min(c1.x, c2.x);
+    const y0 = Math.min(c1.y, c2.y);
+    const x1 = Math.max(c1.x, c2.x) + 1;
+    const y1 = Math.max(c1.y, c2.y) + 1;
+
+    cells[i] = { x0, y0, x1, y1, dir: d, isDouble, tile };
+    if(x0 < minX) minX = x0;
+    if(x1 > maxX) maxX = x1;
+    if(y0 < minY) minY = y0;
+    if(y1 > maxY) maxY = y1;
+  }
+
+  return { cells, dirs, minX, minY, cols: maxX - minX, rows: maxY - minY };
 }
 
+/* =========================================================
+   رسم الطابلة
+   ========================================================= */
 function renderBoard(){
   const el = $('#board');
-  const G = App.G;
+  const G = ROOM.game;
   el.innerHTML = '';
+
   if(!G.board.length){
-    el.innerHTML = '<div class="board-empty">الطابلة خاوية — لعب أول حجرة</div>';
+    el.innerHTML = '<div class="board-empty">—</div>';
+    el.style.width = '';
+    el.style.height = '';
     return;
   }
-  const last = G.board.length - 1;
-  G.board.forEach((t,i)=>{
-    const vert = t.vert || App.allVert;
-    const d = tileEl(t.a, t.b, {vert: vert});
-    if(t.id === G.lastPlaced) d.classList.add('new');
+
+  const wrapW = $('#boardWrap').clientWidth  || window.innerWidth - 100;
+  const wrapH = $('#boardWrap').clientHeight || window.innerHeight - 250;
+  const refCell = Math.max(14, Math.min(34, Math.floor(Math.min(wrapW, wrapH) / 6)));
+  const rowLen = Math.max(3, Math.min(7, Math.floor(wrapW / (refCell * 2.2))));
+
+  const snake = computeSnake(G.board, G.anchorIdx, rowLen);
+  if(!snake) return;
+
+  const cellByW = Math.floor(wrapW / Math.max(snake.cols, 3));
+  const cellByH = Math.floor(wrapH / Math.max(snake.rows, 3));
+  let cell = Math.min(cellByW, cellByH, 40);
+  cell = Math.max(12, cell);
+
+  el.style.width  = (snake.cols * cell) + 'px';
+  el.style.height = (snake.rows * cell) + 'px';
+
+  G.board.forEach((tile, i) => {
+    const c = snake.cells[i];
+    const horizontal = (c.x1 - c.x0) > (c.y1 - c.y0);
+
+    const px = (c.x0 - snake.minX) * cell;
+    const py = (c.y0 - snake.minY) * cell;
+    const pw = (c.x1 - c.x0) * cell;
+    const ph = (c.y1 - c.y0) * cell;
+
+    const d = document.createElement('div');
+    d.className = 'tile ' + (horizontal ? 'horiz' : 'vert');
+    d.style.position = 'absolute';
+    d.style.left = px + 'px';
+    d.style.top  = py + 'px';
+    d.style.width  = pw + 'px';
+    d.style.height = ph + 'px';
+    d.style.setProperty('--c', cell + 'px');
+    d.style.zIndex = String(100 + i);
+
+    let first = tile.a, second = tile.b;
+    if(!c.isDouble){
+      if((horizontal && c.dir === 'W') || (!horizontal && c.dir === 'N')){
+        first = tile.b; second = tile.a;
+      }
+    }
+
+    d.appendChild(halfEl(first));
+    d.appendChild(halfEl(second));
+
+    if(tile.id === G.lastPlaced) d.classList.add('new');
     el.appendChild(d);
   });
-  fitBoard();
 }
 
-function fitBoard(){
-  const wrap = $('#boardWrap'), board = $('#board');
-  if(!wrap || !board) return;
-  let size = 30 * App.zoom;
-  document.documentElement.style.setProperty('--bcell', size + 'px');
-  let guard = 0;
-  while(guard++ < 24 && size > 11 &&
-        (board.scrollHeight > wrap.clientHeight - 14 || board.scrollWidth > wrap.clientWidth - 14)){
-    size -= 2;
-    document.documentElement.style.setProperty('--bcell', size + 'px');
-  }
-}
-
+/* ===== اليد ===== */
 function renderHand(){
-  const G = App.G, me = App.mySeat;
+  const G = ROOM.game, me = MY_SEAT;
   const p = G.players[me];
   const el = $('#hand');
   el.innerHTML = '';
-  if(!p || !p.hand) return;
-
+  if(!p) return;
   const myTurn = (G.turn === me) && G.phase === 'playing' && !G.gameOver;
-  const sorted = p.hand.slice().sort((x,y) => (y.a + y.b) - (x.a + x.b));
-
-  sorted.forEach(t => {
-    const d = tileEl(t.a, t.b, {vert: true});
-    d.dataset.id = t.id;
-    if(myTurn && sidesFor(G, t).length > 0) d.classList.add('playable');
-    d.addEventListener('pointerdown', ev => onHandDown(ev, t, d));
+  const sorted = p.hand.slice().sort((x, y) => (y.a + y.b) - (x.a + x.b));
+  sorted.forEach(tile => {
+    const d = document.createElement('div');
+    d.className = 'tile vert';
+    d.dataset.id = tile.id;
+    d.appendChild(halfEl(tile.a));
+    d.appendChild(halfEl(tile.b));
+    if(myTurn && sidesFor(G, tile).length > 0) d.classList.add('playable');
+    d.addEventListener('pointerdown', ev => onHandDown(ev, tile, d));
     el.appendChild(d);
   });
   fitHand();
 }
-
 function fitHand(){
   const el = $('#hand');
   const n = el.children.length;
@@ -795,18 +1232,117 @@ function fitHand(){
   const gap = 6;
   let size = Math.floor((avail - (n - 1) * gap) / n);
   size = Math.max(15, Math.min(32, size));
-  el.style.setProperty('--cell', size + 'px');
+  el.style.setProperty('--c', size + 'px');
+}
+
+/* ===== الرسم العام ===== */
+function showScreen(name){
+  currentScreen = name;
+  ['menu','lobby','game'].forEach(s => {
+    const el = document.getElementById(s);
+    if(el) el.classList.toggle('hidden', s !== name);
+  });
+  if(name === 'menu') renderMenuMode();
+}
+function renderMenuMode(){
+  $$('#modeList .modeBtn').forEach(b => b.classList.toggle('on', b.dataset.mode === selectedMode));
+}
+
+function renderLobby(){
+  if(!ROOM) return;
+  $('#lobbyCode').textContent = ROOM.code;
+  const box = $('#lobbyPlayers');
+  box.innerHTML = '';
+
+  ROOM.players.forEach(p => {
+    const d = document.createElement('div');
+    d.className = 'lseat';
+    const isHumanSlot = p.humanSlot;
+    const waiting = isHumanSlot && !p.cid;
+
+    if(p.cid === MY_CID) d.classList.add('me');
+    if(ROOM.hostId === p.cid) d.classList.add('host');
+    if(waiting) d.classList.add('waiting');
+
+    let name;
+    if(p.cid) name = p.name;
+    else if(waiting) name = t('waitingTag');
+    else if(p.bot) name = p.name || t('botTag');
+    else name = t('emptySeat');
+
+    let tags = '';
+    if(ROOM.hostId === p.cid) tags += '<span class="ltag host">' + t('hostTag') + '</span>';
+    if(p.cid === MY_CID) tags += '<span class="ltag">' + t('youTag') + '</span>';
+    else if(waiting) tags += '<span class="ltag">⏳</span>';
+    else if(!p.cid || p.bot) tags += '<span class="ltag">' + t('botTag') + '</span>';
+    else tags += '<span class="ltag">' + t('onlineTag') + '</span>';
+
+    d.innerHTML =
+      '<span class="lnum">' + (p.seat + 1) + '</span>' +
+      '<span class="lname">' + esc(name) + '</span>' +
+      tags;
+    box.appendChild(d);
+  });
+  $('#btnStart').style.display = IS_HOST ? '' : 'none';
+}
+
+function render(){
+  if(!ROOM || !ROOM.game) return;
+  renderTop();
+  renderOpponents();
+  renderBoard();
+  renderHand();
+  renderOverlay();
+  updateConnBadge();
+}
+
+function renderTop(){
+  const G = ROOM.game, me = MY_SEAT;
+  let txt;
+  if(G.gameOver) txt = '🏁 ' + t('gameEnded');
+  else if(G.phase === 'ended') txt = t('roundEnded');
+  else if(G.turn === me) txt = '<b class="me">▶ ' + t('myTurn') + '</b>';
+  else txt = t('hisTurn') + ': ' + esc(G.players[G.turn].name);
+  $('#turnInfo').innerHTML = txt;
+  $('#myScore').textContent = t('yourScore') + ': ' + (G.players[me] ? G.players[me].score : 0);
+}
+
+function renderOpponents(){
+  const G = ROOM.game, me = MY_SEAT, n = G.players.length;
+  const box = $('#opponents');
+  box.innerHTML = '';
+  const myTeam = G.players[me].team;
+
+  for(let k = 1; k < n; k++){
+    const i = (me + k) % n;
+    const p = G.players[i];
+    const d = document.createElement('div');
+    d.className = 'opp'
+      + (G.turn === i && G.phase === 'playing' ? ' active' : '')
+      + (n > 2 && p.team === myTeam ? ' mate' : '');
+
+    const show = Math.min(p.hand.length, 6);
+    let mini = '';
+    for(let m = 0; m < show; m++) mini += '<span class="mtile"></span>';
+
+    d.innerHTML =
+      '<span class="oname">' + esc(p.name) + '</span>' +
+      '<span class="ocount">🁢 ' + p.hand.length + '</span>' +
+      '<div class="mini">' + mini + '</div>' +
+      '<span class="oscore">' + p.score + ' ' + t('points') + '</span>';
+    box.appendChild(d);
+  }
 }
 
 function renderOverlay(){
-  const G = App.G;
+  const G = ROOM.game;
   const ov = $('#overlay');
   if(G.gameOver){
     ov.classList.remove('hidden');
     let best = G.players[0];
     for(const p of G.players) if(p.score > best.score) best = p;
-    $('#ovTitle').textContent = '🏆 ' + best.name + ' ربح اللعبة!';
-    $('#ovText').textContent = 'المجموع: ' + best.score + ' نقطة';
+    $('#ovTitle').textContent = '🏆 ' + best.name + ' ' + t('wonGame');
+    $('#ovText').textContent = best.score + ' ' + t('points');
     $('#ovScores').innerHTML = G.players
       .map(p => '<div><span>' + esc(p.name) + '</span><b>' + p.score + '</b></div>').join('');
     return;
@@ -814,9 +1350,9 @@ function renderOverlay(){
   if(G.phase === 'ended' && G.roundResult){
     ov.classList.remove('hidden');
     const w = G.players[G.roundResult.winner];
-    $('#ovTitle').textContent = '🎉 ' + w.name + ' ربح الجولة';
-    $('#ovText').textContent = (G.roundResult.reason === 'blocked' ? 'اللعبة تسدّت — ' : '') +
-      '+' + G.roundResult.pts + ' نقطة · الجولة القادمة قريباً...';
+    $('#ovTitle').textContent = '🎉 ' + w.name + ' ' + t('wonRound');
+    $('#ovText').textContent = (G.roundResult.reason === 'blocked' ? t('blockedRound') : '') +
+      '+' + G.roundResult.pts + ' ' + t('plusPoints');
     $('#ovScores').innerHTML = G.players
       .map(p => '<div><span>' + esc(p.name) + '</span><b>' + p.score + '</b></div>').join('');
     return;
@@ -824,43 +1360,58 @@ function renderOverlay(){
   ov.classList.add('hidden');
 }
 
-/* =========================================================
-   DRAG & DROP
-   ========================================================= */
+function updateConnBadge(){
+  const badge = $('#connBadge'), txt = $('#connText');
+  if(!badge || !txt) return;
+  if(!ONLINE || IS_HOST){ badge.classList.remove('show'); return; }
+  const stale = ROOM && (Date.now() - (ROOM.heartbeat || 0) > HOST_STALE_MS);
+  badge.classList.toggle('stale', !!stale);
+  txt.textContent = stale ? t('connectionStale') : t('connectionOk');
+  badge.classList.add('show');
+}
+
+function toast(msg){
+  const el = $('#toast');
+  if(!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+/* ===== السحب ===== */
 function onHandDown(ev, tile, el){
-  const G = App.G, me = App.mySeat;
+  const G = ROOM && ROOM.game;
   if(!G || G.phase !== 'playing' || G.gameOver) return;
-  if(G.turn !== me) return;
+  if(G.turn !== MY_SEAT) return;
   if(sidesFor(G, tile).length === 0) return;
   ev.preventDefault();
   ev.stopPropagation();
   startDrag(ev, tile, el);
 }
-
 function startDrag(ev, tile, el){
   const rect = el.getBoundingClientRect();
-  const ghost = tileEl(tile.a, tile.b, {vert:true, cls:'ghost'});
+  const ghost = document.createElement('div');
+  ghost.className = 'tile vert ghost';
+  ghost.style.setProperty('--c', Math.max(rect.width, rect.height / 2) + 'px');
+  ghost.appendChild(halfEl(tile.a));
+  ghost.appendChild(halfEl(tile.b));
   ghost.style.width  = rect.width + 'px';
   ghost.style.height = rect.height + 'px';
   document.body.appendChild(ghost);
 
-  App.drag = {
-    tile: tile, el: el, ghost: ghost, moved: false,
-    sx: ev.clientX, sy: ev.clientY, side: null
-  };
+  App.drag = { tile, el, ghost, moved:false, sx:ev.clientX, sy:ev.clientY, side:null };
   moveGhost(ev.clientX, ev.clientY);
-  window.addEventListener('pointermove', onDragMove, {passive:false});
+  window.addEventListener('pointermove', onDragMove, { passive:false });
   window.addEventListener('pointerup', onDragUp);
   window.addEventListener('pointercancel', onDragUp);
 }
-
 function moveGhost(x, y){
   const d = App.drag;
   if(!d) return;
   d.ghost.style.left = x + 'px';
   d.ghost.style.top  = y + 'px';
 }
-
 function onDragMove(ev){
   const d = App.drag;
   if(!d) return;
@@ -875,7 +1426,6 @@ function onDragMove(ev){
     highlightZones(side);
   }
 }
-
 function onDragUp(){
   const d = App.drag;
   if(!d) return;
@@ -886,16 +1436,11 @@ function onDragUp(){
   d.el.classList.remove('dragging');
   hideZones();
   App.drag = null;
-
-  if(d.moved && d.side){
-    sendPlay(d.tile, d.side);
-  } else if(!d.moved){
-    tapTile(d.tile);
-  }
+  if(d.moved && d.side) submitPlay(d.tile, d.side);
+  else if(!d.moved) tapTile(d.tile);
 }
-
 function sideAtPoint(x, y, tile){
-  const G = App.G;
+  const G = ROOM.game;
   const sides = sidesFor(G, tile);
   if(sides.length === 0) return null;
   if(sides.length === 1) return sides[0];
@@ -904,7 +1449,6 @@ function sideAtPoint(x, y, tile){
   const cx = r.left + r.width / 2;
   return (x < cx) ? 'left' : 'right';
 }
-
 function highlightZones(side){
   const L = $('#dzLeft'), R = $('#dzRight');
   L.classList.remove('hot'); R.classList.remove('hot');
@@ -913,218 +1457,150 @@ function highlightZones(side){
   if(side === 'left') L.classList.add('hot');
   if(side === 'right') R.classList.add('hot');
 }
-
 function hideZones(){
-  const L = $('#dzLeft'), R = $('#dzRight');
-  L.className = 'dz'; R.className = 'dz';
+  $('#dzLeft').className = 'dz';
+  $('#dzRight').className = 'dz';
   App.selectedTile = null;
 }
-
-function showChooser(){
-  const L = $('#dzLeft'), R = $('#dzRight');
-  L.className = 'dz clickable';
-  R.className = 'dz clickable';
-}
-
 function tapTile(tile){
-  const G = App.G, me = App.mySeat;
+  const G = ROOM && ROOM.game;
   if(!G || G.phase !== 'playing' || G.gameOver) return;
-  if(G.turn !== me) return;
+  if(G.turn !== MY_SEAT) return;
   const sides = sidesFor(G, tile);
   if(sides.length === 0) return;
-
-  if(sides.length === 1){ sendPlay(tile, sides[0]); return; }
-
+  if(sides.length === 1){ submitPlay(tile, sides[0]); return; }
   App.selectedTile = tile;
-  showChooser();
+  $('#dzLeft').className = 'dz clickable';
+  $('#dzRight').className = 'dz clickable';
 }
 
-$('#dzLeft').addEventListener('click', ()=>{
-  if(App.selectedTile) sendPlay(App.selectedTile, 'left');
-  hideZones();
-});
-$('#dzRight').addEventListener('click', ()=>{
-  if(App.selectedTile) sendPlay(App.selectedTile, 'right');
-  hideZones();
-});
-document.addEventListener('pointerdown', e=>{
-  if(App.selectedTile && !e.target.closest('.dz') && !e.target.closest('#hand')){
+/* ===== ربط الواجهة ===== */
+function wireUp(){
+  $$('#modeList .modeBtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('#modeList .modeBtn').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      selectedMode = btn.dataset.mode;
+      const n = MODES[selectedMode].players;
+      $('#inpHumans').max = n;
+      if(parseInt($('#inpHumans').value, 10) > n) $('#inpHumans').value = n;
+    });
+  });
+
+  $('#inpHumans').addEventListener('change', () => {
+    const n = MODES[selectedMode].players;
+    let v = parseInt($('#inpHumans').value, 10) || 1;
+    v = Math.max(1, Math.min(n, v));
+    $('#inpHumans').value = v;
+  });
+
+  $('#btnSolo').addEventListener('click', () => {
+    const mode = selectedMode;
+    const cfg = MODES[mode];
+    const names = [], bots = [];
+    const pool = BOT_NAMES[LANG] || BOT_NAMES.en;
+    let b = 0;
+    for(let i = 0; i < cfg.players; i++){
+      if(i === 0){ names.push(t('playerName')); bots.push(false); }
+      else { names.push(pool[b++ % pool.length]); bots.push(true); }
+    }
+    MY_CID = uid(); MY_NAME = t('playerName'); MY_SEAT = 0;
+    IS_HOST = true; ONLINE = false;
+    closeNet(); stopHeartbeat(); stopHostCheck(); stopHello();
+    ROOM = {
+      code: 'SOLO-' + genCode(),
+      createdAt: Date.now(), hostId: MY_CID, heartbeat: Date.now(),
+      mode, players: names.map((n, i) => ({
+        seat:i, cid: i === 0 ? MY_CID : null, name:n, bot: bots[i],
+        humanSlot:false, connected: i === 0, lastSeen: Date.now(), score: 0
+      })),
+      game: null, version: 0
+    };
+    ROOM.game = makeGame(mode, names, bots);
+    dealRound(ROOM.game);
+    showScreen('game'); render(); startHostTick();
+  });
+
+  $('#btnCreate').addEventListener('click', createRoom);
+  $('#btnJoin').addEventListener('click', joinRoom);
+  $('#inpCode').addEventListener('keydown', e => { if(e.key === 'Enter') joinRoom(); });
+
+  $('#btnCopy').addEventListener('click', () => {
+    const c = ROOM ? ROOM.code : '';
+    if(!c) return;
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(c).then(() => toast(t('copied'))).catch(() => toast(c));
+    } else toast(c);
+  });
+
+  $('#btnStart').addEventListener('click', () => {
+    if(!IS_HOST || !ROOM) return;
+    const n = MODES[ROOM.mode].players;
+    const pool = BOT_NAMES[LANG] || BOT_NAMES.en;
+    const names = [], bots = [];
+    let b = 0;
+    for(let i = 0; i < n; i++){
+      const s = ROOM.players[i];
+      if(s.cid){
+        names.push(s.seat === MY_SEAT ? t('playerName') : s.name);
+        bots.push(false);
+      } else {
+        const botName = (s.humanSlot ? pool[b++ % pool.length] : (s.name || pool[b++ % pool.length]));
+        names.push(botName);
+        bots.push(true);
+        s.bot = true;
+        s.name = botName;
+        s.humanSlot = false;
+      }
+    }
+    if(ONLINE) store.setRoom(ROOM);
+
+    ROOM.game = makeGame(ROOM.mode, names, bots);
+    ROOM.game.players.forEach((p, i) => p.score = ROOM.players[i].score || 0);
+    dealRound(ROOM.game);
+    saveAndSync();
+    showScreen('game'); render(); startHostTick();
+  });
+
+  $('#btnLeave').addEventListener('click', leaveRoom);
+
+  $('#btnZoomIn').addEventListener('click', () => { App.zoom = Math.min(2.2, App.zoom + 0.15); renderBoard(); });
+  $('#btnZoomOut').addEventListener('click', () => { App.zoom = Math.max(0.5, App.zoom - 0.15); renderBoard(); });
+  $('#btnRot').addEventListener('click', () => { renderBoard(); });
+  $('#btnMenu').addEventListener('click', () => { if(confirm(t('confirmLeave'))) leaveRoom(); });
+
+  $('#dzLeft').addEventListener('click', () => {
+    if(App.selectedTile) submitPlay(App.selectedTile, 'left');
     hideZones();
-  }
-});
+  });
+  $('#dzRight').addEventListener('click', () => {
+    if(App.selectedTile) submitPlay(App.selectedTile, 'right');
+    hideZones();
+  });
+  document.addEventListener('pointerdown', e => {
+    if(App.selectedTile && !e.target.closest('.dz') && !e.target.closest('#hand')) hideZones();
+  });
 
-/* =========================================================
-   SCREENS / MENU
-   ========================================================= */
-function showScreen(name){
-  ['menu','lobby','game'].forEach(s=>{
-    const el = document.getElementById(s);
-    if(el) el.classList.toggle('hidden', s !== name);
+  let rzT = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(rzT);
+    rzT = setTimeout(() => { fitHand(); if(currentScreen === 'game') renderBoard(); }, 120);
+  });
+
+  window.addEventListener('beforeunload', () => {
+    if(ROOM && MY_CID && ONLINE){
+      const room = store.getRoom(ROOM.code);
+      if(room){
+        const p = room.players.find(x => x.cid === MY_CID);
+        if(p){ p.connected = false; p.lastSeen = Date.now(); }
+        store.setRoom(room);
+      }
+    }
   });
 }
 
-function toast(msg){
-  const t = $('#toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toast._t);
-  toast._t = setTimeout(()=>t.classList.remove('show'), 2200);
-}
-
-function backToMenu(){
-  clearTimeout(App.tickTimer);
-  if(App.net){ try{ App.net.close(); }catch(e){} }
-  App.net = null;
-  App.G = null;
-  App.isHost = false;
-  App.online = false;
-  App.lobby = null;
-  hideZones();
-  $('#overlay').classList.add('hidden');
-  showScreen('menu');
-}
-
-function renderLobby(){
-  $('#lobbyCode').textContent = App.code || '------';
-  const box = $('#lobbyPlayers');
-  box.innerHTML = '';
-  (App.lobby || []).forEach(s=>{
-    const d = document.createElement('div');
-    d.className = 'lseat' + (s.cid === App.cid ? ' me' : '');
-    d.innerHTML =
-      '<span class="lnum">' + (s.seat + 1) + '</span>' +
-      '<span class="lname">' + esc(s.name) + '</span>' +
-      (s.bot ? '<span class="ltag">روبوت</span>' : '<span class="ltag">أونلاين</span>');
-    box.appendChild(d);
-  });
-  $('#btnStart').style.display = App.isHost ? '' : 'none';
-}
-
-/* ---------- Menu wiring ---------- */
-let selectedMode = '1v1';
-$$('#modeList .modeBtn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    $$('#modeList .modeBtn').forEach(b => b.classList.remove('on'));
-    btn.classList.add('on');
-    selectedMode = btn.dataset.mode;
-  });
-});
-
-$('#btnSolo').addEventListener('click', ()=>{
-  const mode = selectedMode;
-  const cfg = MODES[mode];
-  const names = [], bots = [];
-  let b = 0;
-  for(let i=0;i<cfg.players;i++){
-    if(i === 0){ names.push('أنت'); bots.push(false); }
-    else { names.push(BOT_NAMES[b++ % BOT_NAMES.length]); bots.push(true); }
-  }
-  App.isHost = true;
-  App.mySeat = 0;
-  App.online = false;
-  App.net = null;
-  App.mode = mode;
-  App.G = makeGame(mode, names, bots);
-  deal(App.G);
-  showScreen('game');
-  render();
-  scheduleTick();
-});
-
-$('#btnCreate').addEventListener('click', ()=>{
-  App.myName = ($('#inpName').value || 'لاعب').slice(0,10);
-  const mode = selectedMode;
-  App.mode = mode;
-  App.code = genCode();
-  App.isHost = true;
-  App.mySeat = 0;
-  App.online = true;
-  App.net = makeNet(App.code);
-
-  const n = MODES[mode].players;
-  App.lobby = [{seat:0, cid:App.cid, name:App.myName, bot:false}];
-  for(let i=1;i<n;i++) App.lobby.push({seat:i, cid:null, name:'فارغ', bot:true});
-
-  showScreen('lobby');
-  renderLobby();
-  broadcastLobby();
-  toast('الغرفة تصاوبت: ' + App.code);
-});
-
-$('#btnJoin').addEventListener('click', ()=>{
-  const code = ($('#inpCode').value || '').trim().toUpperCase();
-  if(code.length < 4){ toast('دخل كود صحيح'); return; }
-  App.myName = ($('#inpName').value || 'لاعب').slice(0,10);
-  App.code = code;
-  App.isHost = false;
-  App.online = true;
-  App.net = makeNet(code);
-  App.lobby = [];
-  showScreen('lobby');
-  renderLobby();
-  try{ App.net.postMessage({t:'join', cid:App.cid, name:App.myName}); }catch(e){}
-  setTimeout(()=>{ if(!App.lobby || !App.lobby.length) toast('كنتسنّاو الغرفة...'); }, 1200);
-});
-
-$('#btnCopy').addEventListener('click', ()=>{
-  const c = App.code || '';
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(c).then(()=>toast('تنسخ الكود ✔')).catch(()=>toast(c));
-  } else toast(c);
-});
-
-$('#btnStart').addEventListener('click', ()=>{
-  if(!App.isHost || !App.lobby) return;
-  const n = MODES[App.mode].players;
-  const names = [], bots = [];
-  let b = 0;
-  for(let i=0;i<n;i++){
-    const s = App.lobby[i] || {cid:null, name:'فارغ'};
-    if(s.cid === App.cid){ names[i] = 'أنت'; bots[i] = false; }
-    else if(s.cid){ names[i] = s.name; bots[i] = false; }
-    else { names[i] = BOT_NAMES[b++ % BOT_NAMES.length]; bots[i] = true; }
-  }
-  App.G = makeGame(App.mode, names, bots);
-  deal(App.G);
-  try{ App.net.postMessage({t:'start', mode:App.mode, seats:App.lobby}); }catch(e){}
-  showScreen('game');
-  afterChange();
-  scheduleTick();
-});
-
-$('#btnLeave').addEventListener('click', ()=>{
-  if(App.net && !App.isHost){
-    try{ App.net.postMessage({t:'leave', cid:App.cid}); }catch(e){}
-  }
-  backToMenu();
-});
-
-$('#btnMenu').addEventListener('click', ()=>{
-  if(confirm('واش بغيتي تخرج للقائمة؟')) backToMenu();
-});
-
-/* ---------- Tools ---------- */
-$('#btnZoomIn').addEventListener('click', ()=>{ App.zoom = Math.min(2.2, App.zoom + 0.15); fitBoard(); });
-$('#btnZoomOut').addEventListener('click', ()=>{ App.zoom = Math.max(0.5, App.zoom - 0.15); fitBoard(); });
-$('#btnRot').addEventListener('click', ()=>{ App.allVert = !App.allVert; renderBoard(); toast(App.allVert ? 'تدوير 90° مفعّل' : 'تدوير عادي'); });
-
-/* ---------- Resize ---------- */
-let rzT = null;
-window.addEventListener('resize', ()=>{
-  clearTimeout(rzT);
-  rzT = setTimeout(()=>{ fitHand(); fitBoard(); }, 120);
-});
-
-/* ---------- Cleanup on unload ---------- */
-window.addEventListener('beforeunload', ()=>{
-  if(App.net && !App.isHost){
-    try{ App.net.postMessage({t:'leave', cid:App.cid}); }catch(e){}
-  }
-  if(App.net){ try{ App.net.close(); }catch(e){} }
-});
-
-/* ---------- Boot ---------- */
-showScreen('menu');
+wireUp();
+boot();
 </script>
 </body>
 </html>
