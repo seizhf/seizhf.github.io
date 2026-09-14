@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b1a1d">
-<title>Domino Pro — دومينو برو</title>
+<title>SaivDOMI</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;}
 html,body{margin:0;padding:0;height:100%;}
@@ -144,11 +144,32 @@ body::after{
   font-family:'Courier New',monospace;font-size:26px;font-weight:900;letter-spacing:4px;
   color:#ffd976;text-shadow:0 0 18px rgba(233,185,73,.35);
 }
+
+/* Team columns */
+.team-columns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;}
+@media(max-width:400px){ .team-columns{grid-template-columns:1fr;} }
+.team-col{
+  border-radius:14px;padding:10px;
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));
+  border:1px solid rgba(255,255,255,.08);
+}
+.team-col.team-a{border-color:rgba(55,201,120,.4);}
+.team-col.team-b{border-color:rgba(224,85,85,.4);}
+.team-col h3{
+  margin:0 0 8px;font-size:11px;font-weight:800;letter-spacing:1.4px;
+  text-transform:uppercase;display:flex;align-items:center;gap:6px;
+}
+.team-col.team-a h3{color:#5fe0a0;}
+.team-col.team-b h3{color:#ff9a9a;}
+
 .players-list{display:flex;flex-direction:column;gap:7px;}
 .pl-item{
   display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:13px;
   background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07);
+  transition:transform .12s ease, background .18s, border-color .18s;
 }
+.pl-item.clickable{cursor:pointer;}
+.pl-item.clickable:hover{background:rgba(233,185,73,.10);border-color:rgba(233,185,73,.4);}
 .pl-item.empty{opacity:.4;border-style:dashed;}
 .pl-item .avatar{
   width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;
@@ -184,6 +205,7 @@ body::after{
   box-shadow:0 0 0 1px rgba(233,185,73,.35),0 0 22px rgba(233,185,73,.22);
   background:linear-gradient(180deg,rgba(233,185,73,.13),rgba(233,185,73,.03));
 }
+.opp-card.teammate{border-color:rgba(55,201,120,.4);}
 .opp-head{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
 .opp-card .avatar{
   width:20px;height:20px;border-radius:7px;flex:none;display:flex;align-items:center;justify-content:center;
@@ -246,8 +268,7 @@ body::after{
 }
 .comment-bar .cbtn:hover{
   background:linear-gradient(180deg,rgba(233,185,73,.28),rgba(233,185,73,.10));
-  border-color:rgba(233,185,73,.65);
-  color:#ffd976;
+  border-color:rgba(233,185,73,.65);color:#ffd976;
 }
 .comment-bar .cbtn:active{transform:scale(.94);}
 .comment-bar .cbtn.hot{
@@ -468,6 +489,7 @@ body::after{
   box-shadow:0 0 8px rgba(55,201,120,.8);
 }
 .conn-dot.off{background:#e05555;box-shadow:0 0 8px rgba(224,85,85,.8);animation:blink 1s infinite;}
+.conn-dot.wait{background:#e9b949;box-shadow:0 0 8px rgba(233,185,73,.8);animation:blink 1s infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
 
 .hidden{display:none!important;}
@@ -494,6 +516,38 @@ body::after{
 }
 .setup-info{
   font-size:12px;color:#8fa9ae;text-align:center;margin:4px 0 14px;line-height:1.6;
+}
+
+/* Online mode selection buttons */
+.online-modes{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+.online-mode-btn{
+  display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);cursor:pointer;font-family:inherit;
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.02));
+  color:#eaf6f8;text-align:start;transition:transform .13s,background .18s,border-color .18s;
+}
+.online-mode-btn:hover{background:rgba(233,185,73,.10);border-color:rgba(233,185,73,.5);}
+.online-mode-btn:active{transform:scale(.975);}
+.online-mode-btn .big{
+  font-size:22px;font-weight:900;color:#ffd976;min-width:34px;text-align:center;
+  font-variant-numeric:tabular-nums;
+}
+.online-mode-btn .info{flex:1;display:flex;flex-direction:column;gap:2px;}
+.online-mode-btn .info b{font-size:14px;font-weight:800;color:#eaf6f8;}
+.online-mode-btn .info span{font-size:11px;color:#93aeb3;}
+
+.loading-dots{
+  display:inline-flex;gap:4px;
+}
+.loading-dots span{
+  width:6px;height:6px;border-radius:50%;background:#ffd976;
+  animation:dotPulse 1.2s ease-in-out infinite;
+}
+.loading-dots span:nth-child(2){animation-delay:.15s;}
+.loading-dots span:nth-child(3){animation-delay:.3s;}
+@keyframes dotPulse{
+  0%,100%{transform:scale(1);opacity:.4;}
+  50%{transform:scale(1.4);opacity:1;}
 }
 </style>
 </head>
@@ -527,21 +581,11 @@ body::after{
       <div class="card">
         <h2 data-i18n="playBots"></h2>
         <div class="mode-grid" id="modeGrid">
-          <button class="mode-btn" data-mode="1v1">
-            <b>1 vs 1</b><span data-i18n="mode1v1"></span>
-          </button>
-          <button class="mode-btn" data-mode="1v3">
-            <b>1 vs 3</b><span data-i18n="mode1v3"></span>
-          </button>
-          <button class="mode-btn" data-mode="2v2">
-            <b>2 vs 2</b><span data-i18n="mode2v2"></span>
-          </button>
-          <button class="mode-btn" data-mode="3v1">
-            <b>3 vs 1</b><span data-i18n="mode3v1"></span>
-          </button>
-          <button class="mode-btn" data-mode="4p">
-            <b>4</b><span data-i18n="mode4p"></span>
-          </button>
+          <button class="mode-btn" data-mode="1v1"><b>1 vs 1</b><span data-i18n="mode1v1"></span></button>
+          <button class="mode-btn" data-mode="1v3"><b>1 vs 3</b><span data-i18n="mode1v3"></span></button>
+          <button class="mode-btn" data-mode="2v2"><b>2 vs 2</b><span data-i18n="mode2v2"></span></button>
+          <button class="mode-btn" data-mode="3v1"><b>3 vs 1</b><span data-i18n="mode3v1"></span></button>
+          <button class="mode-btn" data-mode="4p"><b>4</b><span data-i18n="mode4p"></span></button>
         </div>
       </div>
 
@@ -575,8 +619,18 @@ body::after{
       <p class="hint" data-i18n="shareHint"></p>
 
       <div class="card">
-        <h2 data-i18n="players"></h2>
+        <h2 id="lobbyPlayersTitle" data-i18n="players"></h2>
         <div class="players-list" id="lobbyPlayers"></div>
+        <div class="team-columns hidden" id="teamColumns">
+          <div class="team-col team-a">
+            <h3><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#5fe0a0;"></span><span id="teamALabel">Team A</span></h3>
+            <div class="players-list" id="teamAList"></div>
+          </div>
+          <div class="team-col team-b">
+            <h3><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#ff9a9a;"></span><span id="teamBLabel">Team B</span></h3>
+            <div class="players-list" id="teamBList"></div>
+          </div>
+        </div>
       </div>
 
       <div class="row">
@@ -625,6 +679,7 @@ body::after{
 
 <div class="toast" id="toast"></div>
 
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
 (function(){
 'use strict';
@@ -642,7 +697,6 @@ function el(tag, cls, txt){
   return e;
 }
 function rnd(n){ return Math.floor(Math.random() * n); }
-
 function shuffle(arr){
   for (let i = arr.length - 1; i > 0; i--){
     const j = rnd(i + 1);
@@ -682,8 +736,8 @@ const STR = {
     leave: 'خروج',
     startGame: 'بدء اللعبة',
     waiting: 'بانتظار اللاعبين...',
-    shareHint: 'شارك هذا الرمز مع صديقك ليدخل نفس الغرفة',
-    onlineHint: 'افتح اللعبة في نافذة أو تبويب آخر على نفس الجهاز، ثم أدخل الرمز للانضمام.',
+    shareHint: 'شارك هذا الرمز مع صديقك ليدخل نفس الغرفة من أي جهاز',
+    onlineHint: 'أنشئ غرفة وشارك الرمز، أو أدخل رمز غرفة صديقك للانضمام.',
     players: 'اللاعبون',
     you: 'أنت',
     bot: 'روبوت',
@@ -695,40 +749,29 @@ const STR = {
     draw: 'سحب',
     pass: 'تمرير',
     noMove: 'لا توجد حركة متاحة — اسحب ورقة',
-    mustPass: 'لا توجد حركة — مرّر الدور',
     invalidMove: 'حركة غير صحيحة',
     notYourTurn: 'ليس دورك الآن',
     roundOver: 'نهاية الجولة',
-    youWin: 'لقد فزت! 🎉',
-    youLose: 'لقد خسرت',
     winnerIs: 'الفائز: {0}',
     blocked: 'الجولة مسدودة',
     blockedDesc: 'لا أحد يستطيع اللعب — الفائز صاحب أقل عدد من النقاط',
     points: 'النقاط',
-    score: 'النقاط',
     nextRound: 'الجولة التالية',
     backToMenu: 'القائمة الرئيسية',
     matchOver: 'نهاية المباراة',
     finalResult: 'النتيجة النهائية',
     roomNotFound: 'لم يتم العثور على الغرفة',
     roomFull: 'الغرفة ممتلئة',
-    reconnecting: 'إعادة الاتصال...',
     reconnected: 'تم الاتصال بنجاح',
     ready: 'جاهز',
     passDevice: 'مرّر الجهاز إلى {0}',
-    yourHand: 'أوراقك',
-    teamA: 'الفريق أ',
-    teamB: 'الفريق ب',
-    team: 'الفريق',
     info: 'معلومات',
     infoTitle: 'كيفية اللعب',
-    infoBody: 'الهدف: التخلّص من كل أحجارك قبل الآخرين.\n\n• اسحب الحجر وضعه في المكان الذي تريده (يسار أو يمين السلسلة).\n• أو اضغط عليه وسيُوضع تلقائياً في أفضل مكان.\n• يجب أن يتطابق الرقم مع طرف السلسلة.\n• في وضع 2 ضد 2: بعد لعب الحجر، اختر تعليقاً أو اضغط ✕.\n• إذا لم تستطع اللعب، اسحب من البنك؛ وإن كان فارغاً مرّر الدور.\n• أول من يصل إلى ١٠٠ نقطة يفوز بالمباراة.',
+    infoBody: 'الهدف: التخلّص من كل أحجارك قبل الآخرين.\n\n• اسحب الحجر وضعه في المكان الذي تريده (يسار أو يمين السلسلة).\n• أو اضغط عليه وسيُوضع تلقائياً في أفضل مكان.\n• في وضع 2 ضد 2: بعد لعب الحجر، اختر تعليقاً أو اضغط ✕.\n• إذا لم تستطع اللعب، اسحب من البنك؛ وإن كان فارغاً مرّر الدور.\n• أول من يصل إلى ١٠٠ نقطة يفوز بالمباراة.',
     close: 'إغلاق',
-    ok: 'حسناً',
     round: 'الجولة',
     drew: 'سحبت ورقة',
     passed: 'تم تمرير الدور',
-    gameStarted: 'بدأت اللعبة',
     waitingHost: 'بانتظار المضيف لبدء اللعبة',
     choosePlayers: 'اختر عدد اللاعبين',
     realPlayers: 'لاعبون حقيقيون',
@@ -737,7 +780,32 @@ const STR = {
     setupHint: 'حدّد عدد اللاعبين الحقيقيين على هذا الجهاز، والباقي روبوتات.',
     commentsOnly2v2: 'التعليقات مفعّلة في وضع 2 ضد 2 فقط',
     sendComment: 'علّق أو ألغِ:',
-    chooseComment: 'اختر تعليقاً أو ألغِ بالضغط على ✕'
+    chooseComment: 'اختر تعليقاً أو ألغِ بالضغط على ✕',
+    /* online */
+    createOnlineTitle: 'إنشاء غرفة أونلاين',
+    createOnlineSub: 'اختر عدد اللاعبين — سيتم إنشاء غرفة ورمز لمشاركته',
+    onlineMode2: 'لاعبان',
+    onlineMode2Desc: 'أنت + صديق واحد',
+    onlineMode3: 'ثلاثة لاعبين',
+    onlineMode3Desc: 'أنت + صديقان',
+    onlineMode4ffa: '٤ لاعبين (فردي)',
+    onlineMode4ffaDesc: 'كل لاعب ضد الجميع',
+    onlineMode4team: '٤ لاعبين (٢ ضد ٢)',
+    onlineMode4teamDesc: 'فريقان مع تعليقات',
+    connecting: 'جاري الاتصال...',
+    creatingRoom: 'جاري إنشاء الغرفة...',
+    waitingForPlayers: 'بانتظار انضمام اللاعبين',
+    startWhenReady: 'ابدأ اللعبة عندما يكون الجميع جاهزاً',
+    playersCount: '{0} / {1}',
+    clickToSwapTeam: 'اضغط على لاعب لتغيير فريقه',
+    needMorePlayers: 'تحتاج لاعبين أكثر للبدء',
+    hostLeft: 'غادر المضيف الغرفة',
+    connectionFailed: 'فشل الاتصال',
+    retry: 'إعادة المحاولة',
+    teamA: 'الفريق أ',
+    teamB: 'الفريق ب',
+    /* bots fill seats note */
+    botsWillFill: 'المقاعد الفارغة ستمتلئ بروبوتات'
   },
   fr: {
     appName: 'DOMINO PRO',
@@ -760,8 +828,8 @@ const STR = {
     leave: 'Quitter',
     startGame: 'Démarrer la partie',
     waiting: 'En attente des joueurs...',
-    shareHint: 'Partagez ce code avec votre ami pour qu\'il rejoigne le salon',
-    onlineHint: 'Ouvrez le jeu dans un autre onglet ou fenêtre sur le même appareil, puis entrez le code.',
+    shareHint: 'Partagez ce code avec votre ami pour qu\'il rejoigne depuis n\'importe quel appareil',
+    onlineHint: 'Créez un salon et partagez le code, ou entrez le code d\'un ami.',
     players: 'Joueurs',
     you: 'Vous',
     bot: 'Robot',
@@ -773,49 +841,61 @@ const STR = {
     draw: 'Piocher',
     pass: 'Passer',
     noMove: 'Aucun coup possible — piochez',
-    mustPass: 'Aucun coup possible — passez',
     invalidMove: 'Coup invalide',
     notYourTurn: 'Ce n\'est pas votre tour',
     roundOver: 'Fin de la manche',
-    youWin: 'Vous avez gagné ! 🎉',
-    youLose: 'Vous avez perdu',
     winnerIs: 'Gagnant : {0}',
     blocked: 'Manche bloquée',
     blockedDesc: 'Personne ne peut jouer — le moins de points gagne',
     points: 'Points',
-    score: 'Score',
     nextRound: 'Manche suivante',
     backToMenu: 'Menu principal',
     matchOver: 'Fin de la partie',
     finalResult: 'Résultat final',
     roomNotFound: 'Salon introuvable',
     roomFull: 'Salon complet',
-    reconnecting: 'Reconnexion...',
     reconnected: 'Reconnecté avec succès',
     ready: 'Prêt',
     passDevice: 'Passez l\'appareil à {0}',
-    yourHand: 'Vos dominos',
-    teamA: 'Équipe A',
-    teamB: 'Équipe B',
-    team: 'Équipe',
     info: 'Infos',
     infoTitle: 'Comment jouer',
-    infoBody: 'But : se débarrasser de tous ses dominos avant les autres.\n\n• Faites glisser un domino et déposez-le où vous voulez (gauche ou droite).\n• Ou cliquez : il sera placé automatiquement au meilleur endroit.\n• En 2 vs 2 : après avoir joué, choisissez un commentaire ou cliquez sur ✕.\n• Si vous ne pouvez pas jouer, piochez ; si la pioche est vide, passez.\n• Premier à 100 points remporte la partie.',
+    infoBody: 'But : se débarrasser de tous ses dominos avant les autres.\n\n• Faites glisser un domino et déposez-le où vous voulez.\n• Ou cliquez : il sera placé automatiquement au meilleur endroit.\n• En 2 vs 2 : après avoir joué, choisissez un commentaire ou cliquez sur ✕.\n• Premier à 100 points remporte la partie.',
     close: 'Fermer',
-    ok: 'OK',
     round: 'Manche',
     drew: 'A pioché',
     passed: 'A passé',
-    gameStarted: 'La partie commence',
     waitingHost: 'En attente de l\'hôte',
     choosePlayers: 'Nombre de joueurs',
     realPlayers: 'Joueurs réels',
     botPlayers: 'Robots',
     totalPlayers: 'Total',
-    setupHint: 'Choisissez le nombre de joueurs réels sur cet appareil, le reste sera des robots.',
-    commentsOnly2v2: 'Commentaires activés uniquement en mode 2 vs 2',
+    setupHint: 'Choisissez le nombre de joueurs réels, le reste sera des robots.',
+    commentsOnly2v2: 'Commentaires activés en mode 2 vs 2 uniquement',
     sendComment: 'Commenter ou annuler :',
-    chooseComment: 'Choisissez un commentaire ou annulez avec ✕'
+    chooseComment: 'Choisissez un commentaire ou annulez avec ✕',
+    createOnlineTitle: 'Créer un salon en ligne',
+    createOnlineSub: 'Choisissez le nombre de joueurs — un code sera généré',
+    onlineMode2: '2 joueurs',
+    onlineMode2Desc: 'Vous + 1 ami',
+    onlineMode3: '3 joueurs',
+    onlineMode3Desc: 'Vous + 2 amis',
+    onlineMode4ffa: '4 joueurs (libre)',
+    onlineMode4ffaDesc: 'Chacun pour soi',
+    onlineMode4team: '4 joueurs (2 vs 2)',
+    onlineMode4teamDesc: 'Deux équipes avec commentaires',
+    connecting: 'Connexion...',
+    creatingRoom: 'Création du salon...',
+    waitingForPlayers: 'En attente des joueurs',
+    startWhenReady: 'Démarrez quand tout le monde est prêt',
+    playersCount: '{0} / {1}',
+    clickToSwapTeam: 'Cliquez sur un joueur pour changer d\'équipe',
+    needMorePlayers: 'Il faut plus de joueurs pour démarrer',
+    hostLeft: 'L\'hôte a quitté le salon',
+    connectionFailed: 'Échec de connexion',
+    retry: 'Réessayer',
+    teamA: 'Équipe A',
+    teamB: 'Équipe B',
+    botsWillFill: 'Les places libres seront remplies par des robots'
   },
   en: {
     appName: 'DOMINO PRO',
@@ -838,8 +918,8 @@ const STR = {
     leave: 'Leave',
     startGame: 'Start game',
     waiting: 'Waiting for players...',
-    shareHint: 'Share this code with your friend so they can join the same room',
-    onlineHint: 'Open the game in another tab or window on the same device, then enter the code.',
+    shareHint: 'Share this code with your friend — they can join from any device',
+    onlineHint: 'Create a room and share the code, or enter a friend\'s code to join.',
     players: 'Players',
     you: 'You',
     bot: 'Robot',
@@ -851,41 +931,30 @@ const STR = {
     draw: 'Draw',
     pass: 'Pass',
     noMove: 'No move available — draw a tile',
-    mustPass: 'No move available — pass',
     invalidMove: 'Invalid move',
     notYourTurn: 'Not your turn',
     roundOver: 'Round over',
-    youWin: 'You win! 🎉',
-    youLose: 'You lost',
     winnerIs: 'Winner: {0}',
     blocked: 'Blocked round',
     blockedDesc: 'Nobody can play — lowest pip count wins',
     points: 'Points',
-    score: 'Score',
     nextRound: 'Next round',
     backToMenu: 'Main menu',
     matchOver: 'Match over',
     finalResult: 'Final result',
     roomNotFound: 'Room not found',
     roomFull: 'Room is full',
-    reconnecting: 'Reconnecting...',
     reconnected: 'Reconnected successfully',
     ready: 'Ready',
     passDevice: 'Pass the device to {0}',
-    yourHand: 'Your tiles',
-    teamA: 'Team A',
-    teamB: 'Team B',
-    team: 'Team',
     info: 'Info',
     infoTitle: 'How to play',
-    infoBody: 'Goal: get rid of all your tiles before the others.\n\n• Drag a tile and drop it where you want (left or right of the chain).\n• Or tap it and it will be placed automatically in the best spot.\n• In 2 vs 2: after playing, pick a comment or click ✕.\n• If you cannot play, draw from the boneyard; if empty, pass.\n• First to 100 points wins the match.',
+    infoBody: 'Goal: get rid of all your tiles before the others.\n\n• Drag a tile and drop it where you want.\n• Or tap it and it will be placed automatically.\n• In 2 vs 2: after playing, pick a comment or click ✕.\n• First to 100 points wins the match.',
     close: 'Close',
-    ok: 'OK',
     round: 'Round',
     drew: 'Drew a tile',
     passed: 'Passed',
-    gameStarted: 'Game started',
-    waitingHost: 'Waiting for the host',
+    waitingHost: 'Waiting for the host to start',
     choosePlayers: 'Choose number of players',
     realPlayers: 'Real players',
     botPlayers: 'Robots',
@@ -893,7 +962,30 @@ const STR = {
     setupHint: 'Choose how many real players share this device; the rest will be robots.',
     commentsOnly2v2: 'Comments are enabled in 2 vs 2 mode only',
     sendComment: 'Comment or cancel:',
-    chooseComment: 'Pick a comment or cancel with ✕'
+    chooseComment: 'Pick a comment or cancel with ✕',
+    createOnlineTitle: 'Create online room',
+    createOnlineSub: 'Choose the number of players — a code will be generated',
+    onlineMode2: '2 players',
+    onlineMode2Desc: 'You + 1 friend',
+    onlineMode3: '3 players',
+    onlineMode3Desc: 'You + 2 friends',
+    onlineMode4ffa: '4 players (free-for-all)',
+    onlineMode4ffaDesc: 'Everyone plays for themselves',
+    onlineMode4team: '4 players (2 vs 2)',
+    onlineMode4teamDesc: 'Two teams with comments',
+    connecting: 'Connecting...',
+    creatingRoom: 'Creating room...',
+    waitingForPlayers: 'Waiting for players',
+    startWhenReady: 'Start when everyone is ready',
+    playersCount: '{0} / {1}',
+    clickToSwapTeam: 'Click a player to change their team',
+    needMorePlayers: 'Need more players to start',
+    hostLeft: 'The host left the room',
+    connectionFailed: 'Connection failed',
+    retry: 'Retry',
+    teamA: 'Team A',
+    teamB: 'Team B',
+    botsWillFill: 'Empty seats will be filled with robots'
   }
 };
 
@@ -917,9 +1009,7 @@ function t(key, ...args){
   const dict = STR[LANG] || STR.ar;
   let s = dict[key];
   if (s == null) s = (STR.en[key] != null ? STR.en[key] : key);
-  for (let i = 0; i < args.length; i++){
-    s = s.replace('{' + i + '}', String(args[i]));
-  }
+  for (let i = 0; i < args.length; i++) s = s.replace('{' + i + '}', String(args[i]));
   return s;
 }
 function tComment(key){
@@ -943,10 +1033,12 @@ function applyLang(){
   if (lobby && lobby.code) renderLobby();
   if ($('#joinCode')) $('#joinCode').placeholder = t('enterCode');
   if (S && commentsEnabled) renderCommentBar(!!pendingPlay);
+  const tal = $('#teamALabel'); if (tal) tal.textContent = t('teamA');
+  const tbl = $('#teamBLabel'); if (tbl) tbl.textContent = t('teamB');
 }
 
 /* ============================================================
-   §3  DOMAIN MODEL
+   §3  DOMAIN
    ============================================================ */
 const PIPS = {
   0: [],
@@ -959,11 +1051,7 @@ const PIPS = {
 };
 function makeSet(){
   const out = [];
-  for (let a = 0; a <= 6; a++){
-    for (let b = a; b <= 6; b++){
-      out.push({ a: a, b: b });
-    }
-  }
+  for (let a = 0; a <= 6; a++) for (let b = a; b <= 6; b++) out.push({ a: a, b: b });
   return out;
 }
 function handSum(hand){
@@ -997,7 +1085,7 @@ function addPips(half, n){
 }
 
 /* ============================================================
-   §4  GAME ENGINE
+   §4  ENGINE
    ============================================================ */
 const TARGET_SCORE = 100;
 
@@ -1017,9 +1105,7 @@ const Engine = {
         hand: [], score: 0, connected: true
       });
     }
-    for (let r = 0; r < 7; r++){
-      for (let i = 0; i < numPlayers; i++) players[i].hand.push(pool.pop());
-    }
+    for (let r = 0; r < 7; r++) for (let i = 0; i < numPlayers; i++) players[i].hand.push(pool.pop());
     const state = {
       numPlayers: numPlayers, players: players, boneyard: pool,
       chain: [], leftEnd: null, rightEnd: null,
@@ -1158,9 +1244,7 @@ const Engine = {
     const pool = shuffle(makeSet());
     const n = state.numPlayers;
     for (let i = 0; i < n; i++) state.players[i].hand = [];
-    for (let r = 0; r < 7; r++){
-      for (let i = 0; i < n; i++) state.players[i].hand.push(pool.pop());
-    }
+    for (let r = 0; r < 7; r++) for (let i = 0; i < n; i++) state.players[i].hand.push(pool.pop());
     state.boneyard = pool; state.chain = [];
     state.leftEnd = null; state.rightEnd = null;
     state.passes = 0; state.phase = 'play';
@@ -1236,23 +1320,160 @@ function botChooseMove(state, seat){
 }
 
 /* ============================================================
-   §6  NETWORK
+   §6  NET — PeerJS wrapper (cross-device)
    ============================================================ */
 const Net = {
-  bc: null, code: null, handler: null,
-  open: function(code, handler){
+  peer: null,
+  hostConn: null,
+  clientConns: {},
+  isHost: false,
+  code: null,
+  onMessage: null,
+  onPeerJoin: null,
+  onPeerLeave: null,
+  onError: null,
+  onOpen: null,
+  onClose: null,
+  _ready: false,
+
+  peerIdFor: function(code){ return 'dmnpro-' + code; },
+
+  initHost: function(code, cbs){
     Net.close();
-    Net.code = code; Net.handler = handler;
+    Net.isHost = true;
+    Net.code = code;
+    Net.onMessage = cbs.onMessage || null;
+    Net.onPeerJoin = cbs.onPeerJoin || null;
+    Net.onPeerLeave = cbs.onPeerLeave || null;
+    Net.onError = cbs.onError || null;
+    Net.onOpen = cbs.onOpen || null;
+    Net.onClose = cbs.onClose || null;
+
+    if (typeof Peer === 'undefined'){
+      if (Net.onError) Net.onError({ type: 'lib-missing' });
+      return;
+    }
+
     try {
-      Net.bc = new BroadcastChannel('domino-pro-' + code);
-      Net.bc.onmessage = function(ev){ if (Net.handler) Net.handler(ev.data); };
-    } catch (e){ Net.bc = null; }
-    return !!Net.bc;
+      Net.peer = new Peer(Net.peerIdFor(code), { debug: 0 });
+    } catch (e){
+      if (Net.onError) Net.onError({ type: 'init-failed', error: e });
+      return;
+    }
+
+    Net.peer.on('open', function(id){
+      Net._ready = true;
+      if (Net.onOpen) Net.onOpen(id);
+    });
+
+    Net.peer.on('connection', function(conn){
+      conn.on('open', function(){
+        Net.clientConns[conn.peer] = conn;
+        if (Net.onPeerJoin) Net.onPeerJoin(conn.peer);
+      });
+      conn.on('data', function(data){
+        if (Net.onMessage) Net.onMessage(data, conn.peer);
+      });
+      conn.on('close', function(){
+        delete Net.clientConns[conn.peer];
+        if (Net.onPeerLeave) Net.onPeerLeave(conn.peer);
+      });
+      conn.on('error', function(err){ console.warn('[conn error]', err); });
+    });
+
+    Net.peer.on('error', function(err){
+      console.warn('[peer error]', err.type, err);
+      if (Net.onError) Net.onError(err);
+    });
+
+    Net.peer.on('disconnected', function(){
+      try { Net.peer.reconnect(); } catch(e){}
+    });
   },
-  send: function(msg){ if (Net.bc){ try { Net.bc.postMessage(msg); } catch(e){} } },
+
+  initClient: function(code, cbs){
+    Net.close();
+    Net.isHost = false;
+    Net.code = code;
+    Net.onMessage = cbs.onMessage || null;
+    Net.onError = cbs.onError || null;
+    Net.onOpen = cbs.onOpen || null;
+    Net.onClose = cbs.onClose || null;
+
+    if (typeof Peer === 'undefined'){
+      if (Net.onError) Net.onError({ type: 'lib-missing' });
+      return;
+    }
+
+    try {
+      Net.peer = new Peer({ debug: 0 });
+    } catch (e){
+      if (Net.onError) Net.onError({ type: 'init-failed', error: e });
+      return;
+    }
+
+    Net.peer.on('open', function(){
+      Net._ready = true;
+      const hostId = Net.peerIdFor(code);
+      const conn = Net.peer.connect(hostId, { reliable: true });
+      Net.hostConn = conn;
+
+      conn.on('open', function(){
+        if (Net.onOpen) Net.onOpen();
+      });
+      conn.on('data', function(data){
+        if (Net.onMessage) Net.onMessage(data, 'host');
+      });
+      conn.on('close', function(){
+        if (Net.onClose) Net.onClose();
+      });
+      conn.on('error', function(err){ console.warn('[conn error]', err); });
+    });
+
+    Net.peer.on('error', function(err){
+      console.warn('[peer error]', err.type, err);
+      if (Net.onError) Net.onError(err);
+    });
+
+    Net.peer.on('disconnected', function(){
+      try { Net.peer.reconnect(); } catch(e){}
+    });
+  },
+
+  send: function(msg){
+    if (Net.isHost){
+      for (const id in Net.clientConns){
+        try { Net.clientConns[id].send(msg); } catch(e){}
+      }
+    } else {
+      if (Net.hostConn && Net.hostConn.open){
+        try { Net.hostConn.send(msg); } catch(e){}
+      }
+    }
+  },
+
+  sendTo: function(clientId, msg){
+    if (!Net.isHost) return;
+    const conn = Net.clientConns[clientId];
+    if (conn){
+      try { conn.send(msg); } catch(e){}
+    }
+  },
+
   close: function(){
-    if (Net.bc){ try { Net.bc.close(); } catch(e){} Net.bc = null; }
-    Net.handler = null;
+    if (Net.peer){
+      try { Net.peer.destroy(); } catch(e){}
+      Net.peer = null;
+    }
+    Net.hostConn = null;
+    Net.clientConns = {};
+    Net.onMessage = null;
+    Net.onPeerJoin = null;
+    Net.onPeerLeave = null;
+    Net.onError = null;
+    Net.onOpen = null;
+    Net.onClose = null;
+    Net._ready = false;
   }
 };
 
@@ -1271,12 +1492,9 @@ let botTimer = null;
 let privacyBlocking = false;
 let privacyBlockingSeat = -1;
 let drag = null;
-
-/* pending play (2v2 mode: tile stays in hand until comment/x) */
-let pendingPlay = null; // { tileIdx, side, seat }
+let pendingPlay = null;
 
 let lobby = null;
-let lastHostPing = 0;
 let connTimer = null;
 let joinTimeout = null;
 
@@ -1289,7 +1507,7 @@ const PLAYER_ID = (function(){
   let id = null;
   try { id = localStorage.getItem('domino.pid'); } catch(e){}
   if (!id){
-    id = uid(10);
+    id = uid(12);
     try { localStorage.setItem('domino.pid', id); } catch(e){}
   }
   return id;
@@ -1320,7 +1538,10 @@ const D = {
   connDot: $('#connDot'),
   roomCodeText: $('#roomCodeText'),
   lobbyPlayers: $('#lobbyPlayers'),
-  commentBar: $('#commentBar')
+  commentBar: $('#commentBar'),
+  teamColumns: $('#teamColumns'),
+  teamAList: $('#teamAList'),
+  teamBList: $('#teamBList')
 };
 
 function showScreen(name){
@@ -1335,7 +1556,7 @@ function toast(msg, kind){
   D.toast.textContent = msg;
   D.toast.className = 'toast show' + (kind ? ' ' + kind : '');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(function(){ D.toast.className = 'toast'; }, 2200);
+  toastTimer = setTimeout(function(){ D.toast.className = 'toast'; }, 2400);
 }
 
 /* ============================================================
@@ -1361,7 +1582,6 @@ D.modalMask.addEventListener('click', function(e){
    §11  DYNAMIC BOARD SCALE
    ============================================================ */
 let boardAdjustRaf = null;
-
 function scheduleAdjustBoard(){
   if (boardAdjustRaf) cancelAnimationFrame(boardAdjustRaf);
   boardAdjustRaf = requestAnimationFrame(function(){
@@ -1369,53 +1589,32 @@ function scheduleAdjustBoard(){
     adjustBoardScale();
   });
 }
-
 function getCSSVar(name, fallback){
   const v = getComputedStyle(document.documentElement).getPropertyValue(name);
   const n = parseFloat(v);
   return isNaN(n) ? fallback : n;
 }
-
 function adjustBoardScale(){
   const chain = D.chain;
   const scroll = D.boardScroll;
   if (!chain || !scroll) return;
-
   const tiles = chain.querySelectorAll('.tile');
-  if (tiles.length === 0){
-    chain.style.removeProperty('--board-ts');
-    return;
-  }
-
-  // Get max/min sizes from :root
+  if (tiles.length === 0){ chain.style.removeProperty('--board-ts'); return; }
   const maxTs = getCSSVar('--board-max-ts', 44);
   const minTs = getCSSVar('--board-min-ts', 14);
-
-  // Available width inside the board (minus padding)
   const availW = scroll.clientWidth - 48;
   const availH = scroll.clientHeight - 24;
   if (availW <= 0 || availH <= 0) return;
-
-  // Step 1: try at max size
   chain.style.setProperty('--board-ts', maxTs + 'px');
   void chain.offsetWidth;
-
   let w = chain.getBoundingClientRect().width;
   let h = chain.getBoundingClientRect().height;
-
-  if (w <= availW && h <= availH){
-    return; // fits at max size
-  }
-
-  // Step 2: compute scale ratio
+  if (w <= availW && h <= availH) return;
   const ratioW = availW / w;
   const ratioH = h > 0 ? availH / h : 1;
   const ratio = Math.min(ratioW, ratioH, 1);
-
   let newTs = Math.max(minTs, Math.floor(maxTs * ratio));
   chain.style.setProperty('--board-ts', newTs + 'px');
-
-  // Step 3: one refinement iteration
   void chain.offsetWidth;
   w = chain.getBoundingClientRect().width;
   if (w > availW){
@@ -1448,6 +1647,7 @@ function renderTop(){
     const card = el('div', 'opp-card');
     card.dataset.seat = String(i);
     if (S.turn === i && S.phase === 'play') card.classList.add('active');
+    if (S.numPlayers === 4 && Engine.isTeammate(S, i, viewerSeat) && i !== viewerSeat) card.classList.add('teammate');
 
     const head = el('div', 'opp-head');
     const av = el('div', 'avatar', p.name.charAt(0).toUpperCase());
@@ -1521,42 +1721,31 @@ function renderMeBar(){
 function renderBanner(){
   const b = D.turnBanner;
   if (!S || S.phase !== 'play'){ b.classList.remove('show'); return; }
-  if (pendingPlay){
-    b.textContent = t('chooseComment');
-    b.classList.add('show');
-    return;
-  }
+  if (pendingPlay){ b.textContent = t('chooseComment'); b.classList.add('show'); return; }
   if (S.turn === viewerSeat){ b.textContent = t('yourTurn'); b.classList.add('show'); }
   else { b.textContent = t('turnOf', S.players[S.turn].name); b.classList.add('show'); }
 }
 
 /* ============================================================
-   §13  COMMENTS + CANCEL
+   §13  COMMENTS
    ============================================================ */
 function renderCommentBar(withCancel){
   const bar = D.commentBar;
   bar.innerHTML = '';
   if (!commentsEnabled){ bar.classList.remove('show'); return; }
-
   const title = el('span', 'ctitle', t('sendComment'));
   bar.appendChild(title);
-
   for (let i = 0; i < COMMENT_KEYS.length; i++){
     const k = COMMENT_KEYS[i];
     const b = el('button', 'cbtn' + (k === 'ktol' ? ' hot' : ''), tComment(k));
     b.dataset.ck = k;
     b.addEventListener('click', function(ev){
       ev.stopPropagation();
-      if (pendingPlay){
-        confirmPendingPlay(k);
-      } else {
-        sendComment(commentPendingSeat, k);
-      }
+      if (pendingPlay) confirmPendingPlay(k);
+      else sendComment(commentPendingSeat, k);
     });
     bar.appendChild(b);
   }
-
-  // Cancel (X) button — only when there's a pending play
   if (withCancel){
     const xb = el('button', 'cbtn cancel', '✕');
     xb.title = t('cancel');
@@ -1567,66 +1756,48 @@ function renderCommentBar(withCancel){
     bar.appendChild(xb);
   }
 }
-
 function showCommentBar(seat, withCancel){
   if (!commentsEnabled) return;
   commentPendingSeat = seat;
   renderCommentBar(!!withCancel);
   D.commentBar.classList.add('show');
   clearTimeout(commentBarTimer);
-  if (!withCancel){
-    // auto-hide only when not waiting for user decision
-    commentBarTimer = setTimeout(hideCommentBar, 4200);
-  }
+  if (!withCancel) commentBarTimer = setTimeout(hideCommentBar, 4200);
 }
-
 function hideCommentBar(){
   D.commentBar.classList.remove('show');
   clearTimeout(commentBarTimer);
   commentBarTimer = null;
 }
-
 function sendComment(seat, key){
   if (!S || seat < 0) return;
   hideCommentBar();
-  if (mode === 'online' && !isHost){
-    Net.send({ t:'comment', from: PLAYER_ID, seat: seat, key: key });
-  } else if (mode === 'online' && isHost){
-    broadcastComment(seat, key);
+  if (mode === 'online'){
+    if (isHost) broadcastComment(seat, key);
+    else Net.send({ t:'comment', from: PLAYER_ID, seat: seat, key: key });
   }
   showCommentBubble(seat, key);
 }
-
 function broadcastComment(seat, key){
-  if (!lobby) return;
-  for (let i = 0; i < lobby.members.length; i++){
-    const m = lobby.members[i];
-    if (m.id === PLAYER_ID) continue;
-    Net.send({ t:'comment', from: PLAYER_ID, seat: seat, key: key });
-  }
+  Net.send({ t:'comment', seat: seat, key: key });
 }
-
 function showCommentBubble(seat, key){
   let hostEl = null;
   const card = $('.opp-card[data-seat="' + seat + '"]');
   if (card) hostEl = card;
   else if (seat === viewerSeat) hostEl = D.hand.closest('.hand-area');
   if (!hostEl) return;
-
   const old = hostEl.querySelector('.comment-bubble');
   if (old) old.remove();
-
   const bubble = el('div', 'comment-bubble', tComment(key));
   hostEl.style.position = hostEl.style.position || 'relative';
   hostEl.appendChild(bubble);
-
   clearTimeout(activeCommentTimers[seat]);
   activeCommentTimers[seat] = setTimeout(function(){
     bubble.classList.add('fadeout');
     setTimeout(function(){ bubble.remove(); }, 460);
   }, 2400);
 }
-
 function maybeBotComment(seat){
   if (!commentsEnabled) return;
   if (!S) return;
@@ -1733,12 +1904,11 @@ function scheduleBot(){
   if (!S || S.phase !== 'play') return;
   if (mode === 'online' && !isHost) return;
   if (privacyBlocking) return;
-  if (pendingPlay) return; // don't advance while user is deciding
+  if (pendingPlay) return;
   const p = S.players[S.turn];
   if (!p || !p.isBot) return;
   botTimer = setTimeout(doBotMove, 620 + rnd(420));
 }
-
 function doBotMove(){
   if (!S || S.phase !== 'play') return;
   if (mode === 'online' && !isHost) return;
@@ -1764,28 +1934,22 @@ function doBotMove(){
    ============================================================ */
 function isMyTurnOnline(){ return S && S.turn === mySeat && S.phase === 'play'; }
 
-/* Entry point: called by drag-end and by tap */
 function humanPlay(tileIdx, side){
   if (!S || S.phase !== 'play') return;
   if (S.turn !== viewerSeat){ toast(t('notYourTurn'), 'err'); return; }
-  if (pendingPlay) return; // ignore new plays while deciding
+  if (pendingPlay) return;
 
-  // In 2v2 with comments: stage the play, don't apply yet
   if (commentsEnabled && !privacyBlocking){
     pendingPlay = { tileIdx: tileIdx, side: side, seat: viewerSeat };
-    // highlight the tile
     const node = $('.hand .tile[data-idx="' + tileIdx + '"]');
     if (node) node.classList.add('picked');
     render();
     showCommentBar(viewerSeat, true);
     return;
   }
-
-  // Normal flow (no comment stage)
   applyHumanPlay(tileIdx, side);
 }
 
-/* Actually apply the play (used after comment confirm or cancel) */
 function applyHumanPlay(tileIdx, side){
   if (mode === 'online' && !isHost){
     Net.send({ t:'action', from: PLAYER_ID, action: { type:'play', tileIdx: tileIdx, side: side } });
@@ -1802,26 +1966,20 @@ function applyHumanPlay(tileIdx, side){
   afterChange();
 }
 
-/* Confirm: user picked a comment → apply play + send comment */
 function confirmPendingPlay(commentKey){
   if (!pendingPlay) return;
   const p = pendingPlay;
   pendingPlay = null;
   hideCommentBar();
-
   applyHumanPlay(p.tileIdx, p.side);
-
   if (commentKey){
-    if (mode === 'online' && !isHost){
-      Net.send({ t:'comment', from: PLAYER_ID, seat: p.seat, key: commentKey });
-    } else if (mode === 'online' && isHost){
-      broadcastComment(p.seat, commentKey);
+    if (mode === 'online'){
+      if (isHost) broadcastComment(p.seat, commentKey);
+      else Net.send({ t:'comment', from: PLAYER_ID, seat: p.seat, key: commentKey });
     }
     showCommentBubble(p.seat, commentKey);
   }
 }
-
-/* Cancel: user pressed X → apply play without comment */
 function cancelPendingPlay(){
   if (!pendingPlay) return;
   const p = pendingPlay;
@@ -1841,7 +1999,6 @@ function humanDraw(){
   const r = Engine.applyDraw(S, viewerSeat);
   if (r.ok){ toast(t('drew'), 'ok'); afterChange(); }
 }
-
 function humanPass(){
   if (!S || S.phase !== 'play') return;
   if (S.turn !== viewerSeat) return;
@@ -1897,19 +2054,16 @@ function computeDropSide(clientX){
   const midX = (firstRect.left + lastRect.right) / 2;
   return (clientX < midX) ? 'left' : 'right';
 }
-
 function clearDropTargets(){
   const old = D.chain.querySelectorAll('.tile.drop-target');
   for (let i = 0; i < old.length; i++) old[i].classList.remove('drop-target');
 }
-
 function updateDropTarget(clientX){
   clearDropTargets();
   if (!drag) return;
   const tiles = D.chain.querySelectorAll('.tile');
   if (tiles.length === 0) return;
   if (drag.sides.length === 0) return;
-
   if (drag.sides.length === 1){
     const idx = (drag.sides[0] === 'left') ? 0 : tiles.length - 1;
     tiles[idx].classList.add('drop-target');
@@ -1925,27 +2079,23 @@ function updateDropTarget(clientX){
     tiles[idx].classList.add('drop-target');
   }
 }
-
 function updateGhostHint(){
   if (!drag || !drag.ghost) return;
   let color = '#37c978';
-  if (drag.sides.length === 0){
-    color = '#e05555';
-  } else if (drag.sides.length === 2){
+  if (drag.sides.length === 0) color = '#e05555';
+  else if (drag.sides.length === 2){
     const side = computeDropSide(drag.x);
     color = (drag.sides.indexOf(side) !== -1) ? '#37c978' : '#e05555';
   }
   drag.ghost.style.boxShadow =
     '0 18px 40px rgba(0,0,0,.6), 0 0 0 3px ' + color + ', 0 0 24px ' + color + '55';
 }
-
 function onHandPointerDown(e){
   if (!S || S.phase !== 'play') return;
   if (S.turn !== viewerSeat) return;
   if (privacyBlocking) return;
-  if (pendingPlay) return; // locked while deciding
+  if (pendingPlay) return;
   if (mode === 'online' && !isHost && !isMyTurnOnline()) return;
-
   const tileEl = e.target.closest ? e.target.closest('.hand .tile') : null;
   if (!tileEl) return;
   const idx = parseInt(tileEl.dataset.idx, 10);
@@ -1954,7 +2104,6 @@ function onHandPointerDown(e){
   const tile = me.hand[idx];
   if (!tile) return;
   const sides = Engine.legalSides(S, tile);
-
   e.preventDefault();
   drag = {
     idx: idx, el: tileEl, tile: tile, sides: sides,
@@ -1965,7 +2114,6 @@ function onHandPointerDown(e){
   window.addEventListener('pointerup', onHandPointerUp);
   window.addEventListener('pointercancel', onHandPointerUp);
 }
-
 function startGhost(){
   const rect = drag.el.getBoundingClientRect();
   const g = makeTile(drag.tile.a, drag.tile.b, { horizontal: false });
@@ -2005,12 +2153,10 @@ function onHandPointerUp(e){
   window.removeEventListener('pointerup', onHandPointerUp);
   window.removeEventListener('pointercancel', onHandPointerUp);
   clearDropTargets();
-
   if (!drag) return;
   const d = drag; drag = null;
   if (d.ghost) d.ghost.remove();
   if (d.el) d.el.style.opacity = '';
-
   if (d.active){
     if (!d.sides || d.sides.length === 0){ render(); return; }
     let side;
@@ -2024,7 +2170,6 @@ function onHandPointerUp(e){
     handleTap(d.idx, d.sides);
   }
 }
-
 function handleTap(idx, sides){
   if (!sides || sides.length === 0){ toast(t('noMove')); return; }
   if (sides.length === 1){ humanPlay(idx, sides[0]); return; }
@@ -2035,38 +2180,29 @@ function handleTap(idx, sides){
 }
 
 /* ============================================================
-   §18  SETUP MODAL
+   §18  LOCAL SETUP MODAL
    ============================================================ */
 function showSetupModal(modeKey){
   const totalPlayers = (modeKey === '1v1') ? 2 : 4;
   const is2v2 = (modeKey === '2v2');
   let state = { modeKey: modeKey, total: totalPlayers, humans: 1, is2v2: is2v2 };
-
   function renderSetup(){
     const bots = state.total - state.humans;
     let commentNote = '';
-    if (is2v2){
-      commentNote = '<p class="setup-info" style="color:#ffd976;">💬 ' + t('commentsOnly2v2') + '</p>';
-    }
+    if (is2v2) commentNote = '<p class="setup-info" style="color:#ffd976;">💬 ' + t('commentsOnly2v2') + '</p>';
     const html =
       '<h3>' + t('choosePlayers') + '</h3>' +
       '<p class="sub">' + t('setupHint') + '</p>' +
-      '<div class="setup-row">' +
-        '<label>' + t('realPlayers') + '</label>' +
+      '<div class="setup-row"><label>' + t('realPlayers') + '</label>' +
         '<div class="setup-ctrl">' +
           '<button data-act="minus" ' + (state.humans <= 1 ? 'disabled' : '') + '>−</button>' +
           '<span class="val">' + state.humans + '</span>' +
           '<button data-act="plus" ' + (state.humans >= state.total ? 'disabled' : '') + '>+</button>' +
-        '</div>' +
-      '</div>' +
-      '<div class="setup-row">' +
-        '<label>' + t('botPlayers') + '</label>' +
-        '<div class="setup-ctrl"><span class="val" style="color:#9fb8bd;">' + bots + '</span></div>' +
-      '</div>' +
-      '<div class="setup-row">' +
-        '<label>' + t('totalPlayers') + '</label>' +
-        '<div class="setup-ctrl"><span class="val">' + state.total + '</span></div>' +
-      '</div>' +
+        '</div></div>' +
+      '<div class="setup-row"><label>' + t('botPlayers') + '</label>' +
+        '<div class="setup-ctrl"><span class="val" style="color:#9fb8bd;">' + bots + '</span></div></div>' +
+      '<div class="setup-row"><label>' + t('totalPlayers') + '</label>' +
+        '<div class="setup-ctrl"><span class="val">' + state.total + '</span></div></div>' +
       commentNote +
       '<div class="row" style="margin-top:10px;">' +
         '<button class="btn primary" id="setupStart">' + t('startGame') + '</button>' +
@@ -2093,7 +2229,7 @@ function showSetupModal(modeKey){
 }
 
 /* ============================================================
-   §19  LOCAL MODE STARTERS
+   §19  START LOCAL BOT GAME
    ============================================================ */
 function startBotGameWithSetup(modeKey, humansCount, botsCount){
   mode = 'bots';
@@ -2105,15 +2241,13 @@ function startBotGameWithSetup(modeKey, humansCount, botsCount){
   const total = humansCount + botsCount;
   const is2v2 = (modeKey === '2v2');
   commentsEnabled = is2v2;
-
   let teams = null;
   if (total === 4) teams = [0, 1, 0, 1];
 
   const humans = [];
   for (let i = 0; i < humansCount; i++) humans.push(i);
   humanSeats = humans.slice();
-  mySeat = 0;
-  viewerSeat = 0;
+  mySeat = 0; viewerSeat = 0;
 
   const botSeats = [];
   const names = [];
@@ -2129,12 +2263,7 @@ function startBotGameWithSetup(modeKey, humansCount, botsCount){
     }
   }
 
-  S = Engine.newGame({
-    numPlayers: total,
-    botSeats: botSeats,
-    names: names,
-    teams: teams
-  });
+  S = Engine.newGame({ numPlayers: total, botSeats: botSeats, names: names, teams: teams });
   roundModalShown = -1;
   matchModalShown = false;
   commentPendingSeat = -1;
@@ -2147,168 +2276,440 @@ function startBotGameWithSetup(modeKey, humansCount, botsCount){
   saveSession();
 }
 
-function leaveToMenu(){
-  clearTimeout(botTimer); botTimer = null;
-  hideCommentBar();
-  Object.keys(activeCommentTimers).forEach(function(k){
-    clearTimeout(activeCommentTimers[k]);
-    delete activeCommentTimers[k];
+/* ============================================================
+   §20  ONLINE — CREATE ROOM FLOW
+   ============================================================ */
+function showCreateRoomDialog(){
+  const html =
+    '<h3>' + t('createOnlineTitle') + '</h3>' +
+    '<p class="sub">' + t('createOnlineSub') + '</p>' +
+    '<div class="online-modes">' +
+      '<button class="online-mode-btn" data-count="2" data-teams="0">' +
+        '<span class="big">2</span>' +
+        '<span class="info"><b>' + t('onlineMode2') + '</b><span>' + t('onlineMode2Desc') + '</span></span>' +
+      '</button>' +
+      '<button class="online-mode-btn" data-count="3" data-teams="0">' +
+        '<span class="big">3</span>' +
+        '<span class="info"><b>' + t('onlineMode3') + '</b><span>' + t('onlineMode3Desc') + '</span></span>' +
+      '</button>' +
+      '<button class="online-mode-btn" data-count="4" data-teams="0">' +
+        '<span class="big">4</span>' +
+        '<span class="info"><b>' + t('onlineMode4ffa') + '</b><span>' + t('onlineMode4ffaDesc') + '</span></span>' +
+      '</button>' +
+      '<button class="online-mode-btn" data-count="4" data-teams="1">' +
+        '<span class="big">2v2</span>' +
+        '<span class="info"><b>' + t('onlineMode4team') + '</b><span>' + t('onlineMode4teamDesc') + '</span></span>' +
+      '</button>' +
+    '</div>' +
+    '<div class="row" style="margin-top:14px;">' +
+      '<button class="btn ghost" id="createCancel">' + t('cancel') + '</button>' +
+    '</div>';
+  openModal(html);
+  $$('.online-mode-btn', D.modalBox).forEach(function(b){
+    b.addEventListener('click', function(){
+      const count = parseInt(b.getAttribute('data-count'), 10);
+      const teams = b.getAttribute('data-teams') === '1';
+      closeModal();
+      createOnlineRoom(count, teams);
+    });
   });
-  if (mode === 'online'){
-    Net.send({ t:'bye', from: PLAYER_ID });
-    Net.close();
-  }
-  S = null; lobby = null; roomCode = null;
-  drag = null; pendingPlay = null;
-  privacyBlocking = false;
-  commentsEnabled = false;
-  D.privacyMask.classList.remove('show');
-  closeModal();
-  connTimerStop();
-  clearSession();
-  D.connDot.classList.add('hidden');
-  showScreen('menu');
+  const c = $('#createCancel');
+  if (c) c.addEventListener('click', closeModal);
 }
 
-/* ============================================================
-   §20  ONLINE MODE
-   ============================================================ */
-function createRoom(){
+function createOnlineRoom(numPlayers, teamsMode){
   mode = 'online';
   isHost = true;
   roomCode = uid(6);
-  mySeat = 0; viewerSeat = 0; humanSeats = [0];
+  mySeat = 0;
+  viewerSeat = 0;
+  humanSeats = [0];
+
   lobby = {
-    code: roomCode, maxPlayers: 4,
-    members: [{ id: PLAYER_ID, name: t('you'), seat: 0, host: true }],
+    code: roomCode,
+    maxPlayers: numPlayers,
+    teamsMode: !!teamsMode,
+    members: [{
+      id: PLAYER_ID,
+      name: t('you'),
+      seat: 0,
+      host: true,
+      team: 0
+    }],
     started: false
   };
-  Net.open(roomCode, handleNetMessage);
+
+  // Show lobby immediately with "creating" state
   D.roomCodeText.textContent = roomCode;
   renderLobby();
   showScreen('lobby');
-  saveSession();
-}
-function joinRoom(code){
-  code = String(code || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-  if (code.length !== 6){ toast(t('roomNotFound'), 'err'); return; }
-  mode = 'online'; isHost = false; roomCode = code;
-  lobby = { code: code, maxPlayers: 4, members: [], started: false };
-  Net.open(code, handleNetMessage);
-  D.roomCodeText.textContent = code;
-  renderLobby();
-  showScreen('lobby');
-  Net.send({ t:'hello', from: PLAYER_ID, name: t('you'), rejoin: false });
-  clearTimeout(joinTimeout);
-  joinTimeout = setTimeout(function(){
-    if (!lobby || !lobby.members || lobby.members.length <= 1){
-      if (mode === 'online' && !isHost){ toast(t('roomNotFound'), 'err'); leaveToMenu(); }
-    }
-  }, 2600);
-  saveSession();
-}
-function renderLobby(){
-  if (!lobby) return;
-  const box = D.lobbyPlayers;
-  box.innerHTML = '';
-  const max = lobby.maxPlayers;
-  for (let i = 0; i < max; i++){
-    const m = (lobby.members || []).filter(function(x){ return x.seat === i; })[0];
-    const item = el('div', 'pl-item' + (m ? '' : ' empty'));
-    const av = el('div', 'avatar', m ? m.name.charAt(0).toUpperCase() : '?');
-    const nm = el('div', 'pl-name', m ? m.name : t('emptySeat'));
-    item.appendChild(av); item.appendChild(nm);
-    if (m){
-      if (m.host) item.appendChild(el('span', 'tag host', t('host')));
-      else item.appendChild(el('span', 'tag', t('guest')));
-    } else {
-      item.appendChild(el('span', 'tag bot', t('bot')));
-    }
-    box.appendChild(item);
-  }
-  const startBtn = $('#btnStartGame');
-  if (isHost){ startBtn.disabled = false; startBtn.textContent = t('startGame'); }
-  else { startBtn.disabled = true; startBtn.textContent = t('waitingHost'); }
-}
-function handleNetMessage(msg){
-  if (!msg || !msg.t) return;
-  if (isHost){
-    if (msg.t === 'hello') handleHello(msg);
-    else if (msg.t === 'action') handleRemoteAction(msg);
-    else if (msg.t === 'comment') handleRemoteComment(msg);
-    else if (msg.t === 'bye') handleBye(msg);
-    else if (msg.t === 'ping'){ lastHostPing = Date.now(); Net.send({ t:'pong', from: PLAYER_ID }); }
-  } else {
-    if (msg.t === 'lobby'){
-      lobby = msg.lobby;
-      if (lobby && lobby.members){
-        const me = lobby.members.filter(function(m){ return m.id === PLAYER_ID; })[0];
-        if (me){ mySeat = me.seat; viewerSeat = me.seat; }
+  toast(t('creatingRoom'));
+
+  Net.initHost(roomCode, {
+    onOpen: function(){
+      toast(t('reconnected'), 'ok');
+      D.connDot.classList.remove('hidden', 'off', 'wait');
+      D.connDot.classList.add('hidden'); // host doesn't need dot
+    },
+    onPeerJoin: function(peerId){
+      // Wait for hello
+    },
+    onPeerLeave: function(peerId){
+      handleHostPeerLeave(peerId);
+    },
+    onMessage: function(msg, fromId){
+      handleHostMessage(msg, fromId);
+    },
+    onError: function(err){
+      console.warn('peer error', err);
+      if (err && err.type === 'unavailable-id'){
+        toast('Room code already in use. Try again.', 'err');
+        leaveToMenu();
+      } else if (err && err.type !== 'peer-unavailable'){
+        // ignore transient errors
       }
-      renderLobby();
-    } else if (msg.t === 'state'){
-      lastHostPing = Date.now();
-      S = msg.state;
-      if (msg.seat != null){ mySeat = msg.seat; viewerSeat = msg.seat; humanSeats = [msg.seat]; }
-      if (S && S.numPlayers === 4 && S.players[0].team === S.players[2].team && S.players[1].team === S.players[3].team){
-        commentsEnabled = true;
-      } else { commentsEnabled = false; }
-      if (!S) return;
-      if (S.phase === 'play'){ roundModalShown = -1; matchModalShown = false; }
-      showScreen('game');
-      D.connDot.classList.remove('off');
-      D.connDot.classList.remove('hidden');
-      renderCommentBar(!!pendingPlay);
-      tick();
-    } else if (msg.t === 'full'){ toast(t('roomFull'), 'err'); leaveToMenu(); }
-    else if (msg.t === 'comment'){
-      if (msg.seat != null && msg.key) showCommentBubble(msg.seat, msg.key);
-    } else if (msg.t === 'kick'){ toast(t('roomNotFound'), 'err'); leaveToMenu(); }
+    }
+  });
+
+  saveSession();
+}
+
+function handleHostPeerLeave(peerId){
+  if (!lobby) return;
+  const idx = lobby.members.findIndex(function(m){ return m.id === peerId; });
+  if (idx >= 0){
+    lobby.members.splice(idx, 1);
+    broadcastLobby();
+    toast(t('leftRoom', '') || 'Player left');
   }
 }
-function handleHello(msg){
+
+function handleHostMessage(msg, fromId){
+  if (!msg || !msg.t) return;
+
+  if (msg.t === 'hello'){
+    handleHello(msg, fromId);
+  } else if (msg.t === 'action'){
+    handleRemoteAction(msg, fromId);
+  } else if (msg.t === 'comment'){
+    if (msg.seat != null && msg.key){
+      broadcastComment(msg.seat, msg.key);
+      showCommentBubble(msg.seat, msg.key);
+    }
+  } else if (msg.t === 'ping'){
+    Net.sendTo(fromId, { t: 'pong' });
+  } else if (msg.t === 'bye'){
+    handleHostPeerLeave(fromId);
+  }
+}
+
+function handleHello(msg, fromId){
   if (!lobby) return;
+
+  // if game already started, try to reconnect existing member
   if (lobby.started){
-    const existing = lobby.members.filter(function(m){ return m.id === msg.from; })[0];
+    const existing = lobby.members.filter(function(m){ return m.id === fromId; })[0];
     if (existing){
-      Net.send({ t:'state', state: sanitizeState(S, existing.seat), seat: existing.seat });
-    } else { Net.send({ t:'full' }); }
+      Net.sendTo(fromId, { t: 'state', state: sanitizeState(S, existing.seat), seat: existing.seat });
+      Net.sendTo(fromId, { t: 'lobby', lobby: lobby });
+    } else {
+      Net.sendTo(fromId, { t: 'full' });
+    }
     return;
   }
-  const existing = lobby.members.filter(function(m){ return m.id === msg.from; })[0];
-  if (existing){ Net.send({ t:'lobby', lobby: lobby }); return; }
-  if (lobby.members.length >= lobby.maxPlayers){ Net.send({ t:'full' }); return; }
+
+  // Existing member? Update name and re-send lobby
+  const existing = lobby.members.filter(function(m){ return m.id === fromId; })[0];
+  if (existing){
+    existing.name = msg.name || existing.name;
+    Net.sendTo(fromId, { t: 'lobby', lobby: lobby });
+    return;
+  }
+
+  // Full?
+  if (lobby.members.length >= lobby.maxPlayers){
+    Net.sendTo(fromId, { t: 'full' });
+    return;
+  }
+
+  // Find empty seat
   let seat = 0;
   const used = {};
   for (let i = 0; i < lobby.members.length; i++) used[lobby.members[i].seat] = true;
   while (used[seat]) seat++;
-  lobby.members.push({ id: msg.from, name: msg.name || ('P' + (seat + 1)), seat: seat, host: false });
-  Net.send({ t:'lobby', lobby: lobby });
+
+  // Default team: even seat -> 0, odd -> 1
+  const team = (lobby.teamsMode) ? (seat % 2) : 0;
+
+  lobby.members.push({
+    id: fromId,
+    name: msg.name || ('P' + (seat + 1)),
+    seat: seat,
+    host: false,
+    team: team
+  });
+
+  broadcastLobby();
+  toast('Player joined: ' + (msg.name || ('P' + (seat + 1))), 'ok');
 }
-function handleBye(msg){
+
+function broadcastLobby(){
+  Net.send({ t: 'lobby', lobby: lobby });
+  renderLobby();
+}
+
+/* ============================================================
+   §21  ONLINE — JOIN ROOM FLOW
+   ============================================================ */
+function joinRoom(code){
+  code = String(code || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (code.length !== 6){ toast(t('roomNotFound'), 'err'); return; }
+
+  mode = 'online';
+  isHost = false;
+  roomCode = code;
+  mySeat = 0;
+  viewerSeat = 0;
+  humanSeats = [];
+
+  lobby = { code: code, maxPlayers: 4, teamsMode: false, members: [], started: false };
+
+  D.roomCodeText.textContent = code;
+  renderLobby();
+  showScreen('lobby');
+  D.connDot.classList.remove('hidden');
+  D.connDot.classList.add('wait');
+  toast(t('connecting'));
+
+  Net.initClient(code, {
+    onOpen: function(){
+      D.connDot.classList.remove('wait', 'off');
+      Net.send({ t: 'hello', from: PLAYER_ID, name: t('you') });
+    },
+    onMessage: function(msg){
+      handleClientMessage(msg);
+    },
+    onError: function(err){
+      if (err && err.type === 'peer-unavailable'){
+        toast(t('roomNotFound'), 'err');
+        leaveToMenu();
+      } else if (err && err.type === 'lib-missing'){
+        toast('PeerJS failed to load.', 'err');
+        leaveToMenu();
+      }
+    },
+    onClose: function(){
+      D.connDot.classList.add('off');
+      toast(t('hostLeft'), 'err');
+      setTimeout(leaveToMenu, 1500);
+    }
+  });
+
+  clearTimeout(joinTimeout);
+  joinTimeout = setTimeout(function(){
+    if (!S && lobby && lobby.members.length === 0){
+      toast(t('roomNotFound'), 'err');
+      leaveToMenu();
+    }
+  }, 7000);
+
+  saveSession();
+}
+
+function handleClientMessage(msg){
+  if (!msg || !msg.t) return;
+
+  if (msg.t === 'lobby'){
+    lobby = msg.lobby;
+    if (lobby && lobby.members){
+      const me = lobby.members.filter(function(m){ return m.id === PLAYER_ID; })[0];
+      if (me){
+        mySeat = me.seat;
+        viewerSeat = me.seat;
+        humanSeats = [me.seat];
+      }
+    }
+    renderLobby();
+  } else if (msg.t === 'state'){
+    S = msg.state;
+    if (msg.seat != null){
+      mySeat = msg.seat;
+      viewerSeat = msg.seat;
+      humanSeats = [msg.seat];
+    }
+    if (S && S.numPlayers === 4 &&
+        S.players[0].team === S.players[2].team &&
+        S.players[1].team === S.players[3].team){
+      commentsEnabled = true;
+    } else {
+      commentsEnabled = false;
+    }
+    if (!S) return;
+    if (S.phase === 'play'){ roundModalShown = -1; matchModalShown = false; }
+    D.connDot.classList.remove('hidden', 'off', 'wait');
+    showScreen('game');
+    renderCommentBar(!!pendingPlay);
+    tick();
+  } else if (msg.t === 'full'){
+    toast(t('roomFull'), 'err');
+    leaveToMenu();
+  } else if (msg.t === 'comment'){
+    if (msg.seat != null && msg.key) showCommentBubble(msg.seat, msg.key);
+  } else if (msg.t === 'pong'){
+    // heartbeat ok
+  }
+}
+
+/* ============================================================
+   §22  LOBBY RENDER
+   ============================================================ */
+function renderLobby(){
   if (!lobby) return;
-  const idx = lobby.members.findIndex(function(m){ return m.id === msg.from; });
-  if (idx >= 0){ lobby.members.splice(idx, 1); Net.send({ t:'lobby', lobby: lobby }); }
+
+  const box = D.lobbyPlayers;
+  const teamCols = D.teamColumns;
+  const aList = D.teamAList;
+  const bList = D.teamBList;
+
+  box.innerHTML = '';
+  aList.innerHTML = '';
+  bList.innerHTML = '';
+
+  const max = lobby.maxPlayers;
+  const teamsMode = !!lobby.teamsMode;
+
+  if (teamsMode){
+    box.classList.add('hidden');
+    teamCols.classList.remove('hidden');
+  } else {
+    box.classList.remove('hidden');
+    teamCols.classList.add('hidden');
+  }
+
+  for (let i = 0; i < max; i++){
+    const m = (lobby.members || []).filter(function(x){ return x.seat === i; })[0];
+    const item = makeLobbyItem(m, i, teamsMode);
+    if (teamsMode && m){
+      if (m.team === 0) aList.appendChild(item);
+      else bList.appendChild(item);
+    } else if (teamsMode && !m){
+      // Put empty seat in whichever team needs it (even seat -> A)
+      if (i % 2 === 0) aList.appendChild(item);
+      else bList.appendChild(item);
+    } else {
+      box.appendChild(item);
+    }
+  }
+
+  // Update title
+  const titleEl = $('#lobbyPlayersTitle');
+  if (titleEl){
+    titleEl.textContent = t('players') + ' — ' +
+      t('playersCount', lobby.members.length, lobby.maxPlayers);
+  }
+
+  // Start button
+  const startBtn = $('#btnStartGame');
+  if (isHost){
+    // Require at least 2 human members to start online
+    const canStart = lobby.members.length >= 2;
+    startBtn.disabled = !canStart;
+    startBtn.textContent = canStart ? t('startGame') : t('needMorePlayers');
+  } else {
+    startBtn.disabled = true;
+    startBtn.textContent = t('waitingHost');
+  }
 }
-function handleRemoteAction(msg){
-  if (!lobby || !S || S.phase !== 'play') return;
-  const member = lobby.members.filter(function(m){ return m.id === msg.from; })[0];
-  if (!member) return;
-  const seat = member.seat;
-  if (S.turn !== seat) return;
-  const a = msg.action;
-  if (!a) return;
-  if (a.type === 'play'){
-    const r = Engine.applyPlay(S, seat, a.tileIdx, a.side);
-    if (r.ok){ pendingPop = S.lastPlay ? S.lastPlay.index : -1; afterChange(); }
-  } else if (a.type === 'draw'){ if (Engine.applyDraw(S, seat).ok) afterChange(); }
-  else if (a.type === 'pass'){ if (Engine.applyPass(S, seat).ok) afterChange(); }
+
+function makeLobbyItem(m, seat, teamsMode){
+  const item = el('div', 'pl-item' + (m ? '' : ' empty'));
+  const av = el('div', 'avatar', m ? m.name.charAt(0).toUpperCase() : '?');
+  const nm = el('div', 'pl-name', m ? m.name : t('emptySeat'));
+  item.appendChild(av); item.appendChild(nm);
+
+  if (m){
+    if (m.host) item.appendChild(el('span', 'tag host', t('host')));
+    else item.appendChild(el('span', 'tag', t('guest')));
+
+    // Team toggle (host only, teams mode)
+    if (teamsMode && isHost && !lobby.started){
+      item.classList.add('clickable');
+      item.title = t('clickToSwapTeam');
+      item.addEventListener('click', function(){
+        m.team = (m.team === 0) ? 1 : 0;
+        // make sure the two teams stay reasonable
+        broadcastLobby();
+      });
+    }
+  } else {
+    item.appendChild(el('span', 'tag bot', t('bot')));
+  }
+  return item;
 }
-function handleRemoteComment(msg){
-  if (!msg || msg.seat == null || !msg.key) return;
-  broadcastComment(msg.seat, msg.key);
-  showCommentBubble(msg.seat, msg.key);
+
+/* ============================================================
+   §23  START ONLINE GAME
+   ============================================================ */
+function startOnlineGame(){
+  if (!isHost || !lobby) return;
+
+  const max = lobby.maxPlayers;
+  const names = [];
+  const botSeats = [];
+  const teamsArr = new Array(max).fill(0);
+
+  for (let i = 0; i < max; i++){
+    const m = lobby.members.filter(function(x){ return x.seat === i; })[0];
+    if (m){
+      names[i] = m.name;
+      teamsArr[i] = m.team;
+    } else {
+      names[i] = t('bot') + ' ' + (i + 1);
+      botSeats.push(i);
+      // Bots: default team by seat parity
+      teamsArr[i] = (i % 2);
+    }
+  }
+
+  // Use teams only if 4 players AND teamsMode
+  const teams = (max === 4 && lobby.teamsMode) ? teamsArr : null;
+
+  S = Engine.newGame({
+    numPlayers: max,
+    botSeats: botSeats,
+    names: names,
+    teams: teams
+  });
+
+  commentsEnabled = (max === 4 && lobby.teamsMode);
+  lobby.started = true;
+  roundModalShown = -1;
+  matchModalShown = false;
+  pendingPlay = null;
+
+  Net.send({ t: 'lobby', lobby: lobby });
+  broadcastState();
+
+  showScreen('game');
+  render();
+  renderCommentBar(false);
+  scheduleBot();
+  saveSession();
 }
+
+function broadcastState(){
+  if (!S || !lobby) return;
+  for (let i = 0; i < lobby.members.length; i++){
+    const m = lobby.members[i];
+    if (m.id === PLAYER_ID) continue;
+    Net.sendTo(m.id, {
+      t: 'state',
+      state: sanitizeState(S, m.seat),
+      seat: m.seat
+    });
+  }
+}
+
 function sanitizeState(state, forSeat){
   if (!state) return null;
   const copy = JSON.parse(JSON.stringify(state));
@@ -2321,51 +2722,58 @@ function sanitizeState(state, forSeat){
   }
   return copy;
 }
-function broadcastState(){
-  if (!S) return;
-  for (let i = 0; i < lobby.members.length; i++){
-    const m = lobby.members[i];
-    if (m.id === PLAYER_ID) continue;
-    Net.send({ t:'state', state: sanitizeState(S, m.seat), seat: m.seat });
+
+function handleRemoteAction(msg, fromId){
+  if (!lobby || !S || S.phase !== 'play') return;
+  const member = lobby.members.filter(function(m){ return m.id === fromId; })[0];
+  if (!member) return;
+  const seat = member.seat;
+  if (S.turn !== seat) return;
+  const a = msg.action;
+  if (!a) return;
+  if (a.type === 'play'){
+    const r = Engine.applyPlay(S, seat, a.tileIdx, a.side);
+    if (r.ok){ pendingPop = S.lastPlay ? S.lastPlay.index : -1; afterChange(); }
+  } else if (a.type === 'draw'){
+    if (Engine.applyDraw(S, seat).ok) afterChange();
+  } else if (a.type === 'pass'){
+    if (Engine.applyPass(S, seat).ok) afterChange();
   }
 }
-function startOnlineGame(){
-  if (!isHost || !lobby) return;
-  const max = lobby.maxPlayers;
-  const names = [];
-  const botSeats = [];
-  const teams = (max === 4) ? [0, 1, 0, 1] : null;
-  for (let i = 0; i < max; i++){
-    const m = lobby.members.filter(function(x){ return x.seat === i; })[0];
-    if (m) names[i] = m.name;
-    else { names[i] = t('bot') + ' ' + (i + 1); botSeats.push(i); }
+
+/* ============================================================
+   §24  LEAVE
+   ============================================================ */
+function leaveToMenu(){
+  clearTimeout(botTimer); botTimer = null;
+  hideCommentBar();
+  Object.keys(activeCommentTimers).forEach(function(k){
+    clearTimeout(activeCommentTimers[k]);
+    delete activeCommentTimers[k];
+  });
+  if (mode === 'online'){
+    if (Net._ready){
+      try { Net.send({ t:'bye', from: PLAYER_ID }); } catch(e){}
+    }
+    Net.close();
   }
-  S = Engine.newGame({ numPlayers: max, botSeats: botSeats, names: names, teams: teams });
-  commentsEnabled = (max === 4 && teams !== null);
-  lobby.started = true;
-  roundModalShown = -1;
-  matchModalShown = false;
-  pendingPlay = null;
-  Net.send({ t:'lobby', lobby: lobby });
-  broadcastState();
-  showScreen('game');
-  render();
-  renderCommentBar(false);
-  scheduleBot();
-  saveSession();
-}
-function connTimerStart(){
+  S = null; lobby = null; roomCode = null;
+  drag = null; pendingPlay = null;
+  privacyBlocking = false;
+  commentsEnabled = false;
+  mySeat = 0; viewerSeat = 0; humanSeats = [0];
+  D.privacyMask.classList.remove('show');
+  closeModal();
   connTimerStop();
-  if (mode !== 'online' || isHost) return;
-  D.connDot.classList.remove('hidden');
-  connTimer = setInterval(function(){
-    if (Date.now() - lastHostPing > 9000) D.connDot.classList.add('off');
-    else D.connDot.classList.remove('off');
-    Net.send({ t:'ping', from: PLAYER_ID });
-  }, 3000);
-  lastHostPing = Date.now();
+  clearSession();
+  D.connDot.classList.add('hidden');
+  D.connDot.classList.remove('off', 'wait');
+  showScreen('menu');
 }
-function connTimerStop(){ if (connTimer){ clearInterval(connTimer); connTimer = null; } }
+
+/* ============================================================
+   §25  SESSION
+   ============================================================ */
 function saveSession(){
   try {
     localStorage.setItem('domino.session', JSON.stringify({
@@ -2374,6 +2782,7 @@ function saveSession(){
   } catch (e){}
 }
 function clearSession(){ try { localStorage.removeItem('domino.session'); } catch (e){} }
+
 function restoreSession(){
   let sess = null;
   try {
@@ -2381,40 +2790,30 @@ function restoreSession(){
     if (raw) sess = JSON.parse(raw);
   } catch (e){}
   if (!sess || sess.mode !== 'online' || !sess.roomCode) return false;
-  if (sess.isHost){
-    mode = 'online'; isHost = true; roomCode = sess.roomCode;
-    mySeat = 0; viewerSeat = 0; humanSeats = [0];
-    lobby = {
-      code: roomCode, maxPlayers: 4,
-      members: [{ id: PLAYER_ID, name: t('you'), seat: 0, host: true }],
-      started: false
-    };
-    Net.open(roomCode, handleNetMessage);
-    D.roomCodeText.textContent = roomCode;
-    renderLobby();
-    showScreen('lobby');
-    toast(t('reconnected'), 'ok');
-    return true;
-  } else {
-    mode = 'online'; isHost = false; roomCode = sess.roomCode;
-    mySeat = sess.mySeat || 0; viewerSeat = mySeat;
-    humanSeats = [mySeat];
-    lobby = { code: roomCode, maxPlayers: 4, members: [], started: false };
-    Net.open(roomCode, handleNetMessage);
-    D.roomCodeText.textContent = roomCode;
-    renderLobby();
-    showScreen('lobby');
-    Net.send({ t:'hello', from: PLAYER_ID, name: t('you'), rejoin: true });
-    clearTimeout(joinTimeout);
-    joinTimeout = setTimeout(function(){
-      if (!S){ toast(t('roomNotFound'), 'err'); leaveToMenu(); }
-    }, 3000);
-    return true;
-  }
+
+  // Note: we do NOT auto-restore online sessions anymore because the peer
+  // connection likely dropped. The user should create/join fresh.
+  clearSession();
+  return false;
 }
 
 /* ============================================================
-   §21  EVENT WIRING
+   §26  CONNECTION WATCHDOG (client)
+   ============================================================ */
+function connTimerStart(){
+  connTimerStop();
+  if (mode !== 'online' || isHost) return;
+  D.connDot.classList.remove('hidden');
+  connTimer = setInterval(function(){
+    if (Net.hostConn && Net.hostConn.open){
+      try { Net.hostConn.send({ t:'ping', from: PLAYER_ID }); } catch(e){}
+    }
+  }, 4000);
+}
+function connTimerStop(){ if (connTimer){ clearInterval(connTimer); connTimer = null; } }
+
+/* ============================================================
+   §27  EVENT WIRING
    ============================================================ */
 $$('#langSwitch button').forEach(function(b){
   b.addEventListener('click', function(){
@@ -2430,7 +2829,7 @@ $$('#modeGrid .mode-btn').forEach(function(b){
   });
 });
 
-$('#btnCreate').addEventListener('click', function(){ createRoom(); });
+$('#btnCreate').addEventListener('click', function(){ showCreateRoomDialog(); });
 $('#btnJoin').addEventListener('click', function(){
   const box = $('#joinBox');
   box.classList.toggle('hidden');
@@ -2463,7 +2862,12 @@ function fallbackCopy(text){
   } catch (e){ toast(text); }
 }
 
-$('#btnStartGame').addEventListener('click', function(){ if (isHost) startOnlineGame(); });
+$('#btnStartGame').addEventListener('click', function(){
+  if (!isHost) return;
+  if (!lobby) return;
+  if (lobby.members.length < 2){ toast(t('needMorePlayers'), 'err'); return; }
+  startOnlineGame();
+});
 $('#btnLeaveLobby').addEventListener('click', function(){ leaveToMenu(); });
 
 D.btnDraw.addEventListener('click', humanDraw);
@@ -2488,26 +2892,26 @@ document.addEventListener('keydown', function(e){
     else hideCommentBar();
     return;
   }
-  if (pendingPlay) return; // lock actions while deciding
+  if (pendingPlay) return;
   if (e.key === 'd' || e.key === 'D') humanDraw();
   if (e.key === 'p' || e.key === 'P') humanPass();
 });
 
+window.addEventListener('beforeunload', function(){
+  if (mode === 'online' && Net._ready){
+    try { Net.send({ t:'bye', from: PLAYER_ID }); } catch(e){}
+  }
+});
+
 /* ============================================================
-   §22  BOOT
+   §28  BOOT
    ============================================================ */
 function boot(){
   applyLang();
-  const restored = restoreSession();
-  if (!restored) showScreen('menu');
-  if (mode === 'online' && !isHost) connTimerStart();
+  showScreen('menu');
   window.addEventListener('resize', function(){
-    if (S){
-      render();
-      scheduleAdjustBoard();
-    }
+    if (S){ render(); scheduleAdjustBoard(); }
   });
-  // Also adjust when orientation changes
   window.addEventListener('orientationchange', function(){
     setTimeout(function(){ if (S) scheduleAdjustBoard(); }, 260);
   });
