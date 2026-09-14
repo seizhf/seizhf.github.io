@@ -1,1931 +1,1130 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8"/>
+<meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
-<meta name="theme-color" content="#0a0e13"/>
+<meta name="theme-color" content="#06301f"/>
 <title>🁫 دومينو أونلاين</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;margin:0;padding:0;overflow:hidden;}
 body{
-  font-family:"Segoe UI",Tahoma,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
-  background:#0a0e13;color:#e6edf3;user-select:none;-webkit-user-select:none;
-  direction:rtl;
+  font-family:"Segoe UI",system-ui,-apple-system,"Noto Kufi Arabic",Tahoma,sans-serif;
+  background:#050a12;color:#e9f0fa;
+  user-select:none;-webkit-user-select:none;
+  overscroll-behavior:none;touch-action:manipulation;
 }
-button{font-family:inherit;cursor:pointer;border:none;outline:none;background:none;color:inherit}
-input{font-family:inherit;outline:none}
-#app{position:fixed;inset:0}
-.screen{position:absolute;inset:0;display:none;flex-direction:column}
-.screen.active{display:flex}
+#app{position:fixed;inset:0;}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;}
+.hidden{display:none!important;}
+button{font-family:inherit;cursor:pointer;border:0;outline:0;}
 
-/* ============ BUTTONS ============ */
-.btn{
-  background:#1f6feb;color:#fff;border-radius:11px;padding:12px 16px;font-size:15px;
-  font-weight:700;width:100%;transition:transform .12s,filter .12s,background .12s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
+/* ============ MENU ============ */
+#menu{
+  align-items:center;justify-content:flex-start;gap:12px;padding:18px 14px 30px;
+  background:radial-gradient(circle at 50% 15%,#12503a 0%,#07231a 45%,#04140d 100%);
+  overflow-y:auto;
 }
-.btn:active{transform:scale(.97)}
-.btn.primary{background:linear-gradient(180deg,#2ea043,#1f7a33)}
-.btn.primary:hover{filter:brightness(1.1)}
-.btn.ghost{background:#1b2430;color:#c9d1d9;border:1px solid #2d3a47}
-.btn.ghost:hover{background:#232f3d}
-.btn.small{padding:8px 13px;font-size:13px;width:auto;border-radius:9px}
-.btn.warn{background:linear-gradient(180deg,#d29922,#9e6a03)}
-.btn:disabled{opacity:.4;pointer-events:none}
-
-/* ============ START ============ */
-#scr-start{
-  overflow-y:auto;align-items:center;padding:26px 16px 50px;
-  background:radial-gradient(circle at 50% -10%,#123a28 0%,#0a0e13 62%);
-  -webkit-overflow-scrolling:touch;
-}
-.brand{font-size:52px;line-height:1;text-align:center;margin-bottom:6px;
-  filter:drop-shadow(0 6px 18px rgba(46,160,67,.55));animation:float 3s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-h1.title{
-  font-size:34px;font-weight:900;text-align:center;letter-spacing:2px;margin-bottom:6px;
-  background:linear-gradient(90deg,#7ee787,#2ea043 60%,#1f6feb);
+.logo{font-size:clamp(26px,7vw,42px);font-weight:800;letter-spacing:1px;
+  background:linear-gradient(180deg,#fff2cf,#e0a84e);
   -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 6px 24px rgba(224,168,78,.25);margin-top:8px;}
+.sub{opacity:.65;font-size:13px;margin:-6px 0 10px;text-align:center;max-width:420px;line-height:1.7;}
+.card{width:min(460px,94vw);background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);
+  border-radius:18px;padding:14px;backdrop-filter:blur(8px);box-shadow:0 18px 44px rgba(0,0,0,.45);}
+.card h3{margin:0 0 10px;font-size:14px;opacity:.75;font-weight:600;}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.modeBtn{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#dfe9f5;
+  padding:11px 8px;border-radius:12px;font-size:13.5px;font-weight:600;text-align:center;
+  transition:.18s;line-height:1.5;
 }
-.sub{color:#8b949e;font-size:13.5px;text-align:center;margin-bottom:24px;line-height:1.7}
-.card{
-  width:100%;max-width:430px;background:#111820;border:1px solid #1f2a35;
-  border-radius:18px;padding:18px;margin-bottom:14px;
-  box-shadow:0 10px 34px rgba(0,0,0,.45);
-}
-.card h3{font-size:14.5px;color:#7ee787;margin-bottom:15px;font-weight:800;
-  display:flex;align-items:center;gap:8px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
-.row label{font-size:14px;color:#c9d1d9;font-weight:600}
-.seg{display:flex;background:#0a0e13;border:1px solid #263441;border-radius:11px;overflow:hidden}
-.seg button{background:transparent;color:#8b949e;padding:9px 15px;font-size:14px;font-weight:700;transition:.15s}
-.seg button.on{background:linear-gradient(180deg,#2ea043,#1f7a33);color:#fff}
-input[type=text]{
-  width:100%;background:#0a0e13;border:1px solid #263441;border-radius:11px;
-  padding:12px 13px;color:#e6edf3;font-size:15px;margin-bottom:11px;transition:border-color .15s;
-}
-input[type=text]:focus{border-color:#2ea043}
-input[type=text]::placeholder{color:#55636f}
-.joinrow{display:flex;gap:9px;align-items:stretch}
-.joinrow input{margin-bottom:0;text-transform:uppercase;letter-spacing:3px;font-weight:800;text-align:center;font-size:17px}
-.joinrow .btn{width:auto;padding:12px 20px;flex-shrink:0}
-.hint{font-size:11.5px;color:#6e7d8c;text-align:center;margin-top:9px;line-height:1.6}
-.checkrow{display:flex;align-items:center;gap:9px;margin-bottom:13px;cursor:pointer}
-.checkrow input{width:18px;height:18px;accent-color:#2ea043;cursor:pointer}
-.checkrow span{font-size:13.5px;color:#c9d1d9}
+.modeBtn:hover{background:rgba(255,255,255,.12);transform:translateY(-1px);}
+.modeBtn.on{background:linear-gradient(180deg,#1f8f5f,#0d5f3d);border-color:#39d68b;color:#fff;
+  box-shadow:0 0 0 2px rgba(57,214,139,.25),0 6px 18px rgba(0,0,0,.35);}
+.big{width:100%;padding:13px;border-radius:13px;font-size:15px;font-weight:700;margin-top:10px;
+  background:linear-gradient(180deg,#28a06a,#0e5f3e);color:#fff;box-shadow:0 6px 0 #06432c;transition:.12s;}
+.big:active{transform:translateY(3px);box-shadow:0 3px 0 #06432c;}
+.big.alt{background:linear-gradient(180deg,#3b6ea5,#22456b);box-shadow:0 6px 0 #16304a;}
+.big.alt:active{box-shadow:0 3px 0 #16304a;}
+.row{display:flex;gap:8px;margin-top:10px;}
+.row input{flex:1;min-width:0;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);
+  background:rgba(0,0,0,.3);color:#fff;font-family:inherit;font-size:15px;text-align:center;
+  letter-spacing:3px;font-weight:700;outline:0;}
+.row input:focus{border-color:#39d68b;}
+.row input::placeholder{letter-spacing:0;font-weight:400;font-size:13px;}
+.hint{font-size:12px;opacity:.55;text-align:center;margin-top:8px;line-height:1.7;}
 
 /* ============ LOBBY ============ */
-#scr-lobby{
-  background:radial-gradient(circle at 50% -10%,#123a28,#0a0e13 65%);
-  overflow-y:auto;align-items:center;padding:22px 16px 40px;-webkit-overflow-scrolling:touch;
-}
-.lobby-wrap{width:100%;max-width:440px;display:flex;flex-direction:column;gap:13px}
-.lobby-wrap h2{font-size:20px;text-align:center;font-weight:800;color:#e6edf3}
-.code-box{background:#111820;border:1px dashed #2ea043;border-radius:15px;padding:16px;text-align:center}
-.code-label{font-size:12px;color:#8b949e;margin-bottom:7px}
-.code-val{
-  font-size:36px;font-weight:900;letter-spacing:9px;color:#7ee787;
-  font-family:ui-monospace,Menlo,Consolas,monospace;margin-bottom:11px;
-  text-shadow:0 0 22px rgba(126,231,135,.45);direction:ltr;
-}
-.lobby-players{display:flex;flex-direction:column;gap:8px}
-.slot{
-  display:flex;align-items:center;gap:11px;background:#101820;border:1px solid #1e2a36;
-  border-radius:12px;padding:11px 13px;font-size:14px;
-}
-.slot .dot{width:9px;height:9px;border-radius:50%;background:#2ea043;flex-shrink:0;box-shadow:0 0 8px #2ea043}
-.slot.empty{opacity:.55;border-style:dashed}
-.slot.empty .dot{background:#55636f;box-shadow:none}
-.slot .nm{font-weight:700;color:#e6edf3;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.slot .tag{font-size:11px;color:#8b949e;background:#1a232e;padding:3px 8px;border-radius:6px}
-.lobby-status{font-size:13px;color:#8b949e;text-align:center;line-height:1.7;min-height:20px}
-.lobby-status.err{color:#f85149}
+#lobby{align-items:center;justify-content:center;gap:14px;padding:20px;
+  background:radial-gradient(circle at 50% 20%,#12503a,#04140d 75%);}
+.codebox{display:flex;align-items:center;gap:10px;font-size:15px;background:rgba(0,0,0,.35);
+  padding:10px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.12);}
+.codebox b{font-size:26px;letter-spacing:6px;color:#ffd166;font-family:monospace;}
+.codebox button{background:rgba(255,255,255,.12);color:#fff;padding:7px 12px;border-radius:9px;font-size:12px;}
+#lobbyPlayers{display:flex;flex-direction:column;gap:7px;width:min(420px,94vw);}
+.lseat{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:11px 13px;font-size:14px;}
+.lseat.me{border-color:#39d68b;background:rgba(57,214,139,.12);}
+.lnum{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+.lname{flex:1;}
+.ltag{font-size:11px;background:rgba(255,255,255,.13);padding:3px 8px;border-radius:20px;opacity:.8;}
 
 /* ============ GAME ============ */
-#scr-game{background:radial-gradient(circle at 50% 42%,#0f3324 0%,#0a0e13 78%)}
-#topbar{
-  display:flex;align-items:center;gap:8px;padding:8px 10px;
-  background:rgba(10,14,19,.82);backdrop-filter:blur(10px);
-  border-bottom:1px solid #1a232d;flex-shrink:0;
-}
-.icon-btn{
-  background:#1b2430;color:#c9d1d9;border-radius:10px;width:36px;height:36px;
-  font-size:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  transition:background .15s,transform .12s;
-}
-.icon-btn:hover{background:#243040}
-.icon-btn:active{transform:scale(.92)}
-.icon-btn.muted{opacity:.5}
-#scoreStrip{display:flex;gap:6px;flex:1;overflow-x:auto;scrollbar-width:none}
-#scoreStrip::-webkit-scrollbar{display:none}
-.score-pill{
-  background:#141d26;border:1px solid #22303d;border-radius:9px;padding:5px 10px;
-  font-size:12px;white-space:nowrap;color:#c9d1d9;flex-shrink:0;font-weight:600;
-  transition:transform .25s,box-shadow .25s;
-}
-.score-pill.lead{border-color:#2ea043;color:#7ee787;box-shadow:0 0 10px rgba(46,160,67,.25)}
-.score-pill.target{background:#1a1408;border-color:#5a4310;color:#d29922}
-.score-pill.pulse{animation:scorePop .6s cubic-bezier(.34,1.56,.64,1)}
-@keyframes scorePop{
-  0%{transform:scale(1)}
-  40%{transform:scale(1.22);box-shadow:0 0 22px rgba(126,231,135,.75)}
-  100%{transform:scale(1)}
-}
-#roundInfo{font-size:12px;color:#8b949e;white-space:nowrap;font-weight:700;flex-shrink:0}
+#game{background:radial-gradient(ellipse at 50% 35%,#0f6b45 0%,#083c27 55%,#04200f 100%);}
+#topbar{display:flex;align-items:center;gap:8px;padding:7px 10px;
+  background:rgba(0,0,0,.3);backdrop-filter:blur(8px);font-size:13px;
+  border-bottom:1px solid rgba(255,255,255,.07);}
+#turnInfo{flex:1;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#turnInfo .me{color:#7ef0b0;animation:pulse 1.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+#myScore{font-size:12px;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:20px;white-space:nowrap;}
+.tools{display:flex;gap:5px;}
+.tools button{width:31px;height:31px;border-radius:9px;background:rgba(255,255,255,.1);
+  color:#dfe9f5;font-size:14px;display:flex;align-items:center;justify-content:center;transition:.15s;}
+.tools button:active{background:rgba(255,255,255,.25);}
 
-#tableArea{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;position:relative}
-
-#opponents{display:flex;gap:8px;padding:9px 10px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
-#opponents::-webkit-scrollbar{display:none}
-.opp{
-  background:#101820;border:1px solid #1e2a36;border-radius:13px;padding:8px 9px;
-  min-width:94px;flex:1 1 0;text-align:center;transition:border-color .25s,box-shadow .25s,transform .2s;
-}
-.opp.active{
-  border-color:#2ea043;
-  box-shadow:0 0 0 1px #2ea043,0 0 18px rgba(46,160,67,.35);
-  animation:turnGlow 1.8s ease-in-out infinite;
-}
-@keyframes turnGlow{
-  0%,100%{box-shadow:0 0 0 1px #2ea043,0 0 18px rgba(46,160,67,.35)}
-  50%{box-shadow:0 0 0 1px #2ea043,0 0 30px rgba(46,160,67,.7)}
-}
-.opp-name{
-  font-size:12px;font-weight:800;color:#c9d1d9;margin-bottom:6px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.mini-tiles{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;margin-bottom:5px;min-height:14px}
-.mini{width:5px;height:13px;border-radius:1.5px;background:linear-gradient(180deg,#f0e9d8,#c9bfa6);box-shadow:0 1px 2px rgba(0,0,0,.4)}
-.opp-count{font-size:11px;color:#7d8b99;font-weight:600}
-.off-tag{font-size:10px;color:#f85149;margin-top:3px;font-weight:700}
+#opponents{display:flex;gap:7px;padding:8px 8px 4px;justify-content:center;flex-wrap:wrap;}
+.opp{background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.08);border-radius:13px;
+  padding:6px 11px;min-width:86px;text-align:center;transition:.25s;}
+.opp.active{border-color:#ffd166;box-shadow:0 0 0 2px rgba(255,209,102,.3),0 0 20px rgba(255,209,102,.35);}
+.opp.mate{background:rgba(70,190,130,.16);}
+.opp .oname{font-size:12.5px;font-weight:700;display:block;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;max-width:110px;margin:auto;}
+.opp .ocount{font-size:11px;opacity:.75;}
+.opp .oscore{font-size:10.5px;opacity:.6;margin-top:1px;}
+.mini{display:flex;gap:2px;justify-content:center;margin-top:4px;min-height:15px;}
+.mtile{width:6px;height:14px;border-radius:2px;
+  background:linear-gradient(160deg,#efe6d0,#b3a78a);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18);}
 
 /* ============ BOARD ============ */
-#boardWrap{
-  flex:1;min-height:0;
-  overflow-x:auto;overflow-y:hidden;direction:ltr;
-  display:flex;align-items:center;
-  scrollbar-width:thin;
-  -webkit-overflow-scrolling:touch;
-}
-#boardWrap::-webkit-scrollbar{height:6px}
-#boardWrap::-webkit-scrollbar-track{background:transparent}
-#boardWrap::-webkit-scrollbar-thumb{background:#22303d;border-radius:3px}
+#boardWrap{flex:1;position:relative;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;padding:6px 52px;min-height:0;}
+#board{--cell:var(--bcell,28px);display:flex;flex-wrap:wrap;gap:4px;align-items:center;
+  justify-content:center;align-content:center;direction:ltr;max-width:100%;}
+.board-empty{opacity:.35;font-size:14px;letter-spacing:1px;direction:rtl;}
 
-#board{
-  position:relative;
-  flex-shrink:0;
-  min-width:100%;
-  /* width & height set dynamically by JS */
-}
+.dz{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:62%;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:20px;color:#cfe9dc;
+  border:2px dashed rgba(255,255,255,.22);background:rgba(0,0,0,.15);
+  opacity:0;pointer-events:none;transition:.16s;z-index:5;}
+#dzLeft{left:5px;} #dzRight{right:5px;}
+.dz.show{opacity:.5;}
+.dz.hot{opacity:1;border-color:#7ef0b0;background:rgba(126,240,176,.18);color:#eafff2;
+  box-shadow:0 0 24px rgba(126,240,176,.5);}
+.dz.clickable{pointer-events:auto;opacity:.9;border-color:#7ef0b0;background:rgba(126,240,176,.16);}
+.dz.clickable:active{background:rgba(126,240,176,.4);}
 
-.board-empty{
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  color:#55636f;
-  font-size:13px;
-  font-weight:600;
-  direction:rtl;
-  white-space:nowrap;
-  text-align:center;
-  padding:0 20px;
+/* ============ TILES ============ */
+.tile{
+  --c:30px;position:relative;display:flex;flex-direction:row;
+  width:calc(var(--c)*2);height:var(--c);
+  background:linear-gradient(158deg,#fffdf6 0%,#f3ecda 45%,#ded2b6 100%);
+  border-radius:calc(var(--c)*0.17);
+  box-shadow:0 2px 0 rgba(0,0,0,.3),0 4px 10px rgba(0,0,0,.35),inset 0 1px 0 #fff;
+  padding:calc(var(--c)*0.075);flex:0 0 auto;
+  transition:transform .16s ease,box-shadow .16s ease;
 }
-
-/* Board tiles — absolutely positioned, size set inline */
-.board-tile{
-  position:absolute;
-  will-change:transform,opacity;
-}
-.board-tile > .dom{
-  width:100%;
-  height:100%;
-  border-radius:7px;
-}
-.board-tile > .dom .half{padding:2px}
-.board-tile > .dom .pip{width:5px;height:5px}
-
-.board-tile.just-placed > .dom{
-  animation:tilePlace .42s cubic-bezier(.34,1.56,.64,1) both;
-}
-.board-tile.just-placed.double > .dom{
-  animation:tilePlaceDouble .6s cubic-bezier(.34,1.56,.64,1) both;
-}
-@keyframes tilePlace{
-  0%{transform:scale(.3) rotate(-12deg);opacity:0;filter:brightness(1.8)}
-  55%{transform:scale(1.12) rotate(3deg);opacity:1;filter:brightness(1.15)}
-  100%{transform:scale(1) rotate(0);opacity:1;filter:brightness(1)}
-}
-@keyframes tilePlaceDouble{
-  0%{transform:scale(.3) rotate(-16deg);opacity:0;filter:brightness(2)}
-  35%{transform:scale(1.25) rotate(6deg);opacity:1;filter:brightness(1.3)}
-  65%{transform:scale(.94) rotate(-2deg)}
-  100%{transform:scale(1) rotate(0);filter:brightness(1)}
-}
-
-/* ============ DROP ZONES (position: fixed, set by JS) ============ */
-.dropzone{
-  position:fixed;
-  width:35%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  z-index:20;
-  transition:opacity .18s;
-}
-.dropzone.left{left:0}
-.dropzone.right{right:0}
-.dropzone.show{opacity:1}
-.dropzone .dz-content{
-  background:rgba(46,160,67,.12);
-  border:2px dashed #2ea043;
-  border-radius:16px;
-  padding:14px 22px;
-  text-align:center;
-  color:#7ee787;
-  font-weight:800;
-  transition:transform .15s cubic-bezier(.34,1.56,.64,1),
-             background .15s,border-color .15s,box-shadow .15s;
-  backdrop-filter:blur(4px);
-}
-.dropzone.hot .dz-content{
-  background:rgba(46,160,67,.35);
-  transform:scale(1.18);
-  box-shadow:0 0 34px rgba(46,160,67,.75);
-  border-style:solid;
-}
-.dropzone.invalid .dz-content{
-  background:rgba(248,81,73,.15);
-  border-color:#f85149;
-  color:#ffa198;
-}
-.dz-icon{font-size:26px;margin-bottom:4px;line-height:1}
-.dz-label{font-size:12px;letter-spacing:1.5px}
-
-/* Drag ghost */
-.drag-ghost{
-  position:fixed;
-  pointer-events:none;
-  z-index:99999;
-  filter:brightness(1.12) saturate(1.1);
-  will-change:transform,left,top;
-}
-
-/* ============ STATUS ============ */
-.status{
-  padding:9px 14px;text-align:center;font-size:13px;color:#c9d1d9;
-  background:rgba(10,14,19,.72);border-top:1px solid #16202a;flex-shrink:0;
-  font-weight:600;line-height:1.5;min-height:38px;display:flex;align-items:center;justify-content:center;
-  transition:background .3s,color .3s;
-}
-.status.my-turn{
-  background:rgba(46,160,67,.16);
-  color:#7ee787;
-  animation:statusPulse 1.6s ease-in-out infinite;
-}
-@keyframes statusPulse{
-  0%,100%{background:rgba(46,160,67,.16)}
-  50%{background:rgba(46,160,67,.32)}
-}
-.status.win{color:#7ee787;font-weight:800;background:rgba(46,160,67,.2);animation:pulse 1.6s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+.tile.vert{flex-direction:column;width:var(--c);height:calc(var(--c)*2);}
+.tile .half{flex:1 1 0;min-width:0;min-height:0;display:grid;
+  grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:5%;}
+.tile .half+.half{border-left:1px solid rgba(70,52,25,.32);}
+.tile.vert .half+.half{border-left:0;border-top:1px solid rgba(70,52,25,.32);}
+.tile .half i{width:62%;height:62%;border-radius:50%;place-self:center;
+  background:radial-gradient(circle at 34% 28%,#575757,#0d0d0d 72%);
+  box-shadow:inset 0 -1px 1px rgba(255,255,255,.14);}
+.tile.new{animation:pop .28s cubic-bezier(.2,1.5,.5,1);}
+@keyframes pop{from{transform:scale(.4) rotate(-12deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.ghost{position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%) scale(1.12);
+  opacity:.92;filter:drop-shadow(0 12px 18px rgba(0,0,0,.6));}
 
 /* ============ HAND ============ */
-#handArea{
-  flex-shrink:0;
-  background:linear-gradient(180deg,rgba(12,18,25,.35),rgba(12,18,25,.97));
-  border-top:1px solid #1a232d;
-  padding:7px 10px calc(10px + env(safe-area-inset-bottom,0px));
-}
-#handInfo{font-size:11.5px;color:#7d8b99;margin-bottom:5px;text-align:center;font-weight:700}
-#hand{
-  display:flex;gap:7px;overflow-x:auto;padding:8px 3px 11px;scrollbar-width:none;
-  min-height:78px;align-items:center;direction:ltr;
-}
-#hand::-webkit-scrollbar{display:none}
-#actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+#handWrap{padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));
+  background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.42));
+  border-top:1px solid rgba(255,255,255,.07);}
+#hand{--cell:26px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:flex-end;
+  min-height:56px;direction:rtl;}
+#hand .tile{cursor:grab;touch-action:none;}
+#hand .tile.playable{box-shadow:0 0 0 2px #7ef0b0,0 5px 12px rgba(0,0,0,.45);}
+#hand .tile.playable:hover{transform:translateY(-9px);}
+#hand .tile.dragging{opacity:.25;}
+#hand .tile:active{cursor:grabbing;}
 
-/* ============ DOMINO BASE ============ */
-.dom{
-  background:linear-gradient(160deg,#fdfaf2,#e3dac6);
-  border-radius:7px;
-  display:flex;
-  position:relative;
-  flex-shrink:0;
-  box-shadow:0 3px 9px rgba(0,0,0,.6),inset 0 0 0 1px rgba(0,0,0,.16);
-}
-.dom:not(.vert){flex-direction:row}
-.dom.vert{flex-direction:column}
-.half{flex:1;position:relative;padding:2px}
-.dom:not(.vert) .half:first-child{border-right:1px solid rgba(0,0,0,.22)}
-.dom.vert .half:first-child{border-bottom:1px solid rgba(0,0,0,.22)}
-.pips{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);width:100%;height:100%}
-.cell{display:flex;align-items:center;justify-content:center}
-.pip{width:5px;height:5px;border-radius:50%;background:#141414;box-shadow:inset 0 -1px 1px rgba(255,255,255,.18)}
+/* ============ OVERLAY ============ */
+#overlay{position:absolute;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(5px);
+  display:flex;align-items:center;justify-content:center;z-index:60;animation:fade .25s;}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+#overlay .card{text-align:center;animation:pop2 .35s cubic-bezier(.2,1.4,.5,1);}
+@keyframes pop2{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+#overlay h2{margin:0 0 8px;font-size:22px;color:#ffd166;}
+#overlay p{margin:0 0 12px;opacity:.85;font-size:14px;line-height:1.8;}
+#ovScores{display:flex;flex-direction:column;gap:5px;font-size:13px;}
+#ovScores div{display:flex;justify-content:space-between;background:rgba(255,255,255,.06);
+  padding:7px 12px;border-radius:9px;}
 
-/* Hand tile sizes */
-#hand .dom:not(.vert){width:64px;height:32px}
-#hand .dom.vert{width:32px;height:64px}
-#hand .pip{width:6px;height:6px}
-#hand .half{padding:2.5px}
+#toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);
+  background:rgba(0,0,0,.8);padding:9px 18px;border-radius:22px;font-size:13px;
+  opacity:0;transition:.3s;pointer-events:none;z-index:70;white-space:nowrap;max-width:90vw;
+  overflow:hidden;text-overflow:ellipsis;}
+#toast.show{opacity:1;}
 
-/* Hand tile states */
-.hand-dom{
-  transition:transform .18s cubic-bezier(.34,1.56,.64,1),
-             box-shadow .2s,opacity .2s,filter .2s;
-  cursor:default;
-  touch-action:pan-x;
+@media (max-width:400px){
+  .modes{grid-template-columns:1fr;}
+  #opponents{gap:5px;padding:6px 5px 2px;}
+  .opp{min-width:74px;padding:5px 8px;}
+  #boardWrap{padding:6px 44px;}
+  .dz{width:38px;}
 }
-.hand-dom.playable{
-  cursor:grab;
-  box-shadow:0 0 0 2px #2ea043,0 5px 16px rgba(46,160,67,.45);
-  transform:translateY(-5px);
-}
-.hand-dom.playable:hover{transform:translateY(-8px);box-shadow:0 0 0 2px #2ea043,0 8px 22px rgba(46,160,67,.6)}
-.hand-dom.playable:active{cursor:grabbing;transform:translateY(-2px)}
-.hand-dom.dim{opacity:.42;filter:grayscale(.5)}
-.hand-dom.dragging{opacity:.25;filter:grayscale(1)}
-.hand-dom.drawn{animation:tileDraw .45s cubic-bezier(.34,1.56,.64,1) both}
-@keyframes tileDraw{
-  0%{transform:translateY(-42px) scale(.4) rotate(-12deg);opacity:0}
-  70%{transform:translateY(3px) scale(1.06) rotate(2deg);opacity:1}
-  100%{transform:translateY(0) scale(1) rotate(0)}
-}
-.hand-dom.shake{animation:tileShake .35s ease-out}
-@keyframes tileShake{
-  0%,100%{transform:translateX(0)}
-  20%{transform:translateX(-5px) rotate(-2deg)}
-  40%{transform:translateX(5px) rotate(2deg)}
-  60%{transform:translateX(-4px) rotate(-1deg)}
-  80%{transform:translateX(3px) rotate(1deg)}
-}
-
-/* ============ SIDE PICKER ============ */
-.sidepick{
-  background:#111820;border:1px solid #2ea043;border-radius:13px;padding:11px 14px;
-  display:flex;flex-direction:column;gap:9px;align-items:center;
-  box-shadow:0 10px 28px rgba(0,0,0,.7);animation:pop .22s cubic-bezier(.34,1.56,.64,1);
-}
-@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
-.sidepick-title{font-size:12px;color:#8b949e;font-weight:700}
-.sidepick-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.btn.side{padding:10px 17px;font-size:14px;width:auto;background:linear-gradient(180deg,#2ea043,#1f7a33)}
-.btn.side.ghost{background:#1b2430;color:#c9d1d9;border:1px solid #2d3a47}
-
-/* ============ TOAST ============ */
-.toast{
-  position:fixed;left:50%;bottom:22px;transform:translate(-50%,26px);
-  background:#1b2430;color:#e6edf3;padding:11px 20px;border-radius:11px;
-  font-size:14px;font-weight:700;border:1px solid #2d3a47;
-  box-shadow:0 10px 30px rgba(0,0,0,.6);opacity:0;pointer-events:none;
-  transition:opacity .25s,transform .25s;z-index:9999;max-width:88vw;text-align:center;
-}
-.toast.show{opacity:1;transform:translate(-50%,0)}
-
-.turn-flash{
-  position:fixed;inset:0;pointer-events:none;z-index:9998;
-  background:radial-gradient(circle at 50% 50%,rgba(46,160,67,.35),transparent 60%);
-  opacity:0;animation:turnFlash .7s ease-out;
-}
-@keyframes turnFlash{
-  0%{opacity:0}
-  20%{opacity:1}
-  100%{opacity:0}
-}
-
-/* ============ RESPONSIVE ============ */
-@media (max-width:380px){
-  #hand .dom:not(.vert){width:56px;height:28px}
-  #hand .dom.vert{width:28px;height:56px}
-  #hand .pip{width:5px;height:5px}
-  .code-val{font-size:29px;letter-spacing:6px}
-  h1.title{font-size:28px}
-}
-@media (min-width:700px){
-  #hand .dom:not(.vert){width:72px;height:36px}
-  #hand .dom.vert{width:36px;height:72px}
-  #hand .pip{width:7px;height:7px}
+@media (min-width:900px){
+  #opponents{padding:12px;}
+  .opp{min-width:130px;padding:9px 16px;}
+  #handWrap{padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));}
 }
 </style>
 </head>
 <body>
 <div id="app">
 
-  <section id="scr-start" class="screen active">
-    <div class="brand">🁫</div>
-    <h1 class="title">دومينو</h1>
-    <p class="sub">العب أونلاين مع صحابك بكود دعوة<br/>ولا ضد الروبوت على نفس الجهاز</p>
+  <!-- ================= MENU ================= -->
+  <div id="menu" class="screen">
+    <div class="logo">🁫 دومينو أونلاين</div>
+    <div class="sub">لعب مباشر ضد الروبوتات، ولا أونلاين مع صحابك بكود دعوة. جرّب الحجر بالفأرة ولا بالصبع.</div>
 
     <div class="card">
-      <h3>🎮 اللعب على نفس الجهاز</h3>
-      <div class="row">
-        <label>عدد اللاعبين</label>
-        <div class="seg" id="segTotal">
-          <button data-v="2">2</button>
-          <button data-v="3">3</button>
-          <button data-v="4" class="on">4</button>
-        </div>
+      <h3>1 · اختر النمط</h3>
+      <div class="modes" id="modeList">
+        <button class="modeBtn on" data-mode="1v1">👤 1 ضد 1</button>
+        <button class="modeBtn" data-mode="2v2">👥 2 ضد 2</button>
+        <button class="modeBtn" data-mode="1v3">🤖 1 ضد 3 روبوتات</button>
+        <button class="modeBtn" data-mode="3v1">🤖 3 ضد 1 روبوت</button>
+        <button class="modeBtn" data-mode="4p">🎯 4 لاعبين (كل واحد بوحدو)</button>
+        <button class="modeBtn" data-mode="3p">🎲 3 لاعبين</button>
       </div>
-      <div class="row">
-        <label>لاعبون حقيقيون</label>
-        <div class="seg" id="segHumans">
-          <button data-v="1" class="on">1</button>
-          <button data-v="2">2</button>
-          <button data-v="3">3</button>
-          <button data-v="4">4</button>
-        </div>
-      </div>
-      <label class="checkrow" id="teamRow">
-        <input type="checkbox" id="chkTeam" checked/>
-        <span>وضع الفرق (2 ضد 2)</span>
-      </label>
-      <button class="btn primary" id="btnLocal">▶ ابدأ اللعب</button>
-      <div class="hint">الروبوتات تكمّل الأماكن الفارغة تلقائياً</div>
     </div>
 
     <div class="card">
-      <h3>🌐 اللعب أونلاين</h3>
-      <input type="text" id="inpName" placeholder="اسمك..." maxlength="12" value="لاعب"/>
-      <button class="btn primary" id="btnCreate">➕ إنشاء غرفة (كود دعوة)</button>
-      <div style="height:11px"></div>
-      <div class="joinrow">
-        <input type="text" id="inpCode" placeholder="الكود" maxlength="6" autocomplete="off" spellcheck="false"/>
-        <button class="btn" id="btnJoin">دخول</button>
+      <h3>2 · لعب أونلاين</h3>
+      <div class="row">
+        <input id="inpName" maxlength="10" placeholder="سميتك" value="لاعب"/>
       </div>
-      <div class="hint">الأونلاين يخدم عبر اتصال مباشر P2P — بلا سيرفر</div>
+      <button class="big" id="btnCreate">➕ إنشاء غرفة (كود دعوة)</button>
+      <div class="row">
+        <input id="inpCode" maxlength="6" placeholder="كود الغرفة"/>
+        <button class="big alt" id="btnJoin" style="width:auto;padding:13px 20px;margin:0;">دخول</button>
+      </div>
+      <div class="hint">الغرفة تخدم بين التابات/النوافذ ديال نفس المتصفح (BroadcastChannel).<br>عيّط لصاحبك، عطيه الكود، وهو يدخل.</div>
     </div>
-  </section>
 
-  <section id="scr-lobby" class="screen">
-    <div class="lobby-wrap">
-      <h2>🚪 غرفة الانتظار</h2>
-      <div class="code-box" id="codeBox">
-        <div class="code-label">كود الدعوة — عطيه لصحابك</div>
-        <div class="code-val" id="codeVal">-----</div>
-        <button class="btn small ghost" id="btnCopy" style="margin:0 auto">📋 نسخ الكود</button>
-      </div>
-      <div class="lobby-players" id="lobbyPlayers"></div>
-      <div id="lobbyControls"></div>
-      <div class="lobby-status" id="lobbyStatus">جاري التحضير...</div>
-      <button class="btn ghost" id="btnLeave">← خروج</button>
+    <div class="card">
+      <h3>3 · لعب فوري</h3>
+      <button class="big alt" id="btnSolo">▶ ابدا دابا ضد الروبوتات</button>
     </div>
-  </section>
+  </div>
 
-  <section id="scr-game" class="screen">
-    <header id="topbar">
-      <button class="icon-btn" id="btnMenu" title="القائمة">☰</button>
-      <div id="scoreStrip"></div>
-      <div id="roundInfo"></div>
-      <button class="icon-btn" id="btnSound" title="الصوت">🔊</button>
-    </header>
-    <main id="tableArea">
-      <div id="opponents"></div>
-      <div id="boardWrap">
-        <div id="board"></div>
-      </div>
-      <div class="status" id="statusBar"></div>
-    </main>
-    <footer id="handArea">
-      <div id="handInfo"></div>
-      <div id="hand"></div>
-      <div id="actions"></div>
-    </footer>
-    <!-- Drop zones live outside scrolling container -->
-    <div class="dropzone left" id="dropLeft">
-      <div class="dz-content">
-        <div class="dz-icon">⬅</div>
-        <div class="dz-label">يسار</div>
-      </div>
+  <!-- ================= LOBBY ================= -->
+  <div id="lobby" class="screen hidden">
+    <div class="codebox">كود الدعوة: <b id="lobbyCode">------</b>
+      <button id="btnCopy">نسخ</button>
     </div>
-    <div class="dropzone right" id="dropRight">
-      <div class="dz-content">
-        <div class="dz-icon">➡</div>
-        <div class="dz-label">يمين</div>
-      </div>
-    </div>
-  </section>
+    <div id="lobbyPlayers"></div>
+    <button class="big" id="btnStart" style="width:min(420px,94vw);">🚀 بدء اللعب</button>
+    <button class="big alt" id="btnLeave" style="width:min(420px,94vw);">← رجوع</button>
+    <div class="hint">الكراسي الخاوية كيتعمرو بالروبوتات أوتوماتيكياً.</div>
+  </div>
 
+  <!-- ================= GAME ================= -->
+  <div id="game" class="screen hidden">
+    <div id="topbar">
+      <div id="turnInfo"></div>
+      <div id="myScore">0</div>
+      <div class="tools">
+        <button id="btnZoomIn" title="تكبير">＋</button>
+        <button id="btnZoomOut" title="تصغير">－</button>
+        <button id="btnRot" title="دوران 90°">↻</button>
+        <button id="btnMenu" title="القائمة">☰</button>
+      </div>
+    </div>
+    <div id="opponents"></div>
+    <div id="boardWrap">
+      <div id="board"></div>
+      <div class="dz" id="dzLeft">◀</div>
+      <div class="dz" id="dzRight">▶</div>
+    </div>
+    <div id="handWrap"><div id="hand"></div></div>
+    <div id="toast"></div>
+  </div>
+
+  <div id="overlay" class="hidden">
+    <div class="card">
+      <h2 id="ovTitle"></h2>
+      <p id="ovText"></p>
+      <div id="ovScores"></div>
+    </div>
+  </div>
 </div>
 
-<script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 <script>
-(function(){
-'use strict';
+"use strict";
+/* =========================================================
+   🁫 DOMINO ONLINE — single file, no dependencies
+   ========================================================= */
+
+const $  = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const rnd = n => Math.floor(Math.random()*n);
+const uid = () => Math.random().toString(36).slice(2,10);
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pipsOf = hand => hand.reduce((s,t)=>s+t.a+t.b,0);
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=rnd(i+1);const t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function genCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<6;i++)s+=c[rnd(c.length)];return s;}
+
+const PIPS = {
+  0:[], 1:[[2,2]],
+  2:[[1,1],[3,3]],
+  3:[[1,1],[2,2],[3,3]],
+  4:[[1,1],[1,3],[3,1],[3,3]],
+  5:[[1,1],[1,3],[2,2],[3,1],[3,3]],
+  6:[[1,1],[1,2],[1,3],[3,1],[3,2],[3,3]]
+};
+
+const MODES = {
+  '1v1': {players:2, teams:[[0],[1]],       label:'1 ضد 1'},
+  '2v2': {players:4, teams:[[0,2],[1,3]],   label:'2 ضد 2'},
+  '1v3': {players:4, teams:[[0],[1,2,3]],   label:'1 ضد 3'},
+  '3v1': {players:4, teams:[[0,1,2],[3]],   label:'3 ضد 1'},
+  '4p' : {players:4, teams:[[0],[1],[2],[3]], label:'4 لاعبين'},
+  '3p' : {players:3, teams:[[0],[1],[2]],   label:'3 لاعبين'}
+};
+
+const BOT_NAMES = ['روبوت · أمين','روبوت · كريم','روبوت · ياسين','روبوت · رشيد'];
 
 /* =========================================================
-   SOUND ENGINE
+   APP STATE
    ========================================================= */
-var Sound = (function(){
-  var ctx = null;
-  var enabled = true;
-  var masterGain = null;
-
-  function init(){
-    if(ctx){ if(ctx.state === 'suspended'){ try{ ctx.resume(); }catch(e){} } return; }
-    try{
-      var AC = window.AudioContext || window.webkitAudioContext;
-      if(!AC){ enabled = false; return; }
-      ctx = new AC();
-      masterGain = ctx.createGain();
-      masterGain.gain.value = 0.85;
-      masterGain.connect(ctx.destination);
-    }catch(e){ enabled = false; }
-  }
-  function tone(freq, dur, type, vol, delay, freq2){
-    if(!enabled || !ctx || !masterGain) return;
-    type = type || 'sine';
-    vol = (vol === undefined) ? 0.14 : vol;
-    delay = delay || 0;
-    var t0 = ctx.currentTime + delay;
-    var osc = ctx.createOscillator();
-    var g = ctx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, t0);
-    if(freq2){ osc.frequency.exponentialRampToValueAtTime(Math.max(40,freq2), t0 + dur); }
-    g.gain.setValueAtTime(0, t0);
-    g.gain.linearRampToValueAtTime(vol, t0 + 0.008);
-    g.gain.exponentialRampToValueAtTime(0.0008, t0 + dur);
-    osc.connect(g); g.connect(masterGain);
-    osc.start(t0); osc.stop(t0 + dur + 0.03);
-  }
-  function noise(dur, vol, delay, freqCenter){
-    if(!enabled || !ctx || !masterGain) return;
-    vol = vol === undefined ? 0.08 : vol;
-    delay = delay || 0;
-    var t0 = ctx.currentTime + delay;
-    var frames = Math.max(1, Math.floor(ctx.sampleRate * dur));
-    var buf = ctx.createBuffer(1, frames, ctx.sampleRate);
-    var data = buf.getChannelData(0);
-    for(var i=0;i<frames;i++) data[i] = (Math.random()*2-1) * (1 - i/frames);
-    var src = ctx.createBufferSource(); src.buffer = buf;
-    var bp = ctx.createBiquadFilter();
-    bp.type = 'bandpass';
-    bp.frequency.value = freqCenter || 1800;
-    bp.Q.value = 1.2;
-    var g = ctx.createGain();
-    g.gain.setValueAtTime(vol, t0);
-    g.gain.exponentialRampToValueAtTime(0.0008, t0 + dur);
-    src.connect(bp); bp.connect(g); g.connect(masterGain);
-    src.start(t0); src.stop(t0 + dur + 0.02);
-  }
-  return {
-    init: init,
-    setEnabled: function(v){ enabled = !!v; if(enabled) init(); },
-    isEnabled: function(){ return enabled; },
-    toggle: function(){ enabled = !enabled; if(enabled) init(); return enabled; },
-    click: function(){ init(); tone(720, 0.045, 'square', 0.055); },
-    place: function(){ init(); tone(320, 0.07, 'triangle', 0.15, 0, 180); tone(520, 0.09, 'sine', 0.09, 0.02); noise(0.05, 0.05, 0, 2200); },
-    double: function(){ init(); tone(240, 0.09, 'triangle', 0.18, 0, 140); tone(240, 0.09, 'triangle', 0.16, 0.09, 140); tone(600, 0.14, 'sine', 0.1, 0.18); noise(0.07, 0.07, 0.02, 1600); },
-    draw: function(){ init(); noise(0.11, 0.07, 0, 3200); tone(380, 0.09, 'sine', 0.06, 0.03, 620); },
-    pass: function(){ init(); tone(260, 0.15, 'sine', 0.08, 0, 160); tone(180, 0.18, 'sine', 0.07, 0.07, 120); },
-    turn: function(){ init(); tone(660, 0.1, 'sine', 0.1, 0); tone(880, 0.13, 'sine', 0.1, 0.08); tone(1320, 0.16, 'sine', 0.07, 0.17); },
-    win: function(){ init(); var n = [523.25, 659.25, 783.99, 1046.5]; for(var i=0;i<n.length;i++) tone(n[i], 0.22, 'triangle', 0.13, i*0.09); tone(1568, 0.4, 'sine', 0.1, 0.42); },
-    lose: function(){ init(); tone(392, 0.18, 'sine', 0.11, 0); tone(311, 0.22, 'sine', 0.1, 0.13); tone(233, 0.32, 'sine', 0.1, 0.28); },
-    err: function(){ init(); tone(180, 0.09, 'square', 0.08); tone(140, 0.11, 'square', 0.07, 0.05); },
-    pick: function(){ init(); tone(540, 0.05, 'sine', 0.06); noise(0.03, 0.03, 0, 2600); },
-    drop: function(){ init(); tone(320, 0.07, 'triangle', 0.1, 0, 220); noise(0.04, 0.03, 0, 1800); }
-  };
-})();
-document.addEventListener('pointerdown', function(){ Sound.init(); }, {once:true, capture:true});
-document.addEventListener('keydown', function(){ Sound.init(); }, {once:true, capture:true});
-
-/* =========================================================
-   CONSTANTS
-   ========================================================= */
-var PIP_MAP = {0:[],1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
-var CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-var TARGET_SCORE = 100;
-var PEER_PREFIX = 'dmnx7k-';
-
-var $ = function(id){ return document.getElementById(id); };
-function el(tag, cls, txt){
-  var e = document.createElement(tag);
-  if(cls) e.className = cls;
-  if(txt !== undefined && txt !== null) e.textContent = txt;
-  return e;
-}
-function shuffle(a){
-  for(var i=a.length-1;i>0;i--){
-    var j = (Math.random()*(i+1))|0;
-    var t = a[i]; a[i]=a[j]; a[j]=t;
-  }
-  return a;
-}
-function makeDeck(){
-  var d = [];
-  for(var a=0;a<=6;a++) for(var b=a;b<=6;b++) d.push({a:a,b:b,id:a+'-'+b});
-  return d;
-}
-function pipSum(hand){
-  var s = 0;
-  for(var i=0;i<hand.length;i++) s += hand[i].a + hand[i].b;
-  return s;
-}
-function genCode(){
-  var s = '';
-  for(var i=0;i<5;i++) s += CODE_CHARS[(Math.random()*CODE_CHARS.length)|0];
-  return s;
-}
-function toast(msg){
-  var t = $('toast');
-  if(!t){ t = el('div','toast'); t.id='toast'; document.body.appendChild(t); }
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toast._t);
-  toast._t = setTimeout(function(){ t.classList.remove('show'); }, 2300);
-}
-function showScreen(name){
-  ['start','lobby','game'].forEach(function(n){
-    var s = $('scr-'+n);
-    if(s) s.classList.toggle('active', n===name);
-  });
-}
-function turnFlash(){
-  var f = el('div','turn-flash');
-  document.body.appendChild(f);
-  setTimeout(function(){ if(f.parentNode) f.parentNode.removeChild(f); }, 800);
-}
-
-/* Responsive board scale based on viewport */
-function getBoardScale(){
-  var w = window.innerWidth;
-  if(w < 340) return 0.60;
-  if(w < 380) return 0.70;
-  if(w < 430) return 0.80;
-  if(w < 520) return 0.90;
-  if(w < 768) return 1.00;
-  return 1.12;
-}
+const App = {
+  G:null, isHost:false, mySeat:0, mode:'1v1', code:'', net:null, cid:uid(),
+  online:false, lobby:null, zoom:1, allVert:false, selectedTile:null,
+  drag:null, tickTimer:null, myName:'لاعب'
+};
 
 /* =========================================================
    TILE RENDERING
    ========================================================= */
-function pipsEl(n){
-  var wrap = el('div','pips');
-  var on = PIP_MAP[n] || [];
-  for(var i=0;i<9;i++){
-    var cell = el('div','cell');
-    if(on.indexOf(i) >= 0) cell.appendChild(el('div','pip'));
-    wrap.appendChild(cell);
-  }
-  return wrap;
+function pipsHTML(n){
+  return PIPS[n].map(([r,c])=>`<i style="grid-row:${r};grid-column:${c}"></i>`).join('');
 }
-/* Generic domino — auto-orient double as vertical (for hand tiles) */
-function domEl(a, b){
-  var d = el('div', 'dom' + (a===b ? ' vert' : ''));
-  var h1 = el('div','half'); h1.appendChild(pipsEl(a));
-  var h2 = el('div','half'); h2.appendChild(pipsEl(b));
-  d.appendChild(h1); d.appendChild(h2);
-  return d;
-}
-/* Board domino — orientation is forced by chain layout */
-function boardDomEl(a, b, orient){
-  var isVert = (orient === 'v');
-  var d = el('div', 'dom' + (isVert ? ' vert' : ''));
-  var h1 = el('div','half'); h1.appendChild(pipsEl(a));
-  var h2 = el('div','half'); h2.appendChild(pipsEl(b));
+function tileEl(a,b,opts){
+  opts = opts || {};
+  const d = document.createElement('div');
+  d.className = 'tile' + (opts.vert?' vert':'') + (opts.cls?' '+opts.cls:'');
+  const h1 = document.createElement('div'); h1.className='half'; h1.innerHTML = pipsHTML(a);
+  const h2 = document.createElement('div'); h2.className='half'; h2.innerHTML = pipsHTML(b);
   d.appendChild(h1); d.appendChild(h2);
   return d;
 }
 
 /* =========================================================
-   RULE HELPERS
+   GAME LOGIC  (host authoritative)
    ========================================================= */
-function sidesFor(tile, board, leftEnd, rightEnd){
-  if(!board || board.length === 0) return ['first'];
-  var s = [];
-  if(tile.a === leftEnd || tile.b === leftEnd) s.push('left');
-  if(tile.a === rightEnd || tile.b === rightEnd) s.push('right');
-  return s;
-}
-function legalMovesView(hand, board, leftEnd, rightEnd){
-  var out = [];
-  if(!board || board.length === 0){
-    for(var i=0;i<hand.length;i++) out.push({tileId:hand[i].id, side:'first'});
-    return out;
-  }
-  for(var k=0;k<hand.length;k++){
-    var t = hand[k];
-    if(t.a === leftEnd || t.b === leftEnd) out.push({tileId:t.id, side:'left'});
-    if(t.a === rightEnd || t.b === rightEnd) out.push({tileId:t.id, side:'right'});
-  }
-  return out;
+function createDeck(){
+  const d=[]; let id=0;
+  for(let a=0;a<=6;a++) for(let b=a;b<=6;b++) d.push({a:a,b:b,id:id++});
+  return d;
 }
 
-/* =========================================================
-   STATE
-   ========================================================= */
-var G = null;
-var VIEW = null;
-var net = { role:null, peer:null, code:null, conn:null };
-var lobby = { players:[], names:[], maxPlayers:4, team:true };
-var botTimer = null;
-var pending = null;
-var sel = { total:4, humans:1 };
-var lastBoardLen = 0;
-var lastDrawnId = null;
-var lastScoreSnapshot = null;
-var drag = null;
-
-/* =========================================================
-   DEAL
-   ========================================================= */
-function deal(){
-  var deck = shuffle(makeDeck());
-  for(var i=0;i<G.players.length;i++) G.players[i].hand = [];
-  for(var r=0;r<7;r++){
-    for(var k=0;k<G.players.length;k++) G.players[k].hand.push(deck.pop());
-  }
-  G.boneyard = deck;
-  for(var p=0;p<G.players.length;p++){
-    G.players[p].hand.sort(function(x,y){
-      var d = (y.a+y.b) - (x.a+x.b);
-      if(d !== 0) return d;
-      return y.a - x.a;
+function makeGame(mode, names, bots){
+  const cfg = MODES[mode];
+  const n = cfg.players;
+  const players = [];
+  for(let i=0;i<n;i++){
+    let team = 0;
+    for(let t=0;t<cfg.teams.length;t++) if(cfg.teams[t].indexOf(i)>=0) team = t;
+    players.push({
+      name: names[i] || ('لاعب '+(i+1)),
+      bot: !!bots[i],
+      team: team,
+      hand: [],
+      score: 0
     });
   }
-  G.board = [];
-  G.leftEnd = null;
-  G.rightEnd = null;
-  G.passCount = 0;
-  G.winners = [];
-  G.lastPlacedSide = 'right';
-}
-function findStarter(){
-  for(var v=6;v>=0;v--){
-    for(var i=0;i<G.players.length;i++){
-      var h = G.players[i].hand;
-      for(var k=0;k<h.length;k++) if(h[k].a === v && h[k].b === v) return i;
-    }
-  }
-  var best = 0, bv = -1;
-  for(var p=0;p<G.players.length;p++){
-    var hh = G.players[p].hand;
-    for(var m=0;m<hh.length;m++){
-      var s = hh[m].a + hh[m].b;
-      if(s > bv){ bv = s; best = p; }
-    }
-  }
-  return best;
-}
-function buildPlayers(total, teamMode, humans){
-  var order = (total === 4) ? (teamMode ? [0,2,1,3] : [0,1,2,3]) : (total === 3 ? [0,1,2] : [0,1]);
-  var arr = new Array(total);
-  var bN = 0;
-  for(var k=0;k<total;k++){
-    var seat = order[k];
-    if(k < humans.length){
-      arr[seat] = {name: humans[k].name, hand: [], isBot: false, conn: humans[k].conn || null, connected: true};
-    } else {
-      bN++;
-      arr[seat] = {name: 'روبوت ' + bN, hand: [], isBot: true, conn: null, connected: true};
-    }
-  }
-  return arr;
-}
-function newGameState(players, teamMode){
-  G = {
-    players: players, board: [], leftEnd: null, rightEnd: null, boneyard: [],
-    turn: 0, phase: 'playing', scores: players.map(function(){ return 0; }),
-    round: 1, teamMode: !!teamMode, target: TARGET_SCORE, passCount: 0,
-    lastAction: '', message: '', winners: [], lastRoundPoints: 0, lastPlacedSide: 'right'
+  return {
+    mode: mode, players: players, board: [], boneyard: [],
+    turn: 0, leftEnd: null, rightEnd: null, phase: 'playing',
+    passStreak: 0, round: 1, target: 100, log: [], lastPlaced: null,
+    roundResult: null
   };
-  deal();
-  G.turn = findStarter();
-  G.lastAction = 'بدأت الجولة 1';
+}
+
+function log(G, txt){
+  G.log.push(txt);
+  if(G.log.length > 40) G.log.shift();
+}
+
+function deal(G){
+  const deck = shuffle(createDeck());
+  G.board = []; G.boneyard = []; G.leftEnd = null; G.rightEnd = null;
+  G.passStreak = 0; G.phase = 'playing'; G.roundResult = null;
+  G.lastPlaced = null; G.log = [];
+  G.players.forEach(p => p.hand = []);
+  const n = G.players.length, per = 7;
+  for(let r=0;r<per;r++){
+    for(let i=0;i<n;i++){
+      const t = deck.pop();
+      if(t) G.players[i].hand.push(t);
+    }
+  }
+  G.boneyard = deck;
+  G.turn = findStarter(G);
+  log(G, 'الجولة ' + G.round + ' — البداية عند ' + G.players[G.turn].name);
+}
+
+function findStarter(G){
+  const n = G.players.length;
+  for(let d=6; d>=0; d--){
+    for(let p=0;p<n;p++){
+      if(G.players[p].hand.some(t => t.a===d && t.b===d)) return p;
+    }
+  }
+  let best = -1, bp = 0;
+  for(let p=0;p<n;p++){
+    for(const t of G.players[p].hand){
+      const s = t.a + t.b;
+      if(s > best){ best = s; bp = p; }
+    }
+  }
+  return bp;
+}
+
+function sidesFor(G, t){
+  if(G.board.length === 0) return ['first'];
+  const s = [];
+  if(t.a === G.leftEnd || t.b === G.leftEnd) s.push('left');
+  if(t.a === G.rightEnd || t.b === G.rightEnd) s.push('right');
+  return s;
+}
+
+function playableTiles(G, hand){
+  return hand.filter(t => sidesFor(G,t).length > 0);
+}
+
+function placeTile(G, t, side){
+  if(G.board.length === 0){
+    G.board.push({a:t.a, b:t.b, vert:(t.a===t.b), id:t.id});
+    G.leftEnd = t.a; G.rightEnd = t.b;
+    return;
+  }
+  if(side === 'left'){
+    const cur = G.leftEnd;
+    const v = (t.a === cur) ? t.b : t.a;
+    G.board.unshift({a:v, b:cur, vert:(v===cur), id:t.id});
+    G.leftEnd = v;
+  } else {
+    const cur = G.rightEnd;
+    const v = (t.a === cur) ? t.b : t.a;
+    G.board.push({a:cur, b:v, vert:(v===cur), id:t.id});
+    G.rightEnd = v;
+  }
+}
+
+function doPlay(G, seat, tile, side){
+  const p = G.players[seat];
+  const idx = p.hand.findIndex(t => t.id === tile.id);
+  if(idx < 0) return false;
+  p.hand.splice(idx,1);
+  placeTile(G, tile, side);
+  G.passStreak = 0;
+  G.lastPlaced = tile.id;
+  log(G, p.name + ' لعب [' + tile.a + '|' + tile.b + ']');
+  if(p.hand.length === 0){ endRound(G, 'win', seat); return true; }
+  G.turn = (G.turn + 1) % G.players.length;
+  return true;
+}
+
+function drawLoop(G){
+  const p = G.players[G.turn];
+  let drew = 0;
+  while(G.boneyard.length > 0){
+    const t = G.boneyard.pop();
+    p.hand.push(t);
+    drew++;
+    if(sidesFor(G,t).length > 0) break;
+  }
+  if(drew > 0) log(G, p.name + ' سحب ' + drew + ' حجرة');
+  return drew;
+}
+
+function passTurn(G){
+  log(G, G.players[G.turn].name + ' ما لقاش، داز الدور');
+  G.passStreak++;
+  if(G.passStreak >= G.players.length){ endRound(G, 'blocked', -1); return; }
+  G.turn = (G.turn + 1) % G.players.length;
+}
+
+function endRound(G, reason, winner){
+  if(G.phase === 'ended') return;
+  G.phase = 'ended';
+  let pts = 0;
+  if(reason === 'blocked'){
+    let low = 1e9, w = 0;
+    G.players.forEach((p,i)=>{ const v = pipsOf(p.hand); if(v < low){ low = v; w = i; } });
+    winner = w;
+  }
+  G.players.forEach((p,i)=>{ if(i !== winner) pts += pipsOf(p.hand); });
+  G.players[winner].score += pts;
+  G.roundResult = { winner: winner, pts: pts, reason: reason };
+  log(G, '🏆 ' + G.players[winner].name + ' ربح الجولة بـ ' + pts + ' نقطة');
+
+  if(App.isHost){
+    setTimeout(()=>{
+      if(App.G !== G) return;
+      if(G.players.some(p => p.score >= G.target)){
+        G.gameOver = true;
+        if(App.isHost) afterChange();
+        return;
+      }
+      G.round++;
+      deal(G);
+      afterChange();
+      scheduleTick();
+    }, 3600);
+  }
 }
 
 /* =========================================================
-   VIEW
+   BOT AI
    ========================================================= */
-function buildView(idx){
-  var p = G.players[idx];
+function botMove(G){
+  const p = G.players[G.turn];
+  let opts = playableTiles(G, p.hand);
+  if(opts.length === 0){
+    drawLoop(G);
+    opts = playableTiles(G, p.hand);
+    if(opts.length === 0){ passTurn(G); return; }
+  }
+  let best = null, bestScore = -1e9, bestSide = null;
+  for(const t of opts){
+    const sides = sidesFor(G, t);
+    for(const s of sides){
+      let sc = t.a + t.b;
+      if(t.a === t.b) sc += 6;
+      if(sides.length > 1) sc += 4;
+      if(s === 'first') sc += 2;
+      if(sc > bestScore){ bestScore = sc; best = t; bestSide = s; }
+    }
+  }
+  if(best) doPlay(G, G.turn, best, bestSide);
+}
+
+/* =========================================================
+   TICK LOOP (host)
+   ========================================================= */
+function scheduleTick(){
+  if(!App.isHost) return;
+  clearTimeout(App.tickTimer);
+  App.tickTimer = setTimeout(tick, 850);
+}
+
+function tick(){
+  const G = App.G;
+  if(!App.isHost || !G || G.phase !== 'playing' || G.gameOver) return;
+  const p = G.players[G.turn];
+
+  if(p.bot){
+    botMove(G);
+    afterChange();
+    scheduleTick();
+    return;
+  }
+
+  const opts = playableTiles(G, p.hand);
+  if(opts.length === 0){
+    if(G.boneyard.length > 0){
+      drawLoop(G);
+      afterChange();
+      scheduleTick();
+    } else {
+      passTurn(G);
+      afterChange();
+      scheduleTick();
+    }
+  }
+}
+
+/* =========================================================
+   VIEW / SYNC
+   ========================================================= */
+function viewFor(G, seat){
   return {
-    board: G.board.map(function(x){ return {a:x.a, b:x.b}; }),
-    leftEnd: G.leftEnd, rightEnd: G.rightEnd, turn: G.turn, phase: G.phase,
-    round: G.round, target: G.target, scores: G.scores.slice(),
-    boneyardCount: G.boneyard.length, teamMode: G.teamMode,
-    lastAction: G.lastAction, message: G.message, winners: G.winners.slice(),
-    lastRoundPoints: G.lastRoundPoints, lastPlacedSide: G.lastPlacedSide,
-    players: G.players.map(function(pl){
-      return {name: pl.name, count: pl.hand.length, isBot: pl.isBot, connected: pl.connected !== false};
-    }),
-    myHand: p ? p.hand.map(function(t){ return {a:t.a,b:t.b,id:t.id}; }) : [],
-    myIndex: idx
+    mode: G.mode, phase: G.phase, turn: G.turn,
+    leftEnd: G.leftEnd, rightEnd: G.rightEnd,
+    board: G.board, boneyard: G.boneyard.length,
+    round: G.round, target: G.target,
+    lastPlaced: G.lastPlaced, roundResult: G.roundResult,
+    gameOver: !!G.gameOver,
+    log: G.log.slice(-6),
+    players: G.players.map((p,i)=>({
+      name: p.name, bot: p.bot, team: p.team, score: p.score,
+      handCount: p.hand.length,
+      hand: (i === seat) ? p.hand : null
+    }))
   };
 }
-function localViewer(){
-  if(G.phase === 'playing'){
-    var t = G.players[G.turn];
-    if(t && !t.isBot) return G.turn;
-  }
-  for(var i=0;i<G.players.length;i++) if(!G.players[i].isBot) return i;
-  return 0;
+
+function afterChange(){
+  render();
+  broadcastState();
 }
-function updateView(){
-  if(net.role === 'client') return;
-  if(net.role === 'host'){ VIEW = buildView(0); return; }
-  if(!G) return;
-  VIEW = buildView(localViewer());
+
+function broadcastState(){
+  if(!App.isHost || !App.net || !App.G) return;
+  const G = App.G;
+  for(let i=0;i<G.players.length;i++){
+    if(G.players[i].bot) continue;
+    if(i === App.mySeat) continue;
+    try{
+      App.net.postMessage({t:'state', to:i, s:viewFor(G,i)});
+    }catch(e){}
+  }
+}
+
+/* =========================================================
+   NETWORKING
+   ========================================================= */
+function makeNet(code){
+  const ch = new BroadcastChannel('domino-v1-' + code);
+  ch.onmessage = e => onNet(e.data);
+  return ch;
+}
+
+function onNet(m){
+  if(!m || typeof m !== 'object') return;
+
+  if(App.isHost){
+    if(m.t === 'join')      hostAddClient(m.cid, m.name);
+    else if(m.t === 'act')  hostApply(m.seat, m.a);
+    else if(m.t === 'leave')hostRemoveClient(m.cid);
+    else if(m.t === 'sync') broadcastState();
+  } else {
+    if(m.t === 'lobby'){
+      App.lobby = m.seats;
+      App.mode = m.mode;
+      renderLobby();
+    } else if(m.t === 'start'){
+      App.mode = m.mode;
+      App.lobby = m.seats;
+      let seat = 0;
+      for(const s of m.seats){ if(s.cid === App.cid) seat = s.seat; }
+      App.mySeat = seat;
+      showScreen('game');
+    } else if(m.t === 'state'){
+      if(m.to === App.mySeat){
+        App.G = m.s;
+        render();
+      }
+    } else if(m.t === 'full'){
+      if(m.to === App.cid){ toast('الغرفة عامرة'); backToMenu(); }
+    }
+  }
+}
+
+function hostAddClient(cid, name){
+  if(!App.isHost || !App.lobby) return;
+  let free = null;
+  for(const s of App.lobby){ if(!s.cid && s.seat !== 0){ free = s; break; } }
+  if(!free){ try{ App.net.postMessage({t:'full', to:cid}); }catch(e){} return; }
+  free.cid = cid;
+  free.name = (name || ('لاعب ' + (free.seat+1))).slice(0,10);
+  free.bot = false;
+  broadcastLobby();
+}
+
+function hostRemoveClient(cid){
+  if(!App.isHost || !App.lobby) return;
+  for(const s of App.lobby){
+    if(s.cid === cid){ s.cid = null; s.name = 'فارغ'; s.bot = true; }
+  }
+  broadcastLobby();
+}
+
+function broadcastLobby(){
+  if(App.net){
+    try{ App.net.postMessage({t:'lobby', mode:App.mode, seats:App.lobby}); }catch(e){}
+  }
+  renderLobby();
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+function hostApply(seat, a){
+  const G = App.G;
+  if(!G || G.phase !== 'playing' || G.gameOver) return;
+  if(a.type !== 'play') return;
+  if(G.turn !== seat) return;
+  const p = G.players[seat];
+  if(!p) return;
+  const t = p.hand.find(x => x.id === a.tileId);
+  if(!t) return;
+  const sides = sidesFor(G, t);
+  if(sides.indexOf(a.side) < 0) return;
+  doPlay(G, seat, t, a.side);
+  afterChange();
+  scheduleTick();
+}
+
+function sendPlay(tile, side){
+  const a = {type:'play', tileId:tile.id, side:side};
+  App.selectedTile = null;
+  if(App.isHost) hostApply(App.mySeat, a);
+  else if(App.net){
+    try{ App.net.postMessage({t:'act', seat:App.mySeat, a:a}); }catch(e){}
+  }
 }
 
 /* =========================================================
    RENDER
    ========================================================= */
 function render(){
-  var prevScore = lastScoreSnapshot;
-  updateView();
-  if(!VIEW) return;
+  const G = App.G;
+  if(!G) return;
   renderTop();
   renderOpponents();
   renderBoard();
-  renderStatus();
   renderHand();
-
-  var anyChanged = false;
-  if(prevScore){
-    for(var i=0;i<VIEW.scores.length;i++){
-      if(prevScore[i] !== VIEW.scores[i]){ anyChanged = true; break; }
-    }
-  }
-  if(anyChanged){
-    var pills = $('scoreStrip').querySelectorAll('.score-pill');
-    for(var k=0;k<pills.length;k++){
-      (function(pill){
-        pill.classList.add('pulse');
-        setTimeout(function(){ pill.classList.remove('pulse'); }, 650);
-      })(pills[k]);
-    }
-  }
-  lastScoreSnapshot = VIEW.scores.slice();
-}
-
-function teamScoreOf(t){
-  var s = 0;
-  for(var i=0;i<VIEW.scores.length;i++) if(i % 2 === t) s += VIEW.scores[i];
-  return s;
+  renderOverlay();
 }
 
 function renderTop(){
-  $('roundInfo').textContent = 'الجولة ' + VIEW.round;
-  var strip = $('scoreStrip');
-  strip.innerHTML = '';
-
-  if(VIEW.teamMode && VIEW.scores.length === 4){
-    var t0 = teamScoreOf(0), t1 = teamScoreOf(1);
-    strip.appendChild(el('div','score-pill' + (t0 >= t1 ? ' lead' : ''), '🅰 ' + t0));
-    strip.appendChild(el('div','score-pill' + (t1 > t0 ? ' lead' : ''), '🅱 ' + t1));
-  } else {
-    for(var i=0;i<VIEW.players.length;i++){
-      var pill = el('div','score-pill', VIEW.players[i].name + ': ' + VIEW.scores[i]);
-      if(i === VIEW.myIndex) pill.classList.add('lead');
-      strip.appendChild(pill);
-    }
-  }
-  strip.appendChild(el('div','score-pill target','🎯 ' + VIEW.target));
+  const G = App.G, me = App.mySeat;
+  const p = G.players[me];
+  let txt;
+  if(G.gameOver) txt = '🏁 اللعبة كملات';
+  else if(G.phase === 'ended') txt = '⏳ الجولة سالات...';
+  else if(G.turn === me) txt = '<b class="me">▶ دورك!</b>';
+  else txt = 'دور: ' + esc(G.players[G.turn].name);
+  $('#turnInfo').innerHTML = txt;
+  $('#myScore').textContent = 'أنت: ' + (p ? p.score : 0);
 }
 
 function renderOpponents(){
-  var box = $('opponents');
+  const G = App.G, me = App.mySeat, n = G.players.length;
+  const box = $('#opponents');
   box.innerHTML = '';
-  for(var i=0;i<VIEW.players.length;i++){
-    if(i === VIEW.myIndex) continue;
-    var p = VIEW.players[i];
-    var c = el('div','opp' + (VIEW.turn === i && VIEW.phase === 'playing' ? ' active' : ''));
-    c.appendChild(el('div','opp-name', p.name));
-    var mt = el('div','mini-tiles');
-    var n = Math.min(p.count, 8);
-    for(var k=0;k<n;k++) mt.appendChild(el('div','mini'));
-    c.appendChild(mt);
-    c.appendChild(el('div','opp-count', p.count + ' حجرة'));
-    if(!p.connected) c.appendChild(el('div','off-tag','⚠ غير متصل'));
-    box.appendChild(c);
+  const myTeam = G.players[me].team;
+
+  for(let k=1;k<n;k++){
+    const i = (me + k) % n;
+    const p = G.players[i];
+    const cnt = (p.hand ? p.hand.length : p.handCount) || 0;
+    const d = document.createElement('div');
+    d.className = 'opp'
+      + (G.turn === i && G.phase === 'playing' ? ' active' : '')
+      + (n > 2 && p.team === myTeam ? ' mate' : '');
+
+    let mini = '';
+    const show = Math.min(cnt, 6);
+    for(let m=0;m<show;m++) mini += '<span class="mtile"></span>';
+
+    d.innerHTML =
+      '<span class="oname">' + esc(p.name) + '</span>' +
+      '<span class="ocount">🁢 ' + cnt + '</span>' +
+      '<div class="mini">' + mini + '</div>' +
+      '<div class="oscore">' + p.score + ' نقطة</div>';
+    box.appendChild(d);
   }
 }
 
-/* ------------ BOARD LAYOUT (ALTERNATING H/V CHAIN) ------------ */
 function renderBoard(){
-  var b = $('board');
-  b.innerHTML = '';
-
-  if(VIEW.board.length === 0){
-    b.style.width = '100%';
-    b.style.height = '120px';
-    b.appendChild(el('div','board-empty','الطاولة فارغة — ابدأ أول حجرة'));
-    lastBoardLen = 0;
+  const el = $('#board');
+  const G = App.G;
+  el.innerHTML = '';
+  if(!G.board.length){
+    el.innerHTML = '<div class="board-empty">الطابلة خاوية — لعب أول حجرة</div>';
     return;
   }
-
-  var scale = getBoardScale();
-  var LEN = Math.round(62 * scale);   // long side
-  var WID = Math.round(31 * scale);   // short side
-  var PAD_X = Math.round(28 * scale);
-  var PAD_Y = Math.round(24 * scale);
-
-  var isNew = VIEW.board.length > lastBoardLen;
-  var newIdx = -1;
-  if(isNew) newIdx = (VIEW.lastPlacedSide === 'left') ? 0 : VIEW.board.length - 1;
-
-  /* ----- compute layout ----- */
-  var tiles = [];
-  var cursorX = PAD_X;
-  var maxH = LEN;  // tallest tile (vertical)
-
-  for(var i=0;i<VIEW.board.length;i++){
-    var t = VIEW.board[i];
-    var orient = (i % 2 === 0) ? 'h' : 'v';
-    var w = (orient === 'h') ? LEN : WID;
-    var h = (orient === 'h') ? WID : LEN;
-    tiles.push({
-      a: t.a, b: t.b,
-      orient: orient,
-      x: cursorX, y: 0, w: w, h: h,
-      idx: i
-    });
-    cursorX += w;
-  }
-
-  var totalWidth = cursorX + PAD_X;
-  var boardH = maxH + PAD_Y * 2;
-
-  /* center tiles vertically */
-  for(var j=0;j<tiles.length;j++){
-    tiles[j].y = (maxH - tiles[j].h) / 2 + PAD_Y;
-  }
-
-  /* container width — fill or center */
-  var containerW = $('boardWrap').clientWidth;
-  var boardWidth = Math.max(totalWidth, containerW);
-  var hOffset = 0;
-  if(totalWidth < containerW) hOffset = (containerW - totalWidth) / 2;
-
-  b.style.width = boardWidth + 'px';
-  b.style.height = boardH + 'px';
-
-  /* ----- render tiles ----- */
-  for(var k=0;k<tiles.length;k++){
-    var tile = tiles[k];
-    var box = el('div','board-tile');
-    box.style.left = Math.round(tile.x + hOffset) + 'px';
-    box.style.top = Math.round(tile.y) + 'px';
-    box.style.width = tile.w + 'px';
-    box.style.height = tile.h + 'px';
-
-    var d = boardDomEl(tile.a, tile.b, tile.orient);
-    box.appendChild(d);
-
-    if(k === newIdx){
-      box.classList.add('just-placed');
-      if(tile.a === tile.b) box.classList.add('double');
-    }
-
-    b.appendChild(box);
-  }
-
-  lastBoardLen = VIEW.board.length;
-
-  /* auto scroll to new end */
-  var wrap = $('boardWrap');
-  requestAnimationFrame(function(){
-    if(!wrap) return;
-    if(VIEW.lastPlacedSide === 'left') wrap.scrollLeft = 0;
-    else wrap.scrollLeft = wrap.scrollWidth;
+  const last = G.board.length - 1;
+  G.board.forEach((t,i)=>{
+    const vert = t.vert || App.allVert;
+    const d = tileEl(t.a, t.b, {vert: vert});
+    if(t.id === G.lastPlaced) d.classList.add('new');
+    el.appendChild(d);
   });
+  fitBoard();
 }
 
-function renderStatus(){
-  var s = $('statusBar');
-  var txt = '', cls = 'status';
-
-  if(VIEW.phase === 'gameover'){ txt = VIEW.message; cls = 'status win'; }
-  else if(VIEW.phase === 'roundover'){ txt = VIEW.message; cls = 'status win'; }
-  else {
-    var t = VIEW.players[VIEW.turn];
-    if(VIEW.turn === VIEW.myIndex){ txt = '🎯 دورك الآن — اسحب الحجرة للطاولة'; cls = 'status my-turn'; }
-    else txt = '⏳ دور ' + (t ? t.name : '؟');
-    if(VIEW.lastAction) txt += '  •  ' + VIEW.lastAction;
+function fitBoard(){
+  const wrap = $('#boardWrap'), board = $('#board');
+  if(!wrap || !board) return;
+  let size = 30 * App.zoom;
+  document.documentElement.style.setProperty('--bcell', size + 'px');
+  let guard = 0;
+  while(guard++ < 24 && size > 11 &&
+        (board.scrollHeight > wrap.clientHeight - 14 || board.scrollWidth > wrap.clientWidth - 14)){
+    size -= 2;
+    document.documentElement.style.setProperty('--bcell', size + 'px');
   }
-  s.textContent = txt;
-  s.className = cls;
-}
-
-function canActNow(){
-  if(!VIEW) return false;
-  if(VIEW.phase !== 'playing') return false;
-  return VIEW.turn === VIEW.myIndex;
 }
 
 function renderHand(){
-  var h = $('hand');
-  var info = $('handInfo');
-  var acts = $('actions');
-  h.innerHTML = '';
-  acts.innerHTML = '';
+  const G = App.G, me = App.mySeat;
+  const p = G.players[me];
+  const el = $('#hand');
+  el.innerHTML = '';
+  if(!p || !p.hand) return;
 
-  if(VIEW.phase !== 'playing'){
-    pending = null;
-    for(var i=0;i<VIEW.myHand.length;i++){
-      var t = VIEW.myHand[i];
-      var d = domEl(t.a, t.b);
-      d.classList.add('hand-dom','dim');
-      h.appendChild(d);
-    }
-    info.textContent = '';
-    if(VIEW.phase === 'roundover'){
-      var b = el('button','btn primary','الجولة التالية ▶');
-      b.onclick = function(){ Sound.click(); requestNext(); };
-      acts.appendChild(b);
-    } else if(VIEW.phase === 'gameover'){
-      var b2 = el('button','btn primary','🔄 مباراة جديدة');
-      b2.onclick = function(){ Sound.click(); requestNewMatch(); };
-      acts.appendChild(b2);
-    }
+  const myTurn = (G.turn === me) && G.phase === 'playing' && !G.gameOver;
+  const sorted = p.hand.slice().sort((x,y) => (y.a + y.b) - (x.a + x.b));
+
+  sorted.forEach(t => {
+    const d = tileEl(t.a, t.b, {vert: true});
+    d.dataset.id = t.id;
+    if(myTurn && sidesFor(G, t).length > 0) d.classList.add('playable');
+    d.addEventListener('pointerdown', ev => onHandDown(ev, t, d));
+    el.appendChild(d);
+  });
+  fitHand();
+}
+
+function fitHand(){
+  const el = $('#hand');
+  const n = el.children.length;
+  if(!n) return;
+  const avail = el.clientWidth || (window.innerWidth - 24);
+  const gap = 6;
+  let size = Math.floor((avail - (n - 1) * gap) / n);
+  size = Math.max(15, Math.min(32, size));
+  el.style.setProperty('--cell', size + 'px');
+}
+
+function renderOverlay(){
+  const G = App.G;
+  const ov = $('#overlay');
+  if(G.gameOver){
+    ov.classList.remove('hidden');
+    let best = G.players[0];
+    for(const p of G.players) if(p.score > best.score) best = p;
+    $('#ovTitle').textContent = '🏆 ' + best.name + ' ربح اللعبة!';
+    $('#ovText').textContent = 'المجموع: ' + best.score + ' نقطة';
+    $('#ovScores').innerHTML = G.players
+      .map(p => '<div><span>' + esc(p.name) + '</span><b>' + p.score + '</b></div>').join('');
     return;
   }
-
-  var isMyTurn = (VIEW.turn === VIEW.myIndex);
-  if(!isMyTurn) pending = null;
-
-  var moves = legalMovesView(VIEW.myHand, VIEW.board, VIEW.leftEnd, VIEW.rightEnd);
-  var playableIds = {};
-  for(var m=0;m<moves.length;m++) playableIds[moves[m].tileId] = true;
-
-  for(var k=0;k<VIEW.myHand.length;k++){
-    var tile = VIEW.myHand[k];
-    var dd = domEl(tile.a, tile.b);
-    dd.classList.add('hand-dom');
-    if(isMyTurn && playableIds[tile.id]) dd.classList.add('playable');
-    else dd.classList.add('dim');
-    if(tile.id === lastDrawnId) dd.classList.add('drawn');
-    (function(tl, domNode){
-      domNode.addEventListener('pointerdown', function(ev){ onTilePointerDown(ev, tl, domNode); });
-    })(tile, dd);
-    h.appendChild(dd);
+  if(G.phase === 'ended' && G.roundResult){
+    ov.classList.remove('hidden');
+    const w = G.players[G.roundResult.winner];
+    $('#ovTitle').textContent = '🎉 ' + w.name + ' ربح الجولة';
+    $('#ovText').textContent = (G.roundResult.reason === 'blocked' ? 'اللعبة تسدّت — ' : '') +
+      '+' + G.roundResult.pts + ' نقطة · الجولة القادمة قريباً...';
+    $('#ovScores').innerHTML = G.players
+      .map(p => '<div><span>' + esc(p.name) + '</span><b>' + p.score + '</b></div>').join('');
+    return;
   }
-
-  var me = VIEW.players[VIEW.myIndex];
-  info.textContent = me
-    ? (isMyTurn ? '🖐 حجارك — دورك (اسحب أو اضغط)' : '🖐 حجارك (' + VIEW.myHand.length + ')')
-    : '';
-
-  if(isMyTurn){
-    if(moves.length === 0){
-      if(VIEW.boneyardCount > 0){
-        var db = el('button','btn small','🁠 اسحب حجرة (' + VIEW.boneyardCount + ')');
-        db.onclick = function(){ Sound.click(); doDraw(); };
-        acts.appendChild(db);
-      } else {
-        var pb = el('button','btn small warn','⏭ مرّر الدور');
-        pb.onclick = function(){ Sound.click(); doPass(); };
-        acts.appendChild(pb);
-      }
-    }
-  }
-
-  if(pending){
-    var box = el('div','sidepick');
-    box.appendChild(el('div','sidepick-title','وين تحب تلعبها؟'));
-    var row = el('div','sidepick-row');
-    if(pending.sides.indexOf('left') >= 0 || pending.sides.indexOf('first') >= 0){
-      var lb = el('button','btn side','⬅ يسار');
-      lb.onclick = function(){ Sound.click(); var tid = pending.tileId; pending = null; commitPlay(tid, 'left'); };
-      row.appendChild(lb);
-    }
-    if(pending.sides.indexOf('right') >= 0 || pending.sides.indexOf('first') >= 0){
-      var rb = el('button','btn side','يمين ➡');
-      rb.onclick = function(){ Sound.click(); var tid = pending.tileId; pending = null; commitPlay(tid, 'right'); };
-      row.appendChild(rb);
-    }
-    var cb = el('button','btn side ghost','إلغاء');
-    cb.onclick = function(){ Sound.click(); pending = null; render(); };
-    row.appendChild(cb);
-    box.appendChild(row);
-    acts.appendChild(box);
-  }
+  ov.classList.add('hidden');
 }
 
 /* =========================================================
    DRAG & DROP
    ========================================================= */
-function onTilePointerDown(e, tile, domNode){
-  if(!canActNow()) return;
-  var sides = sidesFor(tile, VIEW.board, VIEW.leftEnd, VIEW.rightEnd);
-  if(sides.length === 0){ Sound.err(); return; }
-  e.preventDefault();
-  Sound.pick();
+function onHandDown(ev, tile, el){
+  const G = App.G, me = App.mySeat;
+  if(!G || G.phase !== 'playing' || G.gameOver) return;
+  if(G.turn !== me) return;
+  if(sidesFor(G, tile).length === 0) return;
+  ev.preventDefault();
+  ev.stopPropagation();
+  startDrag(ev, tile, el);
+}
 
-  var rect = domNode.getBoundingClientRect();
-  drag = {
-    tileId: tile.id, tile: tile, sides: sides, domNode: domNode,
-    ghost: null, pointerId: e.pointerId,
-    startX: e.clientX, startY: e.clientY,
-    offsetX: e.clientX - rect.left, offsetY: e.clientY - rect.top,
-    width: rect.width, height: rect.height,
-    isDragging: false,
-    leftHot: false, rightHot: false
+function startDrag(ev, tile, el){
+  const rect = el.getBoundingClientRect();
+  const ghost = tileEl(tile.a, tile.b, {vert:true, cls:'ghost'});
+  ghost.style.width  = rect.width + 'px';
+  ghost.style.height = rect.height + 'px';
+  document.body.appendChild(ghost);
+
+  App.drag = {
+    tile: tile, el: el, ghost: ghost, moved: false,
+    sx: ev.clientX, sy: ev.clientY, side: null
   };
-  document.addEventListener('pointermove', onPointerMove, {passive:false});
-  document.addEventListener('pointerup', onPointerUp);
-  document.addEventListener('pointercancel', onPointerUp);
+  moveGhost(ev.clientX, ev.clientY);
+  window.addEventListener('pointermove', onDragMove, {passive:false});
+  window.addEventListener('pointerup', onDragUp);
+  window.addEventListener('pointercancel', onDragUp);
 }
-function createGhost(){
-  var d = drag;
-  var g = domEl(d.tile.a, d.tile.b);
-  g.classList.add('drag-ghost');
-  g.style.width = d.width + 'px';
-  g.style.height = d.height + 'px';
-  g.style.left = '0'; g.style.top = '0';
-  g.style.transformOrigin = '0 0';
-  g.style.transform = 'translate(' + (d.startX - d.offsetX) + 'px,' + (d.startY - d.offsetY) + 'px) rotate(-4deg)';
-  g.style.boxShadow = '0 22px 48px rgba(0,0,0,.72), 0 4px 14px rgba(46,160,67,.5)';
-  g.style.borderRadius = '8px';
-  document.body.appendChild(g);
-  d.ghost = g;
-  d.domNode.classList.add('dragging');
-}
+
 function moveGhost(x, y){
-  if(!drag.ghost) return;
-  drag.ghost.style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(-4deg)';
+  const d = App.drag;
+  if(!d) return;
+  d.ghost.style.left = x + 'px';
+  d.ghost.style.top  = y + 'px';
 }
-function positionDropZones(){
-  var wrap = $('boardWrap').getBoundingClientRect();
-  var L = $('dropLeft'), R = $('dropRight');
-  var top = wrap.top, h = wrap.height;
-  L.style.top = top + 'px'; L.style.height = h + 'px'; L.style.bottom = 'auto';
-  R.style.top = top + 'px'; R.style.height = h + 'px'; R.style.bottom = 'auto';
-}
-function showDropZones(){
-  positionDropZones();
-  $('dropLeft').classList.add('show');
-  $('dropRight').classList.add('show');
-}
-function hideDropZones(){
-  var L = $('dropLeft'), R = $('dropRight');
-  L.classList.remove('show','hot','invalid');
-  R.classList.remove('show','hot','invalid');
-}
-function updateHotZones(clientX, clientY){
-  var wrap = $('boardWrap').getBoundingClientRect();
-  var inY = clientY >= wrap.top - 40 && clientY <= wrap.bottom + 40;
-  var L = $('dropLeft'), R = $('dropRight');
-  var overLeft = inY && clientX < wrap.left + wrap.width/2;
-  var overRight = inY && clientX >= wrap.left + wrap.width/2;
-  var canLeft  = drag.sides.indexOf('left')  >= 0 || drag.sides.indexOf('first') >= 0;
-  var canRight = drag.sides.indexOf('right') >= 0 || drag.sides.indexOf('first') >= 0;
-  drag.leftHot  = overLeft && canLeft;
-  drag.rightHot = overRight && canRight;
-  L.classList.toggle('hot', drag.leftHot);
-  L.classList.toggle('invalid', overLeft && !canLeft);
-  R.classList.toggle('hot', drag.rightHot);
-  R.classList.toggle('invalid', overRight && !canRight);
-}
-function onPointerMove(e){
-  if(!drag || e.pointerId !== drag.pointerId) return;
-  var dx = e.clientX - drag.startX;
-  var dy = e.clientY - drag.startY;
-  if(!drag.isDragging){
-    if(dx*dx + dy*dy < 64) return;
-    drag.isDragging = true;
-    createGhost();
-    showDropZones();
-    document.body.style.cursor = 'grabbing';
+
+function onDragMove(ev){
+  const d = App.drag;
+  if(!d) return;
+  ev.preventDefault();
+  if(Math.abs(ev.clientX - d.sx) > 6 || Math.abs(ev.clientY - d.sy) > 6){
+    if(!d.moved){ d.moved = true; d.el.classList.add('dragging'); }
   }
-  e.preventDefault();
-  moveGhost(e.clientX - drag.offsetX, e.clientY - drag.offsetY);
-  updateHotZones(e.clientX, e.clientY);
-}
-function onPointerUp(e){
-  if(!drag || e.pointerId !== drag.pointerId) return;
-  document.removeEventListener('pointermove', onPointerMove);
-  document.removeEventListener('pointerup', onPointerUp);
-  document.removeEventListener('pointercancel', onPointerUp);
-  var d = drag; drag = null;
-  if(d.isDragging){
-    hideDropZones();
-    document.body.style.cursor = '';
-    if(d.ghost && d.ghost.parentNode) d.ghost.parentNode.removeChild(d.ghost);
-    if(d.domNode) d.domNode.classList.remove('dragging');
-    var side = null;
-    if(d.leftHot) side = 'left';
-    else if(d.rightHot) side = 'right';
-    if(side){
-      if(d.sides.indexOf('first') >= 0) side = 'first';
-      commitPlay(d.tileId, side);
-      return;
-    }
-    Sound.drop();
-    if(d.domNode){
-      d.domNode.classList.add('shake');
-      setTimeout(function(){ if(d.domNode) d.domNode.classList.remove('shake'); }, 400);
-    }
-    return;
+  moveGhost(ev.clientX, ev.clientY);
+  if(d.moved){
+    const side = sideAtPoint(ev.clientX, ev.clientY, d.tile);
+    d.side = side;
+    highlightZones(side);
   }
-  onTileClick(d.tile);
 }
-function onTileClick(tile){
-  if(!canActNow()) return;
-  var sides = sidesFor(tile, VIEW.board, VIEW.leftEnd, VIEW.rightEnd);
-  if(sides.length === 0){ Sound.err(); return; }
-  if(sides.length === 1){ commitPlay(tile.id, sides[0]); return; }
-  Sound.click();
-  pending = { tileId: tile.id, sides: sides };
-  render();
+
+function onDragUp(){
+  const d = App.drag;
+  if(!d) return;
+  window.removeEventListener('pointermove', onDragMove);
+  window.removeEventListener('pointerup', onDragUp);
+  window.removeEventListener('pointercancel', onDragUp);
+  if(d.ghost && d.ghost.parentNode) d.ghost.parentNode.removeChild(d.ghost);
+  d.el.classList.remove('dragging');
+  hideZones();
+  App.drag = null;
+
+  if(d.moved && d.side){
+    sendPlay(d.tile, d.side);
+  } else if(!d.moved){
+    tapTile(d.tile);
+  }
 }
-function commitPlay(tileId, side){
-  pending = null;
-  if(net.role === 'client'){ if(net.conn && net.conn.open) net.conn.send({type:'play', tileId:tileId, side:side}); return; }
-  applyPlay(VIEW.myIndex, tileId, side);
+
+function sideAtPoint(x, y, tile){
+  const G = App.G;
+  const sides = sidesFor(G, tile);
+  if(sides.length === 0) return null;
+  if(sides.length === 1) return sides[0];
+  if(sides.indexOf('first') >= 0) return 'first';
+  const r = $('#boardWrap').getBoundingClientRect();
+  const cx = r.left + r.width / 2;
+  return (x < cx) ? 'left' : 'right';
 }
-function doDraw(){
-  if(!canActNow()) return;
-  if(net.role === 'client'){ if(net.conn && net.conn.open) net.conn.send({type:'draw'}); return; }
-  applyDraw(VIEW.myIndex);
+
+function highlightZones(side){
+  const L = $('#dzLeft'), R = $('#dzRight');
+  L.classList.remove('hot'); R.classList.remove('hot');
+  L.classList.toggle('show', side === 'left');
+  R.classList.toggle('show', side === 'right');
+  if(side === 'left') L.classList.add('hot');
+  if(side === 'right') R.classList.add('hot');
 }
-function doPass(){
-  if(!canActNow()) return;
-  if(net.role === 'client'){ if(net.conn && net.conn.open) net.conn.send({type:'pass'}); return; }
-  applyPass(VIEW.myIndex);
+
+function hideZones(){
+  const L = $('#dzLeft'), R = $('#dzRight');
+  L.className = 'dz'; R.className = 'dz';
+  App.selectedTile = null;
 }
-function requestNext(){
-  if(net.role === 'client'){ if(net.conn && net.conn.open) net.conn.send({type:'next'}); return; }
-  nextRound();
+
+function showChooser(){
+  const L = $('#dzLeft'), R = $('#dzRight');
+  L.className = 'dz clickable';
+  R.className = 'dz clickable';
 }
-function requestNewMatch(){
-  if(net.role === 'client'){ if(net.conn && net.conn.open) net.conn.send({type:'newmatch'}); return; }
-  newMatch();
+
+function tapTile(tile){
+  const G = App.G, me = App.mySeat;
+  if(!G || G.phase !== 'playing' || G.gameOver) return;
+  if(G.turn !== me) return;
+  const sides = sidesFor(G, tile);
+  if(sides.length === 0) return;
+
+  if(sides.length === 1){ sendPlay(tile, sides[0]); return; }
+
+  App.selectedTile = tile;
+  showChooser();
 }
+
+$('#dzLeft').addEventListener('click', ()=>{
+  if(App.selectedTile) sendPlay(App.selectedTile, 'left');
+  hideZones();
+});
+$('#dzRight').addEventListener('click', ()=>{
+  if(App.selectedTile) sendPlay(App.selectedTile, 'right');
+  hideZones();
+});
+document.addEventListener('pointerdown', e=>{
+  if(App.selectedTile && !e.target.closest('.dz') && !e.target.closest('#hand')){
+    hideZones();
+  }
+});
 
 /* =========================================================
-   GAME ACTIONS
+   SCREENS / MENU
    ========================================================= */
-function legalMovesG(idx){
-  var p = G.players[idx];
-  if(!p) return [];
-  if(G.board.length === 0) return p.hand.map(function(t){ return {tileId:t.id, side:'first'}; });
-  var out = [];
-  for(var i=0;i<p.hand.length;i++){
-    var t = p.hand[i];
-    if(t.a === G.leftEnd || t.b === G.leftEnd) out.push({tileId:t.id, side:'left'});
-    if(t.a === G.rightEnd || t.b === G.rightEnd) out.push({tileId:t.id, side:'right'});
-  }
-  return out;
-}
-function localViewerLocal(){
-  if(!G) return 0;
-  if(G.phase === 'playing'){
-    var t = G.players[G.turn];
-    if(t && !t.isBot) return G.turn;
-  }
-  for(var i=0;i<G.players.length;i++) if(!G.players[i].isBot) return i;
-  return 0;
-}
-function applyPlay(idx, tileId, side){
-  if(!G || G.phase !== 'playing') return;
-  if(G.turn !== idx) return;
-  var p = G.players[idx];
-  if(!p) return;
-  var handIdx = -1;
-  for(var i=0;i<p.hand.length;i++) if(p.hand[i].id === tileId){ handIdx = i; break; }
-  if(handIdx < 0) return;
-  var tile = p.hand[handIdx];
-  var sides = sidesFor(tile, G.board, G.leftEnd, G.rightEnd);
-  if(sides.indexOf(side) < 0){
-    if(sides.length === 0) return;
-    side = sides[0];
-  }
-  p.hand.splice(handIdx, 1);
-
-  if(G.board.length === 0){
-    G.board.push({a:tile.a, b:tile.b});
-    G.leftEnd = tile.a; G.rightEnd = tile.b;
-    G.lastPlacedSide = 'right';
-  } else if(side === 'left'){
-    var a, b;
-    if(tile.a === G.leftEnd){ a = tile.b; b = G.leftEnd; }
-    else { a = tile.a; b = G.leftEnd; }
-    G.board.unshift({a:a, b:b});
-    G.leftEnd = a;
-    G.lastPlacedSide = 'left';
-  } else {
-    var a2, b2;
-    if(tile.a === G.rightEnd){ a2 = G.rightEnd; b2 = tile.b; }
-    else { a2 = G.rightEnd; b2 = tile.a; }
-    G.board.push({a:a2, b:b2});
-    G.rightEnd = b2;
-    G.lastPlacedSide = 'right';
-  }
-
-  G.passCount = 0;
-  G.lastAction = p.name + ' لعب ' + tile.a + '|' + tile.b;
-  if(tile.a === tile.b) Sound.double(); else Sound.place();
-
-  if(p.hand.length === 0){ endRound(idx, false); }
-  else { G.turn = (G.turn + 1) % G.players.length; afterChange(); }
-}
-function applyDraw(idx){
-  if(!G || G.phase !== 'playing') return;
-  if(G.turn !== idx) return;
-  if(legalMovesG(idx).length > 0) return;
-  if(G.boneyard.length === 0){ applyPass(idx); return; }
-  var p = G.players[idx];
-  var t = G.boneyard.pop();
-  p.hand.push(t);
-  lastDrawnId = t.id;
-  p.hand.sort(function(x,y){
-    var d = (y.a+y.b) - (x.a+x.b);
-    if(d !== 0) return d;
-    return y.a - x.a;
-  });
-  G.lastAction = p.name + ' سحب حجرة (' + G.boneyard.length + ' باقي)';
-  Sound.draw();
-  afterChange();
-}
-function applyPass(idx){
-  if(!G || G.phase !== 'playing') return;
-  if(G.turn !== idx) return;
-  if(legalMovesG(idx).length > 0) return;
-  if(G.boneyard.length > 0) return;
-  var p = G.players[idx];
-  G.passCount++;
-  G.lastAction = p.name + ' مرّر الدور';
-  Sound.pass();
-  if(G.passCount >= G.players.length){
-    var winner = 0;
-    if(G.teamMode && G.players.length === 4){
-      var t0 = 0, t1 = 0;
-      for(var i=0;i<4;i++){
-        var s = pipSum(G.players[i].hand);
-        if(i % 2 === 0) t0 += s; else t1 += s;
-      }
-      var wt = (t0 <= t1) ? 0 : 1;
-      var best = -1, bp = Infinity;
-      for(var k=0;k<4;k++){
-        if(k % 2 !== wt) continue;
-        var sk = pipSum(G.players[k].hand);
-        if(sk < bp){ bp = sk; best = k; }
-      }
-      winner = best < 0 ? 0 : best;
-    } else {
-      var bpv = Infinity;
-      for(var m=0;m<G.players.length;m++){
-        var sm = pipSum(G.players[m].hand);
-        if(sm < bpv){ bpv = sm; winner = m; }
-      }
-    }
-    endRound(winner, true);
-  } else {
-    G.turn = (G.turn + 1) % G.players.length;
-    afterChange();
-  }
-}
-function endRound(winner, blocked){
-  G.phase = 'roundover';
-  G.winners = [winner];
-  var pts = 0;
-  var wt = G.teamMode ? (winner % 2) : -1;
-  for(var i=0;i<G.players.length;i++){
-    if(i === winner) continue;
-    if(G.teamMode && (i % 2) === wt) continue;
-    pts += pipSum(G.players[i].hand);
-  }
-  G.scores[winner] += pts;
-  G.lastRoundPoints = pts;
-  var nm = G.players[winner].name;
-  if(blocked) G.message = '🚫 الجولة مسدودة — ' + nm + ' فاز بـ ' + pts + ' نقطة';
-  else G.message = '🎉 ' + nm + ' كمّل حجوره! +' + pts + ' نقطة';
-
-  var over = false;
-  if(G.teamMode && G.players.length === 4){
-    var t = winner % 2;
-    var ts = 0;
-    for(var k=0;k<G.players.length;k++) if(k % 2 === t) ts += G.scores[k];
-    if(ts >= G.target) over = true;
-  } else {
-    if(G.scores[winner] >= G.target) over = true;
-  }
-  if(over){
-    G.phase = 'gameover';
-    if(G.teamMode && G.players.length === 4) G.message = '🏆 الفريق ' + (winner % 2 === 0 ? 'أ' : 'ب') + ' فاز بالمباراة!';
-    else G.message = '🏆 ' + nm + ' فاز بالمباراة!';
-    Sound.win();
-  } else {
-    var localIdx = localViewerLocal();
-    var iWon = (localIdx === winner) || (G.teamMode && (localIdx % 2) === (winner % 2));
-    if(iWon) Sound.win(); else Sound.lose();
-  }
-  afterChange();
-}
-function nextRound(){
-  if(!G) return;
-  if(G.phase === 'gameover'){ newMatch(); return; }
-  G.round++;
-  deal();
-  G.turn = (G.round - 1) % G.players.length;
-  G.phase = 'playing';
-  G.message = '';
-  G.lastAction = 'بدأت الجولة ' + G.round;
-  lastBoardLen = 0; lastDrawnId = null;
-  afterChange();
-}
-function newMatch(){
-  if(!G) return;
-  G.scores = G.players.map(function(){ return 0; });
-  G.round = 1;
-  G.phase = 'playing';
-  G.message = '';
-  deal();
-  G.turn = findStarter();
-  G.lastAction = 'مباراة جديدة!';
-  lastBoardLen = 0; lastDrawnId = null; lastScoreSnapshot = null;
-  afterChange();
-}
-function afterChange(){
-  if(net.role === 'host') hostBroadcast();
-  render();
-  scheduleBot();
-}
-
-/* =========================================================
-   BOT
-   ========================================================= */
-function scheduleBot(){
-  clearTimeout(botTimer);
-  if(!G || G.phase !== 'playing') return;
-  if(net.role === 'client') return;
-  var p = G.players[G.turn];
-  if(!p || !p.isBot) return;
-  botTimer = setTimeout(botTurn, 620 + Math.random() * 420);
-}
-function chooseMove(idx, moves){
-  var p = G.players[idx];
-  var hand = p.hand;
-  var best = moves[0];
-  var bestScore = -Infinity;
-  for(var i=0;i<moves.length;i++){
-    var m = moves[i];
-    var t = null;
-    for(var k=0;k<hand.length;k++) if(hand[k].id === m.tileId){ t = hand[k]; break; }
-    if(!t) continue;
-    var nl = G.leftEnd, nr = G.rightEnd;
-    var isFirst = (G.board.length === 0);
-    if(!isFirst){
-      if(m.side === 'left') nl = (t.a === G.leftEnd) ? t.b : t.a;
-      else if(m.side === 'right') nr = (t.a === G.rightEnd) ? t.b : t.a;
-    }
-    var sc = t.a + t.b;
-    if(t.a === t.b) sc += 6;
-    if(t.a === 0 && t.b === 0) sc += 3;
-    if(!isFirst){
-      var ends = [nl, nr];
-      for(var j=0;j<hand.length;j++){
-        var o = hand[j];
-        if(o.id === t.id) continue;
-        if(ends.indexOf(o.a) >= 0 || ends.indexOf(o.b) >= 0) sc += 4;
-      }
-    }
-    sc += Math.random() * 1.5;
-    if(sc > bestScore){ bestScore = sc; best = m; }
-  }
-  return best;
-}
-function botTurn(){
-  if(!G || G.phase !== 'playing') return;
-  var idx = G.turn;
-  var p = G.players[idx];
-  if(!p || !p.isBot) return;
-  var moves = legalMovesG(idx);
-  if(moves.length > 0){
-    var m = chooseMove(idx, moves);
-    applyPlay(idx, m.tileId, m.side);
-    return;
-  }
-  if(G.boneyard.length > 0){
-    var t = G.boneyard.pop();
-    p.hand.push(t);
-    lastDrawnId = t.id;
-    p.hand.sort(function(x,y){
-      var d = (y.a+y.b) - (x.a+x.b);
-      if(d !== 0) return d;
-      return y.a - x.a;
-    });
-    G.lastAction = p.name + ' سحب حجرة (' + G.boneyard.length + ' باقي)';
-    Sound.draw();
-    afterChange();
-    return;
-  }
-  applyPass(idx);
-}
-
-/* =========================================================
-   LOCAL START
-   ========================================================= */
-function startLocalGame(total, humansCount, teamMode){
-  teardownNet();
-  net.role = null;
-  var humans = [];
-  for(var i=0;i<humansCount;i++) humans.push({ name: 'لاعب ' + (i+1), conn: null });
-  var players = buildPlayers(total, teamMode, humans);
-  newGameState(players, teamMode);
-  lastBoardLen = 0; lastDrawnId = null; lastScoreSnapshot = null;
-  showScreen('game');
-  afterChange();
-}
-
-/* =========================================================
-   NET — HOST
-   ========================================================= */
-function teardownNet(){
-  clearTimeout(botTimer);
-  if(net.peer){ try{ net.peer.destroy(); }catch(e){} }
-  net = { role:null, peer:null, code:null, conn:null };
-}
-function myName(){
-  var v = ($('inpName') && $('inpName').value || '').trim();
-  return v.slice(0,12) || 'لاعب';
-}
-function setLobbyStatus(msg, isErr){
-  var s = $('lobbyStatus');
-  if(!s) return;
-  s.textContent = msg;
-  s.className = 'lobby-status' + (isErr ? ' err' : '');
-}
-function createRoom(){
-  if(typeof Peer === 'undefined'){ toast('⚠ تعذر تحميل مكتبة الاتصال — تحقق من الإنترنت'); return; }
-  teardownNet();
-  var code = genCode();
-  net.role = 'host';
-  net.code = code;
-  lobby = { players: [{ name: myName(), conn: null, seat: 0 }], names: [myName()], maxPlayers: 4, team: true };
-  showScreen('lobby');
-  $('codeVal').textContent = code;
-  setLobbyStatus('جاري إنشاء الغرفة...');
-  renderLobby();
-
-  var peer = new Peer(PEER_PREFIX + code, {
-    debug: 0,
-    config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:global.stun.twilio.com:3478' }] }
-  });
-  net.peer = peer;
-  var opened = false;
-  peer.on('open', function(){ opened = true; setLobbyStatus('✅ الغرفة جاهزة! عطي الكود لصحابك'); Sound.turn(); });
-  peer.on('error', function(err){
-    if(err && err.type === 'unavailable-id'){ try{ peer.destroy(); }catch(e){} setTimeout(createRoom, 250); return; }
-    if(!opened) setLobbyStatus('⚠ تعذر الاتصال بالسيرفر. جرّب مرة أخرى.', true);
-    else setLobbyStatus('⚠ مشكل في الاتصال: ' + (err && err.type ? err.type : 'unknown'), true);
-  });
-  peer.on('connection', function(conn){
-    conn.on('data', function(d){ hostOnData(conn, d); });
-    conn.on('close', function(){ hostOnClose(conn); });
-    conn.on('error', function(){});
+function showScreen(name){
+  ['menu','lobby','game'].forEach(s=>{
+    const el = document.getElementById(s);
+    if(el) el.classList.toggle('hidden', s !== name);
   });
 }
-function broadcastLobby(){
-  lobby.names = lobby.players.map(function(p){ return p.name; });
-  var payload = { type: 'lobby', names: lobby.names, maxPlayers: lobby.maxPlayers };
-  for(var i=0;i<lobby.players.length;i++){
-    var p = lobby.players[i];
-    if(p.conn && p.conn.open){ try{ p.conn.send(payload); }catch(e){} }
-  }
-  renderLobby();
-}
-function findSeatByConn(conn){
-  if(!G) return -1;
-  for(var i=0;i<G.players.length;i++) if(G.players[i].conn === conn) return i;
-  return -1;
-}
-function hostOnData(conn, d){
-  if(!d || typeof d !== 'object') return;
-  if(d.type === 'hello'){
-    if(G && G.phase){ try{ conn.send({type:'err', msg:'اللعبة بدأت بالفعل'}); }catch(e){} return; }
-    if(lobby.players.length >= lobby.maxPlayers){ try{ conn.send({type:'err', msg:'الغرفة ممتلئة'}); }catch(e){} return; }
-    var nm = String(d.name || 'لاعب').replace(/[<>&"']/g,'').trim().slice(0,12) || 'لاعب';
-    var base = nm, n = 2;
-    while(lobby.names.indexOf(nm) >= 0){ nm = base + ' ' + n; n++; }
-    lobby.players.push({ name: nm, conn: conn, seat: lobby.players.length });
-    try{ conn.send({type:'welcome', seat: lobby.players.length - 1}); }catch(e){}
-    broadcastLobby();
-    setLobbyStatus('انضم ' + nm + ' للغرفة');
-    Sound.click();
-    return;
-  }
-  if(!G) return;
-  var seat = findSeatByConn(conn);
-  if(seat < 0) return;
-  if(d.type === 'play'){
-    if(typeof d.tileId !== 'string') return;
-    if(d.side !== 'left' && d.side !== 'right' && d.side !== 'first') return;
-    applyPlay(seat, d.tileId, d.side);
-  } else if(d.type === 'draw'){ applyDraw(seat); }
-  else if(d.type === 'pass'){ applyPass(seat); }
-  else if(d.type === 'next'){ if(G.phase === 'roundover') nextRound(); }
-  else if(d.type === 'newmatch'){ if(G.phase === 'gameover') newMatch(); }
-}
-function hostOnClose(conn){
-  if(!G || !G.phase){
-    var idx = -1;
-    for(var i=0;i<lobby.players.length;i++) if(lobby.players[i].conn === conn){ idx = i; break; }
-    if(idx >= 0){
-      var nm = lobby.players[idx].name;
-      lobby.players.splice(idx, 1);
-      broadcastLobby();
-      setLobbyStatus(nm + ' خرج من الغرفة');
-    }
-    return;
-  }
-  var seat = findSeatByConn(conn);
-  if(seat >= 0){
-    G.players[seat].connected = false;
-    G.players[seat].isBot = true;
-    G.players[seat].conn = null;
-    G.lastAction = G.players[seat].name + ' انقطع — الروبوت يكمل';
-    afterChange();
-  }
-}
-function hostBroadcast(){
-  if(!G) return;
-  for(var i=0;i<G.players.length;i++){
-    var p = G.players[i];
-    if(!p.conn || !p.conn.open) continue;
-    try{ p.conn.send({ type:'state', state: buildView(i) }); }catch(e){}
-  }
+
+function toast(msg){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>t.classList.remove('show'), 2200);
 }
 
-/* =========================================================
-   NET — CLIENT
-   ========================================================= */
-function joinRoom(code){
-  if(typeof Peer === 'undefined'){ toast('⚠ تعذر تحميل مكتبة الاتصال — تحقق من الإنترنت'); return; }
-  teardownNet();
-  code = String(code || '').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,5);
-  if(code.length < 4){ toast('⚠ الكود غير صحيح'); return; }
-  net.role = 'client';
-  net.code = code;
-  lobby = { players: [], names: [], maxPlayers: 4, team: false };
-  showScreen('lobby');
-  $('codeVal').textContent = code;
-  setLobbyStatus('جاري الاتصال بالغرفة...');
-  renderLobby();
-
-  var peer = new Peer({
-    debug: 0,
-    config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:global.stun.twilio.com:3478' }] }
-  });
-  net.peer = peer;
-  var connected = false;
-  var timeoutId = setTimeout(function(){ if(!connected) setLobbyStatus('⚠ ما لقيناش الغرفة. تأكد من الكود.', true); }, 12000);
-
-  peer.on('open', function(){
-    var conn = peer.connect(PEER_PREFIX + code, { reliable: true });
-    net.conn = conn;
-    conn.on('open', function(){
-      connected = true;
-      clearTimeout(timeoutId);
-      setLobbyStatus('✅ دخلت الغرفة — كنتسناو المضيف');
-      try{ conn.send({ type:'hello', name: myName() }); }catch(e){}
-    });
-    conn.on('data', clientOnData);
-    conn.on('close', function(){
-      clearTimeout(timeoutId);
-      if($('scr-game').classList.contains('active')) toast('⚠ انقطع الاتصال بالمضيف');
-      else setLobbyStatus('⚠ انقطع الاتصال', true);
-    });
-    conn.on('error', function(){ setLobbyStatus('⚠ مشكل في الاتصال', true); });
-  });
-  peer.on('error', function(err){
-    clearTimeout(timeoutId);
-    if(!connected) setLobbyStatus('⚠ تعذر الاتصال. تأكد من الكود.', true);
-    else setLobbyStatus('⚠ مشكل: ' + (err && err.type ? err.type : 'unknown'), true);
-  });
-}
-function clientOnData(d){
-  if(!d || typeof d !== 'object') return;
-  if(d.type === 'lobby'){
-    lobby.names = Array.isArray(d.names) ? d.names : [];
-    lobby.maxPlayers = d.maxPlayers || 4;
-    renderLobby();
-    setLobbyStatus('✅ دخلت الغرفة — كنتسناو المضيف يبدا');
-    return;
-  }
-  if(d.type === 'state'){
-    var prevTurn = VIEW ? VIEW.turn : -1;
-    var prevMyCount = VIEW ? VIEW.myHand.length : 0;
-    VIEW = d.state;
-    if(VIEW.phase === 'playing' && VIEW.turn === VIEW.myIndex && prevTurn !== VIEW.myIndex){
-      Sound.turn(); turnFlash();
-    }
-    if(VIEW.myHand.length > prevMyCount){
-      lastDrawnId = VIEW.myHand[VIEW.myHand.length - 1].id;
-    }
-    if(!$('scr-game').classList.contains('active')) showScreen('game');
-    render();
-    return;
-  }
-  if(d.type === 'err'){
-    setLobbyStatus('⚠ ' + (d.msg || 'خطأ'), true);
-    toast('⚠ ' + (d.msg || 'خطأ'));
-    Sound.err();
-    return;
-  }
+function backToMenu(){
+  clearTimeout(App.tickTimer);
+  if(App.net){ try{ App.net.close(); }catch(e){} }
+  App.net = null;
+  App.G = null;
+  App.isHost = false;
+  App.online = false;
+  App.lobby = null;
+  hideZones();
+  $('#overlay').classList.add('hidden');
+  showScreen('menu');
 }
 
-/* =========================================================
-   LOBBY
-   ========================================================= */
 function renderLobby(){
-  var isHost = (net.role === 'host');
-  $('codeBox').style.display = isHost ? '' : 'none';
-  $('codeVal').textContent = net.code || '-----';
-  var box = $('lobbyPlayers');
+  $('#lobbyCode').textContent = App.code || '------';
+  const box = $('#lobbyPlayers');
   box.innerHTML = '';
-  var names = isHost ? lobby.players.map(function(p){ return p.name; }) : (lobby.names || []);
-  var total = isHost ? selLobbyTotal() : lobby.maxPlayers;
-  for(var i=0;i<Math.max(total, names.length, 2);i++){
-    var nm = names[i];
-    var slot = el('div', 'slot' + (nm ? '' : ' empty'));
-    slot.appendChild(el('div','dot'));
-    slot.appendChild(el('div','nm', nm ? nm : 'بانتظار لاعب...'));
-    if(i === 0) slot.appendChild(el('div','tag','المضيف'));
-    else if(nm) slot.appendChild(el('div','tag','لاعب'));
-    else slot.appendChild(el('div','tag','فراغ'));
-    box.appendChild(slot);
-  }
-  var ctl = $('lobbyControls');
-  ctl.innerHTML = '';
-  if(isHost){
-    var card = el('div','card');
-    card.style.marginBottom = '0';
-    var r1 = el('div','row');
-    r1.appendChild(el('label', null, 'عدد اللاعبين'));
-    var seg = el('div','seg');
-    [2,3,4].forEach(function(v){
-      var b = el('button', null, String(v));
-      if(v === selLobbyTotal()) b.classList.add('on');
-      b.onclick = function(){ Sound.click(); sel.total = v; renderLobby(); };
-      seg.appendChild(b);
-    });
-    r1.appendChild(seg);
-    card.appendChild(r1);
-    if(selLobbyTotal() === 4){
-      var r2 = el('label','checkrow');
-      var cb = document.createElement('input');
-      cb.type = 'checkbox';
-      cb.checked = !!lobby.team;
-      cb.onchange = function(){ lobby.team = cb.checked; };
-      r2.appendChild(cb);
-      r2.appendChild(el('span', null, 'وضع الفرق (2 ضد 2)'));
-      card.appendChild(r2);
-    }
-    var startBtn = el('button','btn primary','▶ ابدأ اللعبة');
-    startBtn.onclick = function(){ Sound.click(); hostStartGame(); };
-    card.appendChild(startBtn);
-    ctl.appendChild(card);
-  }
+  (App.lobby || []).forEach(s=>{
+    const d = document.createElement('div');
+    d.className = 'lseat' + (s.cid === App.cid ? ' me' : '');
+    d.innerHTML =
+      '<span class="lnum">' + (s.seat + 1) + '</span>' +
+      '<span class="lname">' + esc(s.name) + '</span>' +
+      (s.bot ? '<span class="ltag">روبوت</span>' : '<span class="ltag">أونلاين</span>');
+    box.appendChild(d);
+  });
+  $('#btnStart').style.display = App.isHost ? '' : 'none';
 }
-function selLobbyTotal(){
-  var n = Math.max(lobby.players.length, sel.total);
-  return Math.min(4, Math.max(2, n));
-}
-function hostStartGame(){
-  if(net.role !== 'host') return;
-  if(!net.peer || !net.peer.open){ toast('⚠ الغرفة مازال ما واجدة'); return; }
-  var humansCount = lobby.players.length;
-  var total = selLobbyTotal();
-  if(total < humansCount) total = humansCount;
-  if(total > 4) total = 4;
-  var teamMode = (total === 4) && !!lobby.team;
-  var humans = lobby.players.map(function(p){ return { name: p.name, conn: p.conn }; });
-  var players = buildPlayers(total, teamMode, humans);
-  newGameState(players, teamMode);
-  lastBoardLen = 0; lastDrawnId = null; lastScoreSnapshot = null;
+
+/* ---------- Menu wiring ---------- */
+let selectedMode = '1v1';
+$$('#modeList .modeBtn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    $$('#modeList .modeBtn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    selectedMode = btn.dataset.mode;
+  });
+});
+
+$('#btnSolo').addEventListener('click', ()=>{
+  const mode = selectedMode;
+  const cfg = MODES[mode];
+  const names = [], bots = [];
+  let b = 0;
+  for(let i=0;i<cfg.players;i++){
+    if(i === 0){ names.push('أنت'); bots.push(false); }
+    else { names.push(BOT_NAMES[b++ % BOT_NAMES.length]); bots.push(true); }
+  }
+  App.isHost = true;
+  App.mySeat = 0;
+  App.online = false;
+  App.net = null;
+  App.mode = mode;
+  App.G = makeGame(mode, names, bots);
+  deal(App.G);
+  showScreen('game');
+  render();
+  scheduleTick();
+});
+
+$('#btnCreate').addEventListener('click', ()=>{
+  App.myName = ($('#inpName').value || 'لاعب').slice(0,10);
+  const mode = selectedMode;
+  App.mode = mode;
+  App.code = genCode();
+  App.isHost = true;
+  App.mySeat = 0;
+  App.online = true;
+  App.net = makeNet(App.code);
+
+  const n = MODES[mode].players;
+  App.lobby = [{seat:0, cid:App.cid, name:App.myName, bot:false}];
+  for(let i=1;i<n;i++) App.lobby.push({seat:i, cid:null, name:'فارغ', bot:true});
+
+  showScreen('lobby');
+  renderLobby();
+  broadcastLobby();
+  toast('الغرفة تصاوبت: ' + App.code);
+});
+
+$('#btnJoin').addEventListener('click', ()=>{
+  const code = ($('#inpCode').value || '').trim().toUpperCase();
+  if(code.length < 4){ toast('دخل كود صحيح'); return; }
+  App.myName = ($('#inpName').value || 'لاعب').slice(0,10);
+  App.code = code;
+  App.isHost = false;
+  App.online = true;
+  App.net = makeNet(code);
+  App.lobby = [];
+  showScreen('lobby');
+  renderLobby();
+  try{ App.net.postMessage({t:'join', cid:App.cid, name:App.myName}); }catch(e){}
+  setTimeout(()=>{ if(!App.lobby || !App.lobby.length) toast('كنتسنّاو الغرفة...'); }, 1200);
+});
+
+$('#btnCopy').addEventListener('click', ()=>{
+  const c = App.code || '';
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(c).then(()=>toast('تنسخ الكود ✔')).catch(()=>toast(c));
+  } else toast(c);
+});
+
+$('#btnStart').addEventListener('click', ()=>{
+  if(!App.isHost || !App.lobby) return;
+  const n = MODES[App.mode].players;
+  const names = [], bots = [];
+  let b = 0;
+  for(let i=0;i<n;i++){
+    const s = App.lobby[i] || {cid:null, name:'فارغ'};
+    if(s.cid === App.cid){ names[i] = 'أنت'; bots[i] = false; }
+    else if(s.cid){ names[i] = s.name; bots[i] = false; }
+    else { names[i] = BOT_NAMES[b++ % BOT_NAMES.length]; bots[i] = true; }
+  }
+  App.G = makeGame(App.mode, names, bots);
+  deal(App.G);
+  try{ App.net.postMessage({t:'start', mode:App.mode, seats:App.lobby}); }catch(e){}
   showScreen('game');
   afterChange();
-}
-
-/* =========================================================
-   COPY / LEAVE
-   ========================================================= */
-function copyCode(){
-  var code = net.code || '';
-  if(!code) return;
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(code).then(function(){ toast('📋 تنسخ الكود: ' + code); Sound.click(); }).catch(function(){ fallbackCopy(code); });
-  } else fallbackCopy(code);
-}
-function fallbackCopy(text){
-  var ta = document.createElement('textarea');
-  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-  document.body.appendChild(ta); ta.select();
-  try{ document.execCommand('copy'); toast('📋 تنسخ الكود: ' + text); }catch(e){ toast('الكود: ' + text); }
-  document.body.removeChild(ta);
-}
-function leaveRoom(){
-  teardownNet();
-  G = null; VIEW = null; pending = null;
-  lastBoardLen = 0; lastDrawnId = null; lastScoreSnapshot = null;
-  lobby = { players: [], names: [], maxPlayers: 4, team: true };
-  showScreen('start');
-}
-
-/* =========================================================
-   WIRING
-   ========================================================= */
-function wireSeg(container, key, onChange){
-  var btns = container.querySelectorAll('button');
-  for(var i=0;i<btns.length;i++){
-    (function(b){
-      b.addEventListener('click', function(){
-        Sound.click();
-        for(var k=0;k<btns.length;k++) btns[k].classList.remove('on');
-        b.classList.add('on');
-        sel[key] = parseInt(b.getAttribute('data-v'), 10);
-        if(onChange) onChange();
-      });
-    })(btns[i]);
-  }
-}
-function syncStartUI(){
-  if(sel.humans > sel.total){
-    sel.humans = sel.total;
-    var hb = $('segHumans').querySelectorAll('button');
-    for(var i=0;i<hb.length;i++) hb[i].classList.toggle('on', parseInt(hb[i].getAttribute('data-v'),10) === sel.humans);
-  }
-  var btns = $('segHumans').querySelectorAll('button');
-  for(var j=0;j<btns.length;j++){
-    var v = parseInt(btns[j].getAttribute('data-v'),10);
-    btns[j].style.display = (v <= sel.total) ? '' : 'none';
-  }
-  $('teamRow').style.display = (sel.total === 4) ? '' : 'none';
-}
-
-document.addEventListener('DOMContentLoaded', function(){
-  wireSeg($('segTotal'), 'total', function(){
-    sel.total = Math.min(4, Math.max(2, sel.total)); syncStartUI();
-  });
-  wireSeg($('segHumans'), 'humans', function(){
-    sel.humans = Math.min(sel.humans, sel.total);
-    sel.humans = Math.max(1, sel.humans);
-    syncStartUI();
-  });
-  syncStartUI();
-
-  $('btnLocal').addEventListener('click', function(){
-    Sound.init(); Sound.click();
-    var teamMode = (sel.total === 4) && $('chkTeam').checked;
-    startLocalGame(sel.total, sel.humans, teamMode);
-  });
-  $('btnCreate').addEventListener('click', function(){ Sound.init(); Sound.click(); createRoom(); });
-  $('btnJoin').addEventListener('click', function(){
-    Sound.init(); Sound.click();
-    var code = $('inpCode').value.trim().toUpperCase();
-    if(code.length < 4){ toast('⚠ الكود قصير بزاف'); Sound.err(); return; }
-    joinRoom(code);
-  });
-  $('inpCode').addEventListener('keydown', function(e){ if(e.key === 'Enter') $('btnJoin').click(); });
-  $('btnCopy').addEventListener('click', copyCode);
-  $('btnLeave').addEventListener('click', function(){ if(confirm('متأكد بغيتي تخرج؟')) leaveRoom(); });
-  $('btnMenu').addEventListener('click', function(){ if(confirm('بغيتي ترجع للقائمة الرئيسية؟ اللعبة غادي تتوقف.')) leaveRoom(); });
-
-  var soundBtn = $('btnSound');
-  soundBtn.addEventListener('click', function(){
-    Sound.init();
-    var on = Sound.toggle();
-    soundBtn.textContent = on ? '🔊' : '🔇';
-    soundBtn.classList.toggle('muted', !on);
-    if(on) Sound.click();
-  });
-
-  document.addEventListener('contextmenu', function(e){
-    if(e.target.closest && e.target.closest('.dom')) e.preventDefault();
-  });
-
-  window.addEventListener('load', function(){
-    if(typeof Peer === 'undefined'){
-      var b1 = $('btnCreate'), b2 = $('btnJoin');
-      if(b1){ b1.disabled = true; b1.textContent = '⚠ الأونلاين غير متوفر'; }
-      if(b2) b2.disabled = true;
-    }
-  });
-
-  /* Re-render board on resize / orientation change */
-  var resizeT = null;
-  window.addEventListener('resize', function(){
-    clearTimeout(resizeT);
-    resizeT = setTimeout(function(){
-      if(VIEW && $('scr-game').classList.contains('active')) render();
-    }, 120);
-  });
-  window.addEventListener('orientationchange', function(){
-    setTimeout(function(){ if(VIEW) render(); }, 260);
-  });
+  scheduleTick();
 });
 
-window.addEventListener('beforeunload', function(){
-  try{ if(net.peer) net.peer.destroy(); }catch(e){}
+$('#btnLeave').addEventListener('click', ()=>{
+  if(App.net && !App.isHost){
+    try{ App.net.postMessage({t:'leave', cid:App.cid}); }catch(e){}
+  }
+  backToMenu();
 });
 
-})();
+$('#btnMenu').addEventListener('click', ()=>{
+  if(confirm('واش بغيتي تخرج للقائمة؟')) backToMenu();
+});
+
+/* ---------- Tools ---------- */
+$('#btnZoomIn').addEventListener('click', ()=>{ App.zoom = Math.min(2.2, App.zoom + 0.15); fitBoard(); });
+$('#btnZoomOut').addEventListener('click', ()=>{ App.zoom = Math.max(0.5, App.zoom - 0.15); fitBoard(); });
+$('#btnRot').addEventListener('click', ()=>{ App.allVert = !App.allVert; renderBoard(); toast(App.allVert ? 'تدوير 90° مفعّل' : 'تدوير عادي'); });
+
+/* ---------- Resize ---------- */
+let rzT = null;
+window.addEventListener('resize', ()=>{
+  clearTimeout(rzT);
+  rzT = setTimeout(()=>{ fitHand(); fitBoard(); }, 120);
+});
+
+/* ---------- Cleanup on unload ---------- */
+window.addEventListener('beforeunload', ()=>{
+  if(App.net && !App.isHost){
+    try{ App.net.postMessage({t:'leave', cid:App.cid}); }catch(e){}
+  }
+  if(App.net){ try{ App.net.close(); }catch(e){} }
+});
+
+/* ---------- Boot ---------- */
+showScreen('menu');
 </script>
 </body>
 </html>
