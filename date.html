@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Will You Go Out With Me? 😂</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    overflow-x: hidden;
+    color: #e0e0e0;
+  }
+
+  .card {
+    background: #1a1a2e;
+    border: 1px solid #2a2a4a;
+    border-radius: 22px;
+    padding: 32px 22px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px rgba(214,51,132,0.15);
+    text-align: center;
+    position: relative;
+    z-index: 10;
+  }
+
+  .stage { display: none; }
+  .stage.active { display: block; animation: fadeSlide 0.45s ease; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  h1 {
+    color: #ff4d9e;
+    font-size: 22px;
+    margin-bottom: 18px;
+    line-height: 1.4;
+    text-shadow: 0 0 20px rgba(255,77,158,0.3);
+  }
+
+  p { color: #b0b0c0; font-size: 15px; line-height: 1.55; margin-bottom: 16px; }
+
+  .btn {
+    border: none; border-radius: 50px;
+    padding: 14px 32px; font-size: 16px; font-weight: 600;
+    cursor: pointer; margin: 6px; outline: none;
+    transition: transform 0.2s ease;
+    touch-action: manipulation;
+  }
+  .btn:active { transform: scale(0.96); }
+
+  .btn-yes {
+    background: linear-gradient(135deg, #ff4d9e, #d63384);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(255,77,158,0.4);
+  }
+
+  .btn-no {
+    background: #2a2a4a; color: #b0b0c0;
+    position: relative; border: 1px solid #3a3a5a;
+  }
+
+  .btn-next {
+    background: linear-gradient(135deg, #7b4397, #dc2430);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(123,67,151,0.4);
+    width: 100%; margin-top: 6px;
+  }
+
+  .buttons-wrap {
+    display: flex; justify-content: center; flex-wrap: wrap;
+    gap: 8px; margin-top: 10px; position: relative; min-height: 55px;
+  }
+
+  input[type="date"], input[type="time"], input[type="text"],
+  input[type="tel"], input[type="email"], input[type="password"], select {
+    width: 100%; padding: 13px 16px;
+    border: 2px solid #2a2a4a; border-radius: 14px;
+    font-size: 15px; color: #e0e0e0; margin-bottom: 12px;
+    outline: none; background: #0f0f1e;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    -webkit-appearance: none; appearance: none;
+    color-scheme: dark;
+  }
+
+  input:focus, select:focus {
+    border-color: #ff4d9e;
+    box-shadow: 0 0 15px rgba(255,77,158,0.25);
+  }
+
+  select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%23ff4d9e' d='M6 9L1 4h10z'/></svg>");
+    background-repeat: no-repeat; background-position: right 16px center;
+    padding-right: 40px;
+  }
+  select option { background: #0f0f1e; color: #e0e0e0; }
+  select optgroup { background: #1a1a2e; color: #ff4d9e; font-weight: 700; }
+
+  label {
+    display: block; text-align: left; color: #ff4d9e;
+    font-weight: 600; margin-bottom: 5px; font-size: 14px;
+  }
+
+  .emoji-big {
+    font-size: 62px; margin: 8px 0 16px;
+    animation: shake 0.6s ease infinite alternate;
+  }
+  @keyframes shake {
+    from { transform: rotate(-6deg) scale(1); }
+    to   { transform: rotate(6deg) scale(1.08); }
+  }
+
+  .invoice {
+    background: #0f0f1e; border: 2px dashed #ff4d9e;
+    border-radius: 16px; padding: 16px; margin: 16px 0;
+    text-align: left; color: #b0b0c0;
+  }
+  .invoice h3 { color: #ff4d9e; margin-bottom: 10px; font-size: 16px; text-align: center; }
+  .invoice .row {
+    display: flex; justify-content: space-between;
+    padding: 6px 0; font-size: 14px;
+    border-bottom: 1px solid #2a2a4a;
+  }
+  .invoice .row:last-child {
+    border-bottom: none; font-weight: 700;
+    color: #ff4d9e; font-size: 16px; margin-top: 6px;
+  }
+
+  .note { font-size: 13px; color: #666; margin-top: 8px; }
+  .hidden-mouse { position: fixed; z-index: 999; }
+  .highlight { color: #ff4d9e; font-weight: 700; }
+
+  .ccp-box {
+    background: #0f1f0f; border: 2px solid #2ecc71;
+    border-radius: 16px; padding: 16px; margin: 16px 0;
+    text-align: left; box-shadow: 0 0 20px rgba(46,204,113,0.15);
+  }
+  .ccp-box h3 {
+    color: #2ecc71; margin-bottom: 12px;
+    font-size: 16px; text-align: center; letter-spacing: 1px;
+  }
+  .ccp-box .field {
+    display: flex; justify-content: space-between;
+    padding: 8px 0; font-size: 14px;
+    border-bottom: 1px solid #1e3e1e;
+  }
+  .ccp-box .field:last-child {
+    border-bottom: none; font-weight: 700;
+    color: #2ecc71; font-size: 17px; margin-top: 6px;
+  }
+  .ccp-box .label { color: #888; }
+  .ccp-box .value {
+    color: #e0e0e0; font-family: 'Courier New', monospace;
+    font-weight: 600; letter-spacing: 0.5px;
+  }
+  .ccp-box .amount {
+    color: #2ecc71; font-size: 20px; font-weight: 800;
+    text-shadow: 0 0 10px rgba(46,204,113,0.5);
+  }
+
+  .success-msg {
+    color: #2ecc71; font-weight: 600;
+    font-size: 14px; margin-top: 10px; min-height: 20px;
+  }
+  .error-msg { color: #ff4d9e; }
+
+  .admin-toggle {
+    position: fixed; bottom: 20px; right: 20px;
+    background: #2a2a4a; color: #ff4d9e;
+    border: 2px solid #ff4d9e; border-radius: 50%;
+    width: 50px; height: 50px; font-size: 22px;
+    cursor: pointer; z-index: 1000;
+    box-shadow: 0 4px 20px rgba(255,77,158,0.4);
+    transition: transform 0.2s;
+  }
+  .admin-toggle:active { transform: scale(0.9); }
+
+  .modal {
+    position: fixed; inset: 0;
+    background: rgba(10,10,20,0.98);
+    z-index: 1001; padding: 20px;
+    display: none; overflow-y: auto;
+    animation: fadeSlide 0.3s ease;
+  }
+  .modal.open { display: block; }
+
+  .modal .inner {
+    max-width: 700px; margin: 40px auto;
+    background: #1a1a2e; border: 2px solid #ff4d9e;
+    border-radius: 18px; padding: 24px;
+  }
+  .modal .inner.login { max-width: 380px; }
+
+  .modal h2 {
+    text-align: center; color: #ff4d9e;
+    margin-bottom: 20px; font-size: 22px;
+  }
+
+  .close-btn {
+    background: #dc2430; color: #fff;
+    border: none; border-radius: 50px;
+    padding: 10px 24px; font-size: 14px;
+    cursor: pointer; margin-bottom: 16px; font-weight: 600;
+  }
+
+  .entry {
+    background: #0f0f1e; border: 1px solid #2a2a4a;
+    border-left: 4px solid #ff4d9e;
+    border-radius: 12px; padding: 14px;
+    margin-bottom: 12px; text-align: left; font-size: 14px;
+  }
+  .entry .row {
+    display: flex; justify-content: space-between;
+    padding: 4px 0; border-bottom: 1px solid #1a1a2e;
+  }
+  .entry .row:last-child { border-bottom: none; }
+  .entry .k { color: #ff4d9e; font-weight: 600; }
+  .entry .v { color: #e0e0e0; word-break: break-all; }
+
+  .empty {
+    text-align: center; color: #666;
+    padding: 30px 0; font-size: 15px;
+  }
+
+  .admin-actions {
+    display: flex; gap: 10px;
+    margin-top: 20px; flex-wrap: wrap;
+  }
+  .admin-actions .btn {
+    flex: 1; min-width: 120px;
+    padding: 12px 20px; font-size: 14px;
+  }
+  .btn-export { background: linear-gradient(135deg, #11998e, #38ef7d); color: #fff; }
+  .btn-clear  { background: linear-gradient(135deg, #dc2430, #7b4397); color: #fff; }
+  .btn-refresh{ background: linear-gradient(135deg, #2196f3, #00bcd4); color: #fff; }
+
+  .stats {
+    display: flex; gap: 10px;
+    margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .stat {
+    flex: 1; min-width: 100px;
+    background: #0f0f1e; border: 1px solid #2a2a4a;
+    border-radius: 12px; padding: 12px; text-align: center;
+  }
+  .stat .num { font-size: 24px; font-weight: 800; color: #ff4d9e; }
+  .stat .lbl { font-size: 12px; color: #888; margin-top: 4px; }
+
+  .sync-status {
+    position: fixed; top: 12px; left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a2e; border: 1px solid #2a2a4a;
+    color: #b0b0c0; border-radius: 50px;
+    padding: 8px 18px; font-size: 13px;
+    z-index: 9999; opacity: 0;
+    transition: opacity 0.3s; pointer-events: none;
+    white-space: nowrap;
+  }
+  .sync-status.show { opacity: 1; }
+  .sync-status.ok   { border-color: #2ecc71; color: #2ecc71; }
+  .sync-status.err  { border-color: #ff4d9e; color: #ff4d9e; }
+
+  @media (max-width: 360px) {
+    h1 { font-size: 19px; }
+    .card { padding: 24px 16px; }
+    .btn { padding: 12px 26px; font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sync-status" id="syncStatus"></div>
+
+<div class="card">
+
+  <div class="stage active" id="stage1">
+    <h1>Will You Go Out With Me? 💕</h1>
+    <div class="buttons-wrap" id="buttonsWrap">
+      <button class="btn btn-yes" onclick="goToStage(2)">Yes</button>
+      <button class="btn btn-no" id="noBtn">No</button>
+    </div>
+  </div>
+
+  <div class="stage" id="stage2">
+    <h1>Wait, you actually said yes? 😂</h1>
+    <p>I was 100% sure you'd say <span class="highlight">no</span> 😂</p>
+    <p>Now pick a date and time:</p>
+    <label>📅 Date</label>
+    <input type="date" id="dateInput">
+    <label>⏰ Time</label>
+    <input type="time" id="timeInput">
+    <button class="btn btn-next" onclick="goToStage(3)">Next</button>
+  </div>
+
+  <div class="stage" id="stage3">
+    <h1>What should we eat? 🍽️</h1>
+    <label>Pick your favorite Algerian dish</label>
+    <select id="foodSelect">
+      <option value="">-- Choose --</option>
+      <optgroup label="🍲 Traditional Dishes">
+        <option value="Chorba">🍲 Chorba</option>
+        <option value="Rechta">🍜 Rechta</option>
+        <option value="Couscous">🥘 Couscous</option>
+        <option value="Chakhchoukha">🥘 Chakhchoukha</option>
+        <option value="Tajine Zitoune">🫒 Tajine Zitoune</option>
+        <option value="Mthawem">🧄 Mthawem</option>
+        <option value="Dolma">🍆 Dolma</option>
+        <option value="Berkoukes">🍲 Berkoukes</option>
+      </optgroup>
+      <optgroup label="🌊 Oran Specialties">
+        <option value="Karantika">🥧 Karantika (Oran)</option>
+        <option value="Mhadjeb">🥞 Mhadjeb</option>
+        <option value="Bourek Annabi">🥟 Bourek Annabi</option>
+        <option value="Sardine Grillé">🐟 Sardine Grillé</option>
+        <option value="Calamar Frit">🦑 Calamars Frits</option>
+        <option value="Paella Oranaise">🥘 Paella Oranaise</option>
+        <option value="Tajine Hout">🐠 Tajine Hout</option>
+      </optgroup>
+      <optgroup label="🍢 Street Food">
+        <option value="Mhajeb">🥞 Mhajeb</option>
+        <option value="Kebab">🌯 Kebab</option>
+        <option value="Shawarma">🌯 Shawarma</option>
+        <option value="Djej Meshwi">🍗 Djej Meshwi</option>
+      </optgroup>
+      <optgroup label="🍰 Desserts & Drinks">
+        <option value="Baklava">🍯 Baklava</option>
+        <option value="Kalbalouze">🍮 Kalb El Louz</option>
+        <option value="Makroud">🍪 Makroud</option>
+        <option value="Zlabia">🍯 Zlabia</option>
+        <option value="Thé à la Menthe">🍵 Thé à la Menthe</option>
+        <option value="Café Oranais">☕ Café Oranais</option>
+      </optgroup>
+    </select>
+    <button class="btn btn-next" onclick="goToStage(4)">Next</button>
+  </div>
+
+  <div class="stage" id="stage4">
+    <h1>Perfect, I'll pick you up at 6 ⏰</h1>
+    <div class="invoice">
+      <h3>🧾 Simple Fees</h3>
+      <div class="row"><span>Date Agreement</span><span>10,000.00 DZD</span></div>
+      <div class="row"><span>Total</span><span>10,000.00 DZD</span></div>
+    </div>
+    <div class="ccp-box">
+      <h3>💳 CCP PAYMENT</h3>
+      <div class="field"><span class="label">Account Holder</span><span class="value">IT GUY</span></div>
+      <div class="field"><span class="label">CCP Number</span><span class="value">0023456789</span></div>
+      <div class="field"><span class="label">Key</span><span class="value">45</span></div>
+      <div class="field"><span class="label">Amount</span><span class="amount">10,000.00 DZD</span></div>
+    </div>
+    <p class="note">* Non-refundable fees 😌</p>
+    <button class="btn btn-next" onclick="goToStage(5)">Pay Now</button>
+  </div>
+
+  <div class="stage" id="stage5">
+    <h1>Great! Just fill this in 📝</h1>
+    <p>So I can confirm your booking 😏</p>
+    <label>Full Name</label>
+    <input type="text" id="fullName" placeholder="Your name">
+    <label>Phone Number</label>
+    <input type="tel" id="phone" placeholder="+213 XXX XX XX XX">
+    <label>Email</label>
+    <input type="email" id="email" placeholder="you@example.com">
+    <button class="btn btn-next" id="confirmBtn" onclick="submitInfo()">Confirm</button>
+    <div class="success-msg" id="successMsg"></div>
+  </div>
+
+  <div class="stage" id="stage6">
+    <div class="emoji-big">😱</div>
+    <h1>Are you kidding me?</h1>
+    <p>That's classic <span class="highlight">IT people</span> behavior 💻😤</p>
+    <button class="btn btn-next" onclick="resetAll()">🔄 Start Over</button>
+  </div>
+
+</div>
+
+<button class="admin-toggle" onclick="openLogin()" title="Admin">👁️</button>
+
+<div class="modal" id="loginModal">
+  <div class="inner login">
+    <button class="close-btn" onclick="closeLogin()">✕ Close</button>
+    <h2>🔐 Admin Login</h2>
+    <label>Username</label>
+    <input type="text" id="adminUser" autocomplete="off">
+    <label>Password</label>
+    <input type="password" id="adminPass" autocomplete="off">
+    <button class="btn btn-next" onclick="doLogin()" style="margin-top:10px;">Login</button>
+    <div class="success-msg" id="loginMsg"></div>
+  </div>
+</div>
+
+<div class="modal" id="adminPanel">
+  <div class="inner">
+    <button class="close-btn" onclick="closeAdmin()">✕ Close</button>
+    <h2>📊 Admin Panel — Submissions</h2>
+    <div class="stats">
+      <div class="stat"><div class="num" id="statCount">0</div><div class="lbl">Total Entries</div></div>
+      <div class="stat"><div class="num" id="statPaid">0</div><div class="lbl">DZD Collected</div></div>
+    </div>
+    <div id="entriesList"></div>
+    <div class="admin-actions">
+      <button class="btn btn-refresh" onclick="loadData()">🔄 Refresh</button>
+      <button class="btn btn-export" onclick="exportToExcel()">⬇️ Export Excel</button>
+      <button class="btn btn-clear" onclick="clearAll()">🗑️ Clear All</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* =========================================================
+     CONFIG — الرابط ديالك مدرج هنا
+     ========================================================= */
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyALdiG5fj_ODR-jmqmIN3fSc8gkuNnZAlx52NWRz4qv3G6ZCX7Jcx_uvFfHGBh01CFcg/exec';
+
+  const ADMIN_USER = 'admin';
+  const ADMIN_PASS = 'admin123';
+  const AMOUNT_DZD = 10000;
+
+  /* =========================================================
+     "No" button escape
+     ========================================================= */
+  const noBtn = document.getElementById('noBtn');
+  const buttonsWrap = document.getElementById('buttonsWrap');
+  let noBtnFloating = false;
+
+  function moveNoButton() {
+    if (!noBtnFloating) {
+      noBtnFloating = true;
+      noBtn.classList.add('hidden-mouse');
+      document.body.appendChild(noBtn);
+    }
+    const pad = 12;
+    const maxX = window.innerWidth  - noBtn.offsetWidth  - pad;
+    const maxY = window.innerHeight - noBtn.offsetHeight - pad;
+    noBtn.style.left = Math.max(pad, Math.random() * maxX) + 'px';
+    noBtn.style.top  = Math.max(pad, Math.random() * maxY) + 'px';
+  }
+
+  noBtn.addEventListener('mouseenter', moveNoButton);
+  noBtn.addEventListener('touchstart', e => { e.preventDefault(); moveNoButton(); }, { passive: false });
+  noBtn.addEventListener('click', e => { e.preventDefault(); moveNoButton(); });
+
+  /* =========================================================
+     Stage navigation
+     ========================================================= */
+  function goToStage(n) {
+    document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+    document.getElementById('stage' + n).classList.add('active');
+    if (n === 2) resetNoButton();
+    window.scrollTo(0, 0);
+  }
+
+  function resetNoButton() {
+    if (noBtnFloating) {
+      noBtnFloating = false;
+      noBtn.classList.remove('hidden-mouse');
+      noBtn.style.left = '';
+      noBtn.style.top  = '';
+      buttonsWrap.appendChild(noBtn);
+    }
+  }
+
+  function resetAll() {
+    resetNoButton();
+    ['dateInput','timeInput','foodSelect','fullName','phone','email']
+      .forEach(id => document.getElementById(id).value = '');
+    document.getElementById('successMsg').textContent = '';
+    document.getElementById('confirmBtn').disabled = false;
+    document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+    document.getElementById('stage1').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  /* =========================================================
+     Send to Google Apps Script → Google Sheet
+     ========================================================= */
+  async function sendToSheet(payload) {
+    try {
+      // no-cors + text/plain = no preflight, works with Apps Script
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      return { status: 'ok' };
+    } catch (e) {
+      console.error('sendToSheet error:', e);
+      return { status: 'error', message: e.message };
+    }
+  }
+
+  const LOCAL_KEY = 'date_app_submissions';
+  function getLocal() {
+    try { return JSON.parse(localStorage.getItem(LOCAL_KEY)) || []; }
+    catch { return []; }
+  }
+  function saveLocal(list) { localStorage.setItem(LOCAL_KEY, JSON.stringify(list)); }
+
+  async function submitInfo() {
+    const name  = document.getElementById('fullName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const msg   = document.getElementById('successMsg');
+    const btn   = document.getElementById('confirmBtn');
+
+    if (!name || !phone || !email) {
+      msg.className = 'success-msg error-msg';
+      msg.textContent = '⚠️ Please fill in all fields';
+      return;
+    }
+
+    const date = document.getElementById('dateInput').value  || '—';
+    const time = document.getElementById('timeInput').value  || '—';
+    const food = document.getElementById('foodSelect').value || '—';
+
+    const payload = {
+      name, phone, email, date, time, food,
+      amount: AMOUNT_DZD + ' DZD',
+      ccp:    '0023456789 / 45'
+    };
+
+    btn.disabled = true;
+    msg.className = 'success-msg';
+    msg.textContent = '⏳ Sending...';
+
+    showStatus('⏳ Sending to Google Sheet...');
+    const res = await sendToSheet(payload);
+
+    const entry = { ...payload, submitted: new Date().toISOString() };
+    const list = getLocal();
+    list.push(entry);
+    saveLocal(list);
+
+    if (res.status === 'ok') {
+      showStatus('✅ Saved to Google Sheet', 'ok');
+      msg.textContent = '✅ Confirmed! Payment pending...';
+    } else {
+      showStatus('⚠️ Sheet error — saved locally', 'err');
+      msg.textContent = '✅ Saved locally';
+    }
+
+    setTimeout(() => goToStage(6), 1000);
+  }
+
+  /* =========================================================
+     Status banner
+     ========================================================= */
+  let statusTimer;
+  function showStatus(text, type = '') {
+    const el = document.getElementById('syncStatus');
+    el.textContent = text;
+    el.className = 'sync-status show ' + type;
+    clearTimeout(statusTimer);
+    statusTimer = setTimeout(() => el.className = 'sync-status', 2500);
+  }
+
+  /* =========================================================
+     Admin panel
+     ========================================================= */
+  let remoteData = null;
+
+  async function loadRemoteData() {
+    showStatus('⏳ Loading from Google Sheet...');
+    try {
+      const res = await fetch(SCRIPT_URL + '?t=' + Date.now(), { cache: 'no-store' });
+      const json = await res.json();
+      if (json.status === 'ok' && Array.isArray(json.data)) {
+        remoteData = json.data;
+        showStatus('✅ Loaded from Sheet', 'ok');
+        return remoteData;
+      }
+      throw new Error('Bad response');
+    } catch (e) {
+      remoteData = null;
+      showStatus('⚠️ Cannot load Sheet', 'err');
+      console.error(e);
+      return null;
+    }
+  }
+
+  function getMerged() {
+    const local  = getLocal();
+    const remote = Array.isArray(remoteData) ? remoteData : [];
+    const map  = new Map();
+    const keyOf = e => `${(e.phone||'').trim()}|${(e.email||'').trim()}`;
+    remote.forEach(e => map.set(keyOf(e), e));
+    local.forEach(e  => { const k = keyOf(e); if (!map.has(k)) map.set(k, e); });
+    return Array.from(map.values()).sort(
+      (a,b) => new Date(a.submitted || 0) - new Date(b.submitted || 0)
+    );
+  }
+
+  function openLogin() {
+    document.getElementById('loginModal').classList.add('open');
+    document.getElementById('adminUser').value = '';
+    document.getElementById('adminPass').value = '';
+    document.getElementById('loginMsg').textContent = '';
+  }
+  function closeLogin() { document.getElementById('loginModal').classList.remove('open'); }
+
+  function doLogin() {
+    const u = document.getElementById('adminUser').value.trim();
+    const p = document.getElementById('adminPass').value;
+    const msg = document.getElementById('loginMsg');
+    if (u === ADMIN_USER && p === ADMIN_PASS) {
+      msg.className = 'success-msg';
+      msg.textContent = '✅ Welcome!';
+      setTimeout(() => { closeLogin(); openAdmin(); }, 400);
+    } else {
+      msg.className = 'success-msg error-msg';
+      msg.textContent = '❌ Wrong credentials';
+    }
+  }
+
+  async function openAdmin() {
+    document.getElementById('adminPanel').classList.add('open');
+    await loadData();
+  }
+  function closeAdmin() { document.getElementById('adminPanel').classList.remove('open'); }
+
+  async function loadData() {
+    document.getElementById('entriesList').innerHTML = '<div class="empty">⏳ Loading...</div>';
+    await loadRemoteData();
+    renderEntries();
+  }
+
+  function renderEntries() {
+    const list = getMerged();
+    const container = document.getElementById('entriesList');
+    document.getElementById('statCount').textContent = list.length;
+    document.getElementById('statPaid').textContent =
+      (list.length * AMOUNT_DZD).toLocaleString('en-US');
+
+    if (list.length === 0) {
+      container.innerHTML = '<div class="empty">No submissions yet 👀</div>';
+      return;
+    }
+
+    container.innerHTML = list.map((e, i) => `
+      <div class="entry">
+        <div class="row"><span class="k">#</span><span class="v">${i + 1}</span></div>
+        <div class="row"><span class="k">Name</span><span class="v">${esc(e.name)}</span></div>
+        <div class="row"><span class="k">Phone</span><span class="v">${esc(e.phone)}</span></div>
+        <div class="row"><span class="k">Email</span><span class="v">${esc(e.email)}</span></div>
+        <div class="row"><span class="k">Date</span><span class="v">${esc(e.date)}</span></div>
+        <div class="row"><span class="k">Time</span><span class="v">${esc(e.time)}</span></div>
+        <div class="row"><span class="k">Food</span><span class="v">${esc(e.food)}</span></div>
+        <div class="row"><span class="k">Amount</span><span class="v">${esc(e.amount)}</span></div>
+        <div class="row"><span class="k">CCP</span><span class="v">${esc(e.ccp || '—')}</span></div>
+        <div class="row"><span class="k">Submitted</span><span class="v">${esc(e.submitted || '—')}</span></div>
+      </div>
+    `).join('');
+  }
+
+  function esc(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+
+  function exportToExcel() {
+    const list = getMerged();
+    if (list.length === 0) { alert('No data to export'); return; }
+    const headers = ['Name','Phone','Email','Date','Time','Food','Amount','CCP','Submitted'];
+    const rows = list.map(e => [e.name,e.phone,e.email,e.date,e.time,e.food,e.amount,e.ccp,e.submitted]);
+    const csv = [headers, ...rows]
+      .map(r => r.map(c => `"${String(c ?? '').replace(/"/g,'""')}"`).join(','))
+      .join('\r\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = `submissions_${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showStatus('✅ Excel exported', 'ok');
+  }
+
+  function clearAll() {
+    if (!confirm('Delete ALL local submissions?')) return;
+    localStorage.removeItem(LOCAL_KEY);
+    renderEntries();
+    showStatus('🗑️ Local data cleared', 'ok');
+  }
+
+  /* =========================================================
+     Listeners
+     ========================================================= */
+  window.addEventListener('resize', () => {
+    if (noBtnFloating) {
+      const maxX = window.innerWidth  - noBtn.offsetWidth  - 12;
+      const maxY = window.innerHeight - noBtn.offsetHeight - 12;
+      const x = parseFloat(noBtn.style.left) || 0;
+      const y = parseFloat(noBtn.style.top)  || 0;
+      if (x > maxX) noBtn.style.left = maxX + 'px';
+      if (y > maxY) noBtn.style.top  = maxY + 'px';
+    }
+  });
+
+  document.getElementById('adminPass').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeLogin(); closeAdmin(); }
+  });
+</script>
+
+</body>
+</html>
