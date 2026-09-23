@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0d2e1a">
-<meta name="description" content="Klondike SaivSOLITAIRE — traditional playing cards, mobile-first.">
 <title>SaivSOLITAIRE</title>
 <style>
-/* ============================================================================
-   KLONDIKE SaivSOLITAIRE — STYLESHEET
-   ========================================================================== */
+:root {
+  --card-w: 48px;
+  --card-h: 72px;
+}
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -26,8 +26,6 @@ html, body {
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
                system-ui, sans-serif;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
   overscroll-behavior: none;
@@ -42,27 +40,22 @@ body {
   transition: background 0.5s ease, color 0.4s ease;
 }
 
-/* ---------------------------------------------------------------------------
+/* ============================
    THEMES
-   ------------------------------------------------------------------------- */
+   ============================ */
 [data-theme="green"] {
-  --felt-1: #1e5a3a;
-  --felt-2: #0a2618;
+  --felt-1: #1e5a3a; --felt-2: #0a2618;
   --felt-glow: rgba(30, 90, 58, 0.55);
   --shell-bg: linear-gradient(170deg, #143d28 0%, #0a2618 100%);
   --shell-border: rgba(212, 175, 55, 0.14);
-  --text: #e8f0e4;
-  --text-dim: #9fb4a0;
-  --text-faint: #5a7060;
-  --card-face: #fdfbf3;
-  --card-face-shade: #efe9d4;
-  --card-border: #2a2a35;
-  --card-border-soft: rgba(0, 0, 0, 0.22);
+  --text: #e8f0e4; --text-dim: #9fb4a0; --text-faint: #5a7060;
+  --card-face: #ffffff;
+  --card-face-shade: #f4f4f8;
+  --card-edge: rgba(0,0,0,0.1);
   --card-back-1: #8b1a2e;
   --card-back-2: #4a0812;
-  --card-back-line: rgba(255, 220, 180, 0.32);
-  --card-back-medallion: rgba(255, 220, 180, 0.4);
-  --red: #c8102e;
+  --card-back-line: rgba(255, 220, 180, 0.22);
+  --red: #d62839;
   --black: #14141c;
   --gold: #d4af37;
   --hud-bg: rgba(212, 175, 55, 0.06);
@@ -78,26 +71,21 @@ body {
   --slot-border: rgba(212, 175, 55, 0.28);
   --slot-fill: rgba(212, 175, 55, 0.05);
   --hint-glow: #ffd966;
-  --hint-glow-soft: rgba(255, 217, 102, 0.45);
+  --hint-glow-soft: rgba(255, 217, 102, 0.6);
 }
 
 [data-theme="navy"] {
-  --felt-1: #1e3a6e;
-  --felt-2: #0a1830;
+  --felt-1: #1e3a6e; --felt-2: #0a1830;
   --felt-glow: rgba(30, 58, 110, 0.55);
   --shell-bg: linear-gradient(170deg, #152a50 0%, #0a1830 100%);
   --shell-border: rgba(180, 210, 255, 0.1);
-  --text: #e8eefc;
-  --text-dim: #93a5cc;
-  --text-faint: #556a90;
-  --card-face: #fefeff;
-  --card-face-shade: #e8ecf4;
-  --card-border: #1a2035;
-  --card-border-soft: rgba(0, 0, 0, 0.2);
+  --text: #e8eefc; --text-dim: #93a5cc; --text-faint: #556a90;
+  --card-face: #ffffff;
+  --card-face-shade: #f0f3fa;
+  --card-edge: rgba(0,0,0,0.1);
   --card-back-1: #2e5aa8;
   --card-back-2: #0f1e42;
-  --card-back-line: rgba(200, 220, 255, 0.28);
-  --card-back-medallion: rgba(200, 220, 255, 0.4);
+  --card-back-line: rgba(200, 220, 255, 0.22);
   --red: #d1213f;
   --black: #101828;
   --gold: #c9a84c;
@@ -114,26 +102,21 @@ body {
   --slot-border: rgba(180, 210, 255, 0.28);
   --slot-fill: rgba(180, 210, 255, 0.05);
   --hint-glow: #8fb4ff;
-  --hint-glow-soft: rgba(143, 180, 255, 0.45);
+  --hint-glow-soft: rgba(143, 180, 255, 0.6);
 }
 
 [data-theme="obsidian"] {
-  --felt-1: #1a1a20;
-  --felt-2: #08080c;
+  --felt-1: #1a1a20; --felt-2: #08080c;
   --felt-glow: rgba(60, 60, 80, 0.45);
   --shell-bg: linear-gradient(170deg, #15151a 0%, #08080c 100%);
   --shell-border: rgba(255, 255, 255, 0.07);
-  --text: #f0f0f3;
-  --text-dim: #9a9aa8;
-  --text-faint: #5a5a68;
-  --card-face: #fbfbfc;
-  --card-face-shade: #e4e4e8;
-  --card-border: #1a1a22;
-  --card-border-soft: rgba(0, 0, 0, 0.22);
+  --text: #f0f0f3; --text-dim: #9a9aa8; --text-faint: #5a5a68;
+  --card-face: #ffffff;
+  --card-face-shade: #eef0f4;
+  --card-edge: rgba(0,0,0,0.14);
   --card-back-1: #3a3a48;
   --card-back-2: #14141e;
   --card-back-line: rgba(255, 255, 255, 0.16);
-  --card-back-medallion: rgba(255, 255, 255, 0.22);
   --red: #e8476a;
   --black: #18181f;
   --gold: #c8b878;
@@ -150,12 +133,12 @@ body {
   --slot-border: rgba(255, 255, 255, 0.18);
   --slot-fill: rgba(255, 255, 255, 0.03);
   --hint-glow: #e8d896;
-  --hint-glow-soft: rgba(232, 216, 150, 0.45);
+  --hint-glow-soft: rgba(232, 216, 150, 0.6);
 }
 
-/* ---------------------------------------------------------------------------
+/* ============================
    APP SHELL
-   ------------------------------------------------------------------------- */
+   ============================ */
 .app {
   --avail-h: min(100vh, 880px);
   position: relative;
@@ -188,9 +171,7 @@ body {
   }
 }
 
-/* ---------------------------------------------------------------------------
-   TOP BAR
-   ------------------------------------------------------------------------- */
+/* TOP BAR */
 .topbar {
   flex: 0 0 auto;
   display: flex;
@@ -201,11 +182,8 @@ body {
 
 .icon-btn {
   flex: 0 0 auto;
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
   background: var(--btn-bg);
   border: 1px solid var(--btn-border);
   border-radius: 10px;
@@ -223,13 +201,9 @@ body {
 }
 
 .icon-btn svg {
-  width: 17px;
-  height: 17px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2.1;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  width: 17px; height: 17px;
+  stroke: currentColor; fill: none;
+  stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round;
   pointer-events: none;
 }
 
@@ -248,41 +222,24 @@ body {
   border: 1px solid var(--hud-border);
   border-radius: 9px;
   padding: 3px 6px 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 0;
-  overflow: hidden;
-  transition: background 0.3s ease;
-}
-
-.stat.flash {
-  background: var(--btn-active-bg);
-  border-color: var(--btn-active-border);
+  display: flex; flex-direction: column; align-items: center;
+  min-width: 0; overflow: hidden;
 }
 
 .stat span {
-  font-size: 7.5px;
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  font-size: 7.5px; font-weight: 800;
+  letter-spacing: 0.15em; text-transform: uppercase;
   color: var(--text-faint);
 }
 
 .stat b {
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 13px; font-weight: 800;
   font-variant-numeric: tabular-nums;
-  color: var(--text);
-  line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: var(--text); line-height: 1.2;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-/* ---------------------------------------------------------------------------
-   BOARD
-   ------------------------------------------------------------------------- */
+/* BOARD */
 .board {
   position: relative;
   flex: 1 1 auto;
@@ -297,7 +254,6 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
   overflow: hidden;
   touch-action: none;
-  transition: background 0.5s ease;
 }
 
 .slot {
@@ -306,17 +262,14 @@ body {
   border-radius: calc(var(--card-w) * 0.11);
   background: var(--slot-fill);
   pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   color: var(--slot-border);
   transition: opacity 0.3s ease;
-  line-height: 1;
-  font-weight: 700;
+  line-height: 1; font-weight: 700;
 }
 
 .slot[data-suit] {
-  font-size: calc(var(--card-w) * 0.44);
+  font-size: calc(var(--card-w) * 0.42);
   opacity: 0.55;
 }
 
@@ -325,38 +278,65 @@ body {
   font-size: calc(var(--card-w) * 0.5);
 }
 
-/* ============================================================================
-   CARD DESIGN — traditional French/Bicycle
-   ============================================================================ */
+/* ============================
+   CARD DESIGN
+   ============================ */
 
 .card {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: var(--card-w);
   height: var(--card-h);
-  font-family: Georgia, "Times New Roman", "Nimbus Roman", serif;
   will-change: transform;
-  transition: transform 0.34s cubic-bezier(0.22, 0.9, 0.3, 1);
+  transition: transform 0.32s cubic-bezier(0.22, 0.9, 0.3, 1);
   cursor: pointer;
   pointer-events: auto;
+  perspective: 900px;
 }
 
 .card.dragging {
   transition: none;
-  z-index: 99999 !important;
   cursor: grabbing;
+  z-index: 99999 !important;
 }
 
 .card.dragging .card-face {
-  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.55));
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.45),
+    0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================
+   HINT — only the arrow indicator remains (no glow ring)
+   ============================================================ */
+.card.hint-glow::after {
+  content: "▼";
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  line-height: 1;
+  color: var(--hint-glow);
+  text-shadow:
+    0 0 8px var(--hint-glow),
+    0 2px 4px rgba(0, 0, 0, 0.75);
+  animation: hintBounce 0.85s ease-in-out infinite;
+  pointer-events: none;
+  font-weight: 900;
+  z-index: 3;
+}
+
+@keyframes hintBounce {
+  0%, 100% { transform: translate(-50%, 0); }
+  50%      { transform: translate(-50%, 7px); }
 }
 
 .card-inner {
   position: absolute;
   inset: 0;
   transform-style: preserve-3d;
-  transition: transform 0.42s cubic-bezier(0.4, 1.15, 0.5, 1);
+  transition: transform 0.4s cubic-bezier(0.4, 1.1, 0.5, 1);
   transform: rotateY(180deg);
 }
 
@@ -367,7 +347,7 @@ body {
 .card-face {
   position: absolute;
   inset: 0;
-  border-radius: calc(var(--card-w) * 0.09);
+  border-radius: calc(var(--card-w) * 0.12);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   overflow: hidden;
@@ -375,19 +355,16 @@ body {
 
 /* ---- FRONT ---- */
 .card-front {
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.9), transparent 70%),
-    linear-gradient(160deg, var(--card-face) 0%, var(--card-face-shade) 100%);
-  border: 1px solid var(--card-border);
+  background: linear-gradient(165deg, var(--card-face) 0%, var(--card-face-shade) 100%);
+  border: 1px solid var(--card-edge);
   color: var(--black);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.85),
-    inset 0 0 0 2px rgba(0, 0, 0, 0.04),
-    0 1px 2px rgba(0, 0, 0, 0.2),
-    0 2px 5px rgba(0, 0, 0, 0.14);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(0, 0, 0, 0.14),
+    0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.card.red .card-front { color: var(--red); }
+.card.red   .card-front { color: var(--red); }
 .card.black .card-front { color: var(--black); }
 
 .corner {
@@ -395,47 +372,37 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  line-height: 0.82;
+  line-height: 0.9;
   color: inherit;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.05em;
 }
 
-.corner.tl {
-  top: 3.5%;
-  left: 6.5%;
-}
-
-.corner.br {
-  bottom: 3.5%;
-  right: 6.5%;
-  transform: rotate(180deg);
-}
+.corner.tl { top: 4%; left: 7%; }
+.corner.br { bottom: 4%; right: 7%; transform: rotate(180deg); }
 
 .corner .rank {
-  font-size: calc(var(--card-w) * 0.28);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  font-family: Georgia, "Times New Roman", serif;
+  font-size: calc(var(--card-w) * 0.26);
+  line-height: 0.85;
 }
 
 .corner .suit {
-  font-size: calc(var(--card-w) * 0.23);
-  margin-top: calc(var(--card-w) * 0.015);
-  line-height: 0.9;
+  font-size: calc(var(--card-w) * 0.2);
+  line-height: 0.85;
+  margin-top: calc(var(--card-w) * 0.03);
 }
 
 .card-pips {
   position: absolute;
-  top: 22%;
-  left: 18%;
-  right: 18%;
-  bottom: 22%;
+  top: 24%; left: 22%; right: 22%; bottom: 24%;
   color: inherit;
 }
 
 .card-pips .pip {
   position: absolute;
   transform: translate(-50%, -50%);
-  font-size: calc(var(--card-w) * 0.26);
+  font-size: calc(var(--card-w) * 0.24);
   line-height: 1;
 }
 
@@ -443,27 +410,9 @@ body {
   transform: translate(-50%, -50%) rotate(180deg);
 }
 
-.card-court {
-  position: absolute;
-  top: 18%;
-  left: 16%;
-  right: 16%;
-  bottom: 18%;
-  color: inherit;
-}
-
-.card-court svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
 .card-ace {
   position: absolute;
-  top: 18%;
-  left: 18%;
-  right: 18%;
-  bottom: 18%;
+  inset: 22%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -471,38 +420,74 @@ body {
 }
 
 .card-ace .ace-suit {
-  font-size: calc(var(--card-w) * 0.95);
+  font-size: calc(var(--card-w) * 0.85);
   line-height: 1;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.15));
 }
+
+.card-court {
+  position: absolute;
+  inset: 20%;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.court-frame {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid currentColor;
+  border-radius: calc(var(--card-w) * 0.07);
+  opacity: 0.22;
+}
+
+.court-frame::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border: 1px solid currentColor;
+  border-radius: calc(var(--card-w) * 0.04);
+  opacity: 0.5;
+}
+
+.court-letter {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: calc(var(--card-w) * 0.62);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  position: relative;
+  z-index: 1;
+}
+
+.court-suit {
+  position: absolute;
+  font-size: calc(var(--card-w) * 0.2);
+  line-height: 1;
+  z-index: 1;
+}
+
+.court-suit.top { top: 6%; }
+.court-suit.bot { bottom: 6%; transform: rotate(180deg); }
 
 /* ---- BACK ---- */
 .card-back {
   transform: rotateY(180deg);
-  border: 1px solid rgba(255, 255, 255, 0.28);
   background:
-    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.18), transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1), transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 60%),
     repeating-linear-gradient(
       45deg,
       transparent 0px,
-      transparent 5px,
-      var(--card-back-line) 5px,
-      var(--card-back-line) 6px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      transparent 0px,
-      transparent 5px,
-      var(--card-back-line) 5px,
-      var(--card-back-line) 6px
+      transparent 6px,
+      var(--card-back-line) 6px,
+      var(--card-back-line) 7px
     ),
     linear-gradient(135deg, var(--card-back-1) 0%, var(--card-back-2) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow:
-    inset 0 0 0 2px rgba(0, 0, 0, 0.25),
-    inset 0 0 0 3.5px rgba(255, 255, 255, 0.1),
-    0 1px 2px rgba(0, 0, 0, 0.2),
-    0 2px 5px rgba(0, 0, 0, 0.14);
+    inset 0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.14),
+    0 2px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -511,74 +496,29 @@ body {
 .card-back::before {
   content: "";
   position: absolute;
-  inset: 14%;
-  border: 1.5px solid var(--card-back-medallion);
-  border-radius: calc(var(--card-w) * 0.06);
-  box-shadow:
-    inset 0 0 0 3px rgba(0, 0, 0, 0.2),
-    inset 0 0 0 4.5px var(--card-back-medallion);
-  pointer-events: none;
+  width: 52%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
 }
 
 .card-back::after {
   content: "";
   position: absolute;
-  width: calc(var(--card-w) * 0.5);
-  height: calc(var(--card-w) * 0.5);
+  width: 22%;
+  aspect-ratio: 1;
   border-radius: 50%;
-  border: 1.5px solid var(--card-back-medallion);
-  background:
-    radial-gradient(circle at 50% 50%, var(--card-back-line) 0%, transparent 65%),
-    conic-gradient(
-      from 0deg,
-      var(--card-back-medallion) 0deg 30deg,
-      transparent 30deg 60deg,
-      var(--card-back-medallion) 60deg 90deg,
-      transparent 90deg 120deg,
-      var(--card-back-medallion) 120deg 150deg,
-      transparent 150deg 180deg,
-      var(--card-back-medallion) 180deg 210deg,
-      transparent 210deg 240deg,
-      var(--card-back-medallion) 240deg 270deg,
-      transparent 270deg 300deg,
-      var(--card-back-medallion) 300deg 330deg,
-      transparent 330deg 360deg
-    );
-  opacity: 0.7;
-}
-
-/* ---- HINT ---- */
-.card.hint-glow .card-face {
+  background: rgba(255, 255, 255, 0.4);
   box-shadow:
-    0 0 0 2px var(--hint-glow),
-    0 0 24px 5px var(--hint-glow-soft),
-    0 1px 2px rgba(0, 0, 0, 0.2);
-  animation: hintPulse 0.9s ease-in-out infinite;
+    0 0 14px rgba(255, 255, 255, 0.35),
+    inset 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
-@keyframes hintPulse {
-  0%, 100% {
-    box-shadow: 0 0 0 2px var(--hint-glow), 0 0 16px 3px var(--hint-glow-soft), 0 1px 2px rgba(0,0,0,0.2);
-  }
-  50% {
-    box-shadow: 0 0 0 2px var(--hint-glow), 0 0 32px 9px var(--hint-glow-soft), 0 1px 2px rgba(0,0,0,0.2);
-  }
-}
-
-/* ---- DEAL ANIMATION ---- */
-@keyframes dealIn {
-  from {
-    transform: translate3d(0, 0, 0) rotate(-15deg) scale(0.9);
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* ---------------------------------------------------------------------------
+/* ============================
    ACTION BAR
-   ------------------------------------------------------------------------- */
+   ============================ */
 .actionbar {
   flex: 0 0 auto;
   display: grid;
@@ -588,10 +528,7 @@ body {
 }
 
 .act-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 2px;
   min-height: 46px;
   padding: 4px 2px;
@@ -600,23 +537,17 @@ body {
   border-radius: 12px;
   color: var(--text-dim);
   font-family: inherit;
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
+  font-size: 8px; font-weight: 800;
+  letter-spacing: 0.13em; text-transform: uppercase;
   cursor: pointer;
   transition: transform 0.08s ease, background 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
   touch-action: manipulation;
 }
 
 .act-btn svg {
-  width: 19px;
-  height: 19px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2.1;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  width: 19px; height: 19px;
+  stroke: currentColor; fill: none;
+  stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round;
   pointer-events: none;
 }
 
@@ -642,20 +573,17 @@ body {
   50%      { box-shadow: 0 0 22px 2px var(--hint-glow-soft); }
 }
 
-/* ---------------------------------------------------------------------------
-   SCREENS — z-index cranked WAY up so no card ever bleeds through
-   ------------------------------------------------------------------------- */
+/* ============================
+   SCREENS
+   ============================ */
 .screen {
   position: absolute;
   inset: 0;
   z-index: 9999999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   padding: 22px 20px;
   background: var(--overlay-bg);
-  opacity: 0;
-  visibility: hidden;
+  opacity: 0; visibility: hidden;
   transform: scale(1.03);
   transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
               visibility 0.28s,
@@ -666,17 +594,13 @@ body {
 }
 
 .screen.active {
-  opacity: 1;
-  visibility: visible;
-  transform: scale(1);
+  opacity: 1; visibility: visible; transform: scale(1);
 }
 
 .screen-inner {
   width: 100%;
   max-width: 320px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: flex; flex-direction: column; align-items: center;
   gap: 11px;
   text-align: center;
   position: relative;
@@ -684,34 +608,25 @@ body {
   margin: auto;
 }
 
-/* ---- Logo ---- */
 .logo-mark {
-  display: flex;
-  gap: 5px;
+  display: flex; gap: 5px;
   margin-bottom: 2px;
   animation: logoFloat 3.6s ease-in-out infinite;
 }
 
 .logo-mark .mini-card {
-  width: 34px;
-  height: 48px;
-  border-radius: 5px;
-  background: linear-gradient(160deg, #ffffff 0%, #efe9d4 100%);
-  border: 1px solid #2a2a35;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.85),
-    0 4px 10px rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  font-weight: 900;
-  font-family: Georgia, serif;
+  width: 34px; height: 48px;
+  border-radius: 6px;
+  background: linear-gradient(165deg, #ffffff 0%, #f0f2f6 100%);
+  border: 1px solid rgba(0,0,0,0.12);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 900;
   color: #14141c;
   position: relative;
 }
 
-.logo-mark .mini-card.red { color: #c8102e; }
+.logo-mark .mini-card.red { color: #d62839; }
 .logo-mark .mini-card:nth-child(2) { transform: rotate(-8deg) translateY(-4px); }
 .logo-mark .mini-card:nth-child(3) { transform: rotate(8deg) translateY(-4px); }
 
@@ -720,11 +635,10 @@ body {
   50%      { transform: translateY(-6px); }
 }
 
-/* ---- Titles ---- */
 .title {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 900;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   line-height: 1.05;
   background: linear-gradient(96deg, var(--gold) 0%, var(--text) 100%);
   -webkit-background-clip: text;
@@ -735,16 +649,20 @@ body {
 
 .title.small { font-size: 24px; }
 
+.title .brand {
+  background: linear-gradient(96deg, var(--gold), #f0d878);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .subtitle {
-  font-size: 9.5px;
-  font-weight: 800;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
+  font-size: 9.5px; font-weight: 800;
+  letter-spacing: 0.32em; text-transform: uppercase;
   color: var(--text-faint);
   margin-top: -8px;
 }
 
-/* ---- Buttons ---- */
 .btn {
   position: relative;
   width: 100%;
@@ -752,12 +670,9 @@ body {
   border-radius: 14px;
   padding: 14px 16px;
   font-family: inherit;
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  cursor: pointer;
-  overflow: hidden;
+  font-size: 12px; font-weight: 900;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  cursor: pointer; overflow: hidden;
   transition: transform 0.1s ease, box-shadow 0.22s ease, background 0.22s ease, color 0.22s ease;
   touch-action: manipulation;
   text-decoration: none;
@@ -794,20 +709,14 @@ body {
   font-size: 10px;
   padding: 10px 14px;
   letter-spacing: 0.18em;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-flex; align-items: center; justify-content: center;
   gap: 6px;
 }
 
 .btn-back svg {
-  width: 13px;
-  height: 13px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  width: 13px; height: 13px;
+  stroke: currentColor; fill: none;
+  stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
 }
 
 .btn-back:active {
@@ -815,13 +724,10 @@ body {
   color: var(--text);
 }
 
-/* ---- Selectors ---- */
 .mode-select,
 .theme-select {
-  display: flex;
-  gap: 6px;
-  width: 100%;
-  justify-content: center;
+  display: flex; gap: 6px;
+  width: 100%; justify-content: center;
 }
 
 .mode-btn {
@@ -832,10 +738,8 @@ body {
   border: 1px solid var(--hud-border);
   color: var(--text-dim);
   font-family: inherit;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.14em; text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -850,18 +754,15 @@ body {
 .theme-select { gap: 9px; }
 
 .theme-swatch {
-  width: 32px;
-  height: 32px;
+  width: 32px; height: 32px;
   border-radius: 9px;
   border: 2px solid transparent;
-  cursor: pointer;
-  padding: 0;
+  cursor: pointer; padding: 0;
   transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .theme-swatch:active { transform: scale(0.9); }
-
 .theme-swatch.active {
   border-color: var(--gold);
   box-shadow: 0 0 14px -2px var(--gold);
@@ -872,7 +773,6 @@ body {
 .theme-swatch[data-theme-name="navy"]     { background: linear-gradient(135deg, #1e3a6e, #0a1830); }
 .theme-swatch[data-theme-name="obsidian"] { background: linear-gradient(135deg, #2a2a35, #08080c); }
 
-/* ---- Menu stats ---- */
 .menu-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -886,29 +786,23 @@ body {
   border: 1px solid var(--hud-border);
   border-radius: 11px;
   padding: 8px 4px 7px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: flex; flex-direction: column; align-items: center;
   gap: 2px;
 }
 
 .menu-stats b {
-  font-size: 13px;
-  font-weight: 900;
+  font-size: 13px; font-weight: 900;
   font-variant-numeric: tabular-nums;
   color: var(--text);
   letter-spacing: -0.02em;
 }
 
 .menu-stats span {
-  font-size: 7px;
-  font-weight: 800;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
+  font-size: 7px; font-weight: 800;
+  letter-spacing: 0.13em; text-transform: uppercase;
   color: var(--text-faint);
 }
 
-/* ---- Win ---- */
 .win-icon {
   font-size: 52px;
   filter: drop-shadow(0 0 24px var(--hint-glow-soft));
@@ -922,10 +816,8 @@ body {
 }
 
 .big-stat {
-  font-size: 42px;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 1;
+  font-size: 42px; font-weight: 900;
+  letter-spacing: -0.03em; line-height: 1;
   font-variant-numeric: tabular-nums;
   background: linear-gradient(96deg, var(--gold), var(--text));
   -webkit-background-clip: text;
@@ -946,11 +838,8 @@ body {
 
 .win-stats > div,
 .stats-detail > div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 8px 6px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px; padding: 8px 6px;
   background: var(--hud-bg);
   border: 1px solid var(--hud-border);
   border-radius: 11px;
@@ -958,23 +847,18 @@ body {
 
 .win-stats span,
 .stats-detail span {
-  font-size: 7.5px;
-  font-weight: 800;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  text-align: center;
+  font-size: 7.5px; font-weight: 800;
+  letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--text-faint); text-align: center;
 }
 
 .win-stats b,
 .stats-detail b {
-  font-size: 16px;
-  font-weight: 900;
+  font-size: 16px; font-weight: 900;
   font-variant-numeric: tabular-nums;
   color: var(--text);
 }
 
-/* ---- Confetti ---- */
 .confetti-layer {
   position: absolute;
   inset: 0;
@@ -985,8 +869,7 @@ body {
 
 .confetti {
   position: absolute;
-  width: 8px;
-  height: 14px;
+  width: 8px; height: 14px;
   top: -20px;
   opacity: 0;
   animation: confettiFall 3s cubic-bezier(0.3, 0.6, 0.6, 1) forwards;
@@ -997,25 +880,21 @@ body {
   100% { transform: translateY(110vh) rotate(720deg); opacity: 0.85; }
 }
 
-/* ---- Toast ---- */
 .toast {
   position: absolute;
-  left: 50%;
-  top: 15%;
+  left: 50%; top: 15%;
   transform: translate(-50%, -50%) scale(0.7);
   opacity: 0;
   z-index: 20;
   pointer-events: none;
   text-align: center;
   white-space: nowrap;
-  font-size: 15px;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 15px; font-weight: 900;
+  letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--hint-glow);
   text-shadow: 0 0 18px var(--hint-glow-soft);
   padding: 8px 16px;
-  background: rgba(0, 0, 0, 0.42);
+  background: rgba(0, 0, 0, 0.45);
   border-radius: 999px;
   backdrop-filter: blur(6px);
 }
@@ -1059,9 +938,9 @@ body {
     </button>
 
     <div class="stats">
-      <div class="stat" id="statTimeWrap"><span>Time</span><b id="statTime">0:00</b></div>
-      <div class="stat" id="statMovesWrap"><span>Moves</span><b id="statMoves">0</b></div>
-      <div class="stat" id="statScoreWrap"><span>Score</span><b id="statScore">0</b></div>
+      <div class="stat"><span>Time</span><b id="statTime">0:00</b></div>
+      <div class="stat"><span>Moves</span><b id="statMoves">0</b></div>
+      <div class="stat"><span>Score</span><b id="statScore">0</b></div>
     </div>
 
     <button class="icon-btn" id="btnUndo" aria-label="Undo">
@@ -1069,35 +948,33 @@ body {
     </button>
   </header>
 
-  <main class="board" id="board" aria-label="SaivSOLITAIRE playfield">
+  <main class="board" id="board">
     <div class="toast" id="toast"></div>
   </main>
 
   <footer class="actionbar">
-    <button class="act-btn" id="btnHint" aria-label="Hint">
+    <button class="act-btn" id="btnHint">
       <svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1 1 1.6V16h5v-.5c0-.6.4-1.2 1-1.6A6 6 0 0 0 12 3z"/></svg>
       <span>Hint</span>
     </button>
-    <button class="act-btn primary" id="btnAuto" style="display:none" aria-label="Auto complete">
+    <button class="act-btn primary" id="btnAuto" style="display:none">
       <svg viewBox="0 0 24 24"><path d="M13 2L4.5 13h6L11 22l8.5-11h-6z"/></svg>
       <span>Auto</span>
     </button>
-    <button class="act-btn" id="btnNew" aria-label="New game">
+    <button class="act-btn" id="btnNew">
       <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg>
       <span>New</span>
     </button>
   </footer>
 
-  <!-- ============================ START SCREEN ============================ -->
   <section class="screen active" id="screen-start">
     <div class="screen-inner">
-      <div class="logo-mark" aria-hidden="true">
+      <div class="logo-mark">
         <div class="mini-card red">♥</div>
         <div class="mini-card">♠</div>
         <div class="mini-card red">♦</div>
       </div>
-
-      <h1 class="title">SaivSOLITAIRE</h1>
+      <h1 class="title"><span class="brand">Saiv</span>SOLITAIRE</h1>
       <p class="subtitle">Klondike</p>
 
       <div class="mode-select" id="modeSelect">
@@ -1106,9 +983,9 @@ body {
       </div>
 
       <div class="theme-select" id="themeSelect">
-        <button class="theme-swatch active" data-theme-name="green"    aria-label="Classic green"></button>
-        <button class="theme-swatch"        data-theme-name="navy"     aria-label="Royal navy"></button>
-        <button class="theme-swatch"        data-theme-name="obsidian" aria-label="Dark obsidian"></button>
+        <button class="theme-swatch active" data-theme-name="green"></button>
+        <button class="theme-swatch"        data-theme-name="navy"></button>
+        <button class="theme-swatch"        data-theme-name="obsidian"></button>
       </div>
 
       <button class="btn btn-primary" id="btnStart">Play</button>
@@ -1122,20 +999,17 @@ body {
       <button class="btn btn-ghost" id="btnStats">📊 Statistics</button>
       <button class="btn btn-ghost" id="btnSoundStart">🔊 Sound On</button>
 
-      <!-- ============================ BACK TO GAMES ============================ -->
-      <a class="btn btn-back" href="https://seizhf.github.io/games" id="btnBackToGames">
+      <a class="btn btn-back" href="https://seizhf.github.io/games">
         <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
         Back to Games
       </a>
     </div>
   </section>
 
-  <!-- ============================ STATS SCREEN ============================ -->
   <section class="screen" id="screen-stats">
     <div class="screen-inner">
       <h2 class="title small">Statistics</h2>
       <p class="subtitle">All-time</p>
-
       <div class="stats-detail">
         <div><span>Games</span><b id="statsGames">0</b></div>
         <div><span>Wins</span><b id="statsWins">0</b></div>
@@ -1144,18 +1018,15 @@ body {
         <div><span>Best Time</span><b id="statsBestTime">—:—</b></div>
         <div><span>Streak</span><b id="statsStreak">0</b></div>
       </div>
-
       <button class="btn btn-primary" id="btnStatsBack">Back</button>
       <button class="btn btn-ghost" id="btnResetStats">Reset Stats</button>
     </div>
   </section>
 
-  <!-- ============================ PAUSE SCREEN ============================ -->
   <section class="screen" id="screen-menu">
     <div class="screen-inner">
       <h2 class="title small">Paused</h2>
       <p class="subtitle">Take a break</p>
-
       <button class="btn btn-primary" id="btnResume">Resume</button>
       <button class="btn btn-ghost" id="btnRestart">Restart Game</button>
       <button class="btn btn-ghost" id="btnSoundMenu">🔊 Sound On</button>
@@ -1163,21 +1034,17 @@ body {
     </div>
   </section>
 
-  <!-- ============================ WIN SCREEN ============================ -->
   <section class="screen" id="screen-win">
     <div class="confetti-layer" id="confettiLayer"></div>
     <div class="screen-inner">
       <div class="win-icon">🏆</div>
       <h2 class="title small">You Win!</h2>
-
       <div class="big-stat" id="winTime">0:00</div>
       <p class="subtitle">Final Time</p>
-
       <div class="win-stats">
         <div><span>Score</span><b id="winScore">0</b></div>
         <div><span>Moves</span><b id="winMoves">0</b></div>
       </div>
-
       <button class="btn btn-primary" id="btnPlayAgain">Play Again</button>
       <button class="btn btn-ghost" id="btnWinMenu">Main Menu</button>
     </div>
@@ -1186,16 +1053,12 @@ body {
 </div>
 
 <script>
-/* ============================================================================
-   KLONDIKE SaivSOLITAIRE — GAME ENGINE
-   ========================================================================== */
 (function () {
   "use strict";
 
-  /* ==========================================================================
-     SECTION 01 — CONSTANTS & CONFIGURATION
-     ========================================================================== */
-
+  /* ============================
+     CONSTANTS
+     ============================ */
   const SUITS = ["S", "H", "D", "C"];
   const SUIT_GLYPHS = { S: "\u2660", H: "\u2665", D: "\u2666", C: "\u2663" };
   const RANKS = ["", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
@@ -1207,60 +1070,53 @@ body {
   const SUIT_NAMES = { S: "Spades", H: "Hearts", D: "Diamonds", C: "Clubs" };
   const RED_SUITS = { H: true, D: true };
 
+  // Traditional pip layouts: [x%, y%, flipped]
   const PIP_LAYOUTS = {
-    1: [[50, 50, false]],
-    2: [[50, 0, false], [50, 100, true]],
-    3: [[50, 0, false], [50, 50, false], [50, 100, true]],
-    4: [[30, 0, false], [70, 0, false], [30, 100, true], [70, 100, true]],
-    5: [[30, 0, false], [70, 0, false], [50, 50, false], [30, 100, true], [70, 100, true]],
-    6: [[30, 0, false], [70, 0, false], [30, 50, false], [70, 50, false], [30, 100, true], [70, 100, true]],
-    7: [[30, 0, false], [70, 0, false], [50, 25, false], [30, 50, false], [70, 50, false], [30, 100, true], [70, 100, true]],
-    8: [[30, 0, false], [70, 0, false], [50, 25, false], [30, 50, false], [70, 50, false], [50, 75, true], [30, 100, true], [70, 100, true]],
-    9: [[30, 0, false], [70, 0, false], [30, 33, false], [70, 33, false], [50, 50, false], [30, 67, true], [70, 67, true], [30, 100, true], [70, 100, true]],
+    1:  [[50, 50, false]],
+    2:  [[50, 0, false], [50, 100, true]],
+    3:  [[50, 0, false], [50, 50, false], [50, 100, true]],
+    4:  [[30, 0, false], [70, 0, false], [30, 100, true], [70, 100, true]],
+    5:  [[30, 0, false], [70, 0, false], [50, 50, false], [30, 100, true], [70, 100, true]],
+    6:  [[30, 0, false], [70, 0, false], [30, 50, false], [70, 50, false], [30, 100, true], [70, 100, true]],
+    7:  [[30, 0, false], [70, 0, false], [50, 25, false], [30, 50, false], [70, 50, false], [30, 100, true], [70, 100, true]],
+    8:  [[30, 0, false], [70, 0, false], [50, 25, false], [30, 50, false], [70, 50, false], [50, 75, true], [30, 100, true], [70, 100, true]],
+    9:  [[30, 0, false], [70, 0, false], [30, 33, false], [70, 33, false], [50, 50, false], [30, 67, true], [70, 67, true], [30, 100, true], [70, 100, true]],
     10: [[30, 0, false], [70, 0, false], [30, 25, false], [70, 25, false], [30, 50, false], [70, 50, false], [30, 75, true], [70, 75, true], [30, 100, true], [70, 100, true]],
   };
 
   const SCORES = {
-    wasteToTableau: 5,
-    wasteToFoundation: 10,
-    tableauToFoundation: 10,
-    flipTableau: 5,
-    foundationToTableau: -15,
-    recycleDraw1: -100,
-    recycleDraw3: -20,
+    wasteToTableau: 5, wasteToFoundation: 10,
+    tableauToFoundation: 10, flipTableau: 5,
+    foundationToTableau: -15, recycleDraw1: -100, recycleDraw3: -20,
   };
 
-  const STORAGE_KEY = "SaivSOLITAIRE.save.v3";
-  const TRANSITION_MS = 340;
+  const STORAGE_KEY = "saiv-solitaire.save.v2";
+  const TRANSITION_MS = 320;
   const DEAL_STAGGER = 45;
-  const DEAL_DURATION = 420;
+  const DEAL_DURATION = 400;
+  const PENDING_TIMEOUT_MS = 8000;
 
-  /* ==========================================================================
-     SECTION 02 — UTILITY HELPERS
-     ========================================================================== */
-
-  const $  = (sel, root) => (root || document).querySelector(sel);
-  const $$ = (sel, root) => Array.prototype.slice.call((root || document).querySelectorAll(sel));
-
-  const clamp = (v, min, max) => v < min ? min : v > max ? max : v;
+  /* ============================
+     UTILITIES
+     ============================ */
+  const $  = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.prototype.slice.call((r || document).querySelectorAll(s));
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-  const isRed = (card) => RED_SUITS[card.suit] === true;
+  const isRed = (c) => RED_SUITS[c.suit] === true;
 
   function fmt(n) {
     return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
-
   function fmtTime(ms) {
-    const totalSec = Math.floor(ms / 1000);
-    const min = Math.floor(totalSec / 60);
-    const sec = totalSec % 60;
-    return min + ":" + (sec < 10 ? "0" : "") + sec;
+    const s = Math.floor(ms / 1000);
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return m + ":" + (sec < 10 ? "0" : "") + sec;
   }
 
-  /* ==========================================================================
-     SECTION 03 — PERSISTENCE LAYER
-     ========================================================================== */
-
+  /* ============================
+     STORAGE
+     ============================ */
   const Save = {
     data: {
       bestScore: 0, bestTime: 0, wins: 0, games: 0,
@@ -1294,15 +1150,11 @@ body {
     },
   };
 
-  /* ==========================================================================
-     SECTION 04 — AUDIO ENGINE
-     ========================================================================== */
-
+  /* ============================
+     SOUND
+     ============================ */
   const Sound = (function () {
-    let ctx = null;
-    let master = null;
-    let muted = false;
-    let available = true;
+    let ctx = null, master = null, muted = false, available = true;
 
     function init() {
       if (ctx || !available) return;
@@ -1325,7 +1177,6 @@ body {
       const now = ctx.currentTime + (o.delay || 0);
       const dur = o.dur || 0.08;
       const vol = o.vol === undefined ? 0.25 : o.vol;
-
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = o.type || "sine";
@@ -1403,8 +1254,7 @@ body {
         tone({ freq: 180, type: "square", dur: 0.08, vol: 0.1, delay: 0.06 });
       },
       win() {
-        const notes = [523, 659, 784, 1047, 1319, 1568];
-        notes.forEach((f, i) => {
+        [523, 659, 784, 1047, 1319, 1568].forEach((f, i) => {
           tone({ freq: f, type: "triangle", dur: 0.24, vol: 0.19, delay: i * 0.13 });
           tone({ freq: f * 2, type: "sine", dur: 0.2, vol: 0.07, delay: i * 0.13 });
         });
@@ -1413,179 +1263,36 @@ body {
     return api;
   })();
 
-  /* ==========================================================================
-     SECTION 05 — HAPTIC FEEDBACK
-     ========================================================================== */
-
   const Haptics = {
     tap()   { if (navigator.vibrate) try { navigator.vibrate(8);  } catch (e) {} },
     place() { if (navigator.vibrate) try { navigator.vibrate(12); } catch (e) {} },
     win()   { if (navigator.vibrate) try { navigator.vibrate([30, 40, 30, 40, 100]); } catch (e) {} },
   };
 
-  /* ==========================================================================
-     SECTION 06 — SVG COURT-CARD FIGURE LIBRARY
-     ========================================================================== */
-
-  function courtFigureTop(rank, color, blue) {
-    const skin = "#f5d9b8";
-    const outline = "#1a1a22";
-    const gold = "#d4af37";
-    const alt = color === "#c8102e" ? "#1a3a6e" : "#c8102e";
-
-    if (rank === "K") {
-      return `
-        <path d="M 24 12 L 28 4 L 34 10 L 40 3 L 46 10 L 52 4 L 56 12 Z"
-              fill="${gold}" stroke="${outline}" stroke-width="1.2" stroke-linejoin="round"/>
-        <circle cx="34" cy="7" r="1.2" fill="${color}" stroke="${outline}" stroke-width="0.6"/>
-        <circle cx="40" cy="6" r="1.2" fill="${color}" stroke="${outline}" stroke-width="0.6"/>
-        <circle cx="46" cy="7" r="1.2" fill="${color}" stroke="${outline}" stroke-width="0.6"/>
-        <rect x="24" y="12" width="32" height="3" fill="${gold}" stroke="${outline}" stroke-width="0.8"/>
-        <ellipse cx="40" cy="20" rx="8" ry="7" fill="${skin}" stroke="${outline}" stroke-width="1"/>
-        <circle cx="37" cy="19" r="0.9" fill="${outline}"/>
-        <circle cx="43" cy="19" r="0.9" fill="${outline}"/>
-        <path d="M 40 21 L 39 23 L 41 23 Z" fill="${outline}"/>
-        <path d="M 33 22 Q 40 34 47 22 Q 45 28 40 30 Q 35 28 33 22 Z"
-              fill="#f0f0f0" stroke="${outline}" stroke-width="0.8"/>
-        <path d="M 32 18 Q 30 14 32 11 L 36 11 Q 34 15 34 18 Z"
-              fill="#3a2a1a" stroke="${outline}" stroke-width="0.7"/>
-        <path d="M 48 18 Q 50 14 48 11 L 44 11 Q 46 15 46 18 Z"
-              fill="#3a2a1a" stroke="${outline}" stroke-width="0.7"/>
-        <path d="M 22 42 L 28 30 L 34 28 L 40 27 L 46 28 L 52 30 L 58 42 Z"
-              fill="${color}" stroke="${outline}" stroke-width="1"/>
-        <path d="M 30 30 L 28 42 M 36 28 L 34 42 M 44 28 L 46 42 M 50 30 L 52 42"
-              stroke="${alt}" stroke-width="1" opacity="0.55"/>
-        <path d="M 30 29 Q 40 33 50 29" stroke="${gold}" stroke-width="1.6"
-              fill="none" stroke-linecap="round"/>
-        <circle cx="40" cy="34" r="1.8" fill="${color}" stroke="${gold}" stroke-width="0.8"/>
-        <rect x="55" y="18" width="2" height="24" fill="${skin}" stroke="${outline}" stroke-width="0.7"/>
-        <rect x="52" y="14" width="8" height="2" fill="${gold}" stroke="${outline}" stroke-width="0.6"/>
-        <polygon points="56,14 55,4 57,4" fill="#d0d0d8" stroke="${outline}" stroke-width="0.6"/>
-        <circle cx="56" cy="30" r="1.8" fill="${skin}" stroke="${outline}" stroke-width="0.6"/>
-      `;
-    }
-
-    if (rank === "Q") {
-      return `
-        <path d="M 26 12 L 30 6 L 36 11 L 40 5 L 44 11 L 50 6 L 54 12 Z"
-              fill="${gold}" stroke="${outline}" stroke-width="1.2" stroke-linejoin="round"/>
-        <circle cx="36" cy="9" r="1" fill="${color}" stroke="${outline}" stroke-width="0.5"/>
-        <circle cx="40" cy="8" r="1" fill="${color}" stroke="${outline}" stroke-width="0.5"/>
-        <circle cx="44" cy="9" r="1" fill="${color}" stroke="${outline}" stroke-width="0.5"/>
-        <rect x="26" y="12" width="28" height="2.6" fill="${gold}" stroke="${outline}" stroke-width="0.7"/>
-        <path d="M 28 14 Q 26 26 28 32 L 34 30 L 34 14 Z"
-              fill="#3a2a1a" stroke="${outline}" stroke-width="0.7"/>
-        <path d="M 52 14 Q 54 26 52 32 L 46 30 L 46 14 Z"
-              fill="#3a2a1a" stroke="${outline}" stroke-width="0.7"/>
-        <ellipse cx="40" cy="20" rx="7" ry="7" fill="${skin}" stroke="${outline}" stroke-width="1"/>
-        <ellipse cx="37.4" cy="19.5" rx="0.8" ry="0.5" fill="${outline}"/>
-        <ellipse cx="42.6" cy="19.5" rx="0.8" ry="0.5" fill="${outline}"/>
-        <path d="M 36.3 18 Q 37.4 17.5 38.3 18" stroke="${outline}"
-              stroke-width="0.4" fill="none" stroke-linecap="round"/>
-        <path d="M 41.7 18 Q 42.6 17.5 43.7 18" stroke="${outline}"
-              stroke-width="0.4" fill="none" stroke-linecap="round"/>
-        <path d="M 40 21 L 39.3 22.8 L 40.7 22.8 Z" fill="${outline}" opacity="0.7"/>
-        <path d="M 38 24.6 Q 40 25.4 42 24.6 Q 40 25.8 38 24.6 Z"
-              fill="${color}" stroke="${outline}" stroke-width="0.4"/>
-        <rect x="38" y="26" width="4" height="3" fill="${skin}" stroke="${outline}" stroke-width="0.7"/>
-        <path d="M 24 42 L 30 30 L 36 28 L 40 27 L 44 28 L 50 30 L 56 42 Z"
-              fill="${color}" stroke="${outline}" stroke-width="1"/>
-        <path d="M 30 31 Q 40 35 50 31" stroke="${gold}" stroke-width="1.4"
-              fill="none" stroke-linecap="round"/>
-        <path d="M 34 34 L 46 34 M 36 38 L 44 38"
-              stroke="${alt}" stroke-width="0.9" opacity="0.7"/>
-        <circle cx="40" cy="34.5" r="1.5" fill="${color}" stroke="${gold}" stroke-width="0.8"/>
-        <line x1="55" y1="22" x2="55" y2="30" stroke="#2d7a3a" stroke-width="1"/>
-        <circle cx="55" cy="20" r="2" fill="${alt}" stroke="${outline}" stroke-width="0.6"/>
-        <circle cx="55" cy="20" r="0.8" fill="${gold}"/>
-        <circle cx="53" cy="18.5" r="1.3" fill="${alt}" stroke="${outline}" stroke-width="0.5"/>
-        <circle cx="57" cy="18.5" r="1.3" fill="${alt}" stroke="${outline}" stroke-width="0.5"/>
-        <circle cx="53" cy="21.5" r="1.3" fill="${alt}" stroke="${outline}" stroke-width="0.5"/>
-        <circle cx="57" cy="21.5" r="1.3" fill="${alt}" stroke="${outline}" stroke-width="0.5"/>
-        <circle cx="55" cy="30" r="1.6" fill="${skin}" stroke="${outline}" stroke-width="0.6"/>
-      `;
-    }
-
-    return `
-      <path d="M 28 10 Q 40 2 52 10 L 52 13 L 28 13 Z"
-            fill="${color}" stroke="${outline}" stroke-width="1"/>
-      <path d="M 28 13 L 52 13 L 54 15 L 26 15 Z"
-            fill="${alt}" stroke="${outline}" stroke-width="0.7"/>
-      <path d="M 50 10 Q 56 4 58 2 Q 56 8 52 12 Z"
-            fill="${gold}" stroke="${outline}" stroke-width="0.7"/>
-      <rect x="28" y="12" width="24" height="1.6" fill="${gold}" stroke="${outline}" stroke-width="0.5"/>
-      <path d="M 30 15 L 30 22 L 33 22 L 33 15 Z"
-            fill="#5a3a1a" stroke="${outline}" stroke-width="0.6"/>
-      <path d="M 50 15 L 50 22 L 47 22 L 47 15 Z"
-            fill="#5a3a1a" stroke="${outline}" stroke-width="0.6"/>
-      <ellipse cx="40" cy="21" rx="7" ry="7.5" fill="${skin}" stroke="${outline}" stroke-width="1"/>
-      <circle cx="37.2" cy="20" r="0.9" fill="${outline}"/>
-      <circle cx="42.8" cy="20" r="0.9" fill="${outline}"/>
-      <path d="M 40 22 L 39.2 24 L 40.8 24 Z" fill="${outline}" opacity="0.8"/>
-      <path d="M 38 25.5 Q 40 26.3 42 25.5" stroke="${outline}"
-            stroke-width="0.6" fill="none" stroke-linecap="round"/>
-      <rect x="38" y="27" width="4" height="2.4" fill="${skin}" stroke="${outline}" stroke-width="0.6"/>
-      <path d="M 24 42 L 28 30 L 34 28 L 40 27 L 46 28 L 52 30 L 56 42 Z"
-            fill="${color}" stroke="${outline}" stroke-width="1"/>
-      <path d="M 32 32 L 30 42 M 48 32 L 50 42"
-            stroke="${alt}" stroke-width="1.2" opacity="0.75"/>
-      <path d="M 30 29 Q 40 32 50 29" stroke="${gold}" stroke-width="1.4"
-            fill="none" stroke-linecap="round"/>
-      <circle cx="40" cy="34" r="1.6" fill="${alt}" stroke="${gold}" stroke-width="0.8"/>
-      <rect x="54.6" y="6" width="1.6" height="36" fill="${gold}" stroke="${outline}" stroke-width="0.7"/>
-      <rect x="53" y="5" width="5" height="2.4" fill="${alt}" stroke="${outline}" stroke-width="0.6"/>
-      <circle cx="55.4" cy="30" r="1.7" fill="${skin}" stroke="${outline}" stroke-width="0.6"/>
-    `;
-  }
-
-  function buildCourtSvg(rank, isRedSuit) {
-    const color = isRedSuit ? "#c8102e" : "#1a1a2e";
-    const blue = isRedSuit ? "#1a3a6e" : "#c8102e";
-    const inner = courtFigureTop(rank, color, blue);
-
-    return (
-      '<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">' +
-        '<g>' + inner + '</g>' +
-        '<g transform="rotate(180 50 50)">' + inner + '</g>' +
-        '<line x1="10" y1="50" x2="90" y2="50" ' +
-          'stroke="#1a1a22" stroke-width="0.5" opacity="0.35"/>' +
-      '</svg>'
-    );
-  }
-
-  /* ==========================================================================
-     SECTION 07 — GAME STATE
-     ========================================================================== */
-
+  /* ============================
+     GAME STATE
+     ============================ */
   const G = {
-    stock: [],
-    waste: [],
+    stock: [], waste: [],
     foundations: [[], [], [], []],
     tableau: [[], [], [], [], [], [], []],
-    drawMode: 1,
-    score: 0,
-    moves: 0,
-    startTime: 0,
-    elapsed: 0,
-    timerRunning: false,
+    drawMode: 1, score: 0, moves: 0,
+    startTime: 0, elapsed: 0, timerRunning: false,
     status: "menu",
     history: [],
     autoRunning: false,
-    sessionFlips: 0,
-    sessionFoundations: 0,
   };
 
   let allCards = [];
   const cardIndex = {};
   const cardEls = {};
-
   let boostedIds = new Set();
   let boostTimeout = 0;
+  const hintBoost = new Set();
 
-  /* ==========================================================================
-     SECTION 08 — DECK CREATION & SHUFFLING
-     ========================================================================== */
-
+  /* ============================
+     DECK
+     ============================ */
   function createDeck() {
     const deck = [];
     let id = 0;
@@ -1593,9 +1300,7 @@ body {
       for (let rank = 1; rank <= 13; rank++) {
         deck.push({
           id: "c" + (id++),
-          suit,
-          rank,
-          faceUp: false,
+          suit, rank, faceUp: false,
           red: RED_SUITS[suit] === true,
         });
       }
@@ -1611,10 +1316,9 @@ body {
     return arr;
   }
 
-  /* ==========================================================================
-     SECTION 09 — RULES ENGINE
-     ========================================================================== */
-
+  /* ============================
+     RULES
+     ============================ */
   function canPlaceOnFoundation(card, fi) {
     const pile = G.foundations[fi];
     if (pile.length === 0) return card.rank === 1;
@@ -1645,24 +1349,16 @@ body {
   }
 
   function findCardLocation(card) {
-    for (let i = 0; i < G.stock.length; i++) {
-      if (G.stock[i] === card) return { pile: "stock", index: i };
-    }
-    for (let i = 0; i < G.waste.length; i++) {
-      if (G.waste[i] === card) return { pile: "waste", index: i };
-    }
+    for (let i = 0; i < G.stock.length; i++) if (G.stock[i] === card) return { pile: "stock", index: i };
+    for (let i = 0; i < G.waste.length; i++) if (G.waste[i] === card) return { pile: "waste", index: i };
     for (let f = 0; f < 4; f++) {
       for (let i = 0; i < G.foundations[f].length; i++) {
-        if (G.foundations[f][i] === card) {
-          return { pile: "foundation", index: i, pileIndex: f };
-        }
+        if (G.foundations[f][i] === card) return { pile: "foundation", index: i, pileIndex: f };
       }
     }
     for (let t = 0; t < 7; t++) {
       for (let i = 0; i < G.tableau[t].length; i++) {
-        if (G.tableau[t][i] === card) {
-          return { pile: "tableau", index: i, pileIndex: t };
-        }
+        if (G.tableau[t][i] === card) return { pile: "tableau", index: i, pileIndex: t };
       }
     }
     return null;
@@ -1687,16 +1383,15 @@ body {
     return null;
   }
 
-  /* ==========================================================================
-     SECTION 10 — LAYOUT ENGINE
-     ========================================================================== */
-
+  /* ============================
+     LAYOUT
+     ============================ */
   const boardEl = $("#board");
 
   const LAYOUT = {
-    cardW: 50, cardH: 75, gapX: 6, gapY: 14,
-    faceDownOff: 11, faceUpOff: 22, colW: 56,
-    tableauY: 90, wasteFanX: 9,
+    cardW: 48, cardH: 72, gapX: 6, gapY: 14,
+    faceDownOff: 11, faceUpOff: 22, colW: 54,
+    tableauY: 86, wasteFanX: 9,
   };
 
   function computeLayout() {
@@ -1730,9 +1425,7 @@ body {
     const pos = {};
     const { colW, tableauY, faceDownOff, faceUpOff, wasteFanX } = LAYOUT;
 
-    G.stock.forEach((c, i) => {
-      pos[c.id] = { x: 0, y: 0, z: 1 + i };
-    });
+    G.stock.forEach((c, i) => { pos[c.id] = { x: 0, y: 0, z: 1 + i }; });
 
     const fanCount = G.drawMode === 3 ? 3 : 1;
     const firstVisible = Math.max(0, G.waste.length - fanCount);
@@ -1816,17 +1509,16 @@ body {
     }
   }
 
-  /* ==========================================================================
-     SECTION 11 — RENDERING
-     ========================================================================== */
+  /* ============================
+     RENDERING
+     ============================ */
 
   function buildCardEl(card) {
     const el = document.createElement("div");
     el.className = "card face-down";
     el.dataset.id = card.id;
     el.setAttribute("role", "img");
-    el.setAttribute("aria-label",
-      RANK_NAMES[card.rank] + " of " + SUIT_NAMES[card.suit]);
+    el.setAttribute("aria-label", RANK_NAMES[card.rank] + " of " + SUIT_NAMES[card.suit]);
 
     const inner = document.createElement("div");
     inner.className = "card-inner";
@@ -1852,27 +1544,59 @@ body {
 
     const tl = document.createElement("div");
     tl.className = "corner tl";
-    tl.innerHTML =
-      '<span class="rank">' + rankLabel + '</span>' +
-      '<span class="suit">' + suitGlyph + '</span>';
+    const tlRank = document.createElement("span");
+    tlRank.className = "rank";
+    tlRank.textContent = rankLabel;
+    const tlSuit = document.createElement("span");
+    tlSuit.className = "suit";
+    tlSuit.textContent = suitGlyph;
+    tl.appendChild(tlRank);
+    tl.appendChild(tlSuit);
     frag.appendChild(tl);
 
     const br = document.createElement("div");
     br.className = "corner br";
-    br.innerHTML =
-      '<span class="rank">' + rankLabel + '</span>' +
-      '<span class="suit">' + suitGlyph + '</span>';
+    const brRank = document.createElement("span");
+    brRank.className = "rank";
+    brRank.textContent = rankLabel;
+    const brSuit = document.createElement("span");
+    brSuit.className = "suit";
+    brSuit.textContent = suitGlyph;
+    br.appendChild(brRank);
+    br.appendChild(brSuit);
     frag.appendChild(br);
 
     if (card.rank === 1) {
       const ace = document.createElement("div");
       ace.className = "card-ace";
-      ace.innerHTML = '<span class="ace-suit">' + suitGlyph + '</span>';
+      const sym = document.createElement("span");
+      sym.className = "ace-suit";
+      sym.textContent = suitGlyph;
+      ace.appendChild(sym);
       frag.appendChild(ace);
     } else if (card.rank >= 11) {
       const court = document.createElement("div");
       court.className = "card-court";
-      court.innerHTML = buildCourtSvg(RANKS[card.rank], card.red);
+
+      const frame = document.createElement("div");
+      frame.className = "court-frame";
+
+      const letter = document.createElement("span");
+      letter.className = "court-letter";
+      letter.textContent = rankLabel;
+
+      const suitTop = document.createElement("span");
+      suitTop.className = "court-suit top";
+      suitTop.textContent = suitGlyph;
+
+      const suitBot = document.createElement("span");
+      suitBot.className = "court-suit bot";
+      suitBot.textContent = suitGlyph;
+
+      court.appendChild(frame);
+      court.appendChild(suitTop);
+      court.appendChild(letter);
+      court.appendChild(suitBot);
       frag.appendChild(court);
     } else {
       const pips = document.createElement("div");
@@ -1942,6 +1666,7 @@ body {
 
       let z = p.z;
       if (boostedIds.has(card.id)) z += 100000;
+      if (hintBoost.has(card.id)) z += 900000;
       el.style.zIndex = z;
     });
 
@@ -1957,10 +1682,9 @@ body {
     }, duration || TRANSITION_MS + 80);
   }
 
-  /* ==========================================================================
-     SECTION 12 — MOVE EXECUTION & HISTORY
-     ========================================================================== */
-
+  /* ============================
+     MOVES & HISTORY
+     ============================ */
   function pushHistory() {
     if (G.history.length >= 100) G.history.shift();
     G.history.push({
@@ -1969,8 +1693,7 @@ body {
       foundations: G.foundations.map((p) => p.map((c) => c.id)),
       tableau: G.tableau.map((p) => p.map((c) => c.id)),
       faceUp: allCards.filter((c) => c.faceUp).map((c) => c.id),
-      score: G.score,
-      moves: G.moves,
+      score: G.score, moves: G.moves,
     });
   }
 
@@ -2017,13 +1740,9 @@ body {
     const from = move.from, to = move.to, cards = move.cards;
     const movingIds = cards.map((c) => c.id);
 
-    if (from.pile === "waste") {
-      G.waste.pop();
-    } else if (from.pile === "foundation") {
-      G.foundations[from.pileIndex].pop();
-    } else if (from.pile === "tableau") {
-      G.tableau[from.pileIndex].splice(from.index, cards.length);
-    }
+    if (from.pile === "waste") G.waste.pop();
+    else if (from.pile === "foundation") G.foundations[from.pileIndex].pop();
+    else if (from.pile === "tableau") G.tableau[from.pileIndex].splice(from.index, cards.length);
 
     if (to.pile === "foundation") {
       for (const c of cards) G.foundations[to.pileIndex].push(c);
@@ -2039,7 +1758,6 @@ body {
         if (!top.faceUp) {
           top.faceUp = true;
           flipped = true;
-          G.sessionFlips++;
         }
       }
     }
@@ -2048,14 +1766,9 @@ body {
     if (flipped) G.score += SCORES.flipTableau;
     G.moves++;
 
-    if (to.pile === "foundation") {
-      G.sessionFoundations++;
-      Sound.foundation();
-    } else if (to.pile === "tableau") {
-      Sound.place();
-    } else {
-      Sound.flip();
-    }
+    if (to.pile === "foundation") Sound.foundation();
+    else if (to.pile === "tableau") Sound.place();
+    else Sound.flip();
     Haptics.place();
     if (flipped) setTimeout(() => Sound.flip(), 120);
 
@@ -2078,8 +1791,7 @@ body {
       G.stock = G.waste.slice().reverse();
       G.waste = [];
       G.stock.forEach((c) => { c.faceUp = false; });
-      G.score = Math.max(0,
-        G.score + (G.drawMode === 1 ? SCORES.recycleDraw1 : SCORES.recycleDraw3));
+      G.score = Math.max(0, G.score + (G.drawMode === 1 ? SCORES.recycleDraw1 : SCORES.recycleDraw3));
       G.moves++;
       Sound.shuffle();
       Haptics.tap();
@@ -2145,13 +1857,52 @@ body {
     return false;
   }
 
-  /* ==========================================================================
-     SECTION 13 — INPUT HANDLING
-     ========================================================================== */
-
+  /* ============================
+     INPUT
+     ============================ */
   let pending = null;
+  let pendingTimer = 0;
   let drag = null;
 
+  function cancelPending() {
+    if (pendingTimer) { clearTimeout(pendingTimer); pendingTimer = 0; }
+    if (pending) {
+      document.removeEventListener("pointermove", onPointerMove);
+      document.removeEventListener("pointerup", onPointerUp);
+      document.removeEventListener("pointercancel", onPointerUp);
+      pending = null;
+    }
+    if (drag) {
+      drag.cards.forEach((c) => {
+        const el = cardEls[c.id];
+        if (el) el.classList.remove("dragging");
+      });
+      drag = null;
+    }
+  }
+
+  function sanitizeState() {
+    cancelPending();
+    boostedIds.clear();
+    if (boostTimeout) { clearTimeout(boostTimeout); boostTimeout = 0; }
+    hintBoost.clear();
+    if (hintIds.length) {
+      hintIds.forEach((id) => {
+        const el = cardEls[id];
+        if (el) el.classList.remove("hint-glow");
+      });
+      hintIds = [];
+    }
+  }
+
+  /* ============================================================
+     POINTER DOWN
+     Handles:
+       - stock draw when clicking a stock card
+       - RECYCLE when the stock is empty and the user taps the
+         stock slot area (which has pointer-events: none)
+       - dragging / tapping other cards
+     ============================================================ */
   function onPointerDown(e) {
     if (G.status !== "playing" || pending || G.autoRunning) return;
 
@@ -2159,7 +1910,29 @@ body {
     Sound.resume();
 
     const cardEl = e.target.closest(".card");
-    if (!cardEl) return;
+
+    // ---------- RECYCLE: no card clicked ----------
+    if (!cardEl) {
+      const rect = boardEl.getBoundingClientRect();
+      const px = e.clientX - rect.left;
+      const py = e.clientY - rect.top;
+      const { cardW, cardH } = LAYOUT;
+
+      // Generous touch padding so slightly-off taps still register
+      const pad = 14;
+      const inStockArea =
+        px >= -pad && px <= cardW + pad &&
+        py >= -pad && py <= cardH + pad;
+
+      if (inStockArea && G.stock.length === 0 && G.waste.length > 0) {
+        e.preventDefault();
+        drawFromStock();  // triggers recycle
+        return;
+      }
+      return;
+    }
+
+    // ---------- Card interaction ----------
     e.preventDefault();
 
     const cardId = cardEl.dataset.id;
@@ -2169,10 +1942,7 @@ body {
     const loc = findCardLocation(card);
     if (!loc) return;
 
-    if (loc.pile === "stock") {
-      drawFromStock();
-      return;
-    }
+    if (loc.pile === "stock") { drawFromStock(); return; }
 
     const stack = getDraggableStack(card, loc);
 
@@ -2192,6 +1962,14 @@ body {
     if (e.target.setPointerCapture) {
       try { e.target.setPointerCapture(e.pointerId); } catch (err) {}
     }
+
+    if (pendingTimer) clearTimeout(pendingTimer);
+    pendingTimer = setTimeout(() => {
+      if (pending) {
+        cancelPending();
+        render();
+      }
+    }, PENDING_TIMEOUT_MS);
   }
 
   function startDrag(e) {
@@ -2250,6 +2028,7 @@ body {
     document.removeEventListener("pointermove", onPointerMove);
     document.removeEventListener("pointerup", onPointerUp);
     document.removeEventListener("pointercancel", onPointerUp);
+    if (pendingTimer) { clearTimeout(pendingTimer); pendingTimer = 0; }
 
     if (!pending) return;
 
@@ -2296,9 +2075,7 @@ body {
       });
     }
     if (target.pile === "tableau") {
-      if (target.pileIndex === source.pileIndex && source.pile === "tableau") {
-        return false;
-      }
+      if (target.pileIndex === source.pileIndex && source.pile === "tableau") return false;
       if (!canPlaceOnTableau(cards[0], target.pileIndex)) return false;
       return executeMove({
         from: source,
@@ -2317,9 +2094,7 @@ body {
 
     if (py < tableauY - 6) {
       const col = Math.floor(px / colW);
-      if (col >= 3 && col <= 6) {
-        return { pile: "foundation", pileIndex: col - 3 };
-      }
+      if (col >= 3 && col <= 6) return { pile: "foundation", pileIndex: col - 3 };
       return null;
     }
 
@@ -2331,57 +2106,59 @@ body {
 
   function handleTap(card, loc) {
     const moved = tryAutoMove(card, loc);
-    if (!moved) {
-      Sound.error();
-      Haptics.tap();
-    }
+    if (!moved) { Sound.error(); Haptics.tap(); }
   }
 
-  /* ==========================================================================
-     SECTION 14 — HINT SYSTEM
-     ========================================================================== */
-
+  /* ============================
+     HINT
+     ============================ */
   let hintIds = [];
 
   function clearHint() {
+    if (hintIds.length === 0 && hintBoost.size === 0) return;
+
     hintIds.forEach((id) => {
       const el = cardEls[id];
       if (el) el.classList.remove("hint-glow");
     });
+    hintBoost.forEach((id) => {
+      const el = cardEls[id];
+      if (el) el.classList.remove("hint-glow");
+    });
     hintIds = [];
+    hintBoost.clear();
+    render();
   }
 
   function findHint() {
+    // 1. Tableau top → foundation
     for (let t = 0; t < 7; t++) {
       const pile = G.tableau[t];
       if (!pile.length) continue;
       const card = pile[pile.length - 1];
       if (!card.faceUp) continue;
       for (let f = 0; f < 4; f++) {
-        if (canPlaceOnFoundation(card, f)) {
-          return { cards: [card.id], label: "To Foundation" };
-        }
+        if (canPlaceOnFoundation(card, f)) return { cards: [card.id], label: "To Foundation" };
       }
     }
 
+    // 2. Waste top → foundation
     if (G.waste.length > 0) {
       const card = G.waste[G.waste.length - 1];
       for (let f = 0; f < 4; f++) {
-        if (canPlaceOnFoundation(card, f)) {
-          return { cards: [card.id], label: "To Foundation" };
-        }
+        if (canPlaceOnFoundation(card, f)) return { cards: [card.id], label: "To Foundation" };
       }
     }
 
+    // 3. Waste → tableau
     if (G.waste.length > 0) {
       const card = G.waste[G.waste.length - 1];
       for (let t = 0; t < 7; t++) {
-        if (canPlaceOnTableau(card, t)) {
-          return { cards: [card.id], label: "To Tableau" };
-        }
+        if (canPlaceOnTableau(card, t)) return { cards: [card.id], label: "To Tableau" };
       }
     }
 
+    // 4. Tableau → tableau
     let best = null;
     for (let src = 0; src < 7; src++) {
       const pile = G.tableau[src];
@@ -2410,12 +2187,9 @@ body {
     }
     if (best) return best;
 
-    if (G.stock.length > 0) {
-      return { cards: [], label: "Draw Card", stock: true };
-    }
-    if (G.waste.length > 0) {
-      return { cards: [], label: "Recycle", stock: true };
-    }
+    // 5. Draw / recycle
+    if (G.stock.length > 0) return { cards: [], label: "Draw Card", stock: true };
+    if (G.waste.length > 0) return { cards: [], label: "Recycle", stock: true };
     return null;
   }
 
@@ -2424,34 +2198,29 @@ body {
     clearHint();
 
     const hint = findHint();
-    if (!hint) {
-      showToast("No moves");
-      Sound.error();
-      return;
-    }
+    if (!hint) { showToast("No moves"); Sound.error(); return; }
 
-    if (hint.stock) {
-      showToast(hint.label);
-      Sound.click();
-      return;
-    }
+    if (hint.stock) { showToast(hint.label); Sound.click(); return; }
 
     hintIds = hint.cards.slice();
     hintIds.forEach((id) => {
       const el = cardEls[id];
       if (el) el.classList.add("hint-glow");
+      hintBoost.add(id);
     });
+
+    render();
 
     showToast(hint.label);
     Sound.click();
     Haptics.tap();
-    setTimeout(clearHint, 2400);
+
+    setTimeout(clearHint, 2600);
   }
 
-  /* ==========================================================================
-     SECTION 15 — AUTO-COMPLETE
-     ========================================================================== */
-
+  /* ============================
+     AUTO-COMPLETE
+     ============================ */
   function allTableauFaceUp() {
     for (let t = 0; t < 7; t++) {
       for (const card of G.tableau[t]) {
@@ -2508,11 +2277,7 @@ body {
     while (safety-- > 0) {
       const move = findAutoMove();
       if (!move) {
-        if (G.stock.length > 0) {
-          drawFromStock();
-          await sleep(70);
-          continue;
-        }
+        if (G.stock.length > 0) { drawFromStock(); await sleep(70); continue; }
         break;
       }
       executeMove(move);
@@ -2531,27 +2296,16 @@ body {
     else btn.style.display = "none";
   }
 
-  /* ==========================================================================
-     SECTION 16 — TIMER
-     ========================================================================== */
-
-  function startTimer() {
-    G.startTime = performance.now() - G.elapsed;
-    G.timerRunning = true;
-  }
-
+  /* ============================
+     TIMER
+     ============================ */
+  function startTimer() { G.startTime = performance.now() - G.elapsed; G.timerRunning = true; }
   function stopTimer() {
     if (!G.timerRunning) return;
     G.elapsed = performance.now() - G.startTime;
     G.timerRunning = false;
   }
-
-  function resetTimer() {
-    G.elapsed = 0;
-    G.startTime = performance.now();
-    G.timerRunning = false;
-  }
-
+  function resetTimer() { G.elapsed = 0; G.startTime = performance.now(); G.timerRunning = false; }
   function tickTimer() {
     if (G.timerRunning) {
       G.elapsed = performance.now() - G.startTime;
@@ -2561,38 +2315,23 @@ body {
     requestAnimationFrame(tickTimer);
   }
 
-  /* ==========================================================================
-     SECTION 17 — UI SCREENS & TOASTS
-     ========================================================================== */
-
+  /* ============================
+     UI
+     ============================ */
   const els = {
-    statTime: $("#statTime"),
-    statMoves: $("#statMoves"),
-    statScore: $("#statScore"),
+    statTime: $("#statTime"), statMoves: $("#statMoves"), statScore: $("#statScore"),
     screens: {
-      start: $("#screen-start"),
-      stats: $("#screen-stats"),
-      menu:  $("#screen-menu"),
-      win:   $("#screen-win"),
+      start: $("#screen-start"), stats: $("#screen-stats"),
+      menu: $("#screen-menu"), win: $("#screen-win"),
     },
-    startBestTime:  $("#startBestTime"),
-    startBestScore: $("#startBestScore"),
-    startWins:      $("#startWins"),
-    winTime:        $("#winTime"),
-    winScore:       $("#winScore"),
-    winMoves:       $("#winMoves"),
-    confettiLayer:  $("#confettiLayer"),
-    btnUndo:        $("#btnUndo"),
-    btnAuto:        $("#btnAuto"),
-    btnSoundStart:  $("#btnSoundStart"),
-    btnSoundMenu:   $("#btnSoundMenu"),
-    toast:          $("#toast"),
-    statsGames:     $("#statsGames"),
-    statsWins:      $("#statsWins"),
-    statsRate:      $("#statsRate"),
-    statsBestScore: $("#statsBestScore"),
-    statsBestTime:  $("#statsBestTime"),
-    statsStreak:    $("#statsStreak"),
+    startBestTime: $("#startBestTime"), startBestScore: $("#startBestScore"), startWins: $("#startWins"),
+    winTime: $("#winTime"), winScore: $("#winScore"), winMoves: $("#winMoves"),
+    confettiLayer: $("#confettiLayer"),
+    btnUndo: $("#btnUndo"), btnAuto: $("#btnAuto"),
+    btnSoundStart: $("#btnSoundStart"), btnSoundMenu: $("#btnSoundMenu"),
+    toast: $("#toast"),
+    statsGames: $("#statsGames"), statsWins: $("#statsWins"), statsRate: $("#statsRate"),
+    statsBestScore: $("#statsBestScore"), statsBestTime: $("#statsBestTime"), statsStreak: $("#statsStreak"),
   };
 
   function showScreen(name) {
@@ -2600,13 +2339,9 @@ body {
       els.screens[k].classList.toggle("active", k === name);
     });
   }
-
   function hideScreens() {
-    Object.keys(els.screens).forEach((k) => {
-      els.screens[k].classList.remove("active");
-    });
+    Object.keys(els.screens).forEach((k) => els.screens[k].classList.remove("active"));
   }
-
   function updateHUD() {
     els.statScore.textContent = fmt(G.score);
     els.statMoves.textContent = String(G.moves);
@@ -2623,43 +2358,38 @@ body {
     toastTimeout = setTimeout(() => els.toast.classList.remove("show"), 1200);
   }
 
-  function updateUndoButton() {
-    els.btnUndo.disabled = G.history.length === 0;
-  }
+  function updateUndoButton() { els.btnUndo.disabled = G.history.length === 0; }
 
   function updateSoundLabels() {
     const label = Sound.muted ? "🔇 Sound Off" : "🔊 Sound On";
     if (els.btnSoundStart) els.btnSoundStart.textContent = label;
-    if (els.btnSoundMenu)  els.btnSoundMenu.textContent = Sound.muted ? "🔇 Off" : "🔊 On";
+    if (els.btnSoundMenu) els.btnSoundMenu.textContent = Sound.muted ? "🔇 Off" : "🔊 On";
   }
 
   function refreshMenuStats() {
     if (!els.startBestTime) return;
-    els.startBestTime.textContent  = Save.data.bestTime > 0 ? fmtTime(Save.data.bestTime) : "—:—";
+    els.startBestTime.textContent = Save.data.bestTime > 0 ? fmtTime(Save.data.bestTime) : "—:—";
     els.startBestScore.textContent = fmt(Save.data.bestScore);
-    els.startWins.textContent      = String(Save.data.wins);
+    els.startWins.textContent = String(Save.data.wins);
   }
 
   function refreshStatsScreen() {
     const games = Save.data.games;
-    const wins  = Save.data.wins;
-    const rate  = games > 0 ? Math.round((wins / games) * 100) : 0;
-
-    els.statsGames.textContent     = fmt(games);
-    els.statsWins.textContent      = fmt(wins);
-    els.statsRate.textContent      = rate + "%";
+    const wins = Save.data.wins;
+    const rate = games > 0 ? Math.round((wins / games) * 100) : 0;
+    els.statsGames.textContent = fmt(games);
+    els.statsWins.textContent = fmt(wins);
+    els.statsRate.textContent = rate + "%";
     els.statsBestScore.textContent = fmt(Save.data.bestScore);
-    els.statsBestTime.textContent  = Save.data.bestTime > 0 ? fmtTime(Save.data.bestTime) : "—:—";
-    els.statsStreak.textContent    = String(Save.data.bestStreak);
+    els.statsBestTime.textContent = Save.data.bestTime > 0 ? fmtTime(Save.data.bestTime) : "—:—";
+    els.statsStreak.textContent = String(Save.data.bestStreak);
   }
 
-  /* ==========================================================================
-     SECTION 18 — GAME FLOW
-     ========================================================================== */
-
+  /* ============================
+     GAME FLOW
+     ============================ */
   function deal() {
     const deck = shuffle(createDeck());
-
     allCards = deck;
     for (const k in cardIndex) delete cardIndex[k];
     deck.forEach((c) => { cardIndex[c.id] = c; });
@@ -2704,7 +2434,6 @@ body {
         const card = G.tableau[col][i];
         const el = cardEls[card.id];
         if (!el) continue;
-
         const p = positions[card.id];
         if (!p) continue;
 
@@ -2742,6 +2471,8 @@ body {
   }
 
   async function newGame() {
+    sanitizeState();
+
     Sound.init();
     Sound.resume();
     Sound.shuffle();
@@ -2751,8 +2482,6 @@ body {
     resetTimer();
     G.history = [];
     G.autoRunning = false;
-    G.sessionFlips = 0;
-    G.sessionFoundations = 0;
 
     deal();
     buildAllCards();
@@ -2767,43 +2496,16 @@ body {
     await animateDeal();
   }
 
-  /**
-   * Pause the game.
-   * IMPORTANT: This must clean up any in-flight drag, clear the animation
-   * z-index boost, and remove the hint glow. Otherwise leftover high z-index
-   * cards can visually bleed through the pause overlay.
-   */
   function pauseGame() {
     if (G.status !== "playing") return;
     G.status = "paused";
     stopTimer();
 
-    /* Cancel any in-flight drag */
-    if (pending) {
-      document.removeEventListener("pointermove", onPointerMove);
-      document.removeEventListener("pointerup", onPointerUp);
-      document.removeEventListener("pointercancel", onPointerUp);
-      pending = null;
-    }
-    if (drag) {
-      drag.cards.forEach((c) => {
-        const el = cardEls[c.id];
-        if (el) el.classList.remove("dragging");
-      });
-      drag = null;
-    }
-
-    /* Drop the animation z-index boost */
+    cancelPending();
     boostedIds.clear();
-    if (boostTimeout) {
-      clearTimeout(boostTimeout);
-      boostTimeout = 0;
-    }
-
-    /* Clear hint glow */
+    if (boostTimeout) { clearTimeout(boostTimeout); boostTimeout = 0; }
+    hintBoost.clear();
     clearHint();
-
-    /* Re-render so cards snap back to their correct z-order */
     render();
 
     updateSoundLabels();
@@ -2828,6 +2530,7 @@ body {
   function quitToMenu() {
     G.status = "menu";
     stopTimer();
+    sanitizeState();
     hideScreens();
     clearBoard();
     showScreen("start");
@@ -2847,27 +2550,20 @@ body {
     Save.data.games += 1;
     Save.data.wins += 1;
     Save.data.streak += 1;
-    if (Save.data.streak > Save.data.bestStreak) {
-      Save.data.bestStreak = Save.data.streak;
-    }
+    if (Save.data.streak > Save.data.bestStreak) Save.data.bestStreak = Save.data.streak;
     if (G.score > Save.data.bestScore) Save.data.bestScore = G.score;
-    if (Save.data.bestTime === 0 || G.elapsed < Save.data.bestTime) {
-      Save.data.bestTime = G.elapsed;
-    }
+    if (Save.data.bestTime === 0 || G.elapsed < Save.data.bestTime) Save.data.bestTime = G.elapsed;
     Save.data.totalMoves += G.moves;
     Save.save();
 
-    els.winTime.textContent  = fmtTime(G.elapsed);
+    els.winTime.textContent = fmtTime(G.elapsed);
     els.winScore.textContent = fmt(G.score);
     els.winMoves.textContent = String(G.moves);
 
     Sound.win();
     Haptics.win();
 
-    setTimeout(() => {
-      showScreen("win");
-      spawnConfetti();
-    }, 500);
+    setTimeout(() => { showScreen("win"); spawnConfetti(); }, 500);
   }
 
   function spawnConfetti() {
@@ -2890,16 +2586,12 @@ body {
       el.style.borderRadius = Math.random() < 0.5 ? "2px" : "50%";
       layer.appendChild(el);
     }
-
-    setTimeout(() => {
-      if (layer) layer.innerHTML = "";
-    }, 5200);
+    setTimeout(() => { if (layer) layer.innerHTML = ""; }, 5200);
   }
 
-  /* ==========================================================================
-     SECTION 19 — BOOTSTRAP
-     ========================================================================== */
-
+  /* ============================
+     BOOTSTRAP
+     ============================ */
   function init() {
     Save.load();
     Sound.setMuted(Save.data.muted);
@@ -2910,8 +2602,7 @@ body {
       b.classList.toggle("active", parseInt(b.dataset.mode, 10) === G.drawMode);
     });
     $$("#themeSelect .theme-swatch").forEach((s) => {
-      s.classList.toggle("active",
-        s.dataset.themeName === (Save.data.theme || "green"));
+      s.classList.toggle("active", s.dataset.themeName === (Save.data.theme || "green"));
     });
     updateSoundLabels();
     refreshMenuStats();
@@ -2926,12 +2617,8 @@ body {
     let resizeRaf = 0;
     function scheduleResize() {
       if (resizeRaf) cancelAnimationFrame(resizeRaf);
-      resizeRaf = requestAnimationFrame(() => {
-        computeLayout();
-        render();
-      });
+      resizeRaf = requestAnimationFrame(() => { computeLayout(); render(); });
     }
-
     window.addEventListener("resize", scheduleResize);
     window.addEventListener("orientationchange", () => setTimeout(scheduleResize, 120));
     if (window.ResizeObserver) {
@@ -2999,9 +2686,7 @@ body {
         G.drawMode = mode;
         Save.data.drawMode = mode;
         Save.save();
-        $$("#modeSelect .mode-btn").forEach((x) => {
-          x.classList.toggle("active", x === b);
-        });
+        $$("#modeSelect .mode-btn").forEach((x) => x.classList.toggle("active", x === b));
         Sound.click();
         if (G.status === "playing") render();
       });
@@ -3013,9 +2698,7 @@ body {
         document.documentElement.setAttribute("data-theme", name);
         Save.data.theme = name;
         Save.save();
-        $$("#themeSelect .theme-swatch").forEach((x) => {
-          x.classList.toggle("active", x === s);
-        });
+        $$("#themeSelect .theme-swatch").forEach((x) => x.classList.toggle("active", x === s));
         Sound.click();
       });
     });
@@ -3023,14 +2706,11 @@ body {
     $("#btnResume").addEventListener("click", resumeGame);
     $("#btnRestart").addEventListener("click", restartGame);
     els.btnSoundMenu.addEventListener("click", () => {
-      Sound.toggle();
-      updateSoundLabels();
+      Sound.toggle(); updateSoundLabels();
     });
     $("#btnQuit").addEventListener("click", quitToMenu);
 
-    $("#btnPlayAgain").addEventListener("click", () => {
-      Sound.click(); newGame();
-    });
+    $("#btnPlayAgain").addEventListener("click", () => { Sound.click(); newGame(); });
     $("#btnWinMenu").addEventListener("click", quitToMenu);
 
     document.addEventListener("keydown", (e) => {
@@ -3038,13 +2718,8 @@ body {
         if (G.status === "playing") pauseGame();
         else if (G.status === "paused") resumeGame();
       }
-      if (e.key === "z" && (e.ctrlKey || e.metaKey)) {
-        e.preventDefault();
-        undo();
-      }
-      if (e.key === "h" || e.key === "H") {
-        if (G.status === "playing") showHint();
-      }
+      if (e.key === "z" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); undo(); }
+      if (e.key === "h" || e.key === "H") { if (G.status === "playing") showHint(); }
       if (e.key === "n" || e.key === "N") {
         if (G.status === "playing" || G.status === "paused") restartGame();
       }
