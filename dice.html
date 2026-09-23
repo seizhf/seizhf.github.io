@@ -1,0 +1,2844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0518">
+<meta name="description" content="SaivDICE — a strategic dice merge puzzle.">
+<title>SaivDICE</title>
+<style>
+/* ============================================================================
+   SaivDICE — STYLESHEET
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   1. RESET & BASE
+   ------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  background:
+    radial-gradient(ellipse at 50% 20%, #1e1040 0%, #070312 100%);
+  color: #f5f3ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------------------------------------------------------------------------
+   2. DESIGN TOKENS
+   ------------------------------------------------------------------------- */
+:root {
+  --bg-shell-1: #14082a;
+  --bg-shell-2: #07040f;
+  --shell-border: rgba(177, 75, 255, 0.18);
+  --panel: rgba(255, 255, 255, 0.05);
+  --panel-hi: rgba(255, 255, 255, 0.09);
+  --stroke-soft: rgba(255, 255, 255, 0.08);
+  --stroke-mid: rgba(255, 255, 255, 0.14);
+  --text: #f5f3ff;
+  --text-dim: #a79ec6;
+  --text-faint: #6a6288;
+  --accent: #b176ff;
+  --accent-2: #38e8ff;
+  --gold: #ffd166;
+  --danger: #ff3d81;
+  --good: #6ee7a8;
+
+  --board-bg-1: #1a0f38;
+  --board-bg-2: #0d0722;
+  --cell-bg: rgba(255, 255, 255, 0.045);
+  --cell-hover: rgba(177, 118, 255, 0.35);
+
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---------------------------------------------------------------------------
+   3. APP SHELL
+   ------------------------------------------------------------------------- */
+.app {
+  --avail-h: min(100vh, 880px);
+  position: relative;
+  height: var(--avail-h);
+  width: min(420px, 100vw, calc(var(--avail-h) * 9 / 16));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 12px 14px;
+
+  background: linear-gradient(170deg, var(--bg-shell-1) 0%, var(--bg-shell-2) 100%);
+  border: 1px solid var(--shell-border);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 48px 110px -28px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+@supports (height: 100dvh) {
+  .app { --avail-h: min(100dvh, 880px); }
+}
+
+@media (max-width: 430px) and (max-height: 900px) {
+  .app {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   4. HEADER
+   ------------------------------------------------------------------------- */
+.header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #ffffff;
+}
+
+.title .brand {
+  background: linear-gradient(96deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 20px rgba(177, 118, 255, 0.5));
+}
+
+.title .suffix {
+  background: linear-gradient(96deg, #ffffff, var(--text-dim));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 0.04em;
+}
+
+.header-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel);
+  border: 1px solid var(--stroke-soft);
+  border-radius: 11px;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: transform 0.08s ease, background 0.18s ease,
+              border-color 0.18s ease, color 0.18s ease;
+}
+
+.header-btn:active {
+  transform: scale(0.9);
+  color: var(--accent-2);
+  border-color: rgba(56, 232, 255, 0.6);
+  background: rgba(56, 232, 255, 0.14);
+}
+
+.header-btn svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   5. SCORE ROW
+   ------------------------------------------------------------------------- */
+.score-row {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+}
+
+.score-box {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--stroke-soft);
+  border-radius: var(--radius-sm);
+  padding: 7px 8px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.score-box.add {
+  animation: scoreBoxPulse 0.5s var(--ease-out);
+}
+
+@keyframes scoreBoxPulse {
+  0%   { border-color: rgba(177, 118, 255, 0.7); }
+  100% { border-color: var(--stroke-soft); }
+}
+
+.score-box .label {
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.score-box .value {
+  font-size: 17px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  line-height: 1.15;
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: -0.02em;
+}
+
+.score-box.best .value { color: var(--gold); }
+.score-box.combo .value { color: var(--accent-2); }
+.score-box.combo.active {
+  border-color: rgba(56, 232, 255, 0.55);
+  background: rgba(56, 232, 255, 0.08);
+}
+
+.score-add {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  opacity: 0;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--accent-2);
+  text-shadow: 0 0 18px rgba(56, 232, 255, 0.9);
+  pointer-events: none;
+  font-family: Georgia, serif;
+}
+
+.score-box.add .score-add {
+  animation: scoreAddPop 0.9s var(--ease-out) forwards;
+}
+
+@keyframes scoreAddPop {
+  0%   { opacity: 0; transform: translate(-50%, -30%) scale(0.6); }
+  20%  { opacity: 1; transform: translate(-50%, -60%) scale(1.1); }
+  70%  { opacity: 1; transform: translate(-50%, -90%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -150%) scale(0.9); }
+}
+
+/* ---------------------------------------------------------------------------
+   6. BOARD
+   ------------------------------------------------------------------------- */
+.board-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.board {
+  position: relative;
+  background: radial-gradient(circle at 50% 0%, #291a52 0%, var(--board-bg-1) 40%, var(--board-bg-2) 100%);
+  border-radius: var(--radius-md);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.045),
+    inset 0 0 60px rgba(0, 0, 0, 0.45),
+    0 12px 40px -12px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  touch-action: none;
+  /* These are set by JS on resize */
+  --pad: 8px;
+  --gap: 6px;
+  --cell-size: 68px;
+}
+
+/* Cell background layer */
+.cells {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: var(--gap);
+  padding: var(--pad);
+  pointer-events: none;
+}
+
+.cell {
+  background: var(--cell-bg);
+  border-radius: calc(var(--cell-size) * 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.cell.hover {
+  background: var(--cell-hover);
+  box-shadow:
+    inset 0 0 0 1.5px rgba(177, 118, 255, 0.7),
+    0 0 18px rgba(177, 118, 255, 0.5);
+}
+
+.cell.swap-target {
+  background: rgba(56, 232, 255, 0.22);
+  box-shadow:
+    inset 0 0 0 1.5px rgba(56, 232, 255, 0.7),
+    0 0 18px rgba(56, 232, 255, 0.5);
+}
+
+/* Tile layer */
+.tiles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Individual tile */
+.tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  transform: translate(
+    calc(var(--pad) + var(--col) * (var(--cell-size) + var(--gap))),
+    calc(var(--pad) + var(--row) * (var(--cell-size) + var(--gap)))
+  );
+  will-change: transform, opacity;
+  transition: transform 0.24s cubic-bezier(0.2, 0.9, 0.3, 1),
+              opacity 0.22s ease;
+}
+
+.tile-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(var(--cell-size) * 0.16);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 900;
+  font-size: calc(var(--cell-size) * var(--fs, 0.42));
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #ffffff;
+  position: relative;
+  background: linear-gradient(155deg,
+              var(--c1, #67e8f9) 0%,
+              var(--c2, #06b6d4) 100%);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    0 0 22px -4px var(--glow, rgba(6, 182, 212, 0.55));
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  transition: box-shadow 0.2s ease;
+}
+
+.tile-inner::before {
+  content: "";
+  position: absolute;
+  inset: 6%;
+  border-radius: calc(var(--cell-size) * 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+
+.tile-inner::after {
+  content: "";
+  position: absolute;
+  top: 8%;
+  left: 12%;
+  width: 36%;
+  height: 22%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.45), transparent 70%);
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+/* Tile value scale for digit count */
+.tile .digit-4 { font-size: calc(var(--cell-size) * 0.28) !important; }
+.tile .digit-5 { font-size: calc(var(--cell-size) * 0.22) !important; }
+
+/* Placement pop */
+.tile.spawn .tile-inner {
+  animation: tileSpawn 0.28s var(--ease-spring) backwards;
+}
+@keyframes tileSpawn {
+  0%   { transform: scale(0.2); opacity: 0; }
+  60%  { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Merge pop (spawned merged tile) */
+.tile.merge-pop .tile-inner {
+  animation: tileMergePop 0.36s var(--ease-spring);
+}
+@keyframes tileMergePop {
+  0%   { transform: scale(0.4); }
+  45%  { transform: scale(1.24); }
+  100% { transform: scale(1); }
+}
+
+/* Merge sacrifice (tiles that get consumed) */
+.tile.merging {
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.tile.merging .tile-inner {
+  animation: tileShrink 0.24s ease forwards;
+}
+@keyframes tileShrink {
+  0%   { transform: scale(1); }
+  55%  { transform: scale(1.15); }
+  100% { transform: scale(0); }
+}
+
+/* Highlight when tile is being placed by power-up */
+.tile.primed .tile-inner {
+  animation: tilePrimed 0.9s ease-in-out infinite;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.4),
+    0 0 0 2px var(--gold),
+    0 0 26px var(--gold);
+}
+@keyframes tilePrimed {
+  0%, 100% { filter: brightness(1); }
+  50%      { filter: brightness(1.35); }
+}
+
+/* Score popup floating on board */
+.score-pop {
+  position: absolute;
+  font-size: 18px;
+  font-weight: 900;
+  font-family: Georgia, serif;
+  color: var(--accent-2);
+  text-shadow: 0 0 16px rgba(56, 232, 255, 0.95), 0 2px 4px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  animation: scorePopFloat 0.9s var(--ease-out) forwards;
+  z-index: 20;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+@keyframes scorePopFloat {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+  20%  { opacity: 1; transform: translate(-50%, -90%) scale(1.15); }
+  70%  { opacity: 1; transform: translate(-50%, -170%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -240%) scale(0.95); }
+}
+
+/* ---------------------------------------------------------------------------
+   7. NEXT QUEUE
+   ------------------------------------------------------------------------- */
+.next-row {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 4px;
+  background: var(--panel);
+  border: 1px solid var(--stroke-soft);
+  border-radius: var(--radius-sm);
+}
+
+.next-label {
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding-left: 6px;
+  white-space: nowrap;
+}
+
+.next-queue {
+  flex: 1 1 auto;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 2px 6px 2px 0;
+}
+
+.next-piece {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 900;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.03em;
+  background: linear-gradient(155deg,
+              var(--c1, #67e8f9) 0%,
+              var(--c2, #06b6d4) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 2px 6px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s var(--ease-out), opacity 0.3s ease;
+}
+
+.next-piece.head {
+  cursor: grab;
+  touch-action: none;
+  pointer-events: auto;
+  animation: headGlow 2s ease-in-out infinite;
+  z-index: 5;
+}
+
+.next-piece.head:active {
+  cursor: grabbing;
+}
+
+.next-piece.head.picked {
+  opacity: 0;
+  transform: scale(0.7);
+}
+
+.next-piece.small {
+  transform: scale(0.82);
+  opacity: 0.7;
+}
+
+.next-piece.smaller {
+  transform: scale(0.68);
+  opacity: 0.5;
+}
+
+@keyframes headGlow {
+  0%, 100% { box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    0 0 0 0 var(--glow, rgba(6, 182, 212, 0.55));
+  }
+  50% { box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    0 0 22px 4px var(--glow, rgba(6, 182, 212, 0.55));
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   8. POWER-UPS
+   ------------------------------------------------------------------------- */
+.powerups {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+}
+
+.power-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 52px;
+  padding: 6px 4px;
+  background: var(--panel);
+  border: 1px solid var(--stroke-soft);
+  border-radius: 12px;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.08s ease, background 0.18s ease,
+              border-color 0.18s ease, color 0.18s ease,
+              box-shadow 0.18s ease, opacity 0.25s ease;
+}
+
+.power-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.power-btn:active:not(:disabled) {
+  transform: scale(0.94);
+  color: var(--accent-2);
+  border-color: rgba(56, 232, 255, 0.6);
+  background: rgba(56, 232, 255, 0.14);
+  box-shadow: 0 0 22px -4px rgba(56, 232, 255, 0.7);
+}
+
+.power-btn.active {
+  color: var(--gold);
+  border-color: rgba(255, 209, 102, 0.8);
+  background: linear-gradient(180deg, rgba(255, 209, 102, 0.22), rgba(255, 209, 102, 0.06));
+  box-shadow: 0 0 26px -4px rgba(255, 209, 102, 0.85);
+}
+
+.power-btn:disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.power-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 900;
+  font-family: Georgia, serif;
+  color: #0a0518;
+  background: linear-gradient(135deg, var(--gold), #ffaa44);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0;
+}
+
+.power-btn.empty .power-count {
+  background: #444;
+  color: #888;
+  box-shadow: none;
+}
+
+/* ---------------------------------------------------------------------------
+   9. SCREENS / MODALS
+   ------------------------------------------------------------------------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  z-index: 9999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px 20px;
+  background: radial-gradient(ellipse at 50% 30%,
+              rgba(20, 8, 42, 0.96),
+              rgba(7, 4, 15, 0.98));
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.03);
+  transition: opacity 0.28s var(--ease-out),
+              visibility 0.28s,
+              transform 0.34s var(--ease-out);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  overflow-y: auto;
+}
+
+.screen.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.screen-inner {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+  text-align: center;
+  margin: auto;
+}
+
+/* Logo */
+.logo-mark {
+  width: 78px;
+  height: 78px;
+  margin-bottom: 4px;
+  position: relative;
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+.logo-mark svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 8px 26px rgba(177, 118, 255, 0.6));
+}
+
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%      { transform: translateY(-8px) rotate(3deg); }
+}
+
+/* Screen titles */
+.screen-title {
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  background: linear-gradient(96deg, var(--accent) 0%, var(--accent-2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 22px rgba(177, 118, 255, 0.5));
+}
+
+.screen-title.small { font-size: 24px; }
+
+.screen-title .gold {
+  background: linear-gradient(96deg, var(--gold), #ffaa44);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.screen-sub {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-top: -6px;
+}
+
+/* Buttons */
+.btn {
+  position: relative;
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 13px 16px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.1s ease, box-shadow 0.22s ease,
+              background 0.22s ease, color 0.22s ease;
+  touch-action: manipulation;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+}
+
+.btn:active { transform: scale(0.965); }
+
+.btn-primary {
+  color: #0a0518;
+  background: linear-gradient(96deg, var(--accent), var(--accent-2));
+  box-shadow: 0 12px 34px -10px rgba(177, 118, 255, 0.75);
+}
+
+.btn-ghost {
+  color: var(--text-dim);
+  background: var(--panel);
+  border: 1px solid var(--stroke-soft);
+  font-size: 10.5px;
+  padding: 11px 14px;
+  letter-spacing: 0.14em;
+}
+
+.btn-ghost:active {
+  background: var(--panel-hi);
+  color: var(--text);
+}
+
+.btn-back {
+  color: var(--accent-2);
+  background: transparent;
+  border: 1px solid rgba(56, 232, 255, 0.28);
+  font-size: 10px;
+  padding: 10px 14px;
+  letter-spacing: 0.18em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-back svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.btn-back:active { background: rgba(56, 232, 255, 0.14); }
+
+/* Menu stats */
+.menu-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  width: 100%;
+  margin-top: 2px;
+}
+
+.menu-stats > div {
+  background: var(--panel);
+  border: 1px solid var(--stroke-soft);
+  border-radius: 11px;
+  padding: 9px 4px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.menu-stats b {
+  font-size: 16px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.menu-stats span {
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* End-game score block */
+.end-score {
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  font-family: Georgia, "Times New Roman", serif;
+  background: linear-gradient(96deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 22px rgba(177, 118, 255, 0.5));
+}
+
+.end-caption {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-top: -6px;
+}
+
+.new-best {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: rgba(255, 209, 102, 0.15);
+  border: 1px solid rgba(255, 209, 102, 0.55);
+  color: var(--gold);
+  text-shadow: 0 0 14px rgba(255, 209, 102, 0.8);
+  animation: bestPop 0.6s var(--ease-spring);
+}
+
+@keyframes bestPop {
+  0%   { transform: scale(0.4); opacity: 0; }
+  70%  { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Rules list on start screen */
+.rules {
+  width: 100%;
+  text-align: left;
+  background: var(--panel);
+  border: 1px solid var(--stroke-soft);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 10px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+
+.rules b {
+  color: var(--text);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.rules p {
+  margin: 3px 0;
+}
+
+/* ---------------------------------------------------------------------------
+   10. DRAG GHOST (follows pointer)
+   ------------------------------------------------------------------------- */
+.drag-ghost {
+  position: fixed;
+  z-index: 9999;
+  width: 68px;
+  height: 68px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.03em;
+  pointer-events: none;
+  background: linear-gradient(155deg,
+              var(--c1, #67e8f9) 0%,
+              var(--c2, #06b6d4) 100%);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2),
+    0 12px 28px rgba(0, 0, 0, 0.55),
+    0 0 30px -4px var(--glow, rgba(6, 182, 212, 0.7));
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.1s ease;
+  animation: ghostIn 0.15s var(--ease-spring);
+}
+
+@keyframes ghostIn {
+  0%   { transform: translate(-50%, -50%) scale(0.6); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ---------------------------------------------------------------------------
+   11. TOAST
+   ------------------------------------------------------------------------- */
+.toast {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  transform: translate(-50%, -50%) scale(0.7);
+  z-index: 500;
+  pointer-events: none;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(255, 209, 102, 0.85), 0 2px 4px rgba(0, 0, 0, 0.6);
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+}
+
+.toast.show {
+  animation: toastPop 1.4s cubic-bezier(0.22, 0.9, 0.3, 1) forwards;
+}
+
+@keyframes toastPop {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+  15%  { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  28%  { transform: translate(-50%, -50%) scale(1); }
+  70%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -80%) scale(0.9); }
+}
+
+/* ---------------------------------------------------------------------------
+   12. COMBO BANNER
+   ------------------------------------------------------------------------- */
+.combo-banner {
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%, -50%) scale(0.6);
+  z-index: 400;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  text-shadow: 0 0 24px rgba(56, 232, 255, 0.95), 0 4px 8px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  opacity: 0;
+  white-space: nowrap;
+}
+
+.combo-banner.show {
+  animation: comboBannerPop 0.9s var(--ease-out) forwards;
+}
+
+@keyframes comboBannerPop {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.5) rotate(-8deg); }
+  18%  { opacity: 1; transform: translate(-50%, -50%) scale(1.18) rotate(3deg); }
+  32%  { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  75%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -80%) scale(0.92); }
+}
+
+/* ---------------------------------------------------------------------------
+   13. REDUCED MOTION
+   ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ============================ HEADER ============================ -->
+  <header class="header">
+    <h1 class="title">
+      <span class="brand">Saiv</span><span class="suffix">DICE</span>
+    </h1>
+    <button class="header-btn" id="btnMenu" aria-label="Menu">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </header>
+
+  <!-- ============================ SCORE ============================ -->
+  <div class="score-row">
+    <div class="score-box" id="scoreBox">
+      <span class="label">Score</span>
+      <span class="value" id="scoreVal">0</span>
+      <span class="score-add" id="scoreAdd"></span>
+    </div>
+    <div class="score-box best">
+      <span class="label">Best</span>
+      <span class="value" id="bestVal">0</span>
+    </div>
+    <div class="score-box combo" id="comboBox">
+      <span class="label">Combo</span>
+      <span class="value" id="comboVal">x1</span>
+    </div>
+  </div>
+
+  <!-- ============================ BOARD ============================ -->
+  <div class="board-wrap">
+    <div class="board" id="board">
+      <div class="cells" id="cells"></div>
+      <div class="tiles" id="tiles"></div>
+    </div>
+  </div>
+
+  <!-- ============================ NEXT QUEUE ============================ -->
+  <div class="next-row">
+    <div class="next-label">Next</div>
+    <div class="next-queue" id="queue"></div>
+  </div>
+
+  <!-- ============================ POWER-UPS ============================ -->
+  <div class="powerups">
+    <button class="power-btn" id="powerHammer" data-power="hammer">
+      <svg viewBox="0 0 24 24">
+        <path d="M14 5l5 5-3 3-5-5z"/>
+        <path d="M11 8L4 15v3h3l7-7"/>
+      </svg>
+      Hammer
+      <span class="power-count" id="countHammer">3</span>
+    </button>
+    <button class="power-btn" id="powerBomb" data-power="bomb">
+      <svg viewBox="0 0 24 24">
+        <circle cx="11" cy="15" r="6"/>
+        <path d="M15 10l2-2"/>
+        <path d="M17 5v2M20 8h-2M19 5l-1.5 1.5"/>
+      </svg>
+      Bomb
+      <span class="power-count" id="countBomb">3</span>
+    </button>
+    <button class="power-btn" id="powerSwap" data-power="swap">
+      <svg viewBox="0 0 24 24">
+        <path d="M4 8h13l-3-3"/>
+        <path d="M20 16H7l3 3"/>
+      </svg>
+      Swap
+      <span class="power-count" id="countSwap">3</span>
+    </button>
+  </div>
+
+  <!-- ============================ START SCREEN ============================ -->
+  <section class="screen active" id="screen-start">
+    <div class="screen-inner">
+      <div class="logo-mark">
+        <svg viewBox="0 0 78 78">
+          <defs>
+            <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#b176ff"/>
+              <stop offset="100%" stop-color="#38e8ff"/>
+            </linearGradient>
+            <linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#38e8ff"/>
+              <stop offset="100%" stop-color="#6ee7a8"/>
+            </linearGradient>
+            <linearGradient id="lg3" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffd166"/>
+              <stop offset="100%" stop-color="#ff3d81"/>
+            </linearGradient>
+          </defs>
+          <rect x="4" y="4" width="34" height="34" rx="8" fill="url(#lg1)"/>
+          <rect x="40" y="4" width="34" height="34" rx="8" fill="url(#lg2)"/>
+          <rect x="4" y="40" width="34" height="34" rx="8" fill="url(#lg3)"/>
+          <rect x="40" y="40" width="34" height="34" rx="8" fill="url(#lg1)"/>
+          <circle cx="21" cy="21" r="4" fill="#fff" opacity="0.9"/>
+          <circle cx="57" cy="21" r="4" fill="#fff" opacity="0.9"/>
+          <circle cx="21" cy="57" r="4" fill="#fff" opacity="0.9"/>
+          <circle cx="57" cy="57" r="4" fill="#fff" opacity="0.9"/>
+        </svg>
+      </div>
+
+      <h2 class="screen-title">
+        <span class="brand" style="background: linear-gradient(96deg, #b176ff, #38e8ff); -webkit-background-clip: text; background-clip: text; color: transparent;">Saiv</span>
+        <span class="suffix" style="background: linear-gradient(96deg, #ffffff, #a79ec6); -webkit-background-clip: text; background-clip: text; color: transparent;">DICE</span>
+      </h2>
+      <p class="screen-sub">Merge · Chain · Score</p>
+
+      <button class="btn btn-primary" id="btnPlay">Play</button>
+      <button class="btn btn-ghost" id="btnContinue" style="display:none">Continue</button>
+
+      <div class="rules">
+        <p><b>How to play:</b></p>
+        <p>• Drag the highlighted die from the queue onto the board.</p>
+        <p>• Match 3+ identical adjacent dice to merge them into a bigger value.</p>
+        <p>• Chain merges in one move to build combos and multiply your score.</p>
+        <p>• Use power-ups when the board fills up!</p>
+      </div>
+
+      <div class="menu-stats">
+        <div><b id="statBest">0</b><span>Best Score</span></div>
+        <div><b id="statMax">0</b><span>Best Die</span></div>
+        <div><b id="statGames">0</b><span>Games</span></div>
+        <div><b id="statCombo">0</b><span>Max Combo</span></div>
+      </div>
+
+      <a class="btn btn-back" href="https://seizhf.github.io/games">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        Back to Games
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================ PAUSE SCREEN ============================ -->
+  <section class="screen" id="screen-pause">
+    <div class="screen-inner">
+      <h2 class="screen-title small">Paused</h2>
+      <p class="screen-sub">Take a break</p>
+
+      <button class="btn btn-primary" id="btnResume">Resume</button>
+      <button class="btn btn-ghost" id="btnRestartPause">New Game</button>
+      <button class="btn btn-ghost" id="btnSoundPause">🔊 Sound On</button>
+      <button class="btn btn-ghost" id="btnQuit">Main Menu</button>
+
+      <div class="rules">
+        <p><b>Power-ups:</b></p>
+        <p>• <b>Hammer</b> — destroy a single tile.</p>
+        <p>• <b>Bomb</b> — destroy a 3×3 area.</p>
+        <p>• <b>Swap</b> — swap two tiles on the board.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ GAME OVER ============================ -->
+  <section class="screen" id="screen-over">
+    <div class="screen-inner">
+      <h2 class="screen-title small" id="overTitle">Game Over</h2>
+      <div id="overBadge"></div>
+      <p class="screen-sub" id="overSub">No moves left</p>
+
+      <div class="end-score" id="overScore">0</div>
+      <p class="end-caption">Final Score</p>
+
+      <div class="menu-stats">
+        <div><b id="overMaxTile">0</b><span>Best Die</span></div>
+        <div><b id="overMaxCombo">x1</b><span>Max Combo</span></div>
+        <div><b id="overBest">0</b><span>Best Score</span></div>
+        <div><b id="overGames">0</b><span>Games</span></div>
+      </div>
+
+      <button class="btn btn-primary" id="btnPlayAgain">Play Again</button>
+      <button class="btn btn-ghost" id="btnOverMenu">Main Menu</button>
+    </div>
+  </section>
+
+  <!-- ============================ TOAST / BANNERS ============================ -->
+  <div class="toast" id="toast"></div>
+  <div class="combo-banner" id="comboBanner"></div>
+
+</div>
+
+<script>
+/* ============================================================================
+   SaivDICE — GAME ENGINE
+   ----------------------------------------------------------------------------
+   A complete, self-contained dice merge puzzle.
+
+   Architecture:
+     01 — Constants
+     02 — Utilities
+     03 — Persistence
+     04 — Sound engine
+     05 — Haptics
+     06 — Game state
+     07 — Tile color palette
+     08 — DOM & board sizing
+     09 — Rendering (tiles, queue, HUD)
+     10 — Merge resolution (flood fill + cascade)
+     11 — Placement
+     12 — Drag & drop input
+     13 — Power-ups
+     14 — Game flow
+     15 — UI screens & toasts
+     16 — Bootstrap
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  /* ========================================================================
+     01 — CONSTANTS
+     ======================================================================== */
+
+  const GRID_SIZE  = 5;
+  const GRID_CELLS = GRID_SIZE * GRID_SIZE;
+  const QUEUE_SIZE = 3;
+
+  // Spawn probability weights for new dice
+  const SPAWN_TABLE = [
+    { value: 2, weight: 68 },
+    { value: 4, weight: 26 },
+    { value: 8, weight: 6 },
+  ];
+
+  // Timing (must be in sync with CSS animations)
+  const T_PLACE       = 260;
+  const T_MERGE_START = 200;
+  const T_MERGE_DONE  = 260;
+  const T_CASCADE_GAP = 180;
+
+  // Score tuning
+  const SCORE_MULT = 1.5;
+
+  // Power-ups
+  const POWERUP_USES = { hammer: 3, bomb: 3, swap: 3 };
+
+  // Persistence
+  const STORAGE_KEY = "saiv-dice.save.v1";
+
+  /* ========================================================================
+     02 — UTILITIES
+     ======================================================================== */
+
+  const $  = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.prototype.slice.call((r || document).querySelectorAll(s));
+  const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  function fmt(n) {
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  /** Pick the font-size scale for a tile value. */
+  function fontSizeScale(value) {
+    const len = String(value).length;
+    if (len <= 2) return 0.42;
+    if (len === 3) return 0.34;
+    if (len === 4) return 0.28;
+    return 0.22;
+  }
+
+  /** Random value from the spawn table. */
+  function randomSpawnValue() {
+    const total = SPAWN_TABLE.reduce((s, e) => s + e.weight, 0);
+    let roll = Math.random() * total;
+    for (const e of SPAWN_TABLE) {
+      roll -= e.weight;
+      if (roll <= 0) return e.value;
+    }
+    return SPAWN_TABLE[0].value;
+  }
+
+  /* ========================================================================
+     03 — PERSISTENCE
+     ======================================================================== */
+
+  const Save = {
+    data: {
+      bestScore: 0,
+      bestTile: 0,
+      maxCombo: 0,
+      gamesPlayed: 0,
+      muted: false,
+      state: null,
+    },
+
+    load() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") {
+          Object.keys(this.data).forEach((k) => {
+            if (k in parsed && typeof parsed[k] === typeof this.data[k]) {
+              this.data[k] = parsed[k];
+            }
+          });
+          if (parsed.state && typeof parsed.state === "object") {
+            this.data.state = parsed.state;
+          }
+        }
+      } catch (e) { /* ignore */ }
+    },
+
+    save() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+      } catch (e) { /* ignore */ }
+    },
+  };
+
+  /* ========================================================================
+     04 — SOUND ENGINE
+     ======================================================================== */
+
+  const Sound = (function () {
+    let ctx = null;
+    let master = null;
+    let muted = false;
+    let available = true;
+
+    function init() {
+      if (ctx || !available) return;
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) { available = false; return; }
+      try {
+        ctx = new AC();
+        master = ctx.createGain();
+        master.gain.value = 0.22;
+        master.connect(ctx.destination);
+      } catch (e) { available = false; }
+    }
+
+    function resume() {
+      if (ctx && ctx.state === "suspended") ctx.resume().catch(() => {});
+    }
+
+    function tone(o) {
+      if (!ctx || muted || !available) return;
+      const now = ctx.currentTime + (o.delay || 0);
+      const dur = o.dur || 0.08;
+      const vol = o.vol === undefined ? 0.22 : o.vol;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = o.type || "sine";
+      osc.frequency.setValueAtTime(o.freq, now);
+      if (o.to && o.to !== o.freq) {
+        osc.frequency.exponentialRampToValueAtTime(Math.max(1, o.to), now + dur);
+      }
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(Math.max(0.0002, vol), now + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+      osc.connect(gain);
+      gain.connect(master);
+      osc.start(now);
+      osc.stop(now + dur + 0.02);
+    }
+
+    function noise(o) {
+      if (!ctx || muted || !available) return;
+      const now = ctx.currentTime + (o.delay || 0);
+      const dur = o.dur || 0.1;
+      const frames = Math.floor(ctx.sampleRate * dur);
+      const buf = ctx.createBuffer(1, frames, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < frames; i++) {
+        d[i] = (Math.random() * 2 - 1) * (1 - i / frames);
+      }
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const filter = ctx.createBiquadFilter();
+      filter.type = o.filter || "highpass";
+      filter.frequency.setValueAtTime(o.freq || 1800, now);
+      if (o.to) filter.frequency.exponentialRampToValueAtTime(o.to, now + dur);
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(o.vol === undefined ? 0.12 : o.vol, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+      src.connect(filter);
+      filter.connect(gain);
+      gain.connect(master);
+      src.start(now);
+    }
+
+    const api = {
+      init, resume,
+
+      get muted() { return muted; },
+
+      toggle() {
+        muted = !muted;
+        Save.data.muted = muted;
+        Save.save();
+        if (!muted) { resume(); api.click(); }
+        return muted;
+      },
+
+      setMuted(v) {
+        muted = !!v;
+        Save.data.muted = muted;
+        Save.save();
+      },
+
+      /* ---- Public SFX ---- */
+
+      click() {
+        tone({ freq: 900, type: "sine", dur: 0.03, vol: 0.14 });
+      },
+
+      pickup() {
+        tone({ freq: 600, to: 900, type: "sine", dur: 0.06, vol: 0.15 });
+      },
+
+      drop() {
+        tone({ freq: 260, to: 160, type: "sine", dur: 0.07, vol: 0.18 });
+        noise({ freq: 900, to: 300, dur: 0.04, vol: 0.06 });
+      },
+
+      error() {
+        tone({ freq: 200, type: "square", dur: 0.06, vol: 0.12 });
+        tone({ freq: 160, type: "square", dur: 0.06, vol: 0.1, delay: 0.05 });
+      },
+
+      /** Merge SFX — pitched by the new value. */
+      merge(value, combo) {
+        const lvl = Math.log2(Math.max(2, value));
+        const pitch = 320 + lvl * 60;
+        const comboBoost = Math.min(220, (combo - 1) * 40);
+        tone({
+          freq: pitch + comboBoost,
+          to: (pitch + comboBoost) * 1.4,
+          type: "triangle",
+          dur: 0.11,
+          vol: 0.2,
+        });
+        tone({
+          freq: (pitch + comboBoost) * 1.6,
+          type: "sine",
+          dur: 0.08,
+          vol: 0.08,
+          delay: 0.02,
+        });
+      },
+
+      /** Cascade jingle — plays once per cascade level. */
+      cascade(level) {
+        const base = [523.25, 659.25, 783.99, 1046.5, 1318.5][Math.min(4, level - 1)];
+        tone({ freq: base, type: "triangle", dur: 0.14, vol: 0.16, delay: 0 });
+        tone({ freq: base * 1.5, type: "sine", dur: 0.1, vol: 0.08, delay: 0.04 });
+      },
+
+      powerup(kind) {
+        if (kind === "hammer") {
+          tone({ freq: 400, to: 140, type: "square", dur: 0.14, vol: 0.2 });
+          noise({ freq: 1200, to: 300, dur: 0.12, vol: 0.14 });
+        } else if (kind === "bomb") {
+          tone({ freq: 160, to: 60, type: "sawtooth", dur: 0.4, vol: 0.24 });
+          noise({ freq: 800, to: 120, dur: 0.4, vol: 0.2 });
+        } else if (kind === "swap") {
+          tone({ freq: 500, to: 900, type: "sine", dur: 0.12, vol: 0.16 });
+          tone({ freq: 900, to: 500, type: "sine", dur: 0.12, vol: 0.16, delay: 0.1 });
+        }
+      },
+
+      gameOver() {
+        [440, 360, 300, 240, 180].forEach((f, i) => {
+          tone({ freq: f, type: "triangle", dur: 0.18, vol: 0.16, delay: i * 0.11 });
+        });
+      },
+
+      newBest() {
+        [523, 659, 784, 1047, 1319, 1568].forEach((f, i) => {
+          tone({ freq: f, type: "triangle", dur: 0.18, vol: 0.18, delay: i * 0.1 });
+          tone({ freq: f * 2, type: "sine", dur: 0.14, vol: 0.06, delay: i * 0.1 });
+        });
+      },
+    };
+
+    return api;
+  })();
+
+  /* ========================================================================
+     05 — HAPTICS
+     ======================================================================== */
+
+  const Haptics = {
+    pickup() { if (navigator.vibrate) try { navigator.vibrate(6);  } catch (e) {} },
+    drop()   { if (navigator.vibrate) try { navigator.vibrate(10); } catch (e) {} },
+    merge()  { if (navigator.vibrate) try { navigator.vibrate(14); } catch (e) {} },
+    power()  { if (navigator.vibrate) try { navigator.vibrate([20, 30, 20]); } catch (e) {} },
+    over()   { if (navigator.vibrate) try { navigator.vibrate([40, 60, 120]); } catch (e) {} },
+  };
+
+  /* ========================================================================
+     06 — GAME STATE
+     ======================================================================== */
+
+  const G = {
+    status: "menu",         // menu | playing | paused | over
+
+    // Grid: array of GRID_CELLS entries, each null or a tile object
+    grid: new Array(GRID_CELLS).fill(null),
+
+    // Tiles indexed by id, used for DOM management
+    tiles: new Map(),
+    nextId: 0,
+
+    // Queue of upcoming piece values
+    queue: [],
+
+    // Score & stats
+    score: 0,
+    best: 0,
+    maxCombo: 0,
+    currentCombo: 1,
+
+    // Power-ups
+    powerups: { hammer: 0, bomb: 0, swap: 0 },
+    activePower: null,
+    swapFirstIndex: null,
+
+    // Flags
+    animating: false,
+    saveTimer: 0,
+  };
+
+  /* ========================================================================
+     07 — TILE COLOR PALETTE
+     ======================================================================== */
+
+  const COLORS = {
+    2:    { c1: "#67e8f9", c2: "#06b6d4", glow: "rgba(6, 182, 212, 0.55)" },
+    4:    { c1: "#7dd3fc", c2: "#0ea5e9", glow: "rgba(14, 165, 233, 0.55)" },
+    8:    { c1: "#93c5fd", c2: "#3b82f6", glow: "rgba(59, 130, 246, 0.55)" },
+    16:   { c1: "#a78bfa", c2: "#8b5cf6", glow: "rgba(139, 92, 246, 0.55)" },
+    32:   { c1: "#c084fc", c2: "#a855f7", glow: "rgba(168, 85, 247, 0.55)" },
+    64:   { c1: "#e879f9", c2: "#d946ef", glow: "rgba(217, 70, 239, 0.55)" },
+    128:  { c1: "#f472b6", c2: "#ec4899", glow: "rgba(236, 72, 153, 0.55)" },
+    256:  { c1: "#fb7185", c2: "#f43f5e", glow: "rgba(244, 63, 94, 0.55)" },
+    512:  { c1: "#fca5a5", c2: "#ef4444", glow: "rgba(239, 68, 68, 0.55)" },
+    1024: { c1: "#fdba74", c2: "#f97316", glow: "rgba(249, 115, 22, 0.55)" },
+    2048: { c1: "#fcd34d", c2: "#f59e0b", glow: "rgba(245, 158, 11, 0.6)" },
+    4096: { c1: "#fde047", c2: "#eab308", glow: "rgba(234, 179, 8, 0.65)" },
+    8192: { c1: "#bef264", c2: "#84cc16", glow: "rgba(132, 204, 22, 0.65)" },
+  };
+
+  function colorsFor(value) {
+    return COLORS[value] || { c1: "#c4b5fd", c2: "#8b5cf6", glow: "rgba(139, 92, 246, 0.6)" };
+  }
+
+  /* ========================================================================
+     08 — DOM & BOARD SIZING
+     ======================================================================== */
+
+  let appEl, boardEl, cellsEl, tilesEl, queueEl;
+
+  const cellEls = [];
+  const tileEls = new Map();
+
+  /** Compute board dimensions and set CSS variables. */
+  function resizeBoard() {
+    const boardWrap = boardEl.parentElement;
+    const rect = boardWrap.getBoundingClientRect();
+    const availableW = rect.width;
+    const availableH = rect.height;
+    if (availableW < 40 || availableH < 40) return;
+
+    const size = Math.min(availableW, availableH, 440);
+
+    const pad = Math.max(6, Math.round(size * 0.024));
+    const gap = Math.max(5, Math.round(size * 0.018));
+    const cellSize = Math.floor((size - 2 * pad - (GRID_SIZE - 1) * gap) / GRID_SIZE);
+
+    boardEl.style.width  = size + "px";
+    boardEl.style.height = size + "px";
+    boardEl.style.setProperty("--pad", pad + "px");
+    boardEl.style.setProperty("--gap", gap + "px");
+    boardEl.style.setProperty("--cell-size", cellSize + "px");
+  }
+
+  /* ========================================================================
+     09 — RENDERING
+     ======================================================================== */
+
+  /** Build the 25 empty cell divs. */
+  function buildCells() {
+    cellsEl.innerHTML = "";
+    cellEls.length = 0;
+    for (let i = 0; i < GRID_CELLS; i++) {
+      const el = document.createElement("div");
+      el.className = "cell";
+      cellsEl.appendChild(el);
+      cellEls.push(el);
+    }
+  }
+
+  /** Create a tile DOM element. */
+  function createTileEl(tile) {
+    const el = document.createElement("div");
+    el.className = "tile";
+    el.dataset.id = String(tile.id);
+
+    const colors = colorsFor(tile.value);
+    el.style.setProperty("--row", Math.floor(tile.index / GRID_SIZE));
+    el.style.setProperty("--col", tile.index % GRID_SIZE);
+    el.style.setProperty("--fs", fontSizeScale(tile.value));
+    el.style.setProperty("--c1", colors.c1);
+    el.style.setProperty("--c2", colors.c2);
+    el.style.setProperty("--glow", colors.glow);
+
+    const inner = document.createElement("div");
+    inner.className = "tile-inner";
+    inner.textContent = String(tile.value);
+    el.appendChild(inner);
+
+    return el;
+  }
+
+  /** Update an existing tile DOM element. */
+  function updateTileEl(el, tile) {
+    el.style.setProperty("--row", Math.floor(tile.index / GRID_SIZE));
+    el.style.setProperty("--col", tile.index % GRID_SIZE);
+    el.style.setProperty("--fs", fontSizeScale(tile.value));
+    const colors = colorsFor(tile.value);
+    el.style.setProperty("--c1", colors.c1);
+    el.style.setProperty("--c2", colors.c2);
+    el.style.setProperty("--glow", colors.glow);
+
+    const v = String(tile.value);
+    if (el.firstChild.textContent !== v) {
+      el.firstChild.textContent = v;
+    }
+  }
+
+  /** Render the current tile map. Only diffs matter; existing els are reused. */
+  function renderTiles() {
+    const seen = new Set();
+
+    for (const [id, tile] of G.tiles) {
+      seen.add(id);
+      let el = tileEls.get(id);
+      if (!el) {
+        el = createTileEl(tile);
+        tileEls.set(id, el);
+        tilesEl.appendChild(el);
+        // Small pop-in
+        el.classList.add("spawn");
+      } else {
+        updateTileEl(el, tile);
+      }
+    }
+
+    // Remove vanished tiles
+    for (const [id, el] of tileEls) {
+      if (!seen.has(id)) {
+        el.remove();
+        tileEls.delete(id);
+      }
+    }
+  }
+
+  /** Clear all tile elements. */
+  function clearTileEls() {
+    for (const [, el] of tileEls) el.remove();
+    tileEls.clear();
+    tilesEl.innerHTML = "";
+  }
+
+  /** Render the queue. */
+  function renderQueue() {
+    queueEl.innerHTML = "";
+    for (let i = 0; i < QUEUE_SIZE; i++) {
+      const value = G.queue[i];
+      const el = document.createElement("div");
+      el.className = "next-piece";
+      if (i === 0) el.classList.add("head");
+      else if (i === 1) el.classList.add("small");
+      else el.classList.add("smaller");
+
+      const colors = colorsFor(value || 2);
+      el.style.setProperty("--c1", colors.c1);
+      el.style.setProperty("--c2", colors.c2);
+      el.style.setProperty("--glow", colors.glow);
+      el.textContent = String(value || 2);
+      el.dataset.value = String(value || 2);
+      el.dataset.slot = String(i);
+
+      if (i === 0) {
+        // Head piece: draggable
+        el.addEventListener("pointerdown", onQueuePointerDown);
+      }
+
+      queueEl.appendChild(el);
+    }
+  }
+
+  /* ---- HUD ---- */
+
+  function updateScoreHUD(animate, gain) {
+    const scoreVal = $("#scoreVal");
+    const bestVal = $("#bestVal");
+    const comboVal = $("#comboVal");
+    const comboBox = $("#comboBox");
+
+    scoreVal.textContent = fmt(G.score);
+    bestVal.textContent = fmt(Math.max(Save.data.bestScore, G.score));
+
+    comboVal.textContent = "x" + G.currentCombo;
+    comboBox.classList.toggle("active", G.currentCombo > 1);
+
+    if (animate && gain) {
+      const box = $("#scoreBox");
+      const addEl = $("#scoreAdd");
+      addEl.textContent = "+" + fmt(gain);
+      box.classList.remove("add");
+      void box.offsetWidth;
+      box.classList.add("add");
+      setTimeout(() => box.classList.remove("add"), 900);
+    }
+  }
+
+  function updatePowerButtons() {
+    ["hammer", "bomb", "swap"].forEach((k) => {
+      const btn = $("#power" + k[0].toUpperCase() + k.slice(1));
+      const count = $("#count" + k[0].toUpperCase() + k.slice(1));
+      const uses = G.powerups[k];
+      count.textContent = String(uses);
+      btn.classList.toggle("empty", uses <= 0);
+      btn.disabled = uses <= 0 || G.status !== "playing";
+      btn.classList.toggle("active", G.activePower === k);
+    });
+  }
+
+  /* ---- Board popups ---- */
+
+  function showBoardScorePop(index, text) {
+    const cellSize = parseInt(getComputedStyle(boardEl).getPropertyValue("--cell-size"), 10);
+    const gap = parseInt(getComputedStyle(boardEl).getPropertyValue("--gap"), 10);
+    const pad = parseInt(getComputedStyle(boardEl).getPropertyValue("--pad"), 10);
+    const row = Math.floor(index / GRID_SIZE);
+    const col = index % GRID_SIZE;
+    const x = pad + col * (cellSize + gap) + cellSize / 2;
+    const y = pad + row * (cellSize + gap) + cellSize / 2;
+
+    const el = document.createElement("div");
+    el.className = "score-pop";
+    el.textContent = text;
+    el.style.left = x + "px";
+    el.style.top = y + "px";
+    boardEl.appendChild(el);
+    setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 950);
+  }
+
+  /* ========================================================================
+     10 — MERGE RESOLUTION
+     ======================================================================== */
+
+  /** Return the tile at a flat index (or null). */
+  function tileAt(index) {
+    return G.grid[index] || null;
+  }
+
+  /**
+   * Find all connected groups of size >= 3 with equal values.
+   * Uses flood fill.
+   */
+  function findMergeGroups() {
+    const visited = new Uint8Array(GRID_CELLS);
+    const groups = [];
+
+    for (let start = 0; start < GRID_CELLS; start++) {
+      if (visited[start]) continue;
+      const tile = G.grid[start];
+      if (!tile) continue;
+
+      const val = tile.value;
+      const group = [];
+      const stack = [start];
+      visited[start] = 1;
+
+      while (stack.length) {
+        const idx = stack.pop();
+        group.push(idx);
+
+        const row = Math.floor(idx / GRID_SIZE);
+        const col = idx % GRID_SIZE;
+
+        // 4 neighbors
+        const neighbors = [];
+        if (row > 0)               neighbors.push(idx - GRID_SIZE);
+        if (row < GRID_SIZE - 1)   neighbors.push(idx + GRID_SIZE);
+        if (col > 0)               neighbors.push(idx - 1);
+        if (col < GRID_SIZE - 1)   neighbors.push(idx + 1);
+
+        for (const n of neighbors) {
+          if (visited[n]) continue;
+          const nt = G.grid[n];
+          if (nt && nt.value === val) {
+            visited[n] = 1;
+            stack.push(n);
+          }
+        }
+      }
+
+      if (group.length >= 3) {
+        groups.push({ value: val, cells: group });
+      }
+    }
+    return groups;
+  }
+
+  /** Visual feedback: suck the sacrifice tiles toward the anchor. */
+  async function animateMergeGroup(group) {
+    // Choose anchor: the tile with the smallest (row, col) — top-leftmost.
+    // Fallback: the smallest index (linear).
+    let anchorIdx = group.cells[0];
+    for (const idx of group.cells) {
+      if (idx < anchorIdx) anchorIdx = idx;
+    }
+    // Prefer a top-left anchor visually
+    for (const idx of group.cells) {
+      const r1 = Math.floor(idx / GRID_SIZE), c1 = idx % GRID_SIZE;
+      const rA = Math.floor(anchorIdx / GRID_SIZE), cA = anchorIdx % GRID_SIZE;
+      if (r1 < rA || (r1 === rA && c1 < cA)) anchorIdx = idx;
+    }
+
+    // Move + shrink every sacrifice tile
+    for (const idx of group.cells) {
+      const tile = G.grid[idx];
+      if (!tile) continue;
+      const el = tileEls.get(tile.id);
+      if (!el) continue;
+
+      // If not the anchor, move it to the anchor position
+      if (idx !== anchorIdx) {
+        el.style.setProperty("--row", Math.floor(anchorIdx / GRID_SIZE));
+        el.style.setProperty("--col", anchorIdx % GRID_SIZE);
+        // Force reflow so the transform transitions
+        void el.offsetWidth;
+      }
+
+      el.classList.add("merging");
+    }
+
+    await sleep(T_MERGE_START);
+    return anchorIdx;
+  }
+
+  /** Remove tiles that were merged, and spawn the new tile at the anchor. */
+  function applyMerge(group, anchorIdx, newValue) {
+    // Remove sacrifice tiles
+    for (const idx of group.cells) {
+      const tile = G.grid[idx];
+      if (!tile) continue;
+      G.grid[idx] = null;
+      G.tiles.delete(tile.id);
+      const el = tileEls.get(tile.id);
+      if (el) {
+        el.remove();
+        tileEls.delete(tile.id);
+      }
+    }
+
+    // Create the merged tile
+    const id = G.nextId++;
+    const newTile = { id, value: newValue, index: anchorIdx };
+    G.grid[anchorIdx] = newTile;
+    G.tiles.set(id, newTile);
+
+    // Create DOM element with merge pop class
+    const el = createTileEl(newTile);
+    el.classList.add("merge-pop");
+    tileEls.set(id, el);
+    tilesEls_append(el);
+  }
+
+  function tilesEls_append(el) {
+    tilesEl.appendChild(el);
+  }
+
+  /**
+   * Full cascade resolution:
+   *   - Find groups
+   *   - If none, exit
+   *   - Otherwise, animate + merge + score
+   *   - Repeat
+   * Returns the number of cascade levels that occurred.
+   */
+  async function resolveCascades() {
+    let cascadeLevel = 0;
+
+    while (true) {
+      const groups = findMergeGroups();
+      if (groups.length === 0) break;
+
+      cascadeLevel++;
+      G.currentCombo = cascadeLevel;
+      updateScoreHUD(false);
+
+      // Play cascade jingle
+      Sound.cascade(cascadeLevel);
+
+      // Show combo banner for level >= 2
+      if (cascadeLevel >= 2) {
+        showComboBanner("COMBO x" + cascadeLevel);
+      }
+
+      // Calculate score for this cascade level
+      let gained = 0;
+      const anchors = [];
+
+      // Animate all groups together (fade them out toward anchors)
+      const anims = [];
+      for (const g of groups) {
+        anims.push(animateMergeGroup(g).then((anchorIdx) => {
+          anchors.push({ group: g, anchorIdx });
+        }));
+      }
+      await Promise.all(anims);
+
+      await sleep(T_MERGE_DONE - T_MERGE_START);
+
+      // Apply merges and score
+      for (const { group, anchorIdx } of anchors) {
+        const newValue = group.value * 2;
+        const pts = Math.round(group.value * group.cells.length * cascadeLevel * SCORE_MULT);
+        gained += pts;
+
+        applyMerge(group, anchorIdx, newValue);
+
+        // Haptics + merge sound
+        Haptics.merge();
+        Sound.merge(newValue, cascadeLevel);
+
+        // Score popup at anchor
+        showBoardScorePop(anchorIdx, "+" + pts);
+      }
+
+      // Track best tile
+      for (const { group } of anchors) {
+        const v = group.value * 2;
+        if (v > Save.data.bestTile) Save.data.bestTile = v;
+      }
+
+      // Add score
+      if (gained > 0) {
+        G.score += gained;
+        updateScoreHUD(true, gained);
+      }
+
+      // Rebuild grid mapping for subsequent scans
+      // (tiles are already on G.grid; nothing to do)
+
+      // Small pause before next cascade level
+      await sleep(T_CASCADE_GAP);
+    }
+
+    // Reset combo if no cascades happened
+    if (cascadeLevel === 0) {
+      G.currentCombo = 1;
+    } else if (cascadeLevel > G.maxCombo) {
+      G.maxCombo = cascadeLevel;
+    }
+
+    updateScoreHUD(false);
+    return cascadeLevel;
+  }
+
+  /* ========================================================================
+     11 — PLACEMENT
+     ======================================================================== */
+
+  /** Check if a cell index is valid (empty). */
+  function isEmptyCell(index) {
+    if (index < 0 || index >= GRID_CELLS) return false;
+    return G.grid[index] === null;
+  }
+
+  /** Place the head queue piece at a board index. */
+  async function placePiece(index) {
+    if (G.status !== "playing" || G.animating) return false;
+    if (!isEmptyCell(index)) {
+      Sound.error();
+      return false;
+    }
+
+    G.animating = true;
+    G.currentCombo = 1;
+
+    // Take the value from the queue
+    const value = G.queue.shift();
+    G.queue.push(randomSpawnValue());
+
+    // Create the tile
+    const id = G.nextId++;
+    const tile = { id, value, index };
+    G.grid[index] = tile;
+    G.tiles.set(id, tile);
+
+    // Create DOM
+    const el = createTileEl(tile);
+    el.classList.add("spawn");
+    tileEls.set(id, el);
+    tilesEl.appendChild(el);
+
+    Sound.drop();
+    Haptics.drop();
+
+    // Small pause for the tile to pop in
+    await sleep(T_PLACE);
+
+    // Render the queue to reflect the new head
+    renderQueue();
+
+    // Resolve any matches
+    await resolveCascades();
+
+    // Check for game over
+    await checkGameOver();
+
+    scheduleSave();
+    updatePowerButtons();
+
+    G.animating = false;
+    return true;
+  }
+
+  /* ========================================================================
+     12 — DRAG & DROP INPUT
+     ======================================================================== */
+
+  const drag = {
+    active: false,
+    value: 0,
+    ghost: null,
+    hoverIndex: -1,
+    pointerId: null,
+  };
+
+  /** Called when the player touches the head of the queue. */
+  function onQueuePointerDown(e) {
+    if (G.status !== "playing" || G.animating) return;
+    e.preventDefault();
+    Sound.init();
+    Sound.resume();
+
+    drag.active = true;
+    drag.value = G.queue[0];
+    drag.pointerId = e.pointerId;
+    drag.hoverIndex = -1;
+
+    // Create the ghost
+    const ghost = document.createElement("div");
+    ghost.className = "drag-ghost";
+    const colors = colorsFor(drag.value);
+    ghost.style.setProperty("--c1", colors.c1);
+    ghost.style.setProperty("--c2", colors.c2);
+    ghost.style.setProperty("--glow", colors.glow);
+    ghost.textContent = String(drag.value);
+    // Match board tile size
+    const cellSize = parseInt(getComputedStyle(boardEl).getPropertyValue("--cell-size"), 10) || 68;
+    ghost.style.width = cellSize + "px";
+    ghost.style.height = cellSize + "px";
+    ghost.style.fontSize = Math.round(cellSize * 0.42) + "px";
+    document.body.appendChild(ghost);
+    drag.ghost = ghost;
+
+    // Mark the head piece as picked
+    const headEl = queueEl.querySelector(".next-piece.head");
+    if (headEl) headEl.classList.add("picked");
+
+    // Position ghost
+    moveGhost(e.clientX, e.clientY);
+    updateHover(e.clientX, e.clientY);
+
+    // Attach document listeners
+    document.addEventListener("pointermove", onDragMove);
+    document.addEventListener("pointerup", onDragEnd);
+    document.addEventListener("pointercancel", onDragEnd);
+
+    Sound.pickup();
+    Haptics.pickup();
+  }
+
+  function moveGhost(x, y) {
+    if (!drag.ghost) return;
+    drag.ghost.style.left = x + "px";
+    drag.ghost.style.top = y + "px";
+  }
+
+  /** Which board index is under (x, y)? Returns -1 if outside. */
+  function indexFromPoint(x, y) {
+    const rect = boardEl.getBoundingClientRect();
+    const cellSize = parseInt(getComputedStyle(boardEl).getPropertyValue("--cell-size"), 10);
+    const gap = parseInt(getComputedStyle(boardEl).getPropertyValue("--gap"), 10);
+    const pad = parseInt(getComputedStyle(boardEl).getPropertyValue("--pad"), 10);
+
+    const lx = x - rect.left;
+    const ly = y - rect.top;
+
+    // Allow a small tolerance
+    const tol = Math.round(cellSize * 0.4);
+    if (lx < pad - tol || ly < pad - tol) return -1;
+    if (lx > rect.width - pad + tol || ly > rect.height - pad + tol) return -1;
+
+    const col = Math.floor((lx - pad) / (cellSize + gap));
+    const row = Math.floor((ly - pad) / (cellSize + gap));
+
+    if (row < 0 || row >= GRID_SIZE || col < 0 || col >= GRID_SIZE) return -1;
+
+    return row * GRID_SIZE + col;
+  }
+
+  function updateHover(x, y) {
+    // Clear previous
+    if (drag.hoverIndex >= 0 && cellEls[drag.hoverIndex]) {
+      cellEls[drag.hoverIndex].classList.remove("hover");
+    }
+
+    const idx = indexFromPoint(x, y);
+    if (idx >= 0 && isEmptyCell(idx)) {
+      drag.hoverIndex = idx;
+      cellEls[idx].classList.add("hover");
+    } else {
+      drag.hoverIndex = -1;
+    }
+  }
+
+  function onDragMove(e) {
+    if (!drag.active) return;
+    moveGhost(e.clientX, e.clientY);
+    updateHover(e.clientX, e.clientY);
+  }
+
+  function onDragEnd(e) {
+    if (!drag.active) return;
+    drag.active = false;
+
+    document.removeEventListener("pointermove", onDragMove);
+    document.removeEventListener("pointerup", onDragEnd);
+    document.removeEventListener("pointercancel", onDragEnd);
+
+    // Clean hover
+    if (drag.hoverIndex >= 0 && cellEls[drag.hoverIndex]) {
+      cellEls[drag.hoverIndex].classList.remove("hover");
+    }
+
+    // Remove ghost
+    if (drag.ghost && drag.ghost.parentNode) drag.ghost.remove();
+    drag.ghost = null;
+
+    // Restore queue head
+    const headEl = queueEl.querySelector(".next-piece.head");
+    if (headEl) headEl.classList.remove("picked");
+
+    // Attempt placement
+    const idx = indexFromPoint(e.clientX, e.clientY);
+    if (idx >= 0 && isEmptyCell(idx)) {
+      placePiece(idx);
+    } else {
+      // Invalid drop — subtle shake or nothing
+      if (idx >= 0) Sound.error();
+    }
+  }
+
+  /* ========================================================================
+     13 — POWER-UPS
+     ======================================================================== */
+
+  function setActivePower(kind) {
+    if (G.status !== "playing" || G.animating) return;
+
+    if (G.activePower === kind) {
+      // Toggle off
+      clearActivePower();
+      Sound.click();
+      return;
+    }
+
+    if (G.powerups[kind] <= 0) {
+      Sound.error();
+      return;
+    }
+
+    G.activePower = kind;
+    G.swapFirstIndex = null;
+    updatePowerButtons();
+    Sound.click();
+
+    // Different prompt for each power
+    if (kind === "hammer") showToast("Tap a tile to smash");
+    else if (kind === "bomb") showToast("Tap to detonate");
+    else if (kind === "swap") showToast("Tap two tiles to swap");
+  }
+
+  function clearActivePower() {
+    if (G.activePower === "swap" && G.swapFirstIndex !== null) {
+      cellEls[G.swapFirstIndex].classList.remove("swap-target");
+      const t = G.grid[G.swapFirstIndex];
+      if (t) {
+        const el = tileEls.get(t.id);
+        if (el) el.classList.remove("primed");
+      }
+    }
+    G.activePower = null;
+    G.swapFirstIndex = null;
+    updatePowerButtons();
+  }
+
+  /** Handle a tap on the board when a power-up is active. */
+  async function handleBoardTapForPower(index) {
+    if (G.activePower === "hammer") {
+      await useHammer(index);
+    } else if (G.activePower === "bomb") {
+      await useBomb(index);
+    } else if (G.activePower === "swap") {
+      handleSwapTap(index);
+    }
+  }
+
+  async function useHammer(index) {
+    const tile = G.grid[index];
+    if (!tile) {
+      Sound.error();
+      return;
+    }
+    if (G.powerups.hammer <= 0) return;
+
+    G.powerups.hammer--;
+    G.animating = true;
+
+    // Visual: shrink out
+    const el = tileEls.get(tile.id);
+    if (el) el.classList.add("merging");
+
+    Sound.powerup("hammer");
+    Haptics.power();
+
+    await sleep(240);
+
+    // Remove from state
+    G.grid[index] = null;
+    G.tiles.delete(tile.id);
+    if (el) {
+      el.remove();
+      tileEls.delete(tile.id);
+    }
+
+    clearActivePower();
+    updatePowerButtons();
+    scheduleSave();
+
+    // Resolve any cascades after hammering
+    await resolveCascades();
+    await checkGameOver();
+
+    G.animating = false;
+  }
+
+  async function useBomb(index) {
+    if (G.powerups.bomb <= 0) return;
+
+    const centerRow = Math.floor(index / GRID_SIZE);
+    const centerCol = index % GRID_SIZE;
+    const targets = [];
+
+    for (let dr = -1; dr <= 1; dr++) {
+      for (let dc = -1; dc <= 1; dc++) {
+        const r = centerRow + dr;
+        const c = centerCol + dc;
+        if (r < 0 || r >= GRID_SIZE || c < 0 || c >= GRID_SIZE) continue;
+        const i = r * GRID_SIZE + c;
+        if (G.grid[i]) targets.push(i);
+      }
+    }
+
+    G.powerups.bomb--;
+    G.animating = true;
+
+    Sound.powerup("bomb");
+    Haptics.power();
+
+    // Screen shake on the board
+    boardEl.style.transition = "transform 0.4s";
+    boardEl.style.transform = "translate(3px, -3px)";
+    setTimeout(() => boardEl.style.transform = "translate(-3px, 3px)", 60);
+    setTimeout(() => boardEl.style.transform = "translate(0, 0)", 120);
+
+    // Visual: mark each tile
+    for (const i of targets) {
+      const t = G.grid[i];
+      if (!t) continue;
+      const el = tileEls.get(t.id);
+      if (el) el.classList.add("merging");
+    }
+
+    await sleep(280);
+
+    // Remove tiles
+    for (const i of targets) {
+      const t = G.grid[i];
+      if (!t) continue;
+      G.grid[i] = null;
+      G.tiles.delete(t.id);
+      const el = tileEls.get(t.id);
+      if (el) {
+        el.remove();
+        tileEls.delete(t.id);
+      }
+    }
+
+    clearActivePower();
+    updatePowerButtons();
+    scheduleSave();
+
+    await resolveCascades();
+    await checkGameOver();
+
+    G.animating = false;
+  }
+
+  function handleSwapTap(index) {
+    const tile = G.grid[index];
+
+    if (G.swapFirstIndex === null) {
+      // First pick: must be a tile
+      if (!tile) {
+        Sound.error();
+        return;
+      }
+      G.swapFirstIndex = index;
+      cellEls[index].classList.add("swap-target");
+      const el = tileEls.get(tile.id);
+      if (el) el.classList.add("primed");
+      Sound.click();
+    } else {
+      // Second pick
+      const first = G.swapFirstIndex;
+      if (index === first) {
+        // Cancel
+        cellEls[first].classList.remove("swap-target");
+        const t = G.grid[first];
+        if (t) {
+          const el = tileEls.get(t.id);
+          if (el) el.classList.remove("primed");
+        }
+        G.swapFirstIndex = null;
+        Sound.click();
+        return;
+      }
+
+      performSwap(first, index);
+    }
+  }
+
+  async function performSwap(a, b) {
+    if (G.powerups.swap <= 0) return;
+
+    const tileA = G.grid[a];
+    const tileB = G.grid[b];
+    if (!tileA) return;
+
+    G.powerups.swap--;
+    G.animating = true;
+
+    // Clear highlighting
+    if (cellEls[a]) cellEls[a].classList.remove("swap-target");
+    if (cellEls[b]) cellEls[b].classList.remove("swap-target");
+    if (tileA) {
+      const elA = tileEls.get(tileA.id);
+      if (elA) elA.classList.remove("primed");
+    }
+
+    // Swap values in the state
+    G.grid[a] = tileB;
+    G.grid[b] = tileA;
+    if (tileA) tileA.index = b;
+    if (tileB) tileB.index = a;
+
+    // Update DOM
+    if (tileA) {
+      const elA = tileEls.get(tileA.id);
+      if (elA) updateTileEl(elA, tileA);
+    }
+    if (tileB) {
+      const elB = tileEls.get(tileB.id);
+      if (elB) updateTileEl(elB, tileB);
+    }
+
+    Sound.powerup("swap");
+    Haptics.power();
+
+    // Clear active
+    G.activePower = null;
+    G.swapFirstIndex = null;
+    updatePowerButtons();
+
+    await sleep(240);
+
+    // Resolve cascades from the swap
+    await resolveCascades();
+    await checkGameOver();
+
+    scheduleSave();
+    G.animating = false;
+  }
+
+  /* ========================================================================
+     14 — GAME FLOW
+     ======================================================================== */
+
+  function resetState() {
+    G.grid = new Array(GRID_CELLS).fill(null);
+    G.tiles.clear();
+    G.nextId = 0;
+    G.queue = [];
+    G.score = 0;
+    G.currentCombo = 1;
+    G.maxCombo = 0;
+    G.powerups = Object.assign({}, POWERUP_USES);
+    G.activePower = null;
+    G.swapFirstIndex = null;
+    G.animating = false;
+  }
+
+  function fillQueue() {
+    while (G.queue.length < QUEUE_SIZE) {
+      G.queue.push(randomSpawnValue());
+    }
+  }
+
+  function newGame() {
+    Sound.init();
+    Sound.resume();
+    Sound.click();
+
+    resetState();
+    clearTileEls();
+    fillQueue();
+
+    G.status = "playing";
+    hideScreens();
+    renderQueue();
+    renderTiles();
+    updateScoreHUD(false);
+    updatePowerButtons();
+    scheduleSave();
+  }
+
+  /** Check for game over: board is full AND no power-ups left. */
+  async function checkGameOver() {
+    // Any empty cell?
+    const full = G.grid.every((c) => c !== null);
+    if (!full) return false;
+
+    // Any power-up remaining?
+    const hasPower = G.powerups.hammer > 0 || G.powerups.bomb > 0 || G.powerups.swap > 0;
+    if (hasPower) {
+      // Warn the player
+      showToast("Board full — use a power-up!");
+      return false;
+    }
+
+    // Game over
+    await sleep(300);
+    endGame();
+    return true;
+  }
+
+  function endGame() {
+    G.status = "over";
+    Sound.gameOver();
+    Haptics.over();
+
+    Save.data.gamesPlayed += 1;
+    const isNewBest = G.score > Save.data.bestScore;
+    if (isNewBest) Save.data.bestScore = G.score;
+    if (G.maxCombo > Save.data.maxCombo) Save.data.maxCombo = G.maxCombo;
+
+    // Track best tile
+    let maxTile = 0;
+    for (const [, t] of G.tiles) {
+      if (t.value > maxTile) maxTile = t.value;
+    }
+    if (maxTile > Save.data.bestTile) Save.data.bestTile = maxTile;
+
+    Save.data.state = null;
+    Save.save();
+
+    $("#overScore").textContent = fmt(G.score);
+    $("#overMaxTile").textContent = String(maxTile);
+    $("#overMaxCombo").textContent = "x" + G.maxCombo;
+    $("#overBest").textContent = fmt(Save.data.bestScore);
+    $("#overGames").textContent = String(Save.data.gamesPlayed);
+    $("#overSub").textContent = isNewBest ? "New best score!" : "No moves left";
+
+    const badgeSlot = $("#overBadge");
+    badgeSlot.innerHTML = "";
+    if (isNewBest) {
+      const badge = document.createElement("div");
+      badge.className = "new-best";
+      badge.textContent = "★ New Best";
+      badgeSlot.appendChild(badge);
+      setTimeout(() => Sound.newBest(), 300);
+    }
+
+    setTimeout(() => showScreen("over"), 300);
+  }
+
+  function pauseGame() {
+    if (G.status !== "playing") return;
+    G.status = "paused";
+    Sound.click();
+    updateSoundLabels();
+    showScreen("pause");
+  }
+
+  function resumeGame() {
+    if (G.status !== "paused") return;
+    G.status = "playing";
+    Sound.click();
+    hideScreens();
+  }
+
+  function quitToMenu() {
+    G.status = "menu";
+    hideScreens();
+    refreshMenuStats();
+    showScreen("start");
+    Sound.click();
+  }
+
+  /* ---- Save / Load ---- */
+
+  function scheduleSave() {
+    if (G.saveTimer) clearTimeout(G.saveTimer);
+    G.saveTimer = setTimeout(saveGameState, 300);
+  }
+
+  function saveGameState() {
+    if (G.status !== "playing" && G.status !== "paused") {
+      Save.data.state = null;
+    } else {
+      Save.data.state = {
+        grid: G.grid.map((t) => t ? { id: t.id, value: t.value, index: t.index } : null),
+        nextId: G.nextId,
+        queue: G.queue.slice(),
+        score: G.score,
+        maxCombo: G.maxCombo,
+        powerups: Object.assign({}, G.powerups),
+      };
+    }
+    Save.save();
+  }
+
+  function loadSavedState() {
+    const s = Save.data.state;
+    if (!s || !Array.isArray(s.grid) || !Array.isArray(s.queue)) return false;
+
+    resetState();
+    clearTileEls();
+
+    for (let i = 0; i < GRID_CELLS; i++) {
+      const t = s.grid[i];
+      if (!t) continue;
+      G.grid[i] = { id: t.id, value: t.value, index: i };
+      G.tiles.set(t.id, G.grid[i]);
+    }
+    G.nextId = Math.max(0, s.nextId | 0);
+    G.queue = s.queue.slice(0, QUEUE_SIZE);
+    while (G.queue.length < QUEUE_SIZE) G.queue.push(randomSpawnValue());
+    G.score = s.score | 0;
+    G.maxCombo = s.maxCombo | 0;
+    G.powerups = Object.assign({}, POWERUPS_DEFAULT(), s.powerups || {});
+
+    G.status = "playing";
+    hideScreens();
+    renderQueue();
+    renderTiles();
+    updateScoreHUD(false);
+    updatePowerButtons();
+    return true;
+  }
+
+  function POWERUPS_DEFAULT() {
+    return { hammer: 3, bomb: 3, swap: 3 };
+  }
+
+  /* ========================================================================
+     15 — UI SCREENS, TOASTS, BANNERS
+     ======================================================================== */
+
+  function showScreen(name) {
+    ["start", "pause", "over"].forEach((k) => {
+      const el = $("#screen-" + k);
+      if (el) el.classList.toggle("active", k === name);
+    });
+  }
+
+  function hideScreens() {
+    ["start", "pause", "over"].forEach((k) => {
+      const el = $("#screen-" + k);
+      if (el) el.classList.remove("active");
+    });
+  }
+
+  function refreshMenuStats() {
+    $("#statBest").textContent = fmt(Save.data.bestScore);
+    $("#statMax").textContent = String(Save.data.bestTile);
+    $("#statGames").textContent = String(Save.data.gamesPlayed);
+    $("#statCombo").textContent = "x" + Save.data.maxCombo;
+    const btnContinue = $("#btnContinue");
+    if (Save.data.state) btnContinue.style.display = "";
+    else btnContinue.style.display = "none";
+  }
+
+  let toastTimer = 0;
+  function showToast(text) {
+    const el = $("#toast");
+    el.textContent = text;
+    el.classList.remove("show");
+    void el.offsetWidth;
+    el.classList.add("show");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 1500);
+  }
+
+  function showComboBanner(text) {
+    const el = $("#comboBanner");
+    el.textContent = text;
+    el.classList.remove("show");
+    void el.offsetWidth;
+    el.classList.add("show");
+  }
+
+  function updateSoundLabels() {
+    const muted = Sound.muted;
+    const btn = $("#btnSoundPause");
+    if (btn) btn.textContent = muted ? "🔇 Sound Off" : "🔊 Sound On";
+  }
+
+  /* ========================================================================
+     16 — BOOTSTRAP
+     ======================================================================== */
+
+  function init() {
+    // DOM refs
+    appEl = $("#app");
+    boardEl = $("#board");
+    cellsEl = $("#cells");
+    tilesEl = $("#tiles");
+    queueEl = $("#queue");
+
+    // Persistence
+    Save.load();
+    Sound.setMuted(Save.data.muted);
+    G.best = Save.data.bestScore;
+    updateSoundLabels();
+    refreshMenuStats();
+
+    // Board setup
+    buildCells();
+    resizeBoard();
+
+    // Resize handling
+    let resizeRaf = 0;
+    function scheduleResize() {
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(resizeBoard);
+    }
+    window.addEventListener("resize", scheduleResize);
+    window.addEventListener("orientationchange", () => setTimeout(scheduleResize, 120));
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(scheduleResize);
+      ro.observe(boardEl.parentElement);
+    }
+
+    // Board tap → handle power-ups (only when a power is active)
+    boardEl.addEventListener("pointerdown", (e) => {
+      if (G.status !== "playing" || G.animating) return;
+      if (!G.activePower) return;
+      // Only fire on empty pick when dragging is not active
+      const idx = indexFromPoint(e.clientX, e.clientY);
+      if (idx < 0) return;
+      e.preventDefault();
+      handleBoardTapForPower(idx);
+    });
+    boardEl.addEventListener("contextmenu", (e) => e.preventDefault());
+
+    // Header menu button
+    $("#btnMenu").addEventListener("click", () => {
+      if (G.status === "playing") pauseGame();
+      else if (G.status === "paused") resumeGame();
+      else if (G.status === "menu") {
+        // no-op
+      } else if (G.status === "over") {
+        quitToMenu();
+      }
+    });
+
+    // Power-up buttons
+    ["hammer", "bomb", "swap"].forEach((k) => {
+      const btn = $("#power" + k[0].toUpperCase() + k.slice(1));
+      btn.addEventListener("click", () => {
+        Sound.init();
+        Sound.resume();
+        setActivePower(k);
+      });
+    });
+
+    // Start screen
+    $("#btnPlay").addEventListener("click", () => {
+      Sound.init();
+      Sound.resume();
+      newGame();
+    });
+
+    $("#btnContinue").addEventListener("click", () => {
+      Sound.init();
+      Sound.resume();
+      Sound.click();
+      if (!loadSavedState()) newGame();
+    });
+
+    // Pause screen
+    $("#btnResume").addEventListener("click", resumeGame);
+    $("#btnRestartPause").addEventListener("click", () => {
+      Sound.click();
+      newGame();
+    });
+    $("#btnSoundPause").addEventListener("click", () => {
+      Sound.init();
+      Sound.toggle();
+      updateSoundLabels();
+    });
+    $("#btnQuit").addEventListener("click", quitToMenu);
+
+    // Game over screen
+    $("#btnPlayAgain").addEventListener("click", () => {
+      Sound.click();
+      newGame();
+    });
+    $("#btnOverMenu").addEventListener("click", quitToMenu);
+
+    // Keyboard
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        if (G.status === "playing") pauseGame();
+        else if (G.status === "paused") resumeGame();
+        else if (G.activePower) clearActivePower();
+        return;
+      }
+      if (e.key === "r" || e.key === "R") {
+        if (G.status === "playing" || G.status === "paused" || G.status === "over") {
+          newGame();
+        }
+        return;
+      }
+      // Number keys 1-3 for power-ups
+      if (G.status === "playing" && !G.animating) {
+        if (e.key === "1") setActivePower("hammer");
+        else if (e.key === "2") setActivePower("bomb");
+        else if (e.key === "3") setActivePower("swap");
+      }
+    });
+
+    // Auto-pause on tab hide
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && G.status === "playing") pauseGame();
+    });
+    window.addEventListener("blur", () => {
+      if (G.status === "playing") pauseGame();
+    });
+
+    // Prevent gestures
+    document.addEventListener("gesturestart", (e) => e.preventDefault());
+
+    // Show start screen
+    showScreen("start");
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
