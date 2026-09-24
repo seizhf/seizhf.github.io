@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaivMOCKUP — Beautiful Mockups in Seconds</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖼️</text></svg>">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: { extend: {
+      fontFamily: { sans: ['Inter','system-ui','sans-serif'], arabic: ['Cairo','system-ui','sans-serif'] }
+    }}
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<style>
+  * { -webkit-tap-highlight-color: transparent; }
+  html, body { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    background: #f8fafc;
+    color: #0f172a;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
+  }
+  html.dark body { background: #020617; color: #e2e8f0; }
+  body.lang-ar { font-family: 'Cairo', 'Inter', system-ui, sans-serif; }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(900px 600px at 15% -10%, rgba(99,102,241,0.14), transparent 60%),
+      radial-gradient(800px 500px at 95% 0%, rgba(236,72,153,0.12), transparent 55%),
+      radial-gradient(700px 500px at 50% 110%, rgba(56,189,248,0.10), transparent 60%);
+    pointer-events: none;
+  }
+  html.dark body::before {
+    background:
+      radial-gradient(900px 600px at 15% -10%, rgba(99,102,241,0.24), transparent 60%),
+      radial-gradient(800px 500px at 95% 0%, rgba(236,72,153,0.18), transparent 55%),
+      radial-gradient(700px 500px at 50% 110%, rgba(56,189,248,0.14), transparent 60%);
+  }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.5); background-clip: padding-box; }
+  html.dark ::-webkit-scrollbar-thumb { background: rgba(129,140,248,0.35); background-clip: padding-box; }
+
+  .brand-text {
+    background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .btn-brand {
+    background: linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899);
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease infinite;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    box-shadow: 0 10px 30px -10px rgba(139,92,246,0.6);
+  }
+  .btn-brand:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 16px 40px -12px rgba(139,92,246,0.8); }
+  .btn-brand:active:not(:disabled) { transform: translateY(0) scale(0.98); }
+  .btn-brand:disabled { opacity: 0.6; cursor: not-allowed; animation: none; }
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.78);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.7);
+    box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 12px 32px -12px rgba(15,23,42,0.10);
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  html.dark .card {
+    background: rgba(15,23,42,0.65);
+    border-color: rgba(148,163,184,0.14);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 16px 40px -16px rgba(0,0,0,0.6);
+  }
+
+  .card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #334155;
+    margin-bottom: 14px;
+  }
+  html.dark .card-title { color: #cbd5e1; }
+
+  .card-title-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  /* ============ DROP ZONE ============ */
+  .dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 26px 18px;
+    border-radius: 14px;
+    border: 2px dashed rgba(99,102,241,0.35);
+    background: rgba(99,102,241,0.04);
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-align: center;
+  }
+  html.dark .dropzone { background: rgba(99,102,241,0.06); border-color: rgba(129,140,248,0.35); color: #94a3b8; }
+  .dropzone:hover, .dropzone.dragging {
+    border-color: #6366f1;
+    background: rgba(99,102,241,0.10);
+    color: #4f46e5;
+    transform: translateY(-1px);
+  }
+  html.dark .dropzone:hover, html.dark .dropzone.dragging { border-color: #818cf8; background: rgba(129,140,248,0.12); color: #a5b4fc; }
+  .dropzone i.main-icon { font-size: 2rem; opacity: 0.7; }
+  .dropzone .drop-title { font-weight: 700; font-size: 0.9rem; }
+  .dropzone .drop-hint { font-size: 0.72rem; opacity: 0.75; font-weight: 500; }
+
+  .thumb-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 12px;
+    background: rgba(148,163,184,0.10);
+    border: 1px solid rgba(148,163,184,0.20);
+  }
+  html.dark .thumb-row { background: rgba(148,163,184,0.06); border-color: rgba(148,163,184,0.14); }
+  .thumb-row img {
+    width: 52px;
+    height: 52px;
+    border-radius: 9px;
+    object-fit: cover;
+    border: 1px solid rgba(148,163,184,0.25);
+    background: #fff;
+  }
+  .thumb-info { flex: 1; min-width: 0; }
+  .thumb-name { font-size: 0.82rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .thumb-meta { font-size: 0.68rem; opacity: 0.65; font-weight: 500; }
+  .thumb-actions { display: flex; gap: 6px; }
+
+  .mini-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 7px 11px;
+    border-radius: 9px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1.5px solid rgba(148,163,184,0.3);
+    background: rgba(255,255,255,0.6);
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  html.dark .mini-btn { background: rgba(15,23,42,0.5); border-color: rgba(148,163,184,0.18); color: #cbd5e1; }
+  .mini-btn:hover { border-color: #6366f1; color: #4f46e5; transform: translateY(-1px); }
+  html.dark .mini-btn:hover { border-color: #818cf8; color: #a5b4fc; }
+  .mini-btn.danger:hover { border-color: #ef4444; color: #dc2626; }
+  html.dark .mini-btn.danger:hover { border-color: #f87171; color: #fca5a5; }
+
+  /* ============ FRAME SWITCHER (10 frames) ============ */
+  .frame-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .frame-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 12px 6px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(148,163,184,0.25);
+    background: rgba(255,255,255,0.5);
+    color: #475569;
+    font-size: 0.68rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-align: center;
+    line-height: 1.2;
+  }
+  html.dark .frame-btn { background: rgba(15,23,42,0.5); border-color: rgba(148,163,184,0.14); color: #94a3b8; }
+  .frame-btn:hover { border-color: rgba(99,102,241,0.6); color: #4f46e5; transform: translateY(-2px); }
+  html.dark .frame-btn:hover { border-color: rgba(129,140,248,0.5); color: #a5b4fc; }
+  .frame-btn.active {
+    border-color: #6366f1;
+    background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.12));
+    color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+  }
+  html.dark .frame-btn.active {
+    border-color: #818cf8;
+    color: #a5b4fc;
+    box-shadow: 0 0 0 3px rgba(129,140,248,0.18);
+  }
+  .frame-btn i { font-size: 1.05rem; }
+  .frame-btn .frame-tag {
+    font-size: 0.55rem;
+    opacity: 0.55;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  /* ============ PRESET GRID ============ */
+  .preset-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .preset-swatch {
+    aspect-ratio: 1/1;
+    border-radius: 9px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 2px 6px rgba(15,23,42,0.12);
+  }
+  .preset-swatch:hover { transform: scale(1.08); box-shadow: 0 4px 12px rgba(15,23,42,0.2); }
+  .preset-swatch.active { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.25), 0 4px 12px rgba(15,23,42,0.2); }
+  html.dark .preset-swatch.active { border-color: #818cf8; box-shadow: 0 0 0 3px rgba(129,140,248,0.3), 0 4px 12px rgba(0,0,0,0.4); }
+
+  /* ============ COLOR PICKERS ============ */
+  .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .color-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px 4px 4px;
+    border-radius: 11px;
+    border: 1.5px solid rgba(148,163,184,0.3);
+    background: rgba(255,255,255,0.9);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  html.dark .color-field { background: rgba(2,6,23,0.5); border-color: rgba(148,163,184,0.18); }
+  .color-field:hover { border-color: #6366f1; }
+  .color-field input[type="color"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 7px;
+    overflow: hidden;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .color-field input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+  .color-field input[type="color"]::-webkit-color-swatch { border: none; border-radius: 7px; }
+  .color-field input[type="color"]::-moz-color-swatch { border: none; border-radius: 7px; }
+  .color-field .color-label { font-size: 0.68rem; font-weight: 700; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.05em; }
+  .color-field .color-val { font-size: 0.7rem; font-family: ui-monospace, monospace; font-weight: 600; opacity: 0.85; }
+
+  /* ============ SLIDERS ============ */
+  .slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .slider-row:last-child { margin-bottom: 0; }
+  .slider-row label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #475569;
+    min-width: 66px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  html.dark .slider-row label { color: #94a3b8; }
+  .slider-row input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+    outline: none;
+    cursor: pointer;
+  }
+  .slider-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #6366f1;
+    cursor: grab;
+    box-shadow: 0 2px 6px rgba(99,102,241,0.45);
+    transition: transform 0.15s ease;
+  }
+  .slider-row input[type="range"]::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.15); }
+  .slider-row input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #6366f1;
+    cursor: grab;
+  }
+  .slider-row .slider-val {
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-family: ui-monospace, monospace;
+    color: #4f46e5;
+    min-width: 40px;
+    text-align: right;
+  }
+  html.dark .slider-row .slider-val { color: #a5b4fc; }
+
+  /* ============ SEGMENTED ============ */
+  .seg {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    padding: 4px;
+    border-radius: 12px;
+    background: rgba(148,163,184,0.15);
+    border: 1px solid rgba(148,163,184,0.2);
+  }
+  html.dark .seg { background: rgba(148,163,184,0.08); border-color: rgba(148,163,184,0.12); }
+  .seg button {
+    padding: 9px 6px;
+    border-radius: 9px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #475569;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+  html.dark .seg button { color: #94a3b8; }
+  .seg button.active { background: #fff; color: #4f46e5; box-shadow: 0 2px 6px rgba(15,23,42,0.12); }
+  html.dark .seg button.active { background: rgb(30,41,59); color: #a5b4fc; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+
+  /* ============ THEME TOGGLE ============ */
+  .theme-toggle {
+    position: relative;
+    width: 58px;
+    height: 30px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #fbbf24, #f97316);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+  }
+  html.dark .theme-toggle { background: linear-gradient(135deg, #4f46e5, #8b5cf6); }
+  .theme-toggle .knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  }
+  html.dark .theme-toggle .knob { transform: translateX(28px); }
+  html[dir="rtl"].dark .theme-toggle .knob { transform: translateX(-28px); }
+
+  /* ============ LANGUAGE PILLS ============ */
+  .lang-pill {
+    padding: 6px 11px;
+    border-radius: 8px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    border: 1.5px solid rgba(148,163,184,0.3);
+    background: rgba(255,255,255,0.6);
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    letter-spacing: 0.03em;
+  }
+  html.dark .lang-pill { background: rgba(15,23,42,0.6); color: #94a3b8; border-color: rgba(148,163,184,0.18); }
+  .lang-pill:hover { border-color: #6366f1; color: #4f46e5; }
+  .lang-pill.active {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 12px -3px rgba(99,102,241,0.6);
+  }
+
+  /* ============ PREVIEW ============ */
+  .preview-viewport {
+    position: relative;
+    width: 100%;
+    height: clamp(420px, 62vh, 780px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 18px;
+    background:
+      repeating-conic-gradient(rgba(148,163,184,0.11) 0% 25%, transparent 0% 50%) 50% / 22px 22px;
+  }
+  html.dark .preview-viewport {
+    background:
+      repeating-conic-gradient(rgba(148,163,184,0.06) 0% 25%, transparent 0% 50%) 50% / 22px 22px;
+  }
+
+  .preview-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: #94a3b8;
+    text-align: center;
+    padding: 40px 20px;
+  }
+  html.dark .preview-empty { color: #64748b; }
+  .preview-empty i { font-size: 3.5rem; opacity: 0.5; }
+  .preview-empty p { font-size: 0.9rem; font-weight: 600; }
+
+  .preview-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preview-frame-outer {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .preview-scaler {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+  }
+
+  /* ============ MOCKUP ============ */
+  .mockup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  /* ============ FRAME BASE ============ */
+  .frame {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .frame-screen-wrap {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .frame-screen {
+    position: relative;
+    overflow: hidden;
+    background: #000;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+
+  .frame-screen img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .frame-chrome {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .frame-chin {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Traffic dots */
+  .traffic-dots { display: flex; gap: 8px; align-items: center; }
+  .traffic-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+  .traffic-red { background: #ff5f57; }
+  .traffic-yellow { background: #febc2e; }
+  .traffic-green { background: #28c840; }
+
+  .url-bar {
+    flex: 1;
+    height: 26px;
+    background: #ffffff;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .url-bar i { font-size: 10px; color: #94a3b8; }
+
+  /* Chrome title text */
+  .chrome-title {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  /* ============ MACBOOK ============ */
+  .frame-macbook {
+    background: linear-gradient(180deg, #2c2c2e 0%, #1a1a1c 100%);
+    border-radius: 14px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .frame-macbook .frame-chrome {
+    height: 40px;
+    padding: 0 18px;
+    gap: 12px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.15));
+    border-bottom: 1px solid rgba(0,0,0,0.4);
+  }
+
+  /* ============ BROWSER ============ */
+  .frame-browser {
+    background: #e2e8f0;
+    border-radius: 12px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+  }
+  .frame-browser .frame-chrome {
+    height: 44px;
+    padding: 0 16px;
+    gap: 14px;
+    background: linear-gradient(180deg, #f8fafc, #e2e8f0);
+    border-bottom: 1px solid #cbd5e1;
+  }
+
+  /* ============ DESKTOP MONITOR ============ */
+  .frame-imac {
+    background: linear-gradient(180deg, #2a2a2c, #161618);
+    border-radius: 12px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+  }
+  .frame-imac .frame-chin {
+    height: 46px;
+    background: linear-gradient(180deg, #232325, #181819);
+    border-top: 1px solid rgba(0,0,0,0.5);
+  }
+  .chin-brand {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.25);
+    text-transform: uppercase;
+  }
+
+  /* ============ TV ============ */
+  .frame-tv {
+    background: linear-gradient(180deg, #0a0a0a, #000);
+    border-radius: 8px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+  }
+  .frame-tv .frame-chin {
+    height: 30px;
+    background: linear-gradient(180deg, #0a0a0a, #000);
+    border-top: 1px solid rgba(0,0,0,0.6);
+  }
+  .tv-logo {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.18);
+  }
+
+  /* ============ IPHONE ============ */
+  .frame-iphone {
+    background: linear-gradient(180deg, #1f1f22, #0f0f10);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+  }
+  .frame-iphone .frame-screen-wrap {
+    position: relative;
+  }
+  .iphone-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32%;
+    max-width: 130px;
+    height: 22px;
+    background: #000;
+    border-radius: 0 0 14px 14px;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .iphone-home {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 34%;
+    max-width: 110px;
+    height: 4px;
+    background: rgba(255,255,255,0.55);
+    border-radius: 4px;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  /* ============ ANDROID ============ */
+  .frame-android {
+    background: linear-gradient(180deg, #202124, #0e0e0f);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+  }
+  .frame-android .frame-screen-wrap {
+    position: relative;
+  }
+  .android-camera {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 11px;
+    height: 11px;
+    background: #000;
+    border-radius: 50%;
+    z-index: 5;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1.5px rgba(80,80,90,0.7);
+  }
+  .android-home {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32%;
+    max-width: 100px;
+    height: 3px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 3px;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  /* ============ TABLET ============ */
+  .frame-tablet {
+    background: linear-gradient(180deg, #d8d8dc, #b8b8bc);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5), inset 0 0 0 2px rgba(0,0,0,0.06);
+  }
+  .frame-tablet .frame-screen-wrap {
+    position: relative;
+  }
+  .tablet-camera {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: #000;
+    border-radius: 50%;
+    z-index: 5;
+    pointer-events: none;
+    box-shadow: 0 0 0 1.5px #666;
+  }
+
+  /* ============ FOLDABLE ============ */
+  .frame-foldable {
+    background: linear-gradient(180deg, #2a2a2e, #131316);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+  }
+  .frame-foldable .frame-screen-wrap {
+    position: relative;
+  }
+  .crease {
+    position: absolute;
+    top: 3%;
+    bottom: 3%;
+    width: 1.5px;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.35) 50%, transparent);
+    pointer-events: none;
+    z-index: 4;
+  }
+  .crease-1 { left: 50%; transform: translateX(-50%); }
+  .crease-2 { left: 33.333%; transform: translateX(-50%); }
+  .crease-3 { left: 66.666%; transform: translateX(-50%); }
+
+  /* Foldable camera */
+  .foldable-camera {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    width: 9px;
+    height: 9px;
+    background: #000;
+    border-radius: 50%;
+    z-index: 5;
+    pointer-events: none;
+    box-shadow: 0 0 0 1.5px rgba(80,80,90,0.7);
+  }
+
+  /* ============ CARD ============ */
+  .frame-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+  }
+  html.dark .frame-card {
+    background: #0f172a;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+  }
+
+  /* ============ TOAST ============ */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    padding: 12px 22px;
+    border-radius: 14px;
+    background: #0f172a;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 24px 48px -12px rgba(0,0,0,0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 9999;
+    max-width: calc(100vw - 32px);
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #toast.success { background: linear-gradient(135deg, #059669, #10b981); }
+  #toast.error { background: linear-gradient(135deg, #dc2626, #ef4444); }
+  #toast.info { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+
+  .spin { animation: spin 1s linear infinite; }
+  @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+
+<body class="antialiased">
+
+<header class="sticky top-0 z-40 backdrop-blur-xl bg-white/70 dark:bg-slate-950/70 border-b border-slate-200/60 dark:border-slate-800/60">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+    <a href="#" class="flex items-center gap-3 group">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-violet-500/30 group-hover:scale-105 transition">
+        <i class="fas fa-wand-magic-sparkles text-lg"></i>
+      </div>
+      <div class="min-w-0">
+        <h1 class="font-extrabold text-lg leading-tight tracking-tight"><span class="brand-text">SaivMOCKUP</span></h1>
+        <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight hidden sm:block" data-i18n="tagline">Beautiful mockups in seconds</p>
+      </div>
+    </a>
+
+    <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1 p-1 rounded-xl bg-white/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/60">
+        <button class="lang-pill active" data-lang="en" type="button">EN</button>
+        <button class="lang-pill" data-lang="fr" type="button">FR</button>
+        <button class="lang-pill" data-lang="ar" type="button">ع</button>
+      </div>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+        <span class="knob" id="themeKnob"><i class="fas fa-moon text-indigo-500"></i></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+  <div class="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-6">
+
+    <!-- ============ CONTROLS ============ -->
+    <section class="order-2 lg:order-1 space-y-4">
+
+      <!-- Upload -->
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon bg-gradient-to-br from-indigo-500 to-violet-500"><i class="fas fa-cloud-arrow-up"></i></span>
+          <span data-i18n="section_upload">Upload Screenshot</span>
+        </div>
+
+        <div id="dropZone" class="dropzone">
+          <input type="file" id="fileInput" accept="image/png,image/jpeg,image/jpg,image/webp,image/svg+xml" hidden>
+          <i class="fas fa-image main-icon"></i>
+          <div class="drop-title" data-i18n="upload_title">Drag & drop your screenshot</div>
+          <div class="drop-hint" data-i18n="upload_hint">or click to browse · PNG · JPG · WebP</div>
+        </div>
+
+        <div id="thumbRow" class="thumb-row hidden">
+          <img id="thumbImg" alt="">
+          <div class="thumb-info">
+            <div class="thumb-name" id="thumbName">screenshot.png</div>
+            <div class="thumb-meta" id="thumbMeta">1200 × 800</div>
+          </div>
+          <div class="thumb-actions">
+            <button class="mini-btn" id="changeImgBtn" type="button" title="Change"><i class="fas fa-rotate"></i></button>
+            <button class="mini-btn danger" id="removeImgBtn" type="button" title="Remove"><i class="fas fa-trash-can"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Device frame (10 frames) -->
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon bg-gradient-to-br from-cyan-500 to-blue-500"><i class="fas fa-mobile-screen-button"></i></span>
+          <span data-i18n="section_frame">Device Frame</span>
+        </div>
+        <div class="frame-grid" id="frameGrid"></div>
+      </div>
+
+      <!-- Background -->
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon bg-gradient-to-br from-pink-500 to-rose-500"><i class="fas fa-palette"></i></span>
+          <span data-i18n="section_background">Background</span>
+        </div>
+        <div class="preset-grid" id="presetGrid"></div>
+        <div class="color-grid">
+          <label class="color-field" for="color1Input">
+            <input type="color" id="color1Input" value="#4facfe">
+            <div>
+              <div class="color-label" data-i18n="color1">Color 1</div>
+              <div class="color-val" id="color1Val">#4facfe</div>
+            </div>
+          </label>
+          <label class="color-field" for="color2Input">
+            <input type="color" id="color2Input" value="#00f2fe">
+            <div>
+              <div class="color-label" data-i18n="color2">Color 2</div>
+              <div class="color-val" id="color2Val">#00f2fe</div>
+            </div>
+          </label>
+        </div>
+        <div class="slider-row">
+          <label data-i18n="angle">Angle</label>
+          <input type="range" id="angleRange" min="0" max="360" value="135">
+          <span class="slider-val" id="angleVal">135°</span>
+        </div>
+      </div>
+
+      <!-- Style -->
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon bg-gradient-to-br from-emerald-500 to-teal-500"><i class="fas fa-sliders"></i></span>
+          <span data-i18n="section_style">Style</span>
+        </div>
+        <div class="slider-row">
+          <label data-i18n="padding">Padding</label>
+          <input type="range" id="paddingRange" min="0" max="180" value="60">
+          <span class="slider-val" id="paddingVal">60</span>
+        </div>
+        <div class="slider-row">
+          <label data-i18n="shadow">Shadow</label>
+          <input type="range" id="shadowRange" min="0" max="100" value="55">
+          <span class="slider-val" id="shadowVal">55</span>
+        </div>
+        <div class="slider-row">
+          <label data-i18n="radius">Radius</label>
+          <input type="range" id="radiusRange" min="0" max="60" value="16">
+          <span class="slider-val" id="radiusVal">16</span>
+        </div>
+      </div>
+
+      <!-- Aspect ratio -->
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon bg-gradient-to-br from-amber-500 to-orange-500"><i class="fas fa-crop-simple"></i></span>
+          <span data-i18n="section_ratio">Aspect Ratio</span>
+        </div>
+        <div class="seg" id="ratioSeg">
+          <button data-ratio="auto" type="button" class="active">
+            <i class="fas fa-arrows-left-right-to-line"></i>
+            <span data-i18n="ratio_auto">Auto</span>
+          </button>
+          <button data-ratio="square" type="button">
+            <i class="fas fa-square"></i>
+            <span>1:1</span>
+          </button>
+          <button data-ratio="story" type="button">
+            <i class="fas fa-mobile-screen"></i>
+            <span>9:16</span>
+          </button>
+          <button data-ratio="landscape" type="button">
+            <i class="fas fa-tv"></i>
+            <span>16:9</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-3">
+        <button id="downloadBtn" class="btn-brand flex-1 py-4 px-4 rounded-2xl text-sm font-bold flex items-center justify-center gap-2" type="button" disabled>
+          <i class="fas fa-download"></i>
+          <span data-i18n="download">Download</span>
+        </button>
+        <button id="resetBtn" class="mini-btn !px-4 !py-4 !rounded-2xl" type="button" title="Reset">
+          <i class="fas fa-rotate-left text-base"></i>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ============ PREVIEW ============ -->
+    <section class="order-1 lg:order-2">
+      <div class="card p-3 sm:p-4">
+        <div class="flex items-center justify-between mb-3 px-2">
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-white text-xs">
+              <i class="fas fa-eye"></i>
+            </span>
+            <span class="font-bold text-sm" data-i18n="preview">Live Preview</span>
+          </div>
+          <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-indigo-100 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-300" id="previewBadge">AUTO</span>
+        </div>
+
+        <div class="preview-viewport" id="previewViewport">
+          <div class="preview-empty" id="previewEmpty">
+            <i class="fas fa-image"></i>
+            <p data-i18n="preview_empty">Upload an image to see your mockup</p>
+          </div>
+          <div class="preview-content hidden" id="previewContent">
+            <div class="preview-frame-outer" id="previewFrameOuter">
+              <div class="preview-scaler" id="previewScaler">
+                <div class="mockup" id="mockup">
+                  <div class="frame" id="frame"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="mt-8 border-t border-slate-200/60 dark:border-slate-800/60 bg-white/40 dark:bg-slate-950/40 backdrop-blur-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 via-violet-500 to-pink-500 flex items-center justify-center text-white">
+        <i class="fas fa-wand-magic-sparkles text-xs"></i>
+      </div>
+      <span class="text-sm font-bold"><span class="brand-text">SaivMOCKUP</span></span>
+      <span class="text-slate-400 dark:text-slate-600">·</span>
+      <span class="text-xs font-medium text-slate-500 dark:text-slate-400">
+        <span data-i18n="footer_powered">Powered by</span>
+        <span class="font-bold text-indigo-500">SaivCORE</span>
+      </span>
+    </div>
+    <div class="flex items-center gap-1.5 text-sm text-slate-600 dark:text-slate-400">
+      <span data-i18n="footer_made">Made with</span>
+      <span class="text-red-500 animate-pulse">❤️</span>
+      <span data-i18n="footer_in">in</span>
+      <span class="font-bold" data-i18n="footer_country">Algeria</span>
+      <span class="text-lg leading-none">🇩🇿</span>
+    </div>
+  </div>
+</footer>
+
+<div id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg">Done!</span></div>
+
+<script>
+/* ============================================================================
+   SaivMOCKUP v3 — 10 device frames, robust engine
+   ============================================================================ */
+(function () {
+'use strict';
+
+/* ============ I18N ============ */
+const I18N = {
+  en: {
+    tagline:'Beautiful mockups in seconds',
+    section_upload:'Upload Screenshot', upload_title:'Drag & drop your screenshot', upload_hint:'or click to browse · PNG · JPG · WebP',
+    section_frame:'Device Frame',
+    section_background:'Background', color1:'Color 1', color2:'Color 2', angle:'Angle',
+    section_style:'Style', padding:'Padding', shadow:'Shadow', radius:'Radius',
+    section_ratio:'Aspect Ratio', ratio_auto:'Auto',
+    download:'Download', downloading:'Exporting...',
+    preview:'Live Preview', preview_empty:'Upload an image to see your mockup',
+    footer_powered:'Powered by', footer_made:'Made with', footer_in:'in', footer_country:'Algeria',
+    toast_success:'Mockup downloaded!', toast_error:'Export failed. Please try again.',
+    toast_uploaded:'Image loaded', toast_removed:'Image removed', toast_reset:'Settings reset',
+    toast_type_error:'Please upload a PNG, JPG or WebP file', toast_size_error:'Image is too large (max 10MB)',
+    frame_macbook:'MacBook', frame_desktop:'Desktop', frame_browser:'Browser', frame_tv:'TV',
+    frame_iphone:'iPhone', frame_android:'Android', frame_tablet:'Tablet',
+    frame_foldable:'Foldable', frame_trifold:'Tri-Fold', frame_card:'Card'
+  },
+  fr: {
+    tagline:'De superbes maquettes en quelques secondes',
+    section_upload:'Télécharger une capture', upload_title:'Glissez-déposez votre capture', upload_hint:'ou cliquez pour parcourir · PNG · JPG · WebP',
+    section_frame:'Cadre de l\'appareil',
+    section_background:'Arrière-plan', color1:'Couleur 1', color2:'Couleur 2', angle:'Angle',
+    section_style:'Style', padding:'Marge', shadow:'Ombre', radius:'Rayon',
+    section_ratio:'Format', ratio_auto:'Auto',
+    download:'Télécharger', downloading:'Export en cours...',
+    preview:'Aperçu en direct', preview_empty:'Téléchargez une image pour voir votre maquette',
+    footer_powered:'Propulsé par', footer_made:'Fait avec', footer_in:'en', footer_country:'Algérie',
+    toast_success:'Maquette téléchargée !', toast_error:'Échec de l\'export. Réessayez.',
+    toast_uploaded:'Image chargée', toast_removed:'Image supprimée', toast_reset:'Paramètres réinitialisés',
+    toast_type_error:'Veuillez télécharger un fichier PNG, JPG ou WebP', toast_size_error:'Image trop volumineuse (max 10 Mo)',
+    frame_macbook:'MacBook', frame_desktop:'Bureau', frame_browser:'Navigateur', frame_tv:'TV',
+    frame_iphone:'iPhone', frame_android:'Android', frame_tablet:'Tablette',
+    frame_foldable:'Pliable', frame_trifold:'Tri-Pli', frame_card:'Carte'
+  },
+  ar: {
+    tagline:'لقطات شاشة جميلة في ثوانٍ',
+    section_upload:'تحميل لقطة الشاشة', upload_title:'اسحب وأفلت لقطة الشاشة', upload_hint:'أو انقر للتصفح · PNG · JPG · WebP',
+    section_frame:'إطار الجهاز',
+    section_background:'الخلفية', color1:'اللون 1', color2:'اللون 2', angle:'الزاوية',
+    section_style:'النمط', padding:'الحشوة', shadow:'الظل', radius:'الانحناء',
+    section_ratio:'نسبة الأبعاد', ratio_auto:'تلقائي',
+    download:'تحميل', downloading:'جارٍ التصدير...',
+    preview:'معاينة مباشرة', preview_empty:'حمّل صورة لرؤية النموذج',
+    footer_powered:'مدعوم من', footer_made:'صُنع بـ', footer_in:'في', footer_country:'الجزائر',
+    toast_success:'تم تحميل النموذج!', toast_error:'فشل التصدير. حاول مرة أخرى.',
+    toast_uploaded:'تم تحميل الصورة', toast_removed:'تمت إزالة الصورة', toast_reset:'تمت إعادة التعيين',
+    toast_type_error:'يرجى تحميل ملف PNG أو JPG أو WebP', toast_size_error:'الصورة كبيرة جداً (الحد الأقصى 10 ميغابايت)',
+    frame_macbook:'ماك بوك', frame_desktop:'سطح المكتب', frame_browser:'المتصفح', frame_tv:'تلفاز',
+    frame_iphone:'آيفون', frame_android:'أندرويد', frame_tablet:'جهاز لوحي',
+    frame_foldable:'قابل للطي', frame_trifold:'ثلاثي الطي', frame_card:'بطاقة'
+  }
+};
+
+/* ============ BACKGROUND PRESETS ============ */
+const BG_PRESETS = [
+  { id:'sunset',   type:'gradient', colors:['#f6d365', '#fda085'] },
+  { id:'ocean',    type:'gradient', colors:['#4facfe', '#00f2fe'] },
+  { id:'purple',   type:'gradient', colors:['#a18cd1', '#fbc2eb'] },
+  { id:'mint',     type:'gradient', colors:['#43e97b', '#38f9d7'] },
+  { id:'peach',    type:'gradient', colors:['#ffecd2', '#fcb69f'] },
+  { id:'night',    type:'gradient', colors:['#232526', '#414345'] },
+  { id:'rose',     type:'gradient', colors:['#ff9a9e', '#fecfef'] },
+  { id:'sky',      type:'gradient', colors:['#a1c4fd', '#c2e9fb'] },
+  { id:'fire',     type:'gradient', colors:['#f83600', '#f9d423'] },
+  { id:'forest',   type:'gradient', colors:['#134e5e', '#71b280'] },
+  { id:'lavender', type:'gradient', colors:['#c471ed', '#f64f59'] },
+  { id:'deepblue', type:'gradient', colors:['#1e3a8a', '#3b82f6'] },
+  { id:'white',    type:'solid',    colors:['#ffffff'] },
+  { id:'ivory',    type:'solid',    colors:['#f8fafc'] },
+  { id:'gray',     type:'solid',    colors:['#e2e8f0'] },
+  { id:'slate',    type:'solid',    colors:['#334155'] },
+  { id:'dark',     type:'solid',    colors:['#0f172a'] },
+  { id:'black',    type:'solid',    colors:['#000000'] },
+  { id:'blue',     type:'solid',    colors:['#3b82f6'] },
+  { id:'indigo',   type:'solid',    colors:['#6366f1'] },
+  { id:'pink',     type:'solid',    colors:['#ec4899'] },
+  { id:'green',    type:'solid',    colors:['#10b981'] },
+  { id:'orange',   type:'solid',    colors:['#f97316'] },
+  { id:'red',      type:'solid',    colors:['#ef4444'] }
+];
+
+/* ============ FRAME DEFINITIONS ============ */
+/* Each frame has: icon, key (i18n), bezel (screen padding inside shell), */
+/* chromeTop (top bar height), chin (bottom bar height), shellRadius, screenRadius */
+const FRAME_DEFS = {
+  macbook:  { icon:'fa-laptop',              key:'frame_macbook',  bezel:0,   chromeTop:40, chin:0,  shellRadius:14, screenRadius:0 },
+  desktop:  { icon:'fa-desktop',             key:'frame_desktop',  bezel:14,  chromeTop:0,  chin:46, shellRadius:12, screenRadius:3 },
+  browser:  { icon:'fa-window-maximize',     key:'frame_browser',  bezel:0,   chromeTop:44, chin:0,  shellRadius:12, screenRadius:0 },
+  tv:       { icon:'fa-tv',                  key:'frame_tv',       bezel:18,  chromeTop:0,  chin:30, shellRadius:8,  screenRadius:3 },
+  iphone:   { icon:'fa-mobile-screen',       key:'frame_iphone',   bezel:14,  chromeTop:0,  chin:0,  shellRadius:48, screenRadius:34 },
+  android:  { icon:'fa-mobile-screen-button',key:'frame_android',  bezel:12,  chromeTop:0,  chin:0,  shellRadius:40, screenRadius:30 },
+  tablet:   { icon:'fa-tablet-screen-button',key:'frame_tablet',   bezel:22,  chromeTop:0,  chin:0,  shellRadius:30, screenRadius:22 },
+  foldable: { icon:'fa-book-open',           key:'frame_foldable', bezel:18,  chromeTop:0,  chin:0,  shellRadius:26, screenRadius:18 },
+  trifold:  { icon:'fa-table-columns',       key:'frame_trifold',  bezel:18,  chromeTop:0,  chin:0,  shellRadius:26, screenRadius:18 },
+  card:     { icon:'fa-square',              key:'frame_card',     bezel:0,   chromeTop:0,  chin:0,  shellRadius:16, screenRadius:16 }
+};
+
+const MOCKUP_WIDTH = 800;
+
+/* ============ APP ============ */
+const App = {
+  state: {
+    image:null, imageName:'', imageSize:'', imageRatio:1,
+    frame:'macbook',
+    background:{ type:'preset', preset:'ocean', color1:'#4facfe', color2:'#00f2fe', angle:135 },
+    padding:60, shadow:55, radius:16, ratio:'auto',
+    theme:'dark', lang:'en'
+  },
+  el:{},
+  toastTimer:null,
+  currentLayout:null,
+  isExporting:false,
+
+  /* ---------- INIT ---------- */
+  init(){
+    this.cacheEl();
+    this.loadPreferences();
+    this.renderPresets();
+    this.renderFrameGrid();
+    this.bindEvents();
+    this.applyTheme();
+    this.applyLanguage();
+    this.syncControlsFromState();
+    this.buildFrameDOM();
+    this.updateAll();
+    this.setupResize();
+  },
+
+  cacheEl(){
+    this.el = {
+      html:document.documentElement,
+      body:document.body,
+      themeToggle:document.getElementById('themeToggle'),
+      themeKnob:document.getElementById('themeKnob'),
+      langPills:document.querySelectorAll('.lang-pill'),
+      fileInput:document.getElementById('fileInput'),
+      dropZone:document.getElementById('dropZone'),
+      thumbRow:document.getElementById('thumbRow'),
+      thumbImg:document.getElementById('thumbImg'),
+      thumbName:document.getElementById('thumbName'),
+      thumbMeta:document.getElementById('thumbMeta'),
+      changeImgBtn:document.getElementById('changeImgBtn'),
+      removeImgBtn:document.getElementById('removeImgBtn'),
+      frameGrid:document.getElementById('frameGrid'),
+      presetGrid:document.getElementById('presetGrid'),
+      color1Input:document.getElementById('color1Input'),
+      color2Input:document.getElementById('color2Input'),
+      color1Val:document.getElementById('color1Val'),
+      color2Val:document.getElementById('color2Val'),
+      angleRange:document.getElementById('angleRange'),
+      angleVal:document.getElementById('angleVal'),
+      paddingRange:document.getElementById('paddingRange'),
+      paddingVal:document.getElementById('paddingVal'),
+      shadowRange:document.getElementById('shadowRange'),
+      shadowVal:document.getElementById('shadowVal'),
+      radiusRange:document.getElementById('radiusRange'),
+      radiusVal:document.getElementById('radiusVal'),
+      ratioSeg:document.getElementById('ratioSeg'),
+      downloadBtn:document.getElementById('downloadBtn'),
+      resetBtn:document.getElementById('resetBtn'),
+      previewViewport:document.getElementById('previewViewport'),
+      previewEmpty:document.getElementById('previewEmpty'),
+      previewContent:document.getElementById('previewContent'),
+      previewFrameOuter:document.getElementById('previewFrameOuter'),
+      previewScaler:document.getElementById('previewScaler'),
+      mockup:document.getElementById('mockup'),
+      frame:document.getElementById('frame'),
+      previewBadge:document.getElementById('previewBadge'),
+      toast:document.getElementById('toast'),
+      toastMsg:document.getElementById('toastMsg')
+    };
+  },
+
+  loadPreferences(){
+    try{
+      const th = localStorage.getItem('saivmockup:theme');
+      const lg = localStorage.getItem('saivmockup:lang');
+      if (th === 'light' || th === 'dark') this.state.theme = th;
+      if (lg && I18N[lg]) this.state.lang = lg;
+    }catch(e){}
+  },
+
+  savePref(k,v){ try{ localStorage.setItem('saivmockup:'+k, v); }catch(e){} },
+
+  /* ---------- THEME ---------- */
+  applyTheme(){
+    const th = this.state.theme;
+    this.el.html.classList.toggle('dark', th === 'dark');
+    this.el.themeKnob.innerHTML = th === 'dark'
+      ? '<i class="fas fa-moon text-indigo-500"></i>'
+      : '<i class="fas fa-sun text-amber-500"></i>';
+    this.savePref('theme', th);
+  },
+
+  /* ---------- LANGUAGE ---------- */
+  applyLanguage(){
+    const lg = this.state.lang;
+    this.el.html.lang = lg;
+    this.el.html.dir = lg === 'ar' ? 'rtl' : 'ltr';
+    this.el.body.classList.toggle('lang-ar', lg === 'ar');
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      const val = (I18N[lg] && I18N[lg][key]) || I18N.en[key];
+      if (val) el.textContent = val;
+    });
+
+    this.el.langPills.forEach(p => p.classList.toggle('active', p.dataset.lang === lg));
+    this.renderFrameGrid(); // frame labels need re-translation
+    this.savePref('lang', lg);
+  },
+
+  t(key){ return (I18N[this.state.lang] && I18N[this.state.lang][key]) || I18N.en[key] || key; },
+
+  /* ---------- TOAST ---------- */
+  showToast(msg, type='success', dur=2400){
+    const el = this.el.toast;
+    el.querySelector('i').className = type === 'error'
+      ? 'fas fa-circle-exclamation'
+      : type === 'info' ? 'fas fa-circle-info' : 'fas fa-check-circle';
+    this.el.toastMsg.textContent = msg;
+    el.className = 'show ' + type;
+    clearTimeout(this.toastTimer);
+    this.toastTimer = setTimeout(() => el.classList.remove('show'), dur);
+  },
+
+  /* ---------- RENDER FRAME GRID (10 buttons) ---------- */
+  renderFrameGrid(){
+    const grid = this.el.frameGrid;
+    if (!grid) return;
+    grid.innerHTML = '';
+    const order = ['macbook','desktop','browser','tv','iphone','android','tablet','foldable','trifold','card'];
+    order.forEach(id => {
+      const def = FRAME_DEFS[id];
+      if (!def) return;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'frame-btn' + (this.state.frame === id ? ' active' : '');
+      btn.dataset.frame = id;
+      btn.innerHTML = `<i class="fas ${def.icon}"></i><span>${this.t(def.key)}</span>`;
+      btn.addEventListener('click', () => {
+        this.state.frame = id;
+        document.querySelectorAll('.frame-btn').forEach(b => b.classList.toggle('active', b.dataset.frame === id));
+        this.buildFrameDOM();
+        this.updateAll();
+      });
+      grid.appendChild(btn);
+    });
+  },
+
+  /* ---------- RENDER PRESETS ---------- */
+  renderPresets(){
+    const grid = this.el.presetGrid;
+    grid.innerHTML = '';
+    BG_PRESETS.forEach(p => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'preset-swatch';
+      btn.dataset.preset = p.id;
+      btn.title = p.id;
+      btn.style.background = p.type === 'gradient'
+        ? `linear-gradient(135deg, ${p.colors[0]}, ${p.colors[1]})`
+        : p.colors[0];
+      btn.addEventListener('click', () => this.selectPreset(p.id));
+      grid.appendChild(btn);
+    });
+  },
+
+  selectPreset(id){
+    const preset = BG_PRESETS.find(p => p.id === id);
+    if (!preset) return;
+    this.state.background.type = 'preset';
+    this.state.background.preset = id;
+    this.state.background.color1 = preset.colors[0];
+    this.state.background.color2 = preset.colors[preset.colors.length - 1];
+    this.syncControlsFromState();
+    this.updateBackground();
+  },
+
+  /* ---------- SYNC ---------- */
+  syncControlsFromState(){
+    document.querySelectorAll('.preset-swatch').forEach(s => {
+      s.classList.toggle('active',
+        this.state.background.type === 'preset' &&
+        s.dataset.preset === this.state.background.preset);
+    });
+
+    this.el.color1Input.value = this.state.background.color1;
+    this.el.color2Input.value = this.state.background.color2;
+    this.el.color1Val.textContent = this.state.background.color1;
+    this.el.color2Val.textContent = this.state.background.color2;
+
+    this.el.angleRange.value = this.state.background.angle;
+    this.el.angleVal.textContent = this.state.background.angle + '°';
+
+    this.el.paddingRange.value = this.state.padding;
+    this.el.paddingVal.textContent = this.state.padding;
+    this.el.shadowRange.value = this.state.shadow;
+    this.el.shadowVal.textContent = this.state.shadow;
+    this.el.radiusRange.value = this.state.radius;
+    this.el.radiusVal.textContent = this.state.radius;
+
+    document.querySelectorAll('.frame-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.frame === this.state.frame);
+    });
+
+    document.querySelectorAll('#ratioSeg button').forEach(b => {
+      b.classList.toggle('active', b.dataset.ratio === this.state.ratio);
+    });
+
+    const badgeText = { auto:'AUTO', square:'1:1', story:'9:16', landscape:'16:9' }[this.state.ratio] || 'AUTO';
+    this.el.previewBadge.textContent = badgeText;
+  },
+
+  /* ---------- BIND ---------- */
+  bindEvents(){
+    this.el.themeToggle.addEventListener('click', () => {
+      this.state.theme = this.state.theme === 'dark' ? 'light' : 'dark';
+      this.applyTheme();
+    });
+
+    this.el.langPills.forEach(p => p.addEventListener('click', () => {
+      this.state.lang = p.dataset.lang;
+      this.applyLanguage();
+    }));
+
+    this.el.dropZone.addEventListener('click', () => this.el.fileInput.click());
+    this.el.changeImgBtn.addEventListener('click', (e) => { e.stopPropagation(); this.el.fileInput.click(); });
+    this.el.removeImgBtn.addEventListener('click', (e) => { e.stopPropagation(); this.removeImage(); });
+    this.el.fileInput.addEventListener('change', (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (f) this.handleFile(f);
+      e.target.value = '';
+    });
+
+    ['dragenter','dragover'].forEach(evt => this.el.dropZone.addEventListener(evt, (e) => {
+      e.preventDefault(); e.stopPropagation();
+      this.el.dropZone.classList.add('dragging');
+    }));
+    ['dragleave','drop'].forEach(evt => this.el.dropZone.addEventListener(evt, (e) => {
+      e.preventDefault(); e.stopPropagation();
+      this.el.dropZone.classList.remove('dragging');
+    }));
+    this.el.dropZone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer && e.dataTransfer.files;
+      if (files && files.length) this.handleFile(files[0]);
+    });
+
+    window.addEventListener('dragover', e => e.preventDefault());
+    window.addEventListener('drop', e => e.preventDefault());
+
+    document.addEventListener('paste', (e) => {
+      const items = e.clipboardData && e.clipboardData.items;
+      if (!items) return;
+      for (const item of items) {
+        if (item.type && item.type.startsWith('image/')) {
+          const f = item.getAsFile();
+          if (f) { this.handleFile(f); return; }
+        }
+      }
+    });
+
+    const colorHandler = which => e => {
+      this.state.background.type = 'custom';
+      this.state.background[which] = e.target.value;
+      if (which === 'color1') this.el.color1Val.textContent = e.target.value;
+      if (which === 'color2') this.el.color2Val.textContent = e.target.value;
+      document.querySelectorAll('.preset-swatch').forEach(s => s.classList.remove('active'));
+      this.updateBackground();
+    };
+    this.el.color1Input.addEventListener('input', colorHandler('color1'));
+    this.el.color1Input.addEventListener('change', colorHandler('color1'));
+    this.el.color2Input.addEventListener('input', colorHandler('color2'));
+    this.el.color2Input.addEventListener('change', colorHandler('color2'));
+
+    this.el.angleRange.addEventListener('input', e => {
+      this.state.background.angle = parseInt(e.target.value, 10) || 0;
+      this.el.angleVal.textContent = this.state.background.angle + '°';
+      this.updateBackground();
+    });
+
+    this.el.paddingRange.addEventListener('input', e => {
+      this.state.padding = parseInt(e.target.value, 10) || 0;
+      this.el.paddingVal.textContent = this.state.padding;
+      this.updateAll();
+    });
+
+    this.el.shadowRange.addEventListener('input', e => {
+      this.state.shadow = parseInt(e.target.value, 10) || 0;
+      this.el.shadowVal.textContent = this.state.shadow;
+      this.updateFrameShadow();
+    });
+
+    this.el.radiusRange.addEventListener('input', e => {
+      this.state.radius = parseInt(e.target.value, 10) || 0;
+      this.el.radiusVal.textContent = this.state.radius;
+      this.updateFrameRadius();
+    });
+
+    this.el.ratioSeg.addEventListener('click', e => {
+      const btn = e.target.closest('button[data-ratio]');
+      if (!btn) return;
+      this.state.ratio = btn.dataset.ratio;
+      this.syncControlsFromState();
+      this.updateAll();
+    });
+
+    this.el.downloadBtn.addEventListener('click', () => this.exportImage());
+    this.el.resetBtn.addEventListener('click', () => this.resetAll());
+    this.el.toast.addEventListener('click', () => this.el.toast.classList.remove('show'));
+
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        if (this.state.image && !this.isExporting) {
+          e.preventDefault();
+          this.exportImage();
+        }
+      }
+    });
+  },
+
+  /* ---------- RESIZE ---------- */
+  setupResize(){
+    let timer = null;
+    const onResize = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => this.updatePreviewScale(), 80);
+    };
+    window.addEventListener('resize', onResize);
+    window.addEventListener('orientationchange', () => setTimeout(() => this.updatePreviewScale(), 220));
+
+    if (typeof ResizeObserver !== 'undefined') {
+      const ro = new ResizeObserver(() => this.updatePreviewScale());
+      ro.observe(this.el.previewViewport);
+    }
+  },
+
+  /* ---------- FILE ---------- */
+  handleFile(file){
+    if (!file) return;
+    if (!file.type || !file.type.startsWith('image/')) {
+      this.showToast(this.t('toast_type_error'), 'error');
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      this.showToast(this.t('toast_size_error'), 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onerror = () => this.showToast(this.t('toast_error'), 'error');
+    reader.onload = e => {
+      const dataUri = e.target.result;
+      const img = new Image();
+      img.onload = () => {
+        this.state.image = dataUri;
+        this.state.imageName = file.name || 'screenshot';
+        this.state.imageSize = `${img.naturalWidth} × ${img.naturalHeight}`;
+        this.state.imageRatio = img.naturalWidth / img.naturalHeight;
+
+        this.el.thumbImg.src = dataUri;
+        this.el.thumbName.textContent = this.state.imageName;
+        this.el.thumbMeta.textContent = this.state.imageSize;
+        this.el.dropZone.classList.add('hidden');
+        this.el.thumbRow.classList.remove('hidden');
+
+        this.el.downloadBtn.disabled = false;
+        this.el.previewEmpty.classList.add('hidden');
+        this.el.previewContent.classList.remove('hidden');
+
+        this.buildFrameDOM();
+        this.updateAll();
+        this.showToast(this.t('toast_uploaded'), 'success', 1600);
+      };
+      img.onerror = () => this.showToast(this.t('toast_error'), 'error');
+      img.src = dataUri;
+    };
+    reader.readAsDataURL(file);
+  },
+
+  removeImage(){
+    this.state.image = null;
+    this.el.thumbRow.classList.add('hidden');
+    this.el.dropZone.classList.remove('hidden');
+    this.el.previewEmpty.classList.remove('hidden');
+    this.el.previewContent.classList.add('hidden');
+    this.el.downloadBtn.disabled = true;
+    this.el.frame.innerHTML = '';
+    this.showToast(this.t('toast_removed'), 'info', 1600);
+  },
+
+  resetAll(){
+    this.state.frame = 'macbook';
+    this.state.background = { type:'preset', preset:'ocean', color1:'#4facfe', color2:'#00f2fe', angle:135 };
+    this.state.padding = 60;
+    this.state.shadow = 55;
+    this.state.radius = 16;
+    this.state.ratio = 'auto';
+
+    this.syncControlsFromState();
+    this.buildFrameDOM();
+    this.updateAll();
+    this.showToast(this.t('toast_reset'), 'info', 1600);
+  },
+
+  /* ---------- BUILD FRAME DOM ---------- */
+  buildFrameDOM(){
+    const id = this.state.frame;
+    const def = FRAME_DEFS[id];
+    if (!def) return;
+
+    const f = this.el.frame;
+    f.className = 'frame frame-' + id;
+    f.innerHTML = '';
+
+    const img = document.createElement('img');
+    img.alt = '';
+    img.draggable = false;
+    if (this.state.image) img.src = this.state.image;
+
+    // Build per-frame structure
+    switch (id) {
+      case 'macbook':
+      case 'browser': {
+        const chrome = document.createElement('div');
+        chrome.className = 'frame-chrome';
+        const dots = document.createElement('div');
+        dots.className = 'traffic-dots';
+        dots.innerHTML = '<span class="traffic-dot traffic-red"></span><span class="traffic-dot traffic-yellow"></span><span class="traffic-dot traffic-green"></span>';
+        chrome.appendChild(dots);
+        if (id === 'browser') {
+          const url = document.createElement('div');
+          url.className = 'url-bar';
+          url.innerHTML = '<i class="fas fa-lock"></i><span>your-site.com</span>';
+          chrome.appendChild(url);
+        } else {
+          const title = document.createElement('div');
+          title.className = 'chrome-title';
+          title.textContent = 'MacBook Pro';
+          chrome.appendChild(title);
+        }
+        f.appendChild(chrome);
+
+        const wrap = document.createElement('div');
+        wrap.className = 'frame-screen-wrap';
+        const screen = document.createElement('div');
+        screen.className = 'frame-screen';
+        screen.appendChild(img);
+        wrap.appendChild(screen);
+        f.appendChild(wrap);
+        break;
+      }
+
+      case 'desktop':
+      case 'tv': {
+        const wrap = document.createElement('div');
+        wrap.className = 'frame-screen-wrap';
+        const screen = document.createElement('div');
+        screen.className = 'frame-screen';
+        screen.appendChild(img);
+        wrap.appendChild(screen);
+        f.appendChild(wrap);
+
+        const chin = document.createElement('div');
+        chin.className = 'frame-chin';
+        const brand = document.createElement('span');
+        brand.className = id === 'desktop' ? 'chin-brand' : 'tv-logo';
+        brand.textContent = id === 'desktop' ? 'SaivMOCKUP' : 'SaivCORE';
+        chin.appendChild(brand);
+        f.appendChild(chin);
+        break;
+      }
+
+      case 'iphone':
+      case 'android': {
+        const wrap = document.createElement('div');
+        wrap.className = 'frame-screen-wrap';
+        const screen = document.createElement('div');
+        screen.className = 'frame-screen';
+        screen.appendChild(img);
+        if (id === 'iphone') {
+          const notch = document.createElement('div');
+          notch.className = 'iphone-notch';
+          screen.appendChild(notch);
+          const home = document.createElement('div');
+          home.className = 'iphone-home';
+          screen.appendChild(home);
+        } else {
+          const cam = document.createElement('div');
+          cam.className = 'android-camera';
+          screen.appendChild(cam);
+          const home = document.createElement('div');
+          home.className = 'android-home';
+          screen.appendChild(home);
+        }
+        wrap.appendChild(screen);
+        f.appendChild(wrap);
+        break;
+      }
+
+      case 'tablet': {
+        const wrap = document.createElement('div');
+        wrap.className = 'frame-screen-wrap';
+        const screen = document.createElement('div');
+        screen.className = 'frame-screen';
+        screen.appendChild(img);
+        const cam = document.createElement('div');
+        cam.className = 'tablet-camera';
+        screen.appendChild(cam);
+        wrap.appendChild(screen);
+        f.appendChild(wrap);
+        break;
+      }
+
+      case 'foldable': {
+        const wrap = document.createElement('div');
+        wrap.className = 'frame-screen-wrap';
+        const screen = document.createElement('div');
+        screen.className = 'frame-screen';
+        screen.appendChild(img);
+        const crease = document.createElement('div');
+        crease.className = 'crease crease-1';
+        screen.appendChild(crease);
+        const cam = document.createElement('div');
+        cam.className = 'foldable-camera';
+        screen.appendChild(cam);
+        wrap.appendChild(screen);
+        f.appendChild(wrap);
+        break;
+      }
+
+      case 'trifold': {
+        const wrap = document.createElement('div');
+        wrap.className = 'frame-screen-wrap';
+        const screen = document.createElement('div');
+        screen.className = 'frame-screen';
+        screen.appendChild(img);
+        const c1 = document.createElement('div');
+        c1.className = 'crease crease-2';
+        screen.appendChild(c1);
+        const c2 = document.createElement('div');
+        c2.className = 'crease crease-3';
+        screen.appendChild(c2);
+        const cam = document.createElement('div');
+        cam.className = 'foldable-camera';
+        screen.appendChild(cam);
+        wrap.appendChild(screen);
+        f.appendChild(wrap);
+        break;
+      }
+
+      case 'card':
+      default: {
+        const wrap = document.createElement('div');
+        wrap.className = 'frame-screen-wrap';
+        const screen = document.createElement('div');
+        screen.className = 'frame-screen';
+        screen.appendChild(img);
+        wrap.appendChild(screen);
+        f.appendChild(wrap);
+        break;
+      }
+    }
+
+    this.updateFrameShadow();
+    this.updateFrameRadius();
+  },
+
+  /* ---------- UPDATE ---------- */
+  updateAll(){
+    this.updateBackground();
+    this.updateLayout();
+    this.updatePreviewScale();
+  },
+
+  updateBackground(){
+    const bg = this.state.background;
+    let bgValue;
+    if (bg.type === 'preset') {
+      const p = BG_PRESETS.find(x => x.id === bg.preset);
+      bgValue = p
+        ? (p.type === 'gradient'
+          ? `linear-gradient(${bg.angle}deg, ${p.colors[0]}, ${p.colors[1]})`
+          : p.colors[0])
+        : '#ffffff';
+    } else {
+      bgValue = `linear-gradient(${bg.angle}deg, ${bg.color1}, ${bg.color2})`;
+    }
+    this.el.mockup.style.background = bgValue;
+  },
+
+  updateFrameShadow(){
+    const i = this.state.shadow / 100;
+    const blur = 20 + i * 70;
+    const y = 8 + i * 26;
+    const spread = i * 4;
+    const opacity = i * 0.5;
+    this.el.frame.style.boxShadow = `0 ${y}px ${blur}px ${spread}px rgba(0,0,0,${opacity})`;
+  },
+
+  updateFrameRadius(){
+    const r = this.state.radius;
+    const def = FRAME_DEFS[this.state.frame];
+    if (!def) return;
+    // Shell radius scaled to user radius
+    const shellR = Math.max(0, r);
+    this.el.frame.style.borderRadius = shellR + 'px';
+
+    // Screen radius (only inner screens with their own radius)
+    const screen = this.el.frame.querySelector('.frame-screen');
+    if (screen) {
+      const innerR = Math.max(0, r - 4);
+      // For device frames with fixed screen radius, use the frame def radius
+      // Otherwise scale with user radius
+      const useFixed = ['iphone','android','tablet','foldable','trifold'].includes(this.state.frame);
+      if (useFixed) {
+        const scale = r / 16;
+        screen.style.borderRadius = Math.max(0, def.screenRadius * Math.min(scale, 1.2)) + 'px';
+      } else {
+        screen.style.borderRadius = innerR + 'px';
+      }
+    }
+  },
+
+  computeLayout(){
+    const def = FRAME_DEFS[this.state.frame];
+    if (!def) return null;
+    const padding = this.state.padding;
+    const imgRatio = this.state.imageRatio || 1;
+    const ratio = this.state.ratio;
+
+    let mockupW = MOCKUP_WIDTH;
+    let mockupH;
+
+    if (ratio === 'square') mockupH = mockupW;
+    else if (ratio === 'story') mockupH = Math.round(mockupW * 16 / 9);
+    else if (ratio === 'landscape') mockupH = Math.round(mockupW * 9 / 16);
+
+    const availW = mockupW - 2 * padding;
+    const availH = mockupH ? mockupH - 2 * padding : Infinity;
+
+    // Natural: frame width = avail width
+    let frameW = availW;
+    let screenW = frameW - 2 * def.bezel;
+    let screenH = screenW / imgRatio;
+    let frameH = def.chromeTop + def.bezel + screenH + def.bezel + def.chin;
+
+    if (availH !== Infinity && frameH > availH) {
+      frameH = availH;
+      screenH = frameH - def.chromeTop - 2 * def.bezel - def.chin;
+      screenW = screenH * imgRatio;
+      frameW = screenW + 2 * def.bezel;
+    }
+
+    if (!mockupH) mockupH = Math.max(Math.round(frameH + 2 * padding), 400);
+
+    return { mockupW, mockupH, frameW, frameH, screenW, screenH };
+  },
+
+  updateLayout(){
+    if (!this.state.image) return;
+    const L = this.computeLayout();
+    if (!L) return;
+    this.currentLayout = L;
+
+    this.el.mockup.style.width = L.mockupW + 'px';
+    this.el.mockup.style.height = L.mockupH + 'px';
+    this.el.mockup.style.padding = this.state.padding + 'px';
+    this.el.mockup.style.boxSizing = 'border-box';
+
+    this.el.frame.style.width = L.frameW + 'px';
+    this.el.frame.style.height = L.frameH + 'px';
+    this.el.frame.style.boxSizing = 'border-box';
+
+    const wrap = this.el.frame.querySelector('.frame-screen-wrap');
+    if (wrap) {
+      // Screen wrap padding comes from shell bezel
+      wrap.style.padding = def(this.state.frame).bezel + 'px';
+    }
+
+    const screen = this.el.frame.querySelector('.frame-screen');
+    if (screen) {
+      screen.style.width = L.screenW + 'px';
+      screen.style.height = L.screenH + 'px';
+      screen.style.flex = 'none';
+    }
+  },
+
+  updatePreviewScale(){
+    if (!this.state.image) return;
+    const L = this.currentLayout;
+    if (!L) return;
+    const viewport = this.el.previewViewport;
+    const outer = this.el.previewFrameOuter;
+    const scaler = this.el.previewScaler;
+    if (!viewport || !outer || !scaler) return;
+
+    const pad = 40;
+    const vw = Math.max(viewport.clientWidth - pad, 200);
+    const vh = Math.max(viewport.clientHeight - pad, 200);
+
+    const scale = Math.min(vw / L.mockupW, vh / L.mockupH, 1.5);
+
+    scaler.style.width = L.mockupW + 'px';
+    scaler.style.height = L.mockupH + 'px';
+    scaler.style.transform = `scale(${scale})`;
+
+    outer.style.width = (L.mockupW * scale) + 'px';
+    outer.style.height = (L.mockupH * scale) + 'px';
+  },
+
+  /* ---------- EXPORT ---------- */
+  async exportImage(){
+    if (!this.state.image || this.isExporting) return;
+    if (typeof html2canvas !== 'function') {
+      this.showToast(this.t('toast_error'), 'error');
+      return;
+    }
+
+    this.isExporting = true;
+    const originalHtml = this.el.downloadBtn.innerHTML;
+    this.el.downloadBtn.disabled = true;
+    this.el.downloadBtn.innerHTML = '<i class="fas fa-circle-notch spin"></i><span>' + this.t('downloading') + '</span>';
+
+    // Save current preview scale state
+    const prevTransform = this.el.previewScaler.style.transform;
+    const prevOuterW = this.el.previewFrameOuter.style.width;
+    const prevOuterH = this.el.previewFrameOuter.style.height;
+    const prevScalerW = this.el.previewScaler.style.width;
+    const prevScalerH = this.el.previewScaler.style.height;
+    const prevScalerPos = this.el.previewScaler.style.position;
+    const prevOuterPos = this.el.previewFrameOuter.style.position;
+
+    // Reset to natural for capture
+    this.el.previewScaler.style.transform = 'none';
+    this.el.previewScaler.style.position = 'static';
+    this.el.previewFrameOuter.style.position = 'static';
+    this.el.previewFrameOuter.style.width = '';
+    this.el.previewFrameOuter.style.height = '';
+
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    await new Promise(r => setTimeout(r, 80));
+
+    try {
+      const canvas = await html2canvas(this.el.mockup, {
+        scale: 2,
+        backgroundColor: null,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
+        width: this.currentLayout.mockupW,
+        height: this.currentLayout.mockupH,
+        windowWidth: this.currentLayout.mockupW,
+        windowHeight: this.currentLayout.mockupH
+      });
+
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 1.0));
+      if (!blob) throw new Error('Blob generation failed');
+
+      const ts = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+      const filename = `saivmockup-${this.state.frame}-${ts}.png`;
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 800);
+
+      this.showToast(this.t('toast_success'), 'success');
+    } catch (err) {
+      console.error('Export failed:', err);
+      this.showToast(this.t('toast_error'), 'error');
+    } finally {
+      // Restore
+      this.el.previewScaler.style.transform = prevTransform;
+      this.el.previewScaler.style.position = prevScalerPos;
+      this.el.previewScaler.style.width = prevScalerW;
+      this.el.previewScaler.style.height = prevScalerH;
+      this.el.previewFrameOuter.style.position = prevOuterPos;
+      this.el.previewFrameOuter.style.width = prevOuterW;
+      this.el.previewFrameOuter.style.height = prevOuterH;
+
+      this.el.downloadBtn.innerHTML = originalHtml;
+      this.el.downloadBtn.disabled = false;
+      this.isExporting = false;
+
+      setTimeout(() => this.updatePreviewScale(), 30);
+    }
+  }
+};
+
+/* Helper to get frame def quickly (avoids deep closure issues) */
+function def(frameId){
+  return FRAME_DEFS[frameId] || FRAME_DEFS.macbook;
+}
+
+/* ============ BOOT ============ */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => App.init());
+} else {
+  App.init();
+}
+
+})();
+</script>
+
+</body>
+</html>
