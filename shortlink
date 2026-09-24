@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaivLINK — Shorten. Share. Simplify.</title>
+
+<!-- Favicon (emoji SVG) -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔗</text></svg>">
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+          mono: ['JetBrains Mono', 'ui-monospace', 'monospace']
+        },
+        animation: {
+          'fade-in': 'fadeIn 0.4s ease-out',
+          'slide-up': 'slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
+          'pop-in': 'popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          'float': 'float 6s ease-in-out infinite',
+          'shimmer': 'shimmer 2s linear infinite',
+          'pulse-glow': 'pulseGlow 2s ease-in-out infinite'
+        },
+        keyframes: {
+          fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+          slideUp: { '0%': { opacity: 0, transform: 'translateY(20px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+          popIn: { '0%': { opacity: 0, transform: 'scale(0.9)' }, '100%': { opacity: 1, transform: 'scale(1)' } },
+          float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-12px)' } },
+          shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
+          pulseGlow: { '0%, 100%': { opacity: 0.5 }, '50%': { opacity: 1 } }
+        }
+      }
+    }
+  }
+</script>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- QR Code library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+  :root {
+    --brand-1: #6366f1;
+    --brand-2: #a855f7;
+    --brand-3: #ec4899;
+  }
+
+  * { -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    background: #f8fafc;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+  html.dark body {
+    background: #020617;
+  }
+
+  /* Animated background orbs */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(900px 600px at 15% -10%, rgba(99,102,241,0.18), transparent 60%),
+      radial-gradient(800px 500px at 95% 0%, rgba(236,72,153,0.14), transparent 55%),
+      radial-gradient(700px 500px at 50% 110%, rgba(56,189,248,0.12), transparent 60%);
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  html.dark body::before {
+    background:
+      radial-gradient(900px 600px at 15% -10%, rgba(99,102,241,0.28), transparent 60%),
+      radial-gradient(800px 500px at 95% 0%, rgba(236,72,153,0.22), transparent 55%),
+      radial-gradient(700px 500px at 50% 110%, rgba(56,189,248,0.18), transparent 60%);
+  }
+
+  /* Subtle grid overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(rgba(99,102,241,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(99,102,241,0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+    pointer-events: none;
+  }
+  html.dark body::after {
+    background-image:
+      linear-gradient(rgba(129,140,248,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(129,140,248,0.06) 1px, transparent 1px);
+  }
+
+  /* Glass card */
+  .glass {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.04),
+      0 12px 32px -12px rgba(15, 23, 42, 0.12);
+  }
+  html.dark .glass {
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.3),
+      0 16px 40px -16px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Input */
+  .input-base {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1.5px solid rgba(148, 163, 184, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    color: #0f172a;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  html.dark .input-base {
+    background: rgba(2, 6, 23, 0.5);
+    border-color: rgba(148, 163, 184, 0.18);
+    color: #e2e8f0;
+  }
+  .input-base::placeholder { color: rgba(100, 116, 139, 0.7); }
+  html.dark .input-base::placeholder { color: rgba(148, 163, 184, 0.6); }
+  .input-base:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+    background: #fff;
+  }
+  html.dark .input-base:focus {
+    background: rgba(2, 6, 23, 0.9);
+    border-color: #818cf8;
+    box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.18);
+  }
+
+  /* Brand gradient text */
+  .brand-text {
+    background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Brand gradient button */
+  .btn-brand {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899);
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease infinite;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+    box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.6);
+  }
+  .btn-brand:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 40px -12px rgba(139, 92, 246, 0.8);
+  }
+  .btn-brand:active { transform: translateY(0) scale(0.98); }
+  .btn-brand:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    animation: none;
+    transform: none;
+  }
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(148, 163, 184, 0.3);
+    background: rgba(255, 255, 255, 0.6);
+    color: #334155;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  html.dark .btn-ghost {
+    background: rgba(15, 23, 42, 0.5);
+    border-color: rgba(148, 163, 184, 0.18);
+    color: #cbd5e1;
+  }
+  .btn-ghost:hover {
+    border-color: #6366f1;
+    color: #4f46e5;
+    transform: translateY(-1px);
+  }
+  html.dark .btn-ghost:hover {
+    border-color: #818cf8;
+    color: #a5b4fc;
+    background: rgba(30, 41, 59, 0.5);
+  }
+
+  /* Short link display */
+  .shortlink-box {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    word-break: break-all;
+    background: linear-gradient(135deg, rgba(99,102,241,0.06), rgba(236,72,153,0.06));
+    border: 1.5px dashed rgba(99,102,241,0.35);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #4f46e5;
+    transition: all 0.2s ease;
+  }
+  html.dark .shortlink-box {
+    background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(236,72,153,0.08));
+    border-color: rgba(129,140,248,0.35);
+    color: #a5b4fc;
+  }
+
+  /* Theme toggle */
+  .theme-toggle {
+    position: relative;
+    width: 58px;
+    height: 30px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #fbbf24, #f97316);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+  }
+  html.dark .theme-toggle {
+    background: linear-gradient(135deg, #4f46e5, #8b5cf6);
+  }
+  .theme-toggle .knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  }
+  html.dark .theme-toggle .knob { transform: translateX(28px); }
+
+  /* Countdown circle */
+  .countdown-wrap {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+  }
+  @media (min-width: 640px) {
+    .countdown-wrap { width: 220px; height: 220px; }
+  }
+  .countdown-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+  .countdown-track {
+    fill: none;
+    stroke: rgba(148, 163, 184, 0.18);
+    stroke-width: 8;
+  }
+  html.dark .countdown-track { stroke: rgba(148, 163, 184, 0.12); }
+  .countdown-progress {
+    fill: none;
+    stroke: url(#countdownGradient);
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.1s linear;
+    filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.6));
+  }
+  .countdown-number {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, #818cf8, #c084fc 50%, #f472b6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+  @media (min-width: 640px) {
+    .countdown-number { font-size: 5rem; }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.85; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.03); }
+  }
+
+  /* History item */
+  .history-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(148,163,184,0.18);
+    transition: all 0.18s ease;
+  }
+  html.dark .history-item {
+    background: rgba(15, 23, 42, 0.5);
+    border-color: rgba(148, 163, 184, 0.12);
+  }
+  .history-item:hover {
+    border-color: rgba(99,102,241,0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px -12px rgba(15,23,42,0.25);
+  }
+  html.dark .history-item:hover {
+    border-color: rgba(129,140,248,0.35);
+    box-shadow: 0 10px 24px -12px rgba(0,0,0,0.6);
+  }
+
+  /* Icon button */
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid rgba(148,163,184,0.22);
+    background: rgba(255,255,255,0.7);
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 0.85rem;
+  }
+  html.dark .icon-btn {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(148, 163, 184, 0.16);
+    color: #94a3b8;
+  }
+  .icon-btn:hover {
+    border-color: #6366f1;
+    color: #4f46e5;
+    transform: translateY(-1px);
+  }
+  html.dark .icon-btn:hover {
+    border-color: #818cf8;
+    color: #a5b4fc;
+    background: rgba(30, 41, 59, 0.7);
+  }
+  .icon-btn.danger:hover {
+    border-color: #ef4444;
+    color: #dc2626;
+  }
+  html.dark .icon-btn.danger:hover {
+    border-color: #f87171;
+    color: #fca5a5;
+  }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    padding: 12px 20px;
+    border-radius: 14px;
+    background: #0f172a;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 24px 48px -12px rgba(0,0,0,0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 9999;
+    max-width: calc(100vw - 32px);
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #toast.success { background: linear-gradient(135deg, #059669, #10b981); }
+  #toast.error { background: linear-gradient(135deg, #dc2626, #ef4444); }
+  #toast.info { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(99,102,241,0.3);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.55); background-clip: padding-box; }
+  html.dark ::-webkit-scrollbar-thumb { background: rgba(129,140,248,0.35); background-clip: padding-box; }
+
+  /* Safety badge */
+  .safety-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .safety-safe {
+    background: rgba(16, 185, 129, 0.15);
+    color: #059669;
+  }
+  html.dark .safety-safe {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+  }
+  .safety-warn {
+    background: rgba(245, 158, 11, 0.15);
+    color: #d97706;
+  }
+  html.dark .safety-warn {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+  }
+
+  /* Stagger animation */
+  .stagger > * { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+  .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger > *:nth-child(2) { animation-delay: 0.1s; }
+  .stagger > *:nth-child(3) { animation-delay: 0.15s; }
+  .stagger > *:nth-child(4) { animation-delay: 0.2s; }
+  .stagger > *:nth-child(5) { animation-delay: 0.25s; }
+  .stagger > *:nth-child(6) { animation-delay: 0.3s; }
+
+  /* QR wrapper */
+  #qrcodeContainer {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 10px 24px -10px rgba(15, 23, 42, 0.25);
+  }
+  html.dark #qrcodeContainer {
+    box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.5);
+  }
+  #qrcodeContainer canvas,
+  #qrcodeContainer img { display: block; border-radius: 8px; }
+
+  /* Hide number input spinner etc */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+  /* Prefers reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+
+<body class="text-slate-800 dark:text-slate-100 antialiased">
+
+<!-- ============================== DASHBOARD VIEW ============================== -->
+<div id="dashboardView">
+
+  <!-- Navbar -->
+  <nav class="sticky top-0 z-40 backdrop-blur-xl bg-white/60 dark:bg-slate-950/60 border-b border-slate-200/50 dark:border-slate-800/60">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2.5 group">
+        <div class="relative w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-violet-500/30 group-hover:scale-105 transition">
+          <i class="fas fa-link text-base"></i>
+        </div>
+        <span class="font-extrabold text-xl tracking-tight">
+          <span class="brand-text">SaivLINK</span>
+        </span>
+      </a>
+
+      <div class="flex items-center gap-3">
+        <a href="https://github.com" target="_blank" rel="noopener" class="icon-btn hidden sm:inline-flex" title="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+          <span class="knob" id="themeKnob"><i class="fas fa-sun text-amber-500"></i></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+
+    <!-- Hero -->
+    <section class="text-center mb-10 sm:mb-14 stagger">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200/60 dark:border-indigo-400/20 text-indigo-600 dark:text-indigo-300 text-xs font-bold mb-5">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+        </span>
+        <span>100% Client-Side · No Backend Required</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-[1.05] mb-4">
+        Shorten. Share.<br>
+        <span class="brand-text">Simplify.</span>
+      </h1>
+
+      <p class="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+        Transform any long URL into a clean, shareable short link with built-in QR codes,
+        a stunning redirect page, and full history — all running privately in your browser.
+      </p>
+    </section>
+
+    <!-- Generator Card -->
+    <section class="glass rounded-3xl p-6 sm:p-8 mb-8 animate-fade-in">
+      <form id="generateForm" autocomplete="off">
+        <div class="mb-5">
+          <label for="urlInput" class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-300 mb-2.5">
+            <i class="fas fa-globe text-indigo-500"></i>
+            <span>Paste your long URL</span>
+          </label>
+          <div class="relative">
+            <input
+              id="urlInput"
+              type="text"
+              class="input-base pr-12"
+              placeholder="https://example.com/very/long/path?with=params"
+              required
+            >
+            <button type="button" id="pasteBtn" class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-lg flex items-center justify-center text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition" title="Paste from clipboard">
+              <i class="fas fa-paste"></i>
+            </button>
+          </div>
+          <p id="urlError" class="text-xs text-red-500 font-medium mt-2 hidden">
+            <i class="fas fa-circle-exclamation mr-1"></i><span></span>
+          </p>
+        </div>
+
+        <div class="mb-6">
+          <label for="aliasInput" class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-300 mb-2.5">
+            <i class="fas fa-tag text-indigo-500"></i>
+            <span>Custom alias <span class="font-normal text-slate-400 dark:text-slate-500">(optional — stored locally)</span></span>
+          </label>
+          <div class="relative">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-sm font-mono pointer-events-none select-none">#s/</span>
+            <input
+              id="aliasInput"
+              type="text"
+              class="input-base pl-14 font-mono"
+              placeholder="my-link"
+              maxlength="32"
+              pattern="[A-Za-z0-9_-]+"
+            >
+          </div>
+          <p id="aliasHint" class="text-xs text-slate-500 dark:text-slate-500 mt-2">
+            <i class="fas fa-info-circle mr-1"></i>
+            Letters, numbers, dashes and underscores. Local-only: works on this device.
+          </p>
+        </div>
+
+        <button type="submit" id="generateBtn" class="btn-brand w-full py-4 px-6 rounded-2xl text-base font-bold flex items-center justify-center gap-3">
+          <i class="fas fa-wand-magic-sparkles text-lg"></i>
+          <span>Generate Short Link</span>
+        </button>
+      </form>
+    </section>
+
+    <!-- Result Card -->
+    <section id="resultCard" class="hidden glass rounded-3xl p-6 sm:p-8 mb-8 animate-pop-in">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white shadow-lg shadow-emerald-500/30">
+          <i class="fas fa-check text-lg"></i>
+        </div>
+        <div>
+          <h2 class="font-extrabold text-lg">Your short link is ready!</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Share it anywhere — it redirects in 5 seconds.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 items-start">
+        <div class="space-y-4 min-w-0">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Short Link</span>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-300">Ready</span>
+            </div>
+            <div class="flex items-stretch gap-2">
+              <div class="shortlink-box flex-1 min-w-0 flex items-center">
+                <span id="shortLinkText" class="truncate"></span>
+              </div>
+              <button id="copyShortBtn" class="btn-brand px-4 rounded-2xl flex-shrink-0 flex items-center justify-center" title="Copy short link">
+                <i class="fas fa-copy text-base"></i>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Original URL</span>
+            <p id="originalUrlText" class="text-sm font-mono text-slate-600 dark:text-slate-400 mt-1.5 break-all"></p>
+          </div>
+
+          <div class="flex flex-wrap gap-2 pt-2">
+            <button id="testLinkBtn" class="btn-ghost">
+              <i class="fas fa-external-link-alt"></i>
+              <span>Test it</span>
+            </button>
+            <button id="copyBothBtn" class="btn-ghost">
+              <i class="fas fa-copy"></i>
+              <span>Copy details</span>
+            </button>
+            <button id="newLinkBtn" class="btn-ghost">
+              <i class="fas fa-plus"></i>
+              <span>New link</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex flex-col items-center gap-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Scan me</div>
+          <div id="qrcodeContainer"></div>
+          <button id="downloadQrBtn" class="btn-ghost text-xs">
+            <i class="fas fa-download"></i>
+            <span>Download QR</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- History -->
+    <section id="historySection" class="hidden">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="text-lg font-extrabold flex items-center gap-2">
+          <i class="fas fa-clock-rotate-left text-indigo-500"></i>
+          <span>Recent Links</span>
+          <span id="historyCount" class="text-xs font-bold px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">0</span>
+        </h2>
+        <button id="clearHistoryBtn" class="btn-ghost text-xs !py-2 !px-3 text-red-500 hover:!border-red-400 hover:!text-red-600 dark:text-red-400">
+          <i class="fas fa-trash-can"></i>
+          <span>Clear all</span>
+        </button>
+      </div>
+      <div id="historyList" class="space-y-2.5"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============================== REDIRECT VIEW ============================== -->
+<div id="redirectView" class="hidden">
+  <main class="min-h-screen flex items-center justify-center px-4 py-10">
+    <div class="w-full max-w-lg animate-pop-in">
+
+      <!-- Brand -->
+      <div class="text-center mb-8">
+        <a href="#" class="inline-flex items-center gap-3 group">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 via-violet-500 to-pink-500 flex items-center justify-center text-white shadow-xl shadow-violet-500/40 group-hover:scale-105 transition">
+            <i class="fas fa-link text-lg"></i>
+          </div>
+          <span class="font-black text-2xl tracking-tight brand-text">SaivLINK</span>
+        </a>
+      </div>
+
+      <!-- Redirect Card -->
+      <div class="glass rounded-3xl p-6 sm:p-8 text-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200/60 dark:border-indigo-400/20 text-indigo-600 dark:text-indigo-300 text-xs font-bold mb-6">
+          <i class="fas fa-shield-halved"></i>
+          <span>Safe Redirect in Progress</span>
+        </div>
+
+        <h1 class="text-2xl sm:text-3xl font-black tracking-tight mb-2">
+          Redirecting you...
+        </h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-7">
+          You'll be taken to your destination automatically.
+        </p>
+
+        <!-- Countdown -->
+        <div class="countdown-wrap mb-7">
+          <svg class="countdown-svg" viewBox="0 0 120 120" aria-hidden="true">
+            <defs>
+              <linearGradient id="countdownGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#818cf8"/>
+                <stop offset="50%" stop-color="#c084fc"/>
+                <stop offset="100%" stop-color="#f472b6"/>
+              </linearGradient>
+            </defs>
+            <circle class="countdown-track" cx="60" cy="60" r="54"/>
+            <circle id="countdownProgress" class="countdown-progress" cx="60" cy="60" r="54"/>
+          </svg>
+          <div class="countdown-number" id="countdownNumber">5</div>
+        </div>
+
+        <!-- Destination Preview -->
+        <div class="text-left mb-6">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+            <i class="fas fa-bullseye mr-1"></i> Destination
+          </div>
+          <div class="rounded-2xl border border-slate-200/70 dark:border-slate-800/70 bg-white/60 dark:bg-slate-900/40 p-4">
+            <div class="flex items-start gap-3">
+              <img
+                id="destFavicon"
+                src=""
+                alt=""
+                class="w-10 h-10 rounded-lg flex-shrink-0 bg-slate-100 dark:bg-slate-800 p-1.5"
+                onerror="this.style.display='none'"
+              >
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2 mb-1">
+                  <span id="destDomain" class="font-bold text-base truncate"></span>
+                  <span id="destSafetyBadge" class="safety-badge safety-safe">
+                    <i class="fas fa-lock text-[9px]"></i>
+                    <span>Secure</span>
+                  </span>
+                </div>
+                <p id="destFullUrl" class="text-xs font-mono text-slate-500 dark:text-slate-400 break-all leading-relaxed"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button id="skipBtn" class="btn-brand w-full py-3.5 px-6 rounded-2xl text-base font-bold flex items-center justify-center gap-3 mb-3">
+          <span>Go Now</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+
+        <p class="text-xs text-slate-500 dark:text-slate-500">
+          <i class="fas fa-clock mr-1"></i>
+          Auto-redirect in <span id="autoRedirectTime" class="font-bold text-indigo-500">5</span>s
+        </p>
+      </div>
+
+      <!-- Cancel -->
+      <div class="text-center mt-6">
+        <a href="#" id="cancelRedirect" class="text-sm text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 transition inline-flex items-center gap-1.5 font-medium">
+          <i class="fas fa-xmark"></i>
+          <span>Cancel and go back to SaivLINK</span>
+        </a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ============================== ERROR VIEW ============================== -->
+<div id="errorView" class="hidden">
+  <main class="min-h-screen flex items-center justify-center px-4 py-10">
+    <div class="w-full max-w-md text-center animate-pop-in">
+      <div class="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white shadow-2xl shadow-red-500/30 mb-6">
+        <i class="fas fa-triangle-exclamation text-3xl"></i>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-black tracking-tight mb-3">Link Not Found</h1>
+      <p id="errorMessage" class="text-slate-600 dark:text-slate-400 mb-8">The short link you followed doesn't exist or has been removed.</p>
+      <a href="#" class="btn-brand inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold">
+        <i class="fas fa-house"></i>
+        <span>Back to SaivLINK</span>
+      </a>
+    </div>
+  </main>
+</div>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="border-t border-slate-200/60 dark:border-slate-800/60 bg-white/40 dark:bg-slate-950/40 backdrop-blur-sm mt-auto">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 via-violet-500 to-pink-500 flex items-center justify-center text-white">
+        <i class="fas fa-link text-xs"></i>
+      </div>
+      <span class="text-sm font-bold">
+        <span class="brand-text">SaivLINK</span>
+      </span>
+      <span class="text-slate-400 dark:text-slate-600">·</span>
+      <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Powered by <span class="font-bold text-indigo-500">SaivCORE</span></span>
+    </div>
+
+    <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+      <span>Made with</span>
+      <span class="text-red-500 animate-pulse">❤️</span>
+      <span>in</span>
+      <span class="font-bold">Algeria</span>
+      <span class="text-lg leading-none">🇩🇿</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div id="toast">
+  <i class="fas fa-check-circle"></i>
+  <span id="toastMessage">Done!</span>
+</div>
+
+<script>
+/* ============================================================================
+   SaivLINK — Single-file client-side URL shortener
+   Architecture:
+     - Storage       : localStorage-based persistence
+     - URLCodec      : base64url encode/decode for hash-safe encoding
+     - Router        : hash-based view switching
+     - Dashboard     : generator form, result rendering, history
+     - RedirectView  : countdown + auto-redirect + skip
+     - Utils         : DOM helpers, clipboard, toast, validation
+   ============================================================================ */
+
+(function () {
+'use strict';
+
+/* ============ CONSTANTS ============ */
+const STORAGE = {
+  THEME:   'saivlink:theme',
+  HISTORY: 'saivlink:history',
+  ALIASES: 'saivlink:aliases'
+};
+const COUNTDOWN_SECONDS = 5;
+const MAX_HISTORY = 60;
+const CIRCUMFERENCE = 2 * Math.PI * 54; // r=54
+const RESERVED_ALIASES = ['home', 'new', 'about', 'help', 'admin', 'api', 'to', 's'];
+
+/* ============ DOM HELPERS ============ */
+const $  = (sel, ctx = document) => ctx.querySelector(sel);
+const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+
+/* ============ APP STATE ============ */
+const App = {
+  countdown: {
+    raf: null,
+    startTime: 0,
+    duration: COUNTDOWN_SECONDS * 1000,
+    target: '',
+    completed: false
+  },
+  currentResult: null, // { id, original, short, alias, createdAt }
+  toastTimeout: null
+};
+
+/* ============================================================================
+   UTILS
+   ============================================================================ */
+
+/* --- base64url encoding (URL-safe, no padding) --- */
+function b64urlEncode(str) {
+  try {
+    const utf8 = unescape(encodeURIComponent(str));
+    return btoa(utf8)
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+  } catch (e) {
+    console.error('Encoding failed:', e);
+    return '';
+  }
+}
+
+function b64urlDecode(str) {
+  try {
+    let s = str.replace(/-/g, '+').replace(/_/g, '/');
+    while (s.length % 4) s += '=';
+    const raw = atob(s);
+    return decodeURIComponent(escape(raw));
+  } catch (e) {
+    console.error('Decoding failed:', e);
+    return null;
+  }
+}
+
+/* --- URL validation & normalization --- */
+function normalizeUrl(input) {
+  if (!input) return '';
+  let url = String(input).trim();
+  if (!url) return '';
+
+  // Add https:// if missing a scheme
+  if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(url)) {
+    // If it looks like a domain (has a dot and no spaces)
+    if (/^[^\s]+\.[^\s]+/.test(url)) {
+      url = 'https://' + url;
+    } else {
+      url = 'https://' + url;
+    }
+  }
+  return url;
+}
+
+function isValidHttpUrl(str) {
+  try {
+    const u = new URL(str);
+    return u.protocol === 'http:' || u.protocol === 'https:';
+  } catch (e) {
+    return false;
+  }
+}
+
+function getHostname(url) {
+  try { return new URL(url).hostname; }
+  catch (e) { return ''; }
+}
+
+function getFaviconUrl(url) {
+  const host = getHostname(url);
+  if (!host) return '';
+  return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=64`;
+}
+
+function isSecure(url) {
+  try { return new URL(url).protocol === 'https:'; }
+  catch (e) { return false; }
+}
+
+/* --- Truncate URL for display --- */
+function truncateUrl(url, max = 60) {
+  if (url.length <= max) return url;
+  return url.slice(0, max - 1) + '…';
+}
+
+/* --- Time formatting --- */
+function timeAgo(ts) {
+  const diff = Date.now() - ts;
+  const s = Math.floor(diff / 1000);
+  if (s < 60) return 'just now';
+  const m = Math.floor(s / 60);
+  if (m < 60) return m + 'm ago';
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + 'h ago';
+  const d = Math.floor(h / 24);
+  if (d < 7) return d + 'd ago';
+  return new Date(ts).toLocaleDateString();
+}
+
+/* --- Alias validation --- */
+function isValidAlias(alias) {
+  return /^[A-Za-z0-9_-]{1,32}$/.test(alias);
+}
+
+function isReservedAlias(alias) {
+  return RESERVED_ALIASES.includes(alias.toLowerCase());
+}
+
+/* --- Random ID --- */
+function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+/* --- Escape HTML --- */
+function esc(str) {
+  return String(str ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[c]));
+}
+
+/* --- Toast --- */
+function showToast(message, type = 'success', duration = 2600) {
+  const toast = $('#toast');
+  const icon = toast.querySelector('i');
+  const msgEl = $('#toastMessage');
+
+  msgEl.textContent = message;
+  toast.className = 'show ' + type;
+  icon.className = type === 'error'
+    ? 'fas fa-circle-exclamation'
+    : type === 'info'
+      ? 'fas fa-circle-info'
+      : 'fas fa-check-circle';
+
+  clearTimeout(App.toastTimeout);
+  App.toastTimeout = setTimeout(() => toast.classList.remove('show'), duration);
+}
+
+/* --- Clipboard (with fallback) --- */
+async function copyToClipboard(text) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.top = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  } catch (e) {
+    console.warn('Copy failed:', e);
+    return false;
+  }
+}
+
+/* ============================================================================
+   STORAGE
+   ============================================================================ */
+const Storage = {
+  getHistory() {
+    try {
+      const raw = localStorage.getItem(STORAGE.HISTORY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) { return []; }
+  },
+  setHistory(list) {
+    try { localStorage.setItem(STORAGE.HISTORY, JSON.stringify(list.slice(0, MAX_HISTORY))); }
+    catch (e) { console.warn('History save failed:', e); }
+  },
+  addHistory(entry) {
+    const list = this.getHistory().filter(x => x.id !== entry.id);
+    list.unshift(entry);
+    this.setHistory(list);
+    return list;
+  },
+  removeHistory(id) {
+    const list = this.getHistory().filter(x => x.id !== id);
+    this.setHistory(list);
+    return list;
+  },
+  clearHistory() {
+    try { localStorage.removeItem(STORAGE.HISTORY); } catch (e) {}
+  },
+
+  getAliases() {
+    try {
+      const raw = localStorage.getItem(STORAGE.ALIASES);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  },
+  setAliases(map) {
+    try { localStorage.setItem(STORAGE.ALIASES, JSON.stringify(map)); }
+    catch (e) { console.warn('Alias save failed:', e); }
+  },
+  saveAlias(alias, url) {
+    const m = this.getAliases();
+    m[alias.toLowerCase()] = url;
+    this.setAliases(m);
+  },
+  lookupAlias(alias) {
+    const m = this.getAliases();
+    return m[alias.toLowerCase()] || null;
+  },
+  aliasExists(alias) {
+    return !!this.lookupAlias(alias);
+  },
+
+  getTheme() {
+    try { return localStorage.getItem(STORAGE.THEME) || 'dark'; }
+    catch (e) { return 'dark'; }
+  },
+  setTheme(t) {
+    try { localStorage.setItem(STORAGE.THEME, t); } catch (e) {}
+  }
+};
+
+/* ============================================================================
+   THEME
+   ============================================================================ */
+function applyTheme(theme) {
+  const html = document.documentElement;
+  if (theme === 'dark') html.classList.add('dark');
+  else html.classList.remove('dark');
+
+  const knob = $('#themeKnob');
+  if (knob) {
+    knob.innerHTML = theme === 'dark'
+      ? '<i class="fas fa-moon text-indigo-500"></i>'
+      : '<i class="fas fa-sun text-amber-500"></i>';
+  }
+  Storage.setTheme(theme);
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.contains('dark');
+  applyTheme(isDark ? 'light' : 'dark');
+}
+
+/* ============================================================================
+   VIEW SWITCHER
+   ============================================================================ */
+function showView(name) {
+  ['dashboardView', 'redirectView', 'errorView'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('hidden', id !== name + 'View' && id !== name);
+  });
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function showDashboard() {
+  cancelCountdown();
+  document.getElementById('dashboardView').classList.remove('hidden');
+  document.getElementById('redirectView').classList.add('hidden');
+  document.getElementById('errorView').classList.add('hidden');
+  document.title = 'SaivLINK — Shorten. Share. Simplify.';
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function showRedirectView() {
+  document.getElementById('dashboardView').classList.add('hidden');
+  document.getElementById('redirectView').classList.remove('hidden');
+  document.getElementById('errorView').classList.add('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function showErrorView(message) {
+  cancelCountdown();
+  document.getElementById('errorMessage').textContent = message || 'The short link you followed doesn\'t exist or has been removed.';
+  document.getElementById('dashboardView').classList.add('hidden');
+  document.getElementById('redirectView').classList.add('hidden');
+  document.getElementById('errorView').classList.remove('hidden');
+  document.title = 'Link Not Found — SaivLINK';
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+/* ============================================================================
+   ROUTER
+   ============================================================================ */
+function getBasePath() {
+  // Preserve path but strip hash & query for building short links
+  return window.location.origin + window.location.pathname;
+}
+
+function buildShortUrl(encoded) {
+  return getBasePath() + '#to=' + encoded;
+}
+
+function buildAliasUrl(alias) {
+  return getBasePath() + '#s/' + alias;
+}
+
+function route() {
+  const hash = window.location.hash || '';
+
+  // Route: #to=ENCODED
+  if (hash.startsWith('#to=')) {
+    const encoded = hash.slice(4);
+    const decoded = b64urlDecode(encoded);
+    if (!decoded || !isValidHttpUrl(decoded)) {
+      showErrorView('The encoded link is invalid or corrupted.');
+      return;
+    }
+    enterRedirect(decoded);
+    return;
+  }
+
+  // Route: #s/ALIAS
+  if (hash.startsWith('#s/')) {
+    const alias = hash.slice(3);
+    if (!isValidAlias(alias)) {
+      showErrorView('Invalid alias format.');
+      return;
+    }
+    const url = Storage.lookupAlias(alias);
+    if (!url) {
+      showErrorView(`The alias "#s/${alias}" doesn't exist on this device. Custom aliases are stored locally — share the full "short link" instead, or create this alias in your own browser.`);
+      return;
+    }
+    enterRedirect(url);
+    return;
+  }
+
+  // Default: dashboard
+  showDashboard();
+}
+
+/* ============================================================================
+   REDIRECT VIEW LOGIC
+   ============================================================================ */
+function enterRedirect(targetUrl) {
+  // Guard: don't redirect to self
+  const current = window.location.href.split('#')[0];
+  if (targetUrl.split('#')[0] === current) {
+    showErrorView('This link points back to SaivLINK. Aborting to prevent a loop.');
+    return;
+  }
+
+  // Populate destination preview
+  const domain = getHostname(targetUrl) || 'unknown';
+  const favicon = getFaviconUrl(targetUrl);
+  const secure = isSecure(targetUrl);
+
+  const faviconEl = $('#destFavicon');
+  if (favicon) {
+    faviconEl.src = favicon;
+    faviconEl.style.display = '';
+  } else {
+    faviconEl.style.display = 'none';
+  }
+
+  $('#destDomain').textContent = domain;
+  $('#destFullUrl').textContent = targetUrl;
+
+  const badge = $('#destSafetyBadge');
+  if (secure) {
+    badge.className = 'safety-badge safety-safe';
+    badge.innerHTML = '<i class="fas fa-lock text-[9px]"></i><span>Secure</span>';
+  } else {
+    badge.className = 'safety-badge safety-warn';
+    badge.innerHTML = '<i class="fas fa-triangle-exclamation text-[9px]"></i><span>Not Secure</span>';
+  }
+
+  document.title = 'Redirecting to ' + domain + ' — SaivLINK';
+
+  showRedirectView();
+  startCountdown(targetUrl);
+}
+
+function startCountdown(targetUrl) {
+  cancelCountdown();
+
+  App.countdown.target = targetUrl;
+  App.countdown.startTime = performance.now();
+  App.countdown.completed = false;
+
+  const progressCircle = $('#countdownProgress');
+  const numberEl = $('#countdownNumber');
+  const autoTimeEl = $('#autoRedirectTime');
+  const skipBtn = $('#skipBtn');
+
+  // Reset UI
+  progressCircle.style.strokeDasharray = CIRCUMFERENCE;
+  progressCircle.style.strokeDashoffset = 0;
+  numberEl.textContent = COUNTDOWN_SECONDS;
+  autoTimeEl.textContent = COUNTDOWN_SECONDS;
+  skipBtn.disabled = false;
+
+  let lastDisplayed = COUNTDOWN_SECONDS;
+
+  function tick(now) {
+    if (App.countdown.completed) return;
+
+    const elapsed = now - App.countdown.startTime;
+    const progress = Math.min(elapsed / App.countdown.duration, 1);
+    const remainingMs = Math.max(0, App.countdown.duration - elapsed);
+    const remainingSec = remainingMs / 1000;
+
+    // Circle progress (smooth)
+    const offset = CIRCUMFERENCE * progress;
+    progressCircle.style.strokeDashoffset = offset;
+
+    // Number (integer for display)
+    const displayInt = Math.ceil(remainingSec);
+    if (displayInt !== lastDisplayed) {
+      lastDisplayed = displayInt;
+      numberEl.textContent = displayInt;
+      autoTimeEl.textContent = displayInt;
+      // Small pop animation
+      numberEl.style.transition = 'transform 0.15s ease';
+      numberEl.style.transform = 'scale(1.08)';
+      setTimeout(() => { numberEl.style.transform = 'scale(1)'; }, 150);
+    }
+
+    if (progress >= 1) {
+      App.countdown.completed = true;
+      performRedirect();
+      return;
+    }
+
+    App.countdown.raf = requestAnimationFrame(tick);
+  }
+
+  App.countdown.raf = requestAnimationFrame(tick);
+}
+
+function cancelCountdown() {
+  if (App.countdown.raf) {
+    cancelAnimationFrame(App.countdown.raf);
+    App.countdown.raf = null;
+  }
+  App.countdown.completed = false;
+}
+
+function performRedirect() {
+  const target = App.countdown.target;
+  if (!target) return;
+
+  cancelCountdown();
+
+  // Visual feedback before jumping
+  const numberEl = $('#countdownNumber');
+  if (numberEl) numberEl.textContent = '→';
+
+  // Slight delay for a smoother transition
+  setTimeout(() => {
+    try {
+      window.location.href = target;
+    } catch (e) {
+      showErrorView('Unable to redirect to the destination.');
+    }
+  }, 180);
+}
+
+/* ============================================================================
+   DASHBOARD — Generate & Render
+   ============================================================================ */
+
+function validateUrlInput(showError = true) {
+  const input = $('#urlInput');
+  const errorEl = $('#urlError');
+  const raw = input.value.trim();
+
+  if (!raw) {
+    if (showError) showError(errorEl, 'Please enter a URL.');
+    return null;
+  }
+
+  const normalized = normalizeUrl(raw);
+  if (!isValidHttpUrl(normalized)) {
+    if (showError) showError(errorEl, 'That doesn\'t look like a valid URL.');
+    return null;
+  }
+
+  hideError(errorEl);
+  return normalized;
+}
+
+function validateAliasInput(showError = true) {
+  const input = $('#aliasInput');
+  const errorEl = $('#aliasHint');
+  const raw = input.value.trim();
+
+  if (!raw) return ''; // optional
+
+  if (!isValidAlias(raw)) {
+    if (showError) {
+      errorEl.classList.remove('text-slate-500', 'dark:text-slate-500');
+      errorEl.classList.add('text-red-500');
+      errorEl.innerHTML = '<i class="fas fa-circle-exclamation mr-1"></i>Invalid alias. Use letters, numbers, dashes or underscores (max 32 chars).';
+    }
+    return null;
+  }
+
+  if (isReservedAlias(raw)) {
+    if (showError) {
+      errorEl.classList.remove('text-slate-500', 'dark:text-slate-500');
+      errorEl.classList.add('text-red-500');
+      errorEl.innerHTML = '<i class="fas fa-circle-exclamation mr-1"></i>That alias is reserved. Try another.';
+    }
+    return null;
+  }
+
+  if (Storage.aliasExists(raw)) {
+    if (showError) {
+      errorEl.classList.remove('text-slate-500', 'dark:text-slate-500');
+      errorEl.classList.add('text-red-500');
+      errorEl.innerHTML = '<i class="fas fa-circle-exclamation mr-1"></i>That alias is already in use.';
+    }
+    return null;
+  }
+
+  // Reset hint
+  errorEl.classList.remove('text-red-500');
+  errorEl.classList.add('text-slate-500', 'dark:text-slate-500');
+  errorEl.innerHTML = '<i class="fas fa-info-circle mr-1"></i>Letters, numbers, dashes and underscores. Local-only: works on this device.';
+  return raw;
+}
+
+function showError(el, msg) {
+  if (!el) return;
+  el.classList.remove('hidden');
+  const span = el.querySelector('span');
+  if (span) span.textContent = msg;
+}
+
+function hideError(el) {
+  if (!el) return;
+  el.classList.add('hidden');
+}
+
+function handleGenerate(e) {
+  if (e) e.preventDefault();
+
+  const url = validateUrlInput();
+  if (!url) return;
+
+  const alias = validateAliasInput();
+  if (alias === null) return;
+
+  const encoded = b64urlEncode(url);
+  if (!encoded) {
+    showToast('Failed to encode URL.', 'error');
+    return;
+  }
+
+  const shortUrl = buildShortUrl(encoded);
+  const id = generateId();
+  const entry = {
+    id,
+    original: url,
+    short: shortUrl,
+    alias: alias || '',
+    createdAt: Date.now()
+  };
+
+  // Persist alias → url mapping
+  if (alias) {
+    Storage.saveAlias(alias, url);
+    entry.aliasShort = buildAliasUrl(alias);
+  }
+
+  Storage.addHistory(entry);
+  App.currentResult = entry;
+
+  renderResult(entry);
+  renderHistory();
+  showToast(alias ? `Short link created with alias "${alias}"` : 'Short link created!', 'success');
+}
+
+function renderResult(entry) {
+  const card = $('#resultCard');
+  if (!card) return;
+
+  $('#shortLinkText').textContent = entry.short;
+  $('#originalUrlText').textContent = entry.original;
+
+  card.classList.remove('hidden');
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Generate QR
+  renderQR(entry.short);
+}
+
+function renderQR(text) {
+  const container = $('#qrcodeContainer');
+  if (!container || typeof QRCode === 'undefined') return;
+
+  container.innerHTML = '';
+
+  try {
+    new QRCode(container, {
+      text: text,
+      width: 180,
+      height: 180,
+      colorDark: '#0f172a',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  } catch (e) {
+    console.error('QR generation failed:', e);
+    container.innerHTML = '<div class="text-xs text-slate-500 p-4">QR unavailable</div>';
+  }
+}
+
+function downloadQR() {
+  const container = $('#qrcodeContainer');
+  if (!container) return;
+
+  const canvas = container.querySelector('canvas');
+  const img = container.querySelector('img');
+
+  let dataUrl = '';
+  if (canvas) dataUrl = canvas.toDataURL('image/png');
+  else if (img && img.src) dataUrl = img.src;
+
+  if (!dataUrl) {
+    showToast('QR not ready yet.', 'error');
+    return;
+  }
+
+  const a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = 'saivlink-qr-' + Date.now() + '.png';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showToast('QR code downloaded!', 'success');
+}
+
+/* ============================================================================
+   HISTORY RENDERING
+   ============================================================================ */
+function renderHistory() {
+  const section = $('#historySection');
+  const list = $('#historyList');
+  const countEl = $('#historyCount');
+  if (!section || !list) return;
+
+  const items = Storage.getHistory();
+  countEl.textContent = items.length;
+
+  if (items.length === 0) {
+    section.classList.add('hidden');
+    list.innerHTML = '';
+    return;
+  }
+  section.classList.remove('hidden');
+
+  // Build DOM safely
+  list.innerHTML = '';
+  items.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'history-item';
+
+    // Favicon
+    const favWrap = document.createElement('div');
+    favWrap.className = 'w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-100 to-violet-100 dark:from-indigo-500/20 dark:to-violet-500/20 flex items-center justify-center flex-shrink-0 overflow-hidden';
+    const favUrl = getFaviconUrl(item.original);
+    if (favUrl) {
+      const img = document.createElement('img');
+      img.src = favUrl;
+      img.alt = '';
+      img.className = 'w-6 h-6';
+      img.onerror = () => {
+        favWrap.innerHTML = '<i class="fas fa-link text-indigo-500"></i>';
+      };
+      favWrap.appendChild(img);
+    } else {
+      favWrap.innerHTML = '<i class="fas fa-link text-indigo-500"></i>';
+    }
+
+    // Info
+    const info = document.createElement('div');
+    info.className = 'flex-1 min-w-0';
+
+    const domain = document.createElement('div');
+    domain.className = 'flex items-center gap-2 mb-0.5';
+    const domainText = document.createElement('span');
+    domainText.className = 'font-bold text-sm truncate';
+    domainText.textContent = getHostname(item.original) || 'link';
+    domain.appendChild(domainText);
+    if (item.alias) {
+      const aliasBadge = document.createElement('span');
+      aliasBadge.className = 'text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-indigo-100 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 flex-shrink-0';
+      aliasBadge.textContent = '#' + item.alias;
+      domain.appendChild(aliasBadge);
+    }
+
+    const originalText = document.createElement('p');
+    originalText.className = 'text-xs text-slate-500 dark:text-slate-400 truncate font-mono';
+    originalText.textContent = truncateUrl(item.original, 70);
+
+    const timeText = document.createElement('p');
+    timeText.className = 'text-[10px] text-slate-400 dark:text-slate-500 mt-0.5';
+    timeText.textContent = timeAgo(item.createdAt);
+
+    info.appendChild(domain);
+    info.appendChild(originalText);
+    info.appendChild(timeText);
+
+    // Actions
+    const actions = document.createElement('div');
+    actions.className = 'flex items-center gap-1.5 flex-shrink-0';
+
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'icon-btn';
+    copyBtn.title = 'Copy short link';
+    copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+    copyBtn.addEventListener('click', async () => {
+      const ok = await copyToClipboard(item.short);
+      showToast(ok ? 'Short link copied!' : 'Copy failed', ok ? 'success' : 'error');
+    });
+
+    const openBtn = document.createElement('button');
+    openBtn.className = 'icon-btn';
+    openBtn.title = 'Open link';
+    openBtn.innerHTML = '<i class="fas fa-arrow-up-right-from-square"></i>';
+    openBtn.addEventListener('click', () => {
+      window.open(item.short, '_blank', 'noopener');
+    });
+
+    const delBtn = document.createElement('button');
+    delBtn.className = 'icon-btn danger';
+    delBtn.title = 'Delete';
+    delBtn.innerHTML = '<i class="fas fa-trash-can"></i>';
+    delBtn.addEventListener('click', () => {
+      Storage.removeHistory(item.id);
+      if (item.alias) {
+        const m = Storage.getAliases();
+        delete m[item.alias.toLowerCase()];
+        Storage.setAliases(m);
+      }
+      renderHistory();
+      showToast('Link removed', 'info');
+    });
+
+    actions.appendChild(copyBtn);
+    actions.appendChild(openBtn);
+    actions.appendChild(delBtn);
+
+    row.appendChild(favWrap);
+    row.appendChild(info);
+    row.appendChild(actions);
+    list.appendChild(row);
+  });
+}
+
+/* ============================================================================
+   EVENT BINDINGS
+   ============================================================================ */
+function bindDashboardEvents() {
+  // Form submit
+  const form = $('#generateForm');
+  if (form) form.addEventListener('submit', handleGenerate);
+
+  // Clear URL error on input
+  const urlInput = $('#urlInput');
+  if (urlInput) {
+    urlInput.addEventListener('input', () => {
+      hideError($('#urlError'));
+    });
+  }
+
+  // Clear alias error on input
+  const aliasInput = $('#aliasInput');
+  if (aliasInput) {
+    aliasInput.addEventListener('input', () => {
+      // Reset hint style
+      const hint = $('#aliasHint');
+      hint.classList.remove('text-red-500');
+      hint.classList.add('text-slate-500', 'dark:text-slate-500');
+      hint.innerHTML = '<i class="fas fa-info-circle mr-1"></i>Letters, numbers, dashes and underscores. Local-only: works on this device.';
+      // Sanitize
+      aliasInput.value = aliasInput.value.replace(/[^A-Za-z0-9_-]/g, '');
+    });
+  }
+
+  // Paste button
+  const pasteBtn = $('#pasteBtn');
+  if (pasteBtn) {
+    pasteBtn.addEventListener('click', async () => {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          urlInput.value = text.trim();
+          hideError($('#urlError'));
+        } else {
+          showToast('Clipboard is empty', 'info');
+        }
+      } catch (e) {
+        showToast('Clipboard access denied — paste manually', 'error');
+      }
+    });
+  }
+
+  // Copy short link
+  const copyShortBtn = $('#copyShortBtn');
+  if (copyShortBtn) {
+    copyShortBtn.addEventListener('click', async () => {
+      if (!App.currentResult) return;
+      const ok = await copyToClipboard(App.currentResult.short);
+      showToast(ok ? 'Short link copied to clipboard!' : 'Copy failed', ok ? 'success' : 'error');
+      if (ok) {
+        const orig = copyShortBtn.innerHTML;
+        copyShortBtn.innerHTML = '<i class="fas fa-check text-base"></i>';
+        setTimeout(() => { copyShortBtn.innerHTML = orig; }, 1400);
+      }
+    });
+  }
+
+  // Copy both (details)
+  const copyBothBtn = $('#copyBothBtn');
+  if (copyBothBtn) {
+    copyBothBtn.addEventListener('click', async () => {
+      if (!App.currentResult) return;
+      const text = `Short link: ${App.currentResult.short}\nOriginal:   ${App.currentResult.original}`;
+      const ok = await copyToClipboard(text);
+      showToast(ok ? 'Details copied!' : 'Copy failed', ok ? 'success' : 'error');
+    });
+  }
+
+  // Test link
+  const testLinkBtn = $('#testLinkBtn');
+  if (testLinkBtn) {
+    testLinkBtn.addEventListener('click', () => {
+      if (!App.currentResult) return;
+      window.location.hash = '#to=' + b64urlEncode(App.currentResult.original);
+    });
+  }
+
+  // New link
+  const newLinkBtn = $('#newLinkBtn');
+  if (newLinkBtn) {
+    newLinkBtn.addEventListener('click', () => {
+      $('#urlInput').value = '';
+      $('#aliasInput').value = '';
+      hideError($('#urlError'));
+      $('#resultCard').classList.add('hidden');
+      App.currentResult = null;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => $('#urlInput').focus(), 300);
+    });
+  }
+
+  // Download QR
+  const downloadQrBtn = $('#downloadQrBtn');
+  if (downloadQrBtn) downloadQrBtn.addEventListener('click', downloadQR);
+
+  // Clear history
+  const clearHistoryBtn = $('#clearHistoryBtn');
+  if (clearHistoryBtn) {
+    clearHistoryBtn.addEventListener('click', () => {
+      if (!confirm('Delete all link history? This cannot be undone.')) return;
+      Storage.clearHistory();
+      // Also clear aliases since they'd be orphaned
+      Storage.setAliases({});
+      renderHistory();
+      showToast('All history cleared', 'info');
+    });
+  }
+}
+
+function bindRedirectEvents() {
+  // Skip button
+  const skipBtn = $('#skipBtn');
+  if (skipBtn) {
+    skipBtn.addEventListener('click', () => {
+      performRedirect();
+    });
+  }
+
+  // Cancel
+  const cancelBtn = $('#cancelRedirect');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      cancelCountdown();
+      window.location.hash = '';
+    });
+  }
+}
+
+function bindGlobalEvents() {
+  // Theme toggle
+  const themeToggle = $('#themeToggle');
+  if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+
+  // Hash routing
+  window.addEventListener('hashchange', route);
+
+  // Keyboard shortcuts
+  window.addEventListener('keydown', (e) => {
+    // Ctrl/Cmd + K focus URL input
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      const urlInput = $('#urlInput');
+      if (urlInput && !document.getElementById('dashboardView').classList.contains('hidden')) {
+        urlInput.focus();
+        urlInput.select();
+      }
+    }
+    // Escape cancels countdown if in redirect view
+    if (e.key === 'Escape' && !document.getElementById('redirectView').classList.contains('hidden')) {
+      cancelCountdown();
+      window.location.hash = '';
+    }
+  });
+
+  // Autofocus URL input on desktop
+  if (window.matchMedia('(min-width: 768px)').matches) {
+    const urlInput = $('#urlInput');
+    if (urlInput) setTimeout(() => urlInput.focus(), 400);
+  }
+}
+
+/* ============================================================================
+   INIT
+   ============================================================================ */
+function init() {
+  // Apply saved theme
+  applyTheme(Storage.getTheme());
+
+  // Bind events
+  bindDashboardEvents();
+  bindRedirectEvents();
+  bindGlobalEvents();
+
+  // Initial history render
+  renderHistory();
+
+  // Initial route
+  route();
+}
+
+// Boot
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+
+</body>
+</html>
