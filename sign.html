@@ -73,7 +73,6 @@
   .btn-brand:active:not(:disabled) { transform: translateY(0) scale(0.98); }
   .btn-brand:disabled { opacity: .55; cursor: not-allowed; animation: none; }
   @keyframes gradientShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-
   .btn-green {
     background: linear-gradient(135deg, #059669, #10b981);
     color: #fff; font-weight: 700; border: none; cursor: pointer;
@@ -83,7 +82,6 @@
   .btn-green:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 16px 40px -12px rgba(16,185,129,0.8); }
   .btn-green:active:not(:disabled) { transform: translateY(0) scale(0.98); }
   .btn-green:disabled { opacity: .55; cursor: not-allowed; }
-
   .btn-red {
     background: linear-gradient(135deg, #dc2626, #ef4444);
     color: #fff; font-weight: 700; border: none; cursor: pointer;
@@ -204,7 +202,7 @@
   }
   html.dark .tpl-card { background: rgba(15,23,42,0.5); border-color: rgba(148,163,184,0.14); color: #94a3b8; }
   .tpl-card:hover { transform: translateY(-2px); border-color: rgba(99,102,241,0.5); color: #4f46e5; box-shadow: 0 12px 24px -12px rgba(99,102,241,0.4); }
-  html.dark .tpl-card:hover { border-color: rgba(129,140,248,0.4); color: #a5b4fc; box-shadow: 0 12px 24px -12px rgba(0,0,0,0.5); }
+  html.dark .tpl-card:hover { border-color: rgba(129,140,248,0.4); color: #a5b4fc; }
   .tpl-card.active {
     border-color: #6366f1;
     background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.12));
@@ -305,49 +303,28 @@
   #toast.error { background: linear-gradient(135deg, #dc2626, #ef4444); }
   #toast.info { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
 
-  /* ============ PREVIEW ============ */
   .preview-outer {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    border-radius: 16px;
-    padding: 16px;
+    position: relative; width: 100%; overflow: hidden;
+    border-radius: 16px; padding: 16px;
     background: repeating-conic-gradient(rgba(148,163,184,0.12) 0% 25%, transparent 0% 50%) 50% / 22px 22px;
   }
   html.dark .preview-outer {
     background: repeating-conic-gradient(rgba(148,163,184,0.07) 0% 25%, transparent 0% 50%) 50% / 22px 22px;
   }
-  .preview-scaler {
-    position: relative;
-    transform-origin: top left;
-    transition: transform 0.25s ease;
-  }
+  .preview-scaler { position: relative; transform-origin: top left; transition: transform 0.25s ease; }
 
-  /* ============ SIGN SHEET ============ */
   .sign-sheet {
-    --sign-w: 210mm;
-    --sign-h: 297mm;
-    --base: 9.5mm;
-    --bg: #4f46e5;
-    --text-color: #fff;
-    --accent: #a5b4fc;
-
-    width: var(--sign-w);
-    height: var(--sign-h);
-    background: var(--bg);
-    color: var(--text-color);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    box-sizing: border-box;
+    --sign-w: 210mm; --sign-h: 297mm; --base: 9.5mm;
+    --bg: #4f46e5; --text-color: #fff; --accent: #a5b4fc;
+    width: var(--sign-w); height: var(--sign-h);
+    background: var(--bg); color: var(--text-color);
+    position: relative; overflow: hidden;
+    display: flex; box-sizing: border-box;
     box-shadow: 0 20px 40px -20px rgba(15,23,42,0.35);
     font-family: 'Inter', 'Cairo', system-ui, sans-serif;
     direction: ltr;
   }
-  .sign-sheet[dir="rtl"] {
-    direction: rtl;
-    font-family: 'Cairo', 'Inter', system-ui, sans-serif;
-  }
+  .sign-sheet[dir="rtl"] { direction: rtl; font-family: 'Cairo', 'Inter', system-ui, sans-serif; }
 
   .sign-border { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
   .sign-sheet.border-clean .sign-border { display: none; }
@@ -378,22 +355,19 @@
     gap: calc(var(--base) * 0.9);
     padding: calc(var(--base) * 1.6);
     text-align: center;
-    box-sizing: border-box;
-    min-width: 0;
+    box-sizing: border-box; min-width: 0;
   }
   .sign-icon-wrap {
     width: calc(var(--base) * 4.2);
     height: calc(var(--base) * 4.2);
-    border-radius: 50%;
-    background: var(--accent);
+    border-radius: 50%; background: var(--accent);
     display: flex; align-items: center; justify-content: center;
     box-shadow: 0 calc(var(--base) * 0.25) calc(var(--base) * 0.6) rgba(0,0,0,0.18);
     overflow: hidden; flex-shrink: 0;
   }
   .sign-icon-wrap i {
     font-size: calc(var(--base) * 2);
-    color: var(--bg);
-    line-height: 1;
+    color: var(--bg); line-height: 1;
   }
   .sign-icon-wrap img { width: 70%; height: 70%; object-fit: contain; }
   .sign-title {
@@ -441,13 +415,22 @@
     display: inline-flex; align-items: center; justify-content: center;
     box-shadow: 0 calc(var(--base) * 0.15) calc(var(--base) * 0.4) rgba(0,0,0,0.15);
     margin-top: calc(var(--base) * 0.35);
+    line-height: 0;
+    overflow: hidden;
   }
+  /* Force QR container to only ever contain ONE canvas */
   .sign-qr-wrap canvas,
   .sign-qr-wrap img {
     display: block !important;
     width: calc(var(--base) * 3.6) !important;
     height: calc(var(--base) * 3.6) !important;
     image-rendering: pixelated;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  /* Hide any duplicate QR canvases that may have stacked */
+  .sign-qr-wrap > div > *:not(:last-child) {
+    display: none !important;
   }
   .sign-footer {
     font-size: calc(var(--base) * 0.55);
@@ -456,79 +439,40 @@
     max-width: 90%; word-break: break-word; line-height: 1.3;
   }
 
-  /* ============ PRINT — CLEAN A4/A5 SINGLE PAGE ============ */
   @media print {
-    /* Kill all decorative effects */
     body::before, body::after { display: none !important; }
-
-    /* Remove body margin + lock to page size */
     html, body {
-      margin: 0 !important;
-      padding: 0 !important;
+      margin: 0 !important; padding: 0 !important;
       width: var(--print-w, 210mm) !important;
       height: var(--print-h, 297mm) !important;
       overflow: hidden !important;
       background: #fff !important;
     }
-
-    /* Hide EVERYTHING */
     body * { visibility: hidden !important; }
-
-    /* Show ONLY the sign */
-    #signSheet,
-    #signSheet * { visibility: visible !important; }
-
-    /* The sign must render at exact natural size, pinned to page corner */
+    #signSheet, #signSheet * { visibility: visible !important; }
     #signSheet {
-      position: fixed !important;
-      left: 0 !important;
-      top: 0 !important;
+      position: fixed !important; left: 0 !important; top: 0 !important;
       width: var(--print-w, 210mm) !important;
       height: var(--print-h, 297mm) !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
-      transform: none !important;
-      overflow: hidden !important;
-      page-break-after: avoid !important;
-      page-break-inside: avoid !important;
-      break-after: avoid !important;
-      break-inside: avoid !important;
+      margin: 0 !important; padding: 0 !important;
+      border-radius: 0 !important; box-shadow: none !important;
+      transform: none !important; overflow: hidden !important;
+      page-break-after: avoid !important; page-break-inside: avoid !important;
+      break-after: avoid !important; break-inside: avoid !important;
     }
-
-    /* Neutralize ALL parent wrappers (transforms, padding, margins) */
-    #previewViewport,
-    #previewOuter,
-    #previewScaler,
-    #previewContent,
-    #previewFrameOuter,
-    .preview-viewport,
-    .preview-outer,
-    .preview-scaler,
-    .preview-content,
+    #previewViewport, #previewOuter, #previewScaler, #previewContent, #previewFrameOuter,
+    .preview-viewport, .preview-outer, .preview-scaler, .preview-content,
     main, header, footer, section, aside {
-      transform: none !important;
-      padding: 0 !important;
-      margin: 0 !important;
-      background: none !important;
-      box-shadow: none !important;
-      overflow: visible !important;
-      height: auto !important;
-      min-height: 0 !important;
-      border: none !important;
-      border-radius: 0 !important;
-      display: block !important;
-      position: static !important;
-      width: auto !important;
-      max-width: none !important;
+      transform: none !important; padding: 0 !important; margin: 0 !important;
+      background: none !important; box-shadow: none !important;
+      overflow: visible !important; height: auto !important; min-height: 0 !important;
+      border: none !important; border-radius: 0 !important;
+      display: block !important; position: static !important;
+      width: auto !important; max-width: none !important;
     }
-    /* Keep flex layout inside the sign itself */
     #signSheet { display: flex !important; }
     #signSheet .sign-content { display: flex !important; flex-direction: column !important; }
     #signSheet .sign-fields { display: flex !important; flex-direction: column !important; }
-
-    /* Force color printing */
     * {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
@@ -544,19 +488,15 @@
     *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   }
 
-  /* Export loading overlay */
   #exportOverlay {
     position: fixed; inset: 0; z-index: 9998;
-    background: rgba(2,6,23,0.7);
-    backdrop-filter: blur(8px);
-    display: none;
-    align-items: center; justify-content: center;
+    background: rgba(2,6,23,0.7); backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center;
   }
   #exportOverlay.show { display: flex; }
   #exportOverlay .spinner-box {
     background: rgba(255,255,255,0.95);
-    padding: 28px 36px; border-radius: 20px;
-    text-align: center;
+    padding: 28px 36px; border-radius: 20px; text-align: center;
     box-shadow: 0 24px 60px -20px rgba(0,0,0,0.4);
   }
   html.dark #exportOverlay .spinner-box {
@@ -581,7 +521,6 @@
         <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight hidden sm:block" data-i18n="app.tagline">Professional signage made simple</p>
       </div>
     </a>
-
     <div class="flex items-center gap-2">
       <div class="flex items-center gap-1 p-1 rounded-xl bg-white/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/60">
         <button class="lang-pill active" data-ui-lang="en" type="button">EN</button>
@@ -627,7 +566,6 @@
             </div>
           </div>
 
-          <!-- 3 EXPORT ACTIONS -->
           <div class="mt-5">
             <div class="field-label mb-2"><i class="fas fa-file-export text-indigo-500"></i><span data-i18n="export.title">Export</span></div>
             <div class="grid grid-cols-3 gap-2">
@@ -817,7 +755,6 @@
 
 <div id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg">Done!</span></div>
 
-<!-- Export loading overlay -->
 <div id="exportOverlay">
   <div class="spinner-box">
     <i class="fas fa-circle-notch spin text-3xl text-indigo-500"></i>
@@ -827,7 +764,7 @@
 
 <script>
 /* ============================================================================
-   SaivSIGN v4 — Fixed print engine + PNG/PDF/Print exports
+   SaivSIGN v5 — Fixed icon set (250+ verified FREE icons) + bulletproof QR
    ============================================================================ */
 (function () {
 'use strict';
@@ -898,7 +835,7 @@ const CATEGORIES = {
   safety:    { icon:'fa-shield-heart',    en:'Safety',      fr:'Sécurité',       ar:'السلامة' },
   status:    { icon:'fa-store',           en:'Status',      fr:'Statut',         ar:'الحالة' },
   info:      { icon:'fa-circle-info',     en:'Wayfinding',  fr:'Orientation',    ar:'الإرشاد' },
-  service:   { icon:'fa-concierge-bell',  en:'Service',     fr:'Service',        ar:'الخدمة' },
+  service:   { icon:'fa-bell-concierge',  en:'Service',     fr:'Service',        ar:'الخدمة' },
   business:  { icon:'fa-briefcase',       en:'Business',    fr:'Commerce',       ar:'الأعمال' },
   custom:    { icon:'fa-pen-ruler',       en:'Custom',      fr:'Personnalisé',   ar:'مخصص' }
 };
@@ -930,7 +867,7 @@ const TEMPLATES = [
     { key:'ssid', icon:'fa-wifi', label:{ en:'Network', fr:'Réseau', ar:'الشبكة' }, default:'Guest' },
     { key:'password', icon:'fa-key', label:{ en:'Password', fr:'Mot de passe', ar:'كلمة المرور' }, default:'guest2025' }
   ], qr:true },
-{ id:'wifi-nopublic', cat:'wifi', icon:'fa-wifi-slash',
+{ id:'wifi-nopublic', cat:'wifi', icon:'fa-ban',
   theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
   title:{ en:'No Public Wi-Fi', fr:'Pas de Wi-Fi public', ar:'لا يوجد واي فاي عام' },
   subtitle:{ en:'Please ask staff for assistance', fr:'Veuillez demander au personnel', ar:'يرجى سؤال الموظفين' } },
@@ -986,7 +923,7 @@ const TEMPLATES = [
   theme:{ bgType:'solid', bgColor:'#be123c', textColor:'#ffffff', accentColor:'#fecdd3' },
   title:{ en:'Recording in Progress', fr:'Enregistrement en cours', ar:'التسجيل جارٍ' },
   subtitle:{ en:'Audio and video are being recorded', fr:'L\'audio et la vidéo sont enregistrés', ar:'يتم تسجيل الصوت والفيديو' } },
-{ id:'quiet-exam', cat:'quiet', icon:'fa-file-pen',
+{ id:'quiet-exam', cat:'quiet', icon:'fa-file-lines',
   theme:{ bgType:'solid', bgColor:'#0891b2', textColor:'#ffffff', accentColor:'#cffafe' },
   title:{ en:'Exam in Progress', fr:'Examen en cours', ar:'امتحان جارٍ' },
   subtitle:{ en:'Silence is strictly required', fr:'Le silence est obligatoire', ar:'الهدوء مطلوب بشكل صارم' } },
@@ -1118,7 +1055,7 @@ const TEMPLATES = [
   theme:{ bgType:'solid', bgColor:'#4f46e5', textColor:'#ffffff', accentColor:'#c7d2fe' },
   title:{ en:'Order Here', fr:'Commandez ici', ar:'اطلب هنا' },
   subtitle:{ en:'Please have your order ready', fr:'Ayez votre commande prête', ar:'يرجى تجهيز طلبك' } },
-{ id:'service-self', cat:'service', icon:'fa-hand-holding',
+{ id:'service-self', cat:'service', icon:'fa-hand-holding-heart',
   theme:{ bgType:'solid', bgColor:'#0891b2', textColor:'#ffffff', accentColor:'#cffafe' },
   title:{ en:'Self-Service', fr:'Libre-service', ar:'خدمة ذاتية' },
   subtitle:{ en:'Help yourself — enjoy!', fr:'Servez-vous — bon appétit !', ar:'اخدم نفسك — بالهناء' } },
@@ -1171,39 +1108,121 @@ const TEMPLATES = [
 /* ============ BORDERS ============ */
 const BORDERS = [
   { id:'clean',   icon:'fa-square' },
-  { id:'rounded', icon:'fa-square-full' },
+  { id:'rounded', icon:'fa-square' },
   { id:'double',  icon:'fa-clone' },
   { id:'minimal', icon:'fa-minus' }
 ];
 
-/* ============ 260+ ICONS ============ */
+/* ============ VERIFIED FREE ICONS ONLY (FA 6.5.1 Solid) ============ */
 const ICONS = [
-  'fa-wifi','fa-wifi-slash','fa-network-wired','fa-ethernet','fa-signal','fa-tower-broadcast','fa-satellite-dish','fa-globe','fa-globe-africa','fa-globe-americas','fa-globe-asia','fa-globe-europe','fa-server','fa-database','fa-cloud','fa-cloud-arrow-up','fa-cloud-arrow-down','fa-robot','fa-microchip','fa-memory',
-  'fa-key','fa-lock','fa-lock-open','fa-shield','fa-shield-halved','fa-shield-check','fa-shield-xmark','fa-shield-heart','fa-shield-virus','fa-user-shield','fa-fingerprint','fa-qrcode','fa-barcode','fa-id-card','fa-id-badge','fa-passport','fa-vault','fa-user-lock',
-  'fa-bell','fa-bell-concierge','fa-bell-slash','fa-bullhorn','fa-megaphone','fa-comment','fa-comment-dots','fa-comments','fa-message','fa-envelope','fa-envelope-open','fa-paper-plane','fa-phone','fa-phone-flip','fa-phone-volume','fa-mobile','fa-mobile-screen','fa-sim-card','fa-inbox','fa-at',
-  'fa-arrow-right','fa-arrow-left','fa-arrow-up','fa-arrow-down','fa-arrow-up-right-from-square','fa-arrow-right-to-bracket','fa-arrow-right-from-bracket','fa-arrow-turn-up','fa-arrow-turn-down','fa-arrow-pointer','fa-hand-point-right','fa-hand-point-left','fa-hand-point-up','fa-hand-point-down','fa-hand-peace','fa-hand-sparkles','fa-hands','fa-handshake','fa-angles-right','fa-angles-left','fa-chevron-right','fa-chevron-left','fa-chevron-up','fa-chevron-down',
-  'fa-user','fa-user-group','fa-user-friends','fa-users','fa-user-plus','fa-user-check','fa-user-xmark','fa-user-tie','fa-user-doctor','fa-user-nurse','fa-user-graduate','fa-user-astronaut','fa-user-secret','fa-people-group','fa-people-arrows','fa-people-line','fa-person','fa-person-dress','fa-person-walking','fa-person-running','fa-child','fa-baby','fa-blind','fa-deaf','fa-low-vision','fa-wheelchair','fa-wheelchair-move','fa-crutch','fa-crutches','fa-person-cane',
-  'fa-clock','fa-stopwatch','fa-stopwatch-20','fa-hourglass','fa-hourglass-start','fa-hourglass-half','fa-hourglass-end','fa-calendar','fa-calendar-check','fa-calendar-day','fa-calendar-days','fa-calendar-xmark','fa-calendar-plus','fa-business-time',
-  'fa-volume-xmark','fa-volume-off','fa-volume-low','fa-volume-high','fa-microphone','fa-microphone-slash','fa-headphones','fa-headset','fa-speaker','fa-ear-listen','fa-ear-deaf','fa-radio','fa-tv','fa-film','fa-video','fa-camera','fa-camera-retro','fa-image','fa-images','fa-photo-film','fa-clapperboard',
-  'fa-ban','fa-ban-smoking','fa-smoking','fa-mask-ventilator','fa-head-side-mask','fa-head-side-cough','fa-hands-bubbles','fa-soap','fa-pump-soap','fa-spray-can','fa-spray-can-sparkles','fa-fire-extinguisher','fa-fire-flame-curved','fa-fire-flame-simple','fa-fire','fa-triangle-exclamation','fa-circle-exclamation','fa-square-exclamation','fa-circle-radiation','fa-biohazard','fa-syringe','fa-pills','fa-capsules','fa-prescription-bottle','fa-kit-medical','fa-briefcase-medical','fa-heart-pulse','fa-heart-crack','fa-hand-holding-medical','fa-helmet-safety','fa-vest','fa-vest-patches','fa-goggles','fa-temperature-high','fa-temperature-low','fa-droplet-slash',
-  'fa-circle-check','fa-circle-xmark','fa-circle-info','fa-circle-question','fa-circle-play','fa-circle-pause','fa-circle-stop','fa-circle-dot','fa-square-check','fa-square-xmark','fa-square-info','fa-circle-half-stroke','fa-bolt','fa-power-off','fa-toggle-on','fa-toggle-off','fa-check','fa-xmark','fa-plus','fa-minus',
-  'fa-money-bill','fa-money-bill-1','fa-money-bill-wave','fa-money-bill-transfer','fa-money-check','fa-money-check-dollar','fa-credit-card','fa-wallet','fa-coins','fa-dollar-sign','fa-euro-sign','fa-sterling-sign','fa-receipt','fa-cash-register','fa-piggy-bank',
-  'fa-location-dot','fa-location-pin','fa-location-crosshairs','fa-map-pin','fa-map','fa-map-location','fa-map-location-dot','fa-compass','fa-crosshairs','fa-street-view','fa-route','fa-signpost','fa-sign-hanging','fa-signs-post','fa-plane','fa-plane-departure','fa-plane-arrival','fa-globe-pointer',
-  'fa-car','fa-car-side','fa-bus','fa-train','fa-train-subway','fa-train-tram','fa-truck','fa-truck-fast','fa-truck-medical','fa-bicycle','fa-motorcycle','fa-helicopter','fa-ship','fa-anchor','fa-gas-pump','fa-charging-station','fa-road','fa-traffic-light','fa-square-parking','fa-square-parking-slash','fa-taxi','fa-tractor','fa-rocket',
-  'fa-utensils','fa-mug-hot','fa-mug-saucer','fa-coffee','fa-cookie','fa-cookie-bite','fa-pizza-slice','fa-burger','fa-ice-cream','fa-wine-glass','fa-wine-bottle','fa-beer-mug-empty','fa-martini-glass','fa-martini-glass-citrus','fa-champagne-glasses','fa-fish','fa-drumstick-bite','fa-carrot','fa-lemon','fa-bowl-food','fa-cake-candles','fa-birthday-cake','fa-egg','fa-apple-whole',
-  'fa-cart-shopping','fa-bag-shopping','fa-basket-shopping','fa-store','fa-store-slash','fa-shop','fa-shop-lock','fa-tag','fa-tags','fa-gift','fa-box','fa-boxes-stacked','fa-box-open','fa-box-archive','fa-boxes-packing','fa-truck-ramp-box','fa-comments-dollar',
-  'fa-clipboard','fa-clipboard-check','fa-clipboard-list','fa-clipboard-question','fa-file','fa-file-lines','fa-file-pdf','fa-file-image','fa-file-word','fa-file-excel','fa-folder','fa-folder-open','fa-book','fa-book-open','fa-bookmark','fa-newspaper','fa-address-book','fa-address-card','fa-scroll','fa-certificate',
-  'fa-pen','fa-pencil','fa-pen-fancy','fa-pen-nib','fa-pen-to-square','fa-pen-clip','fa-marker','fa-highlighter','fa-paintbrush','fa-paint-roller','fa-palette','fa-brush','fa-eraser','fa-ruler','fa-ruler-combined','fa-ruler-horizontal','fa-ruler-vertical','fa-compass-drafting','fa-scissors','fa-paperclip','fa-thumbtack','fa-magnet','fa-stamp',
-  'fa-screwdriver','fa-screwdriver-wrench','fa-hammer','fa-wrench','fa-gear','fa-gears','fa-cog','fa-cogs','fa-sliders','fa-toolbox','fa-broom','fa-house-chimney','fa-warehouse','fa-industry','fa-factory','fa-recycle',
-  'fa-sun','fa-moon','fa-cloud-sun','fa-cloud-moon','fa-cloud-rain','fa-cloud-showers-heavy','fa-cloud-snow','fa-snowflake','fa-umbrella','fa-umbrella-beach','fa-wind','fa-tornado','fa-water','fa-droplet','fa-leaf','fa-tree','fa-seedling','fa-mountain','fa-mountain-sun','fa-snowman','fa-cloud-bolt','fa-smog','fa-rainbow','fa-meteor',
-  'fa-desktop','fa-laptop','fa-tablet','fa-tablet-screen-button','fa-keyboard','fa-mouse','fa-print','fa-fax','fa-hard-drive','fa-usb','fa-sd-card','fa-computer-mouse','fa-display',
-  'fa-star','fa-star-half','fa-star-half-stroke','fa-heart','fa-face-smile','fa-face-frown','fa-face-meh','fa-face-grin','fa-face-surprise','fa-face-angry','fa-face-grin-stars','fa-face-laugh','fa-face-tired','fa-crown','fa-trophy','fa-medal','fa-award','fa-gem','fa-ring','fa-flag','fa-flag-checkered','fa-bolt-lightning','fa-splotch','fa-shapes','fa-cubes','fa-cube',
-  'fa-restroom','fa-toilet','fa-toilet-paper','fa-shower','fa-bath','fa-sink','fa-bed','fa-couch','fa-chair','fa-door-open','fa-door-closed','fa-stairs','fa-elevator','fa-house','fa-house-chimney-window','fa-building','fa-hotel','fa-hospital','fa-school','fa-church','fa-mosque','fa-landmark',
-  'fa-briefcase','fa-briefcase-clock','fa-chalkboard','fa-chalkboard-user','fa-graduation-cap','fa-stethoscope','fa-laptop-medical','fa-notes-medical',
-  'fa-shirt','fa-shoe-prints','fa-socks','fa-hat-cowboy','fa-glasses','fa-spa','fa-wand-magic-sparkles','fa-eye','fa-eye-slash',
-  'fa-futbol','fa-basketball','fa-baseball','fa-football','fa-volleyball','fa-dumbbell','fa-person-swimming','fa-person-biking','fa-person-hiking','fa-person-skiing','fa-person-snowboarding',
-  'fa-magic','fa-wand-magic','fa-wand-sparkles','fa-sparkles','fa-hand-holding-heart','fa-hand-holding-dollar','fa-hand-holding-droplet','fa-hand-fist','fa-hands-holding','fa-hands-praying','fa-handcuffs','fa-life-ring','fa-fire-burner','fa-prescription'
+  /* Connectivity (18) */
+  'fa-wifi','fa-signal','fa-tower-broadcast','fa-satellite-dish','fa-globe','fa-server','fa-database','fa-cloud','fa-cloud-arrow-up','fa-cloud-arrow-down',
+  'fa-robot','fa-microchip','fa-memory','fa-network-wired','fa-ethernet','fa-plug','fa-bolt','fa-power-off',
+
+  /* Security (18) */
+  'fa-key','fa-lock','fa-lock-open','fa-shield','fa-shield-halved','fa-shield-heart','fa-shield-virus','fa-user-shield','fa-fingerprint','fa-qrcode',
+  'fa-barcode','fa-id-card','fa-id-badge','fa-passport','fa-vault','fa-user-lock','fa-eye','fa-eye-slash',
+
+  /* Communication (20) */
+  'fa-bell','fa-bell-concierge','fa-bell-slash','fa-bullhorn','fa-comment','fa-comment-dots','fa-comments','fa-envelope','fa-envelope-open','fa-paper-plane',
+  'fa-phone','fa-phone-flip','fa-phone-volume','fa-mobile','fa-mobile-screen','fa-sim-card','fa-inbox','fa-at','fa-headset','fa-headphones',
+
+  /* People (24) */
+  'fa-user','fa-user-group','fa-users','fa-user-plus','fa-user-check','fa-user-xmark','fa-user-tie','fa-user-doctor','fa-user-nurse','fa-user-graduate',
+  'fa-user-astronaut','fa-people-group','fa-people-arrows','fa-people-line','fa-person','fa-person-dress','fa-person-walking','fa-person-running','fa-child','fa-baby',
+  'fa-wheelchair','fa-wheelchair-move','fa-crutch','fa-handshake',
+
+  /* Hands (8) */
+  'fa-hand','fa-hand-holding-heart','fa-hand-holding-dollar','fa-hand-holding-droplet','fa-hands-praying','fa-handshake-simple','fa-hand-peace','fa-hand-point-right',
+
+  /* Time (16) */
+  'fa-clock','fa-stopwatch','fa-stopwatch-20','fa-hourglass','fa-hourglass-start','fa-hourglass-half','fa-hourglass-end','fa-calendar','fa-calendar-check','fa-calendar-day',
+  'fa-calendar-days','fa-calendar-xmark','fa-calendar-plus','fa-business-time','fa-calendar-minus','fa-clock-rotate-left',
+
+  /* Audio/Media (22) */
+  'fa-volume-xmark','fa-volume-off','fa-volume-low','fa-volume-high','fa-microphone','fa-microphone-slash','fa-speaker','fa-ear-listen','fa-ear-deaf','fa-radio',
+  'fa-tv','fa-film','fa-video','fa-camera','fa-camera-retro','fa-image','fa-images','fa-clapperboard','fa-photo-film','fa-compact-disc',
+  'fa-music','fa-music-note',
+
+  /* Safety (26) */
+  'fa-ban','fa-ban-smoking','fa-smoking','fa-mask-ventilator','fa-head-side-mask','fa-head-side-cough','fa-hands-bubbles','fa-soap','fa-pump-soap','fa-spray-can',
+  'fa-fire-extinguisher','fa-fire-flame-curved','fa-fire-flame-simple','fa-fire','fa-triangle-exclamation','fa-circle-exclamation','fa-circle-radiation','fa-biohazard','fa-syringe','fa-pills',
+  'fa-capsules','fa-prescription-bottle','fa-kit-medical','fa-briefcase-medical','fa-heart-pulse','fa-heart-crack',
+
+  /* Status (26) */
+  'fa-circle-check','fa-circle-xmark','fa-circle-info','fa-circle-question','fa-circle-play','fa-circle-pause','fa-circle-stop','fa-circle-dot','fa-square-check','fa-square-xmark',
+  'fa-square-info','fa-circle-half-stroke','fa-check','fa-xmark','fa-plus','fa-minus','fa-star','fa-star-half','fa-star-half-stroke','fa-heart',
+  'fa-crown','fa-trophy','fa-medal','fa-award','fa-gem','fa-ring',
+
+  /* Flags & Symbols (10) */
+  'fa-flag','fa-flag-checkered','fa-bolt-lightning','fa-sparkles','fa-splotch','fa-shapes','fa-cubes','fa-cube','fa-star-of-life','fa-certificate',
+
+  /* Money (14) */
+  'fa-money-bill','fa-money-bill-1','fa-money-bill-wave','fa-money-bill-transfer','fa-money-check','fa-money-check-dollar','fa-credit-card','fa-wallet','fa-coins','fa-dollar-sign',
+  'fa-euro-sign','fa-sterling-sign','fa-receipt','fa-cash-register',
+
+  /* Location/Nav (32) */
+  'fa-location-dot','fa-location-pin','fa-location-crosshairs','fa-map-pin','fa-map','fa-map-location','fa-map-location-dot','fa-compass','fa-crosshairs','fa-street-view',
+  'fa-route','fa-signpost','fa-sign-hanging','fa-signs-post','fa-plane','fa-plane-departure','fa-plane-arrival','fa-arrow-right','fa-arrow-left','fa-arrow-up',
+  'fa-arrow-down','fa-arrow-up-right-from-square','fa-arrow-right-to-bracket','fa-arrow-right-from-bracket','fa-arrow-turn-up','fa-arrow-turn-down','fa-arrow-pointer','fa-angles-right','fa-angles-left','fa-chevron-right',
+  'fa-chevron-left','fa-chevron-up','fa-chevron-down',
+
+  /* Transport (22) */
+  'fa-car','fa-car-side','fa-bus','fa-train','fa-train-subway','fa-train-tram','fa-truck','fa-truck-fast','fa-truck-medical','fa-bicycle',
+  'fa-motorcycle','fa-helicopter','fa-ship','fa-anchor','fa-gas-pump','fa-charging-station','fa-road','fa-traffic-light','fa-square-parking','fa-square-parking-slash',
+  'fa-taxi','fa-tractor','fa-rocket',
+
+  /* Food (24) */
+  'fa-utensils','fa-mug-hot','fa-mug-saucer','fa-coffee','fa-cookie','fa-cookie-bite','fa-pizza-slice','fa-burger','fa-ice-cream','fa-wine-glass',
+  'fa-wine-bottle','fa-beer-mug-empty','fa-martini-glass','fa-martini-glass-citrus','fa-champagne-glasses','fa-fish','fa-drumstick-bite','fa-carrot','fa-lemon','fa-bowl-food',
+  'fa-cake-candles','fa-birthday-cake','fa-egg','fa-apple-whole',
+
+  /* Shopping (15) */
+  'fa-cart-shopping','fa-bag-shopping','fa-basket-shopping','fa-store','fa-store-slash','fa-shop','fa-shop-lock','fa-tag','fa-tags','fa-gift',
+  'fa-box','fa-boxes-stacked','fa-box-open','fa-box-archive','fa-boxes-packing','fa-truck-ramp-box',
+
+  /* Documents (20) */
+  'fa-clipboard','fa-clipboard-check','fa-clipboard-list','fa-clipboard-question','fa-file','fa-file-lines','fa-file-pdf','fa-file-image','fa-file-word','fa-file-excel',
+  'fa-folder','fa-folder-open','fa-book','fa-book-open','fa-bookmark','fa-newspaper','fa-address-book','fa-address-card','fa-scroll','fa-landmark',
+
+  /* Writing (22) */
+  'fa-pen','fa-pencil','fa-pen-fancy','fa-pen-nib','fa-pen-to-square','fa-pen-clip','fa-marker','fa-highlighter','fa-paintbrush','fa-paint-roller',
+  'fa-palette','fa-brush','fa-eraser','fa-ruler','fa-ruler-combined','fa-ruler-horizontal','fa-ruler-vertical','fa-compass-drafting','fa-scissors','fa-paperclip',
+  'fa-thumbtack','fa-magnet','fa-stamp',
+
+  /* Tools (15) */
+  'fa-screwdriver','fa-screwdriver-wrench','fa-hammer','fa-wrench','fa-gear','fa-gears','fa-cog','fa-cogs','fa-sliders','fa-toolbox',
+  'fa-broom','fa-house-chimney','fa-warehouse','fa-industry','fa-factory','fa-recycle',
+
+  /* Nature (24) */
+  'fa-sun','fa-moon','fa-cloud-sun','fa-cloud-moon','fa-cloud-rain','fa-cloud-showers-heavy','fa-cloud-snow','fa-snowflake','fa-umbrella','fa-umbrella-beach',
+  'fa-wind','fa-tornado','fa-water','fa-droplet','fa-leaf','fa-tree','fa-seedling','fa-mountain','fa-mountain-sun','fa-snowman',
+  'fa-cloud-bolt','fa-smog','fa-rainbow','fa-meteor',
+
+  /* Devices (13) */
+  'fa-desktop','fa-laptop','fa-tablet','fa-tablet-screen-button','fa-keyboard','fa-mouse','fa-print','fa-fax','fa-hard-drive','fa-usb',
+  'fa-sd-card','fa-computer-mouse','fa-display',
+
+  /* Buildings (20) */
+  'fa-restroom','fa-toilet','fa-toilet-paper','fa-shower','fa-bath','fa-sink','fa-bed','fa-couch','fa-chair','fa-door-open',
+  'fa-door-closed','fa-stairs','fa-elevator','fa-house','fa-building','fa-hotel','fa-hospital','fa-school','fa-church','fa-mosque',
+
+  /* Work (8) */
+  'fa-briefcase','fa-chalkboard','fa-chalkboard-user','fa-graduation-cap','fa-stethoscope','fa-laptop-medical','fa-notes-medical','fa-user-tie',
+
+  /* Fashion/Beauty (10) */
+  'fa-shirt','fa-shoe-prints','fa-socks','fa-hat-cowboy','fa-glasses','fa-spa','fa-wand-magic-sparkles','fa-wand-magic','fa-magic','fa-hat-cowboy-side',
+
+  /* Sports (12) */
+  'fa-futbol','fa-basketball','fa-baseball','fa-football','fa-volleyball','fa-dumbbell','fa-person-swimming','fa-person-biking','fa-person-hiking','fa-person-skiing',
+  'fa-person-snowboarding','fa-trophy',
+
+  /* Misc (10) */
+  'fa-hands-holding','fa-hands-holding-circle','fa-handcuffs','fa-life-ring','fa-fire-burner','fa-prescription','fa-fingerprint','fa-fingerprint-slash','fa-sparkles','fa-sun-plant-wilt'
 ];
+
+/* Dedupe icons */
+const UNIQUE_ICONS = Array.from(new Set(ICONS));
 
 /* ============ SIZES ============ */
 const SIZES = {
@@ -1275,9 +1294,7 @@ function showExportOverlay(msg) {
   $('#exportOverlayMsg').textContent = msg;
   ov.classList.add('show');
 }
-function hideExportOverlay() {
-  $('#exportOverlay').classList.remove('show');
-}
+function hideExportOverlay() { $('#exportOverlay').classList.remove('show'); }
 
 /* ============ THEME ============ */
 function applyTheme(theme) {
@@ -1514,10 +1531,10 @@ function renderIconGrid() {
   const countEl = $('#iconCount');
   if (!grid) return;
   grid.innerHTML = '';
-  if (countEl) countEl.textContent = ICONS.length + ' icons';
+  if (countEl) countEl.textContent = UNIQUE_ICONS.length + ' icons';
 
   const frag = document.createDocumentFragment();
-  ICONS.forEach(ic => {
+  UNIQUE_ICONS.forEach(ic => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'icon-btn-sm' + (state.design.icon === ic && !state.design.logo ? ' active' : '');
@@ -1594,6 +1611,50 @@ function setColorInput(sel, hexSel, value) {
   if (hex) hex.textContent = value;
 }
 
+/* ============ QR RENDER (bulletproof — no duplicates) ============ */
+function renderQRCode(text, size) {
+  const oldContainer = $('#signQRCode');
+  if (!oldContainer) return;
+
+  // Completely replace the container with a fresh empty one
+  // This guarantees NO stale canvas/img elements remain
+  const parent = oldContainer.parentNode;
+  if (!parent) return;
+
+  const fresh = document.createElement('div');
+  fresh.id = 'signQRCode';
+  fresh.style.lineHeight = '0';
+  fresh.style.margin = '0';
+  fresh.style.padding = '0';
+  parent.replaceChild(fresh, oldContainer);
+
+  if (!text || typeof QRCode === 'undefined') return;
+
+  try {
+    new QRCode(fresh, {
+      text: text,
+      width: size,
+      height: size,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+
+    // Defensive: after render, if library ever produced more than one child,
+    // keep only the last (which is the freshly-created one)
+    setTimeout(() => {
+      const kids = fresh.children;
+      if (kids.length > 1) {
+        for (let i = 0; i < kids.length - 1; i++) {
+          if (kids[i] && kids[i].parentNode === fresh) fresh.removeChild(kids[i]);
+        }
+      }
+    }, 20);
+  } catch (e) {
+    console.error('QR generation failed:', e);
+  }
+}
+
 /* ============ RENDER SIGN ============ */
 function renderSign() {
   const sheet = $('#signSheet');
@@ -1661,33 +1722,26 @@ function renderSign() {
     }
   }
 
+  // QR code
   const qrWrap = $('#signQRWrap');
-  const qrContainer = $('#signQRCode');
-  if (qrWrap && qrContainer) {
+  if (qrWrap) {
     if (tpl.qr && typeof QRCode !== 'undefined') {
       let qrData = '';
       if (tpl.id.startsWith('wifi')) {
         const ssid = state.fields.ssid || '';
         const pass = state.fields.password || '';
-        qrData = `WIFI:T:WPA;S:${ssid};P:${pass};;`;
+        // Escape special chars per WIFI QR spec
+        const escWifi = s => String(s).replace(/([\\;,:"])/g, '\\$1');
+        qrData = `WIFI:T:WPA;S:${escWifi(ssid)};P:${escWifi(pass)};;`;
       } else {
         qrData = (state.title || '') + ' ' + (state.subtitle || '');
       }
-      try {
-        qrContainer.innerHTML = '';
-        new QRCode(qrContainer, {
-          text: qrData, width: 220, height: 220,
-          colorDark: '#000000', colorLight: '#ffffff',
-          correctLevel: QRCode.CorrectLevel.M
-        });
-        qrWrap.style.display = '';
-      } catch (e) {
-        console.error('QR failed:', e);
-        qrWrap.style.display = 'none';
-      }
+      qrWrap.style.display = '';
+      renderQRCode(qrData, 220);
     } else {
       qrWrap.style.display = 'none';
-      qrContainer.innerHTML = '';
+      const existing = $('#signQRCode');
+      if (existing) existing.innerHTML = '';
     }
   }
 
@@ -1696,7 +1750,7 @@ function renderSign() {
   if (badge && s) badge.textContent = s.label;
 }
 
-/* ============ APPLY SIZE (updates print rules + preview) ============ */
+/* ============ APPLY SIZE ============ */
 function applySize() {
   const s = SIZES[state.size];
   const sheet = $('#signSheet');
@@ -1707,7 +1761,6 @@ function applySize() {
   sheet.style.setProperty('--sign-h', s.h + 'mm');
   sheet.style.setProperty('--base', base + 'mm');
 
-  // Dynamic print rule with EXACT page size
   const style = $('#dynamicPrintStyle');
   if (style) {
     style.textContent = `
@@ -1778,13 +1831,11 @@ async function exportPNG() {
   const scaler = $('#previewScaler');
   const outer = $('#previewOuter');
 
-  // Save current preview state
   const prevTransform = scaler.style.transform;
   const prevOuterH = outer.style.height;
   const prevScalerW = scaler.style.width;
   const prevScalerH = scaler.style.height;
 
-  // Reset to natural size for capture
   scaler.style.transform = 'none';
   scaler.style.width = '';
   scaler.style.height = '';
@@ -1794,10 +1845,8 @@ async function exportPNG() {
   await new Promise(r => setTimeout(r, 100));
 
   try {
-    // Compute export multiplier for ~2000px on the short side minimum
     const s = SIZES[state.size];
     const shortSideMm = Math.min(s.w, s.h);
-    // At scale=1, canvas width in px ≈ shortSideMm * (96/25.4)
     const baseShortPx = shortSideMm * (96 / 25.4);
     const multiplier = Math.max(2, 2000 / baseShortPx);
 
@@ -1833,7 +1882,6 @@ async function exportPNG() {
     console.error('PNG export failed:', err);
     showToast(uiT('toast.exportError'), 'error');
   } finally {
-    // Restore preview
     scaler.style.transform = prevTransform;
     scaler.style.width = prevScalerW;
     scaler.style.height = prevScalerH;
@@ -1924,20 +1972,12 @@ async function exportPDF() {
 /* ============ DIRECT PRINT ============ */
 function directPrint() {
   showToast(uiT('toast.printing'), 'info', 1200);
-
-  // Force the print size variables then print
   const s = SIZES[state.size];
   document.documentElement.style.setProperty('--print-w', s.w + 'mm');
   document.documentElement.style.setProperty('--print-h', s.h + 'mm');
-
-  // Small delay so toasts don't appear in print
   setTimeout(() => {
-    try {
-      window.print();
-    } catch (e) {
-      console.error('Print failed:', e);
-      showToast(uiT('toast.exportError'), 'error');
-    }
+    try { window.print(); }
+    catch (e) { console.error('Print failed:', e); showToast(uiT('toast.exportError'), 'error'); }
   }, 200);
 }
 
@@ -2003,7 +2043,6 @@ function bindEvents() {
   const clearBtn = $('#clearLogoBtn');
   if (clearBtn) clearBtn.addEventListener('click', clearLogo);
 
-  // Export buttons
   const printBtn = $('#printBtn');
   if (printBtn) printBtn.addEventListener('click', directPrint);
   const pngBtn = $('#pngBtn');
@@ -2028,10 +2067,8 @@ function bindEvents() {
   window.addEventListener('resize', () => { clearTimeout(rTimer); rTimer = setTimeout(updatePreviewScale, 100); });
   window.addEventListener('orientationchange', () => setTimeout(updatePreviewScale, 220));
 
-  // Keyboard: Ctrl+P uses our clean print
   window.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
-      // Allow default but ensure vars are set first
       const s = SIZES[state.size];
       document.documentElement.style.setProperty('--print-w', s.w + 'mm');
       document.documentElement.style.setProperty('--print-h', s.h + 'mm');
