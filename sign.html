@@ -5,38 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SaivSIGN — Professional Signage Maker</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
-
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     darkMode: 'class',
     theme: { extend: {
-      fontFamily: { sans: ['Inter','system-ui','sans-serif'], arabic: ['Cairo','system-ui','sans-serif'], mono: ['JetBrains Mono','ui-monospace','monospace'] }
+      fontFamily: { sans:['Inter','system-ui','sans-serif'], arabic:['Cairo','system-ui','sans-serif'], mono:['JetBrains Mono','ui-monospace','monospace'] }
     }}
   }
 </script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style id="dynamicPrintStyle"></style>
 
 <style>
   html, body { scroll-behavior: smooth; }
-  body { font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; background: #f8fafc; transition: background-color 0.3s, color 0.3s; }
-  html.dark body { background: #020617; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    background: #f8fafc;
+    color: #0f172a;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  html.dark body { background: #020617; color: #e2e8f0; }
   body.lang-ar { font-family: 'Cairo', 'Inter', system-ui, sans-serif; }
 
   body::before {
-    content: ''; position: fixed; inset: 0; z-index: -2;
+    content: '';
+    position: fixed; inset: 0; z-index: -2; pointer-events: none;
     background:
       radial-gradient(900px 600px at 15% -10%, rgba(99,102,241,0.12), transparent 60%),
       radial-gradient(800px 500px at 95% 0%, rgba(236,72,153,0.10), transparent 55%),
       radial-gradient(700px 500px at 50% 110%, rgba(56,189,248,0.08), transparent 60%);
-    pointer-events: none;
   }
   html.dark body::before {
     background:
@@ -45,11 +51,48 @@
       radial-gradient(700px 500px at 50% 110%, rgba(56,189,248,0.14), transparent 60%);
   }
 
-  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.55); background-clip: padding-box; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.5); background-clip: padding-box; }
   html.dark ::-webkit-scrollbar-thumb { background: rgba(129,140,248,0.35); background-clip: padding-box; }
+
+  .brand-text {
+    background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .btn-brand {
+    background: linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899);
+    background-size: 200% 200%; animation: gradientShift 6s ease infinite;
+    color: #fff; font-weight: 700; border: none; cursor: pointer;
+    transition: transform .15s ease, box-shadow .2s ease, opacity .2s ease;
+    box-shadow: 0 10px 30px -10px rgba(139,92,246,0.6);
+  }
+  .btn-brand:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 16px 40px -12px rgba(139,92,246,0.8); }
+  .btn-brand:active:not(:disabled) { transform: translateY(0) scale(0.98); }
+  .btn-brand:disabled { opacity: .55; cursor: not-allowed; animation: none; }
+  @keyframes gradientShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+  .btn-green {
+    background: linear-gradient(135deg, #059669, #10b981);
+    color: #fff; font-weight: 700; border: none; cursor: pointer;
+    transition: transform .15s ease, box-shadow .2s ease, opacity .2s ease;
+    box-shadow: 0 10px 30px -10px rgba(16,185,129,0.6);
+  }
+  .btn-green:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 16px 40px -12px rgba(16,185,129,0.8); }
+  .btn-green:active:not(:disabled) { transform: translateY(0) scale(0.98); }
+  .btn-green:disabled { opacity: .55; cursor: not-allowed; }
+
+  .btn-red {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    color: #fff; font-weight: 700; border: none; cursor: pointer;
+    transition: transform .15s ease, box-shadow .2s ease, opacity .2s ease;
+    box-shadow: 0 10px 30px -10px rgba(239,68,68,0.6);
+  }
+  .btn-red:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 16px 40px -12px rgba(239,68,68,0.8); }
+  .btn-red:active:not(:disabled) { transform: translateY(0) scale(0.98); }
+  .btn-red:disabled { opacity: .55; cursor: not-allowed; }
 
   .glass {
     background: rgba(255,255,255,0.78);
@@ -70,7 +113,7 @@
     border: 1.5px solid rgba(148,163,184,0.3);
     background: rgba(255,255,255,0.9);
     color: #0f172a; font-size: 0.9rem; outline: none;
-    transition: all 0.18s ease; font-family: inherit;
+    transition: all .18s ease; font-family: inherit;
   }
   html.dark .input-base {
     background: rgba(2,6,23,0.5);
@@ -92,9 +135,8 @@
 
   .field-label {
     display: flex; align-items: center; gap: 6px;
-    font-size: 0.76rem; font-weight: 700;
-    color: #334155; margin-bottom: 6px;
-    letter-spacing: 0.01em; text-transform: uppercase;
+    font-size: 0.76rem; font-weight: 700; color: #334155;
+    margin-bottom: 6px; letter-spacing: 0.01em; text-transform: uppercase;
   }
   html.dark .field-label { color: #cbd5e1; }
 
@@ -103,7 +145,7 @@
     padding: 4px 10px 4px 4px; border-radius: 12px;
     border: 1.5px solid rgba(148,163,184,0.3);
     background: rgba(255,255,255,0.9);
-    transition: all 0.18s ease; cursor: pointer;
+    transition: all .18s ease; cursor: pointer;
   }
   html.dark .color-pick { background: rgba(2,6,23,0.5); border-color: rgba(148,163,184,0.18); }
   .color-pick:hover { border-color: #6366f1; }
@@ -132,49 +174,11 @@
     width: 18px; height: 18px; border-radius: 50%;
     background: #fff; border: 3px solid #6366f1;
     cursor: grab; box-shadow: 0 2px 6px rgba(99,102,241,0.45);
-    transition: transform 0.15s ease;
   }
-  input[type="range"].rng::-webkit-slider-thumb:active { transform: scale(1.15); }
   input[type="range"].rng::-moz-range-thumb {
     width: 18px; height: 18px; border-radius: 50%; background: #fff;
     border: 3px solid #6366f1; cursor: grab;
   }
-
-  .brand-text {
-    background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent; color: transparent;
-  }
-  .btn-brand {
-    background: linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899);
-    background-size: 200% 200%;
-    animation: gradientShift 6s ease infinite;
-    color: #fff; font-weight: 700; border: none; cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.2s ease;
-    box-shadow: 0 10px 30px -10px rgba(139,92,246,0.6);
-  }
-  .btn-brand:hover { transform: translateY(-1px); box-shadow: 0 16px 40px -12px rgba(139,92,246,0.8); }
-  .btn-brand:active { transform: translateY(0) scale(0.98); }
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-
-  .btn-ghost {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 10px 14px; border-radius: 12px;
-    border: 1.5px solid rgba(148,163,184,0.3);
-    background: rgba(255,255,255,0.6);
-    color: #334155; font-weight: 600; font-size: 0.85rem;
-    cursor: pointer; transition: all 0.18s ease;
-  }
-  html.dark .btn-ghost {
-    background: rgba(15,23,42,0.5);
-    border-color: rgba(148,163,184,0.18);
-    color: #cbd5e1;
-  }
-  .btn-ghost:hover { border-color: #6366f1; color: #4f46e5; transform: translateY(-1px); }
-  html.dark .btn-ghost:hover { border-color: #818cf8; color: #a5b4fc; }
 
   .cat-tab {
     display: inline-flex; align-items: center; gap: 7px;
@@ -182,16 +186,12 @@
     font-size: 0.78rem; font-weight: 700;
     white-space: nowrap; cursor: pointer;
     border: 1.5px solid transparent; background: transparent;
-    color: #475569; transition: all 0.18s ease;
+    color: #475569; transition: all .18s ease;
   }
   html.dark .cat-tab { color: #94a3b8; }
   .cat-tab:hover { background: rgba(99,102,241,0.08); color: #4f46e5; }
   html.dark .cat-tab:hover { background: rgba(129,140,248,0.12); color: #a5b4fc; }
-  .cat-tab.active {
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: #fff;
-    box-shadow: 0 8px 18px -8px rgba(99,102,241,0.7);
-  }
+  .cat-tab.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; box-shadow: 0 8px 18px -8px rgba(99,102,241,0.7); }
 
   .tpl-card {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -199,36 +199,18 @@
     border: 1.5px solid rgba(148,163,184,0.22);
     background: rgba(255,255,255,0.6);
     color: #475569; font-size: 0.66rem; font-weight: 700;
-    cursor: pointer; transition: all 0.18s ease; text-align: center;
+    cursor: pointer; transition: all .18s ease; text-align: center;
     min-height: 90px; line-height: 1.25; word-break: break-word;
   }
-  html.dark .tpl-card {
-    background: rgba(15,23,42,0.5);
-    border-color: rgba(148,163,184,0.14);
-    color: #94a3b8;
-  }
-  .tpl-card:hover {
-    transform: translateY(-2px);
-    border-color: rgba(99,102,241,0.5);
-    color: #4f46e5;
-    box-shadow: 0 12px 24px -12px rgba(99,102,241,0.4);
-  }
-  html.dark .tpl-card:hover {
-    border-color: rgba(129,140,248,0.4);
-    color: #a5b4fc;
-    box-shadow: 0 12px 24px -12px rgba(0,0,0,0.5);
-  }
+  html.dark .tpl-card { background: rgba(15,23,42,0.5); border-color: rgba(148,163,184,0.14); color: #94a3b8; }
+  .tpl-card:hover { transform: translateY(-2px); border-color: rgba(99,102,241,0.5); color: #4f46e5; box-shadow: 0 12px 24px -12px rgba(99,102,241,0.4); }
+  html.dark .tpl-card:hover { border-color: rgba(129,140,248,0.4); color: #a5b4fc; box-shadow: 0 12px 24px -12px rgba(0,0,0,0.5); }
   .tpl-card.active {
     border-color: #6366f1;
     background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.12));
-    color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+    color: #4f46e5; box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
   }
-  html.dark .tpl-card.active {
-    border-color: #818cf8;
-    background: linear-gradient(135deg, rgba(129,140,248,0.15), rgba(168,85,247,0.15));
-    color: #a5b4fc;
-  }
+  html.dark .tpl-card.active { border-color: #818cf8; color: #a5b4fc; box-shadow: 0 0 0 3px rgba(129,140,248,0.18); }
   .tpl-card .tpl-icon {
     width: 34px; height: 34px; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
@@ -241,26 +223,16 @@
     width: 36px; height: 36px; border-radius: 10px;
     border: 1.5px solid rgba(148,163,184,0.2);
     background: rgba(255,255,255,0.5);
-    color: #475569; cursor: pointer; transition: all 0.15s ease;
-    font-size: 0.85rem;
+    color: #475569; cursor: pointer; transition: all .15s ease;
+    font-size: .85rem;
   }
-  html.dark .icon-btn-sm {
-    background: rgba(15,23,42,0.5);
-    border-color: rgba(148,163,184,0.14);
-    color: #94a3b8;
-  }
+  html.dark .icon-btn-sm { background: rgba(15,23,42,0.5); border-color: rgba(148,163,184,0.14); color: #94a3b8; }
   .icon-btn-sm:hover { border-color: #6366f1; color: #4f46e5; transform: translateY(-1px); }
   .icon-btn-sm.active {
-    border-color: #6366f1;
-    background: rgba(99,102,241,0.15);
-    color: #4f46e5;
+    border-color: #6366f1; background: rgba(99,102,241,0.15); color: #4f46e5;
     box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
   }
-  html.dark .icon-btn-sm.active {
-    border-color: #818cf8;
-    color: #a5b4fc;
-    background: rgba(129,140,248,0.18);
-  }
+  html.dark .icon-btn-sm.active { border-color: #818cf8; color: #a5b4fc; background: rgba(129,140,248,0.18); }
 
   .seg {
     display: inline-flex; padding: 3px; border-radius: 12px;
@@ -271,29 +243,22 @@
   html.dark .seg { background: rgba(148,163,184,0.08); border-color: rgba(148,163,184,0.12); }
   .seg button {
     padding: 8px 14px; border-radius: 9px;
-    font-size: 0.78rem; font-weight: 700;
+    font-size: .78rem; font-weight: 700;
     color: #475569; background: transparent; border: none;
-    cursor: pointer; transition: all 0.18s ease;
+    cursor: pointer; transition: all .18s ease;
     white-space: nowrap;
     display: inline-flex; align-items: center; gap: 6px;
   }
   html.dark .seg button { color: #94a3b8; }
-  .seg button.active {
-    background: #fff; color: #4f46e5;
-    box-shadow: 0 2px 6px rgba(15,23,42,0.12);
-  }
-  html.dark .seg button.active {
-    background: rgb(30,41,59); color: #a5b4fc;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-  }
+  .seg button.active { background: #fff; color: #4f46e5; box-shadow: 0 2px 6px rgba(15,23,42,0.12); }
+  html.dark .seg button.active { background: rgb(30,41,59); color: #a5b4fc; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
 
   .theme-toggle {
     position: relative; width: 58px; height: 30px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #fbbf24, #f97316);
+    border-radius: 999px; background: linear-gradient(135deg, #fbbf24, #f97316);
     border: none; cursor: pointer; padding: 0;
-    transition: background 0.3s ease;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+    transition: background .3s ease;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.15); flex-shrink: 0;
   }
   html.dark .theme-toggle { background: linear-gradient(135deg, #4f46e5, #8b5cf6); }
   .theme-toggle .knob {
@@ -301,25 +266,21 @@
     width: 24px; height: 24px; border-radius: 50%;
     background: #fff; display: flex; align-items: center; justify-content: center;
     font-size: 11px;
-    transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    transition: transform .32s cubic-bezier(.34,1.56,.64,1);
+    box-shadow: 0 2px 6px rgba(0,0,0,.25);
   }
   html.dark .theme-toggle .knob { transform: translateX(28px); }
   html[dir="rtl"].dark .theme-toggle .knob { transform: translateX(-28px); }
 
   .lang-pill {
     padding: 6px 11px; border-radius: 9px;
-    font-size: 0.72rem; font-weight: 800;
+    font-size: .72rem; font-weight: 800;
     border: 1.5px solid rgba(148,163,184,0.3);
     background: rgba(255,255,255,0.6);
-    color: #475569; cursor: pointer; transition: all 0.18s ease;
-    letter-spacing: 0.03em;
+    color: #475569; cursor: pointer;
+    transition: all .15s ease; letter-spacing: .03em;
   }
-  html.dark .lang-pill {
-    background: rgba(15,23,42,0.6);
-    color: #94a3b8;
-    border-color: rgba(148,163,184,0.18);
-  }
+  html.dark .lang-pill { background: rgba(15,23,42,0.6); color: #94a3b8; border-color: rgba(148,163,184,0.18); }
   .lang-pill:hover { border-color: #6366f1; color: #4f46e5; }
   .lang-pill.active {
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
@@ -332,11 +293,11 @@
     transform: translateX(-50%) translateY(120px);
     padding: 12px 22px; border-radius: 14px;
     background: #0f172a; color: #fff;
-    font-weight: 600; font-size: 0.875rem;
+    font-weight: 600; font-size: .875rem;
     display: flex; align-items: center; gap: 10px;
-    box-shadow: 0 24px 48px -12px rgba(0,0,0,0.5);
+    box-shadow: 0 24px 48px -12px rgba(0,0,0,.5);
     opacity: 0; pointer-events: none;
-    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    transition: all .4s cubic-bezier(.34,1.56,.64,1);
     z-index: 9999; max-width: calc(100vw - 32px);
   }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; cursor: pointer; }
@@ -344,16 +305,17 @@
   #toast.error { background: linear-gradient(135deg, #dc2626, #ef4444); }
   #toast.info { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
 
+  /* ============ PREVIEW ============ */
   .preview-outer {
-    position: relative; width: 100%;
-    overflow: hidden; border-radius: 16px;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 16px;
     padding: 16px;
-    background:
-      repeating-conic-gradient(rgba(148,163,184,0.12) 0% 25%, transparent 0% 50%) 50% / 22px 22px;
+    background: repeating-conic-gradient(rgba(148,163,184,0.12) 0% 25%, transparent 0% 50%) 50% / 22px 22px;
   }
   html.dark .preview-outer {
-    background:
-      repeating-conic-gradient(rgba(148,163,184,0.07) 0% 25%, transparent 0% 50%) 50% / 22px 22px;
+    background: repeating-conic-gradient(rgba(148,163,184,0.07) 0% 25%, transparent 0% 50%) 50% / 22px 22px;
   }
   .preview-scaler {
     position: relative;
@@ -361,13 +323,23 @@
     transition: transform 0.25s ease;
   }
 
+  /* ============ SIGN SHEET ============ */
   .sign-sheet {
-    --sign-w: 210mm; --sign-h: 297mm; --base: 9.5mm;
-    --bg: #4f46e5; --text-color: #fff; --accent: #a5b4fc;
-    width: var(--sign-w); height: var(--sign-h);
-    background: var(--bg); color: var(--text-color);
-    position: relative; overflow: hidden;
+    --sign-w: 210mm;
+    --sign-h: 297mm;
+    --base: 9.5mm;
+    --bg: #4f46e5;
+    --text-color: #fff;
+    --accent: #a5b4fc;
+
+    width: var(--sign-w);
+    height: var(--sign-h);
+    background: var(--bg);
+    color: var(--text-color);
+    position: relative;
+    overflow: hidden;
     display: flex;
+    box-sizing: border-box;
     box-shadow: 0 20px 40px -20px rgba(15,23,42,0.35);
     font-family: 'Inter', 'Cairo', system-ui, sans-serif;
     direction: ltr;
@@ -377,10 +349,7 @@
     font-family: 'Cairo', 'Inter', system-ui, sans-serif;
   }
 
-  .sign-border {
-    position: absolute; inset: 0;
-    pointer-events: none; z-index: 2;
-  }
+  .sign-border { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
   .sign-sheet.border-clean .sign-border { display: none; }
   .sign-sheet.border-rounded .sign-border {
     inset: calc(var(--base) * 0.55);
@@ -409,8 +378,9 @@
     gap: calc(var(--base) * 0.9);
     padding: calc(var(--base) * 1.6);
     text-align: center;
+    box-sizing: border-box;
+    min-width: 0;
   }
-
   .sign-icon-wrap {
     width: calc(var(--base) * 4.2);
     height: calc(var(--base) * 4.2);
@@ -425,27 +395,17 @@
     color: var(--bg);
     line-height: 1;
   }
-  .sign-icon-wrap img {
-    width: 70%; height: 70%; object-fit: contain;
-  }
-
+  .sign-icon-wrap img { width: 70%; height: 70%; object-fit: contain; }
   .sign-title {
     font-size: calc(var(--base) * 1.9);
-    font-weight: 900;
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-    margin: 0;
-    word-break: break-word;
-    max-width: 95%;
+    font-weight: 900; line-height: 1.08;
+    letter-spacing: -0.02em; margin: 0;
+    word-break: break-word; max-width: 95%;
   }
   .sign-subtitle {
     font-size: calc(var(--base) * 0.85);
-    font-weight: 500;
-    opacity: 0.9;
-    margin: 0;
-    line-height: 1.35;
-    max-width: 90%;
-    word-break: break-word;
+    font-weight: 500; opacity: .9; margin: 0;
+    line-height: 1.35; max-width: 90%; word-break: break-word;
   }
   .sign-fields {
     display: flex; flex-direction: column;
@@ -461,20 +421,18 @@
     text-align: start;
     display: flex; flex-direction: column;
     gap: calc(var(--base) * 0.05);
+    box-sizing: border-box;
   }
   .sign-field-label {
     font-size: calc(var(--base) * 0.5);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-weight: 700;
-    opacity: 0.78;
+    letter-spacing: .08em; font-weight: 700; opacity: .78;
   }
   .sign-field-value {
     font-size: calc(var(--base) * 0.85);
     font-weight: 700;
     font-family: 'JetBrains Mono', ui-monospace, monospace;
-    word-break: break-all;
-    line-height: 1.2;
+    word-break: break-all; line-height: 1.2;
   }
   .sign-qr-wrap {
     background: #fff;
@@ -493,46 +451,120 @@
   }
   .sign-footer {
     font-size: calc(var(--base) * 0.55);
-    opacity: 0.72; font-weight: 600;
-    letter-spacing: 0.03em;
+    opacity: .72; font-weight: 600;
+    letter-spacing: .03em;
     max-width: 90%; word-break: break-word; line-height: 1.3;
   }
 
+  /* ============ PRINT — CLEAN A4/A5 SINGLE PAGE ============ */
   @media print {
-    html, body {
-      margin: 0 !important; padding: 0 !important;
-      background: #fff !important;
-      overflow: visible !important; height: auto !important;
-    }
+    /* Kill all decorative effects */
     body::before, body::after { display: none !important; }
+
+    /* Remove body margin + lock to page size */
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: var(--print-w, 210mm) !important;
+      height: var(--print-h, 297mm) !important;
+      overflow: hidden !important;
+      background: #fff !important;
+    }
+
+    /* Hide EVERYTHING */
     body * { visibility: hidden !important; }
-    #signSheet, #signSheet * { visibility: visible !important; }
+
+    /* Show ONLY the sign */
+    #signSheet,
+    #signSheet * { visibility: visible !important; }
+
+    /* The sign must render at exact natural size, pinned to page corner */
     #signSheet {
       position: fixed !important;
-      top: 0 !important; left: 0 !important;
+      left: 0 !important;
+      top: 0 !important;
+      width: var(--print-w, 210mm) !important;
+      height: var(--print-h, 297mm) !important;
       margin: 0 !important;
-      transform: none !important;
-      box-shadow: none !important;
+      padding: 0 !important;
       border-radius: 0 !important;
-      width: var(--sign-w) !important;
-      height: var(--sign-h) !important;
-      page-break-inside: avoid; page-break-after: avoid;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
+      box-shadow: none !important;
+      transform: none !important;
+      overflow: hidden !important;
+      page-break-after: avoid !important;
+      page-break-inside: avoid !important;
+      break-after: avoid !important;
+      break-inside: avoid !important;
     }
-    .preview-scaler { transform: none !important; transform-origin: top left !important; width: auto !important; height: auto !important; }
-    .preview-outer { padding: 0 !important; margin: 0 !important; background: none !important; height: auto !important; overflow: visible !important; border-radius: 0 !important; }
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    /* Neutralize ALL parent wrappers (transforms, padding, margins) */
+    #previewViewport,
+    #previewOuter,
+    #previewScaler,
+    #previewContent,
+    #previewFrameOuter,
+    .preview-viewport,
+    .preview-outer,
+    .preview-scaler,
+    .preview-content,
+    main, header, footer, section, aside {
+      transform: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: none !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      height: auto !important;
+      min-height: 0 !important;
+      border: none !important;
+      border-radius: 0 !important;
+      display: block !important;
+      position: static !important;
+      width: auto !important;
+      max-width: none !important;
+    }
+    /* Keep flex layout inside the sign itself */
+    #signSheet { display: flex !important; }
+    #signSheet .sign-content { display: flex !important; flex-direction: column !important; }
+    #signSheet .sign-fields { display: flex !important; flex-direction: column !important; }
+
+    /* Force color printing */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
   }
 
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { scrollbar-width: none; }
+  .icon-scroll { max-height: 200px; overflow-y: auto; scrollbar-width: thin; }
 
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   }
 
-  .icon-scroll { max-height: 200px; overflow-y: auto; scrollbar-width: thin; }
+  /* Export loading overlay */
+  #exportOverlay {
+    position: fixed; inset: 0; z-index: 9998;
+    background: rgba(2,6,23,0.7);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center; justify-content: center;
+  }
+  #exportOverlay.show { display: flex; }
+  #exportOverlay .spinner-box {
+    background: rgba(255,255,255,0.95);
+    padding: 28px 36px; border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 24px 60px -20px rgba(0,0,0,0.4);
+  }
+  html.dark #exportOverlay .spinner-box {
+    background: rgba(15,23,42,0.95);
+    border: 1px solid rgba(148,163,184,0.2);
+  }
+  .spin { animation: spin 1s linear infinite; display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 
@@ -595,12 +627,26 @@
             </div>
           </div>
 
-          <div class="mt-4 flex items-center gap-3">
-            <button id="printBtn" class="btn-brand flex-1 py-3.5 px-5 rounded-2xl text-sm font-bold flex items-center justify-center gap-2" type="button">
-              <i class="fas fa-print"></i><span data-i18n="btn.print">Print / Save PDF</span>
-            </button>
-            <button id="resetSignBtn" class="btn-ghost py-3.5 px-4 rounded-2xl" title="Reset" type="button">
+          <!-- 3 EXPORT ACTIONS -->
+          <div class="mt-5">
+            <div class="field-label mb-2"><i class="fas fa-file-export text-indigo-500"></i><span data-i18n="export.title">Export</span></div>
+            <div class="grid grid-cols-3 gap-2">
+              <button id="printBtn" class="btn-brand py-3 px-2 rounded-xl text-xs font-bold flex flex-col items-center justify-center gap-1" type="button">
+                <i class="fas fa-print text-base"></i>
+                <span data-i18n="btn.print">Print</span>
+              </button>
+              <button id="pngBtn" class="btn-green py-3 px-2 rounded-xl text-xs font-bold flex flex-col items-center justify-center gap-1" type="button">
+                <i class="fas fa-image text-base"></i>
+                <span>PNG</span>
+              </button>
+              <button id="pdfBtn" class="btn-red py-3 px-2 rounded-xl text-xs font-bold flex flex-col items-center justify-center gap-1" type="button">
+                <i class="fas fa-file-pdf text-base"></i>
+                <span>PDF</span>
+              </button>
+            </div>
+            <button id="resetSignBtn" class="mt-3 w-full inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold border border-slate-300/60 dark:border-slate-700/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" type="button">
               <i class="fas fa-rotate-left"></i>
+              <span data-i18n="btn.reset">Reset Design</span>
             </button>
           </div>
         </div>
@@ -608,7 +654,7 @@
         <div class="glass rounded-2xl p-4">
           <div class="flex items-start gap-3">
             <span class="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-500/15 text-amber-600 dark:text-amber-300 flex items-center justify-center text-sm shrink-0"><i class="fas fa-lightbulb"></i></span>
-            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="tip.body">Use "Print / Save PDF" and choose your printer or "Save as PDF". The sign will be printed at exact dimensions with no UI clutter.</p>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="tip.body">Choose PNG for social media, PDF for printing/archiving, or Print for instant output.</p>
           </div>
         </div>
       </div>
@@ -678,10 +724,7 @@
               <button data-value="gradient" type="button"><i class="fas fa-circle-half-stroke"></i><span data-i18n="design.gradient">Gradient</span></button>
             </div>
             <div id="bgSolidWrap" class="grid grid-cols-2 gap-3">
-              <div class="color-pick">
-                <input type="color" id="bgColorInput" value="#4f46e5">
-                <span class="hex" id="bgColorHex">#4f46e5</span>
-              </div>
+              <div class="color-pick"><input type="color" id="bgColorInput" value="#4f46e5"><span class="hex" id="bgColorHex">#4f46e5</span></div>
             </div>
             <div id="bgGradientWrap" class="hidden space-y-3">
               <div class="grid grid-cols-2 gap-3">
@@ -727,8 +770,9 @@
             <div class="icon-scroll p-1.5 rounded-lg bg-slate-100/50 dark:bg-slate-900/30" id="iconGrid"></div>
             <div class="mt-3 flex items-center gap-3">
               <input type="file" id="logoUpload" accept="image/*" class="hidden">
-              <button type="button" id="logoUploadBtn" class="btn-ghost text-xs flex-1">
-                <i class="fas fa-image"></i><span data-i18n="design.uploadLogo">Upload Logo</span>
+              <button type="button" id="logoUploadBtn" class="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold border border-slate-300/60 dark:border-slate-700/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex-1">
+                <i class="fas fa-image"></i>
+                <span data-i18n="design.uploadLogo">Upload Logo</span>
               </button>
               <div id="logoPreviewThumb" class="hidden w-10 h-10 rounded-lg bg-white border border-slate-200 dark:border-slate-700 p-1 flex-shrink-0">
                 <img id="logoThumbImg" class="w-full h-full object-contain" alt="">
@@ -773,58 +817,75 @@
 
 <div id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg">Done!</span></div>
 
+<!-- Export loading overlay -->
+<div id="exportOverlay">
+  <div class="spinner-box">
+    <i class="fas fa-circle-notch spin text-3xl text-indigo-500"></i>
+    <p class="mt-3 text-sm font-bold" id="exportOverlayMsg">Exporting...</p>
+  </div>
+</div>
+
 <script>
 /* ============================================================================
-   SaivSIGN v2 — Fixed bugs, separated languages, 60 templates, 260+ icons
+   SaivSIGN v4 — Fixed print engine + PNG/PDF/Print exports
    ============================================================================ */
 (function () {
 'use strict';
 
-/* ============ UI TRANSLATIONS (interface only) ============ */
+/* ============ UI TRANSLATIONS ============ */
 const UI_I18N = {
   en: {
     'app.tagline':'Professional signage made simple',
     'section.templates':'Choose a Template','section.content':'Content','section.design':'Design','section.size':'Size & Format',
-    'preview.title':'Live Preview','btn.print':'Print / Save PDF',
+    'preview.title':'Live Preview','btn.print':'Print','btn.reset':'Reset Design',
     'content.title':'Title','content.subtitle':'Subtitle','content.footer':'Footer (optional)',
     'content.signLang':'Sign Language','content.signLangHint':'Only changes the sign content — not the whole interface.',
     'design.background':'Background','design.solid':'Solid','design.gradient':'Gradient','design.angle':'Angle',
     'design.textColor':'Text Color','design.accent':'Accent Color','design.border':'Border Style','design.icon':'Icon',
     'design.uploadLogo':'Upload Logo','design.clearLogo':'Clear Logo',
-    'tip.body':'Use "Print / Save PDF" and choose your printer or "Save as PDF". The sign will be printed at exact dimensions with no UI clutter.',
+    'tip.body':'Choose PNG for social media, PDF for printing/archiving, or Print for instant output.',
+    'export.title':'Export',
     'footer.powered':'Powered by','footer.made':'Made with','footer.in':'in','footer.country':'Algeria',
     'toast.reset':'Design reset to template','toast.logoRemoved':'Logo removed','toast.logoUploaded':'Logo uploaded',
     'toast.printing':'Opening print dialog...','toast.langChanged':'Sign language changed',
+    'toast.exportingPNG':'Exporting PNG...','toast.exportingPDF':'Exporting PDF...',
+    'toast.pngDone':'PNG downloaded!','toast.pdfDone':'PDF downloaded!','toast.exportError':'Export failed. Try again.',
     'border.clean':'Clean','border.rounded':'Rounded','border.double':'Double','border.minimal':'Minimal'
   },
   fr: {
     'app.tagline':'Signalétique professionnelle simplifiée',
     'section.templates':'Choisir un modèle','section.content':'Contenu','section.design':'Design','section.size':'Taille & Format',
-    'preview.title':'Aperçu en direct','btn.print':'Imprimer / PDF',
+    'preview.title':'Aperçu en direct','btn.print':'Imprimer','btn.reset':'Réinitialiser',
     'content.title':'Titre','content.subtitle':'Sous-titre','content.footer':'Pied de page (optionnel)',
     'content.signLang':'Langue du panneau','content.signLangHint':'Change uniquement le contenu du panneau — pas toute l\'interface.',
     'design.background':'Arrière-plan','design.solid':'Uni','design.gradient':'Dégradé','design.angle':'Angle',
     'design.textColor':'Couleur du texte','design.accent':'Couleur d\'accent','design.border':'Style de bordure','design.icon':'Icône',
     'design.uploadLogo':'Télécharger un logo','design.clearLogo':'Effacer le logo',
-    'tip.body':'Utilisez "Imprimer / PDF" et choisissez votre imprimante ou "Enregistrer en PDF".',
+    'tip.body':'Choisissez PNG pour les réseaux, PDF pour l\'impression, ou Imprimer pour un résultat immédiat.',
+    'export.title':'Export',
     'footer.powered':'Propulsé par','footer.made':'Fait avec','footer.in':'en','footer.country':'Algérie',
     'toast.reset':'Design réinitialisé','toast.logoRemoved':'Logo supprimé','toast.logoUploaded':'Logo téléchargé',
     'toast.printing':'Ouverture de l\'impression...','toast.langChanged':'Langue du panneau changée',
+    'toast.exportingPNG':'Export PNG...','toast.exportingPDF':'Export PDF...',
+    'toast.pngDone':'PNG téléchargé !','toast.pdfDone':'PDF téléchargé !','toast.exportError':'Échec de l\'export.',
     'border.clean':'Épuré','border.rounded':'Arrondi','border.double':'Double','border.minimal':'Minimal'
   },
   ar: {
     'app.tagline':'لافتات احترافية بكل سهولة',
     'section.templates':'اختر قالبًا','section.content':'المحتوى','section.design':'التصميم','section.size':'الحجم والتنسيق',
-    'preview.title':'معاينة مباشرة','btn.print':'طباعة / PDF',
+    'preview.title':'معاينة مباشرة','btn.print':'طباعة','btn.reset':'إعادة تعيين',
     'content.title':'العنوان','content.subtitle':'العنوان الفرعي','content.footer':'التذييل (اختياري)',
     'content.signLang':'لغة اللافتة','content.signLangHint':'تُغيّر محتوى اللافتة فقط — وليس الواجهة بالكامل.',
     'design.background':'الخلفية','design.solid':'لون واحد','design.gradient':'تدرج','design.angle':'الزاوية',
     'design.textColor':'لون النص','design.accent':'لون التمييز','design.border':'نمط الحدود','design.icon':'الأيقونة',
     'design.uploadLogo':'تحميل شعار','design.clearLogo':'إزالة الشعار',
-    'tip.body':'استخدم "طباعة / PDF" واختر الطابعة أو "حفظ كـ PDF".',
+    'tip.body':'اختر PNG لوسائل التواصل، PDF للطباعة، أو طباعة للنتيجة الفورية.',
+    'export.title':'تصدير',
     'footer.powered':'مدعوم من','footer.made':'صُنع بـ','footer.in':'في','footer.country':'الجزائر',
     'toast.reset':'تمت إعادة تعيين التصميم','toast.logoRemoved':'تمت إزالة الشعار','toast.logoUploaded':'تم رفع الشعار',
     'toast.printing':'جارٍ فتح نافذة الطباعة...','toast.langChanged':'تم تغيير لغة اللافتة',
+    'toast.exportingPNG':'تصدير PNG...','toast.exportingPDF':'تصدير PDF...',
+    'toast.pngDone':'تم تنزيل PNG!','toast.pdfDone':'تم تنزيل PDF!','toast.exportError':'فشل التصدير.',
     'border.clean':'نظيف','border.rounded':'دائري','border.double':'مزدوج','border.minimal':'بسيط'
   }
 };
@@ -844,7 +905,7 @@ const CATEGORIES = {
 
 /* ============ TEMPLATES (60) ============ */
 const TEMPLATES = [
-/* ---- WIFI ---- */
+/* WIFI */
 { id:'wifi-basic', cat:'wifi', icon:'fa-wifi',
   theme:{ bgType:'gradient', bg1:'#4f46e5', bg2:'#7c3aed', bgAngle:135, textColor:'#ffffff', accentColor:'#c4b5fd' },
   title:{ en:'Free Wi-Fi', fr:'Wi-Fi Gratuit', ar:'واي فاي مجاني' },
@@ -853,7 +914,6 @@ const TEMPLATES = [
     { key:'ssid', icon:'fa-wifi', label:{ en:'Network', fr:'Réseau', ar:'الشبكة' }, default:'MyWiFi' },
     { key:'password', icon:'fa-key', label:{ en:'Password', fr:'Mot de passe', ar:'كلمة المرور' }, default:'welcome123' }
   ], qr:true },
-
 { id:'wifi-scan', cat:'wifi', icon:'fa-qrcode',
   theme:{ bgType:'gradient', bg1:'#0891b2', bg2:'#0ea5e9', bgAngle:135, textColor:'#ffffff', accentColor:'#bae6fd' },
   title:{ en:'Scan for Wi-Fi', fr:'Scannez pour le Wi-Fi', ar:'امسح للاتصال' },
@@ -862,7 +922,6 @@ const TEMPLATES = [
     { key:'ssid', icon:'fa-wifi', label:{ en:'Network', fr:'Réseau', ar:'الشبكة' }, default:'MyWiFi' },
     { key:'password', icon:'fa-key', label:{ en:'Password', fr:'Mot de passe', ar:'كلمة المرور' }, default:'welcome123' }
   ], qr:true },
-
 { id:'wifi-guest', cat:'wifi', icon:'fa-user-group',
   theme:{ bgType:'solid', bgColor:'#0f766e', textColor:'#ffffff', accentColor:'#a7f3d0' },
   title:{ en:'Guest Wi-Fi', fr:'Wi-Fi Invité', ar:'واي فاي للزوار' },
@@ -871,290 +930,234 @@ const TEMPLATES = [
     { key:'ssid', icon:'fa-wifi', label:{ en:'Network', fr:'Réseau', ar:'الشبكة' }, default:'Guest' },
     { key:'password', icon:'fa-key', label:{ en:'Password', fr:'Mot de passe', ar:'كلمة المرور' }, default:'guest2025' }
   ], qr:true },
-
 { id:'wifi-nopublic', cat:'wifi', icon:'fa-wifi-slash',
   theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
   title:{ en:'No Public Wi-Fi', fr:'Pas de Wi-Fi public', ar:'لا يوجد واي فاي عام' },
   subtitle:{ en:'Please ask staff for assistance', fr:'Veuillez demander au personnel', ar:'يرجى سؤال الموظفين' } },
 
-/* ---- RECEPTION ---- */
+/* RECEPTION */
 { id:'reception-welcome', cat:'reception', icon:'fa-hand-sparkles',
   theme:{ bgType:'gradient', bg1:'#f59e0b', bg2:'#ef4444', bgAngle:135, textColor:'#ffffff', accentColor:'#fef3c7' },
   title:{ en:'Welcome', fr:'Bienvenue', ar:'مرحبًا بكم' },
   subtitle:{ en:'We are happy to see you', fr:'Nous sommes ravis de vous voir', ar:'يسعدنا رؤيتكم' } },
-
 { id:'reception-wait', cat:'reception', icon:'fa-chair',
   theme:{ bgType:'solid', bgColor:'#6366f1', textColor:'#ffffff', accentColor:'#c7d2fe' },
   title:{ en:'Please Wait Here', fr:'Veuillez patienter ici', ar:'الرجاء الانتظار هنا' },
   subtitle:{ en:'Someone will be with you shortly', fr:'Quelqu\'un sera bientôt disponible', ar:'سيأتي أحدهم قريبًا' } },
-
 { id:'reception-queue', cat:'reception', icon:'fa-people-line',
   theme:{ bgType:'gradient', bg1:'#8b5cf6', bg2:'#ec4899', bgAngle:135, textColor:'#ffffff', accentColor:'#f3e8ff' },
   title:{ en:'Please Take a Number', fr:'Prenez un numéro', ar:'الرجاء أخذ رقم' },
   subtitle:{ en:'We will call you shortly', fr:'Nous vous appellerons bientôt', ar:'سنقوم بمناداتك قريبًا' } },
-
 { id:'reception-bell', cat:'reception', icon:'fa-bell',
   theme:{ bgType:'solid', bgColor:'#f59e0b', textColor:'#ffffff', accentColor:'#fef3c7' },
   title:{ en:'Ring for Service', fr:'Sonnez pour le service', ar:'اضغط الجرس للخدمة' },
   subtitle:{ en:'Press the bell for assistance', fr:'Appuyez sur la sonnette pour de l\'aide', ar:'اضغط على الجرس للمساعدة' } },
-
 { id:'reception-hours', cat:'reception', icon:'fa-clock',
   theme:{ bgType:'solid', bgColor:'#0f172a', textColor:'#ffffff', accentColor:'#94a3b8' },
   title:{ en:'Reception Hours', fr:'Heures d\'accueil', ar:'ساعات الاستقبال' },
   subtitle:{ en:'Mon–Fri · 9AM – 6PM', fr:'Lun–Ven · 9h – 18h', ar:'الإثنين–الجمعة · 9ص – 6م' } },
-
 { id:'reception-signin', cat:'reception', icon:'fa-pen-to-square',
   theme:{ bgType:'solid', bgColor:'#7c3aed', textColor:'#ffffff', accentColor:'#ddd6fe' },
   title:{ en:'Please Sign In', fr:'Veuillez vous enregistrer', ar:'الرجاء تسجيل الدخول' },
   subtitle:{ en:'All visitors must register', fr:'Tous les visiteurs doivent s\'enregistrer', ar:'يجب على جميع الزوار التسجيل' } },
-
 { id:'reception-visitors', cat:'reception', icon:'fa-address-book',
   theme:{ bgType:'solid', bgColor:'#0369a1', textColor:'#ffffff', accentColor:'#bae6fd' },
   title:{ en:'Visitors Register Here', fr:'Registre des visiteurs', ar:'سجل الزوار هنا' },
   subtitle:{ en:'Please fill in your details', fr:'Veuillez remplir vos coordonnées', ar:'يرجى ملء بياناتك' } },
 
-/* ---- QUIET ---- */
+/* QUIET */
 { id:'quiet-silence', cat:'quiet', icon:'fa-volume-xmark',
   theme:{ bgType:'gradient', bg1:'#1e293b', bg2:'#334155', bgAngle:180, textColor:'#ffffff', accentColor:'#94a3b8' },
   title:{ en:'Silence Please', fr:'Silence s\'il vous plaît', ar:'الرجاء الهدوء' },
   subtitle:{ en:'Thank you for your cooperation', fr:'Merci de votre coopération', ar:'شكرًا لتعاونكم' } },
-
 { id:'quiet-meeting', cat:'quiet', icon:'fa-user-group',
   theme:{ bgType:'gradient', bg1:'#dc2626', bg2:'#991b1b', bgAngle:135, textColor:'#ffffff', accentColor:'#fecaca' },
   title:{ en:'Meeting in Progress', fr:'Réunion en cours', ar:'اجتماع جارٍ' },
   subtitle:{ en:'Please do not disturb', fr:'Merci de ne pas déranger', ar:'الرجاء عدم الإزعاج' } },
-
 { id:'quiet-nodisturb', cat:'quiet', icon:'fa-door-closed',
   theme:{ bgType:'solid', bgColor:'#7c3aed', textColor:'#ffffff', accentColor:'#ddd6fe' },
   title:{ en:'Do Not Disturb', fr:'Ne pas déranger', ar:'الرجاء عدم الإزعاج' },
   subtitle:{ en:'Important work in progress', fr:'Travail important en cours', ar:'عمل مهم جارٍ' } },
-
 { id:'quiet-zone', cat:'quiet', icon:'fa-volume-off',
   theme:{ bgType:'gradient', bg1:'#0f766e', bg2:'#0e7490', bgAngle:135, textColor:'#ffffff', accentColor:'#a7f3d0' },
   title:{ en:'Quiet Zone', fr:'Zone calme', ar:'منطقة هادئة' },
   subtitle:{ en:'Please keep your voice down', fr:'Merci de baisser la voix', ar:'الرجاء خفض الصوت' } },
-
 { id:'quiet-recording', cat:'quiet', icon:'fa-microphone',
   theme:{ bgType:'solid', bgColor:'#be123c', textColor:'#ffffff', accentColor:'#fecdd3' },
   title:{ en:'Recording in Progress', fr:'Enregistrement en cours', ar:'التسجيل جارٍ' },
   subtitle:{ en:'Audio and video are being recorded', fr:'L\'audio et la vidéo sont enregistrés', ar:'يتم تسجيل الصوت والفيديو' } },
-
 { id:'quiet-exam', cat:'quiet', icon:'fa-file-pen',
   theme:{ bgType:'solid', bgColor:'#0891b2', textColor:'#ffffff', accentColor:'#cffafe' },
   title:{ en:'Exam in Progress', fr:'Examen en cours', ar:'امتحان جارٍ' },
   subtitle:{ en:'Silence is strictly required', fr:'Le silence est obligatoire', ar:'الهدوء مطلوب بشكل صارم' } },
 
-/* ---- SAFETY ---- */
+/* SAFETY */
 { id:'safety-nosmoking', cat:'safety', icon:'fa-ban-smoking',
   theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
   title:{ en:'No Smoking', fr:'Défense de fumer', ar:'ممنوع التدخين' },
   subtitle:{ en:'This is a smoke-free area', fr:'Zone non-fumeur', ar:'منطقة خالية من التدخين' } },
-
 { id:'safety-sanitize', cat:'safety', icon:'fa-hands-bubbles',
   theme:{ bgType:'gradient', bg1:'#059669', bg2:'#10b981', bgAngle:135, textColor:'#ffffff', accentColor:'#a7f3d0' },
   title:{ en:'Sanitize Your Hands', fr:'Désinfectez vos mains', ar:'عقّم يديك' },
   subtitle:{ en:'For everyone\'s safety', fr:'Pour la sécurité de tous', ar:'لسلامة الجميع' } },
-
 { id:'safety-mask', cat:'safety', icon:'fa-head-side-mask',
   theme:{ bgType:'solid', bgColor:'#0891b2', textColor:'#ffffff', accentColor:'#cffafe' },
   title:{ en:'Mask Required', fr:'Masque obligatoire', ar:'الكمامة إلزامية' },
   subtitle:{ en:'Please wear your mask properly', fr:'Portez correctement votre masque', ar:'الرجاء ارتداء الكمامة بشكل صحيح' } },
-
 { id:'safety-distance', cat:'safety', icon:'fa-people-arrows',
   theme:{ bgType:'gradient', bg1:'#7c3aed', bg2:'#4f46e5', bgAngle:135, textColor:'#ffffff', accentColor:'#ddd6fe' },
   title:{ en:'Keep Your Distance', fr:'Gardez vos distances', ar:'حافظ على مسافتك' },
   subtitle:{ en:'Please stay at least 1.5m apart', fr:'Restez à au moins 1,5 m', ar:'الرجاء البقاء على بعد 1.5 م' } },
-
 { id:'safety-fire', cat:'safety', icon:'fa-fire-extinguisher',
   theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
   title:{ en:'Fire Exit', fr:'Sortie de secours', ar:'مخرج الطوارئ' },
   subtitle:{ en:'Keep clear at all times', fr:'Ne pas obstruer en permanence', ar:'الرجاء عدم الإعاقة دائمًا' } },
-
 { id:'safety-firstaid', cat:'safety', icon:'fa-briefcase-medical',
   theme:{ bgType:'solid', bgColor:'#059669', textColor:'#ffffff', accentColor:'#a7f3d0' },
   title:{ en:'First Aid Kit', fr:'Trousse de secours', ar:'صندوق الإسعافات' },
   subtitle:{ en:'In case of emergency', fr:'En cas d\'urgence', ar:'في حالة الطوارئ' } },
-
 { id:'safety-emergency', cat:'safety', icon:'fa-door-open',
   theme:{ bgType:'solid', bgColor:'#16a34a', textColor:'#ffffff', accentColor:'#bbf7d0' },
   title:{ en:'Emergency Exit', fr:'Sortie d\'urgence', ar:'مخرج الطوارئ' },
   subtitle:{ en:'Keep this door clear', fr:'Ne pas obstruer cette porte', ar:'الرجاء عدم إعاقة هذا الباب' } },
-
 { id:'safety-first', cat:'safety', icon:'fa-shield-heart',
   theme:{ bgType:'gradient', bg1:'#0891b2', bg2:'#0369a1', bgAngle:135, textColor:'#ffffff', accentColor:'#bae6fd' },
   title:{ en:'Safety First', fr:'La sécurité d\'abord', ar:'السلامة أولاً' },
   subtitle:{ en:'Follow all safety guidelines', fr:'Suivez toutes les consignes de sécurité', ar:'اتبع جميع إرشادات السلامة' } },
-
 { id:'safety-cctv', cat:'safety', icon:'fa-video',
   theme:{ bgType:'solid', bgColor:'#0f172a', textColor:'#ffffff', accentColor:'#94a3b8' },
   title:{ en:'CCTV in Operation', fr:'Vidéosurveillance active', ar:'كاميرات المراقبة قيد التشغيل' },
   subtitle:{ en:'24/7 security monitoring', fr:'Surveillance 24h/24', ar:'مراقبة أمنية على مدار الساعة' } },
-
 { id:'safety-wetfloor', cat:'safety', icon:'fa-triangle-exclamation',
   theme:{ bgType:'solid', bgColor:'#f59e0b', textColor:'#ffffff', accentColor:'#fef3c7' },
   title:{ en:'Caution — Wet Floor', fr:'Attention — Sol glissant', ar:'احترس — أرضية مبتلة' },
   subtitle:{ en:'Please walk carefully', fr:'Marchez prudemment', ar:'يرجى المشي بحذر' } },
 
-/* ---- STATUS ---- */
+/* STATUS */
 { id:'status-open', cat:'status', icon:'fa-circle-check',
   theme:{ bgType:'gradient', bg1:'#10b981', bg2:'#059669', bgAngle:135, textColor:'#ffffff', accentColor:'#a7f3d0' },
   title:{ en:'OPEN', fr:'OUVERT', ar:'مفتوح' },
   subtitle:{ en:'We are open for business', fr:'Nous sommes ouverts', ar:'نحن مفتوحون' } },
-
 { id:'status-closed', cat:'status', icon:'fa-circle-xmark',
   theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
   title:{ en:'CLOSED', fr:'FERMÉ', ar:'مغلق' },
   subtitle:{ en:'Sorry for the inconvenience', fr:'Désolé pour la gêne occasionnée', ar:'نعتذر عن الإزعاج' } },
-
 { id:'status-pull', cat:'status', icon:'fa-arrow-left',
   theme:{ bgType:'solid', bgColor:'#4f46e5', textColor:'#ffffff', accentColor:'#c7d2fe' },
   title:{ en:'PULL', fr:'TIRER', ar:'اسحب' },
   subtitle:{ en:'Pull the door to enter', fr:'Tirez la porte pour entrer', ar:'اسحب الباب للدخول' } },
-
 { id:'status-push', cat:'status', icon:'fa-arrow-right',
   theme:{ bgType:'solid', bgColor:'#4f46e5', textColor:'#ffffff', accentColor:'#c7d2fe' },
   title:{ en:'PUSH', fr:'POUSSER', ar:'ادفع' },
   subtitle:{ en:'Push the door to enter', fr:'Poussez la porte pour entrer', ar:'ادفع الباب للدخول' } },
-
 { id:'status-cash', cat:'status', icon:'fa-money-bill-wave',
   theme:{ bgType:'gradient', bg1:'#f59e0b', bg2:'#dc2626', bgAngle:135, textColor:'#ffffff', accentColor:'#fef3c7' },
   title:{ en:'Cash Only', fr:'Espèces uniquement', ar:'نقدًا فقط' },
   subtitle:{ en:'We do not accept cards', fr:'Cartes non acceptées', ar:'لا نقبل البطاقات' } },
-
 { id:'status-back', cat:'status', icon:'fa-clock',
   theme:{ bgType:'solid', bgColor:'#0891b2', textColor:'#ffffff', accentColor:'#cffafe' },
   title:{ en:'Back in 5 Minutes', fr:'De retour dans 5 minutes', ar:'نعود خلال 5 دقائق' },
   subtitle:{ en:'Please wait a moment', fr:'Veuillez patienter un instant', ar:'الرجاء الانتظار قليلًا' } },
-
 { id:'status-outoforder', cat:'status', icon:'fa-ban',
   theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
   title:{ en:'Out of Order', fr:'Hors service', ar:'خارج الخدمة' },
   subtitle:{ en:'We apologize for the inconvenience', fr:'Nous nous excusons pour la gêne', ar:'نعتذر عن الإزعاج' } },
-
 { id:'status-maintenance', cat:'status', icon:'fa-gear',
   theme:{ bgType:'solid', bgColor:'#f59e0b', textColor:'#ffffff', accentColor:'#fef3c7' },
   title:{ en:'Under Maintenance', fr:'En maintenance', ar:'تحت الصيانة' },
   subtitle:{ en:'Back soon — thank you', fr:'De retour bientôt — merci', ar:'نعود قريبًا — شكرًا' } },
-
-{ id:'status-soldout', cat:'status', icon:'fa-ban',
-  theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
-  title:{ en:'Sold Out', fr:'Épuisé', ar:'نفدت الكمية' },
-  subtitle:{ en:'Sorry, all items are gone', fr:'Désolé, tous les articles sont partis', ar:'نعتذر، نفدت جميع العناصر' } },
-
-{ id:'status-reservations', cat:'status', icon:'fa-calendar-check',
-  theme:{ bgType:'gradient', bg1:'#8b5cf6', bg2:'#6366f1', bgAngle:135, textColor:'#ffffff', accentColor:'#ddd6fe' },
-  title:{ en:'Reservations Only', fr:'Réservations uniquement', ar:'بالحجز فقط' },
-  subtitle:{ en:'Please book in advance', fr:'Veuillez réserver à l\'avance', ar:'يرجى الحجز مسبقًا' } },
-
 { id:'status-noentry', cat:'status', icon:'fa-door-closed',
   theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
   title:{ en:'No Entry', fr:'Entrée interdite', ar:'ممنوع الدخول' },
   subtitle:{ en:'Authorized personnel only', fr:'Personnel autorisé uniquement', ar:'للمخوّلين فقط' } },
-
 { id:'status-staff', cat:'status', icon:'fa-user-shield',
   theme:{ bgType:'solid', bgColor:'#7c3aed', textColor:'#ffffff', accentColor:'#ddd6fe' },
   title:{ en:'Staff Only', fr:'Personnel uniquement', ar:'للموظفين فقط' },
   subtitle:{ en:'Authorized access only', fr:'Accès autorisé uniquement', ar:'دخول المصرح لهم فقط' } },
 
-/* ---- INFO / WAYFINDING ---- */
+/* WAYFINDING */
 { id:'info-restroom', cat:'info', icon:'fa-restroom',
   theme:{ bgType:'solid', bgColor:'#0f172a', textColor:'#ffffff', accentColor:'#94a3b8' },
   title:{ en:'Restrooms', fr:'Toilettes', ar:'دورات المياه' },
   subtitle:{ en:'Men · Women · Accessible', fr:'Hommes · Femmes · Accessible', ar:'رجال · نساء · لذوي الاحتياجات' } },
-
 { id:'info-elevator', cat:'info', icon:'fa-elevator',
   theme:{ bgType:'solid', bgColor:'#4f46e5', textColor:'#ffffff', accentColor:'#c7d2fe' },
   title:{ en:'Elevator', fr:'Ascenseur', ar:'المصعد' },
   subtitle:{ en:'Straight ahead', fr:'Tout droit', ar:'إلى الأمام مباشرة' } },
-
 { id:'info-stairs', cat:'info', icon:'fa-stairs',
   theme:{ bgType:'solid', bgColor:'#0f766e', textColor:'#ffffff', accentColor:'#a7f3d0' },
   title:{ en:'Stairs', fr:'Escalier', ar:'الدرج' },
   subtitle:{ en:'Please hold the handrail', fr:'Tenez la rampe', ar:'يرجى الإمساك بالدرابزين' } },
-
 { id:'info-parking', cat:'info', icon:'fa-square-parking',
   theme:{ bgType:'solid', bgColor:'#0369a1', textColor:'#ffffff', accentColor:'#bae6fd' },
   title:{ en:'Parking', fr:'Stationnement', ar:'موقف السيارات' },
   subtitle:{ en:'Free for customers', fr:'Gratuit pour les clients', ar:'مجاني للعملاء' } },
-
 { id:'info-entrance', cat:'info', icon:'fa-door-open',
   theme:{ bgType:'gradient', bg1:'#10b981', bg2:'#059669', bgAngle:135, textColor:'#ffffff', accentColor:'#a7f3d0' },
   title:{ en:'Entrance', fr:'Entrée', ar:'المدخل' },
   subtitle:{ en:'Welcome — please come in', fr:'Bienvenue — entrez', ar:'مرحبًا — تفضل بالدخول' } },
-
 { id:'info-exit', cat:'info', icon:'fa-arrow-right-from-bracket',
   theme:{ bgType:'solid', bgColor:'#7c3aed', textColor:'#ffffff', accentColor:'#ddd6fe' },
   title:{ en:'Exit', fr:'Sortie', ar:'المخرج' },
   subtitle:{ en:'Thank you — come back soon', fr:'Merci — à bientôt', ar:'شكرًا — نراك قريبًا' } },
-
 { id:'info-information', cat:'info', icon:'fa-circle-info',
   theme:{ bgType:'solid', bgColor:'#0891b2', textColor:'#ffffff', accentColor:'#cffafe' },
   title:{ en:'Information', fr:'Information', ar:'معلومات' },
   subtitle:{ en:'Ask our staff for help', fr:'Demandez de l\'aide au personnel', ar:'اسأل موظفينا للمساعدة' } },
-
 { id:'info-lostfound', cat:'info', icon:'fa-magnifying-glass',
   theme:{ bgType:'solid', bgColor:'#f59e0b', textColor:'#ffffff', accentColor:'#fef3c7' },
   title:{ en:'Lost & Found', fr:'Objets trouvés', ar:'المفقودات' },
   subtitle:{ en:'Ask at reception', fr:'Renseignez-vous à l\'accueil', ar:'اسأل في الاستقبال' } },
 
-/* ---- SERVICE ---- */
+/* SERVICE */
 { id:'service-menu', cat:'service', icon:'fa-book-open',
   theme:{ bgType:'gradient', bg1:'#dc2626', bg2:'#f59e0b', bgAngle:135, textColor:'#ffffff', accentColor:'#fed7aa' },
   title:{ en:'Menu Available', fr:'Menu disponible', ar:'القائمة متوفرة' },
   subtitle:{ en:'Ask our staff for today\'s special', fr:'Demandez la spécialité du jour', ar:'اسأل عن طبق اليوم' } },
-
 { id:'service-order', cat:'service', icon:'fa-cart-shopping',
   theme:{ bgType:'solid', bgColor:'#4f46e5', textColor:'#ffffff', accentColor:'#c7d2fe' },
   title:{ en:'Order Here', fr:'Commandez ici', ar:'اطلب هنا' },
   subtitle:{ en:'Please have your order ready', fr:'Ayez votre commande prête', ar:'يرجى تجهيز طلبك' } },
-
 { id:'service-self', cat:'service', icon:'fa-hand-holding',
   theme:{ bgType:'solid', bgColor:'#0891b2', textColor:'#ffffff', accentColor:'#cffafe' },
   title:{ en:'Self-Service', fr:'Libre-service', ar:'خدمة ذاتية' },
   subtitle:{ en:'Help yourself — enjoy!', fr:'Servez-vous — bon appétit !', ar:'اخدم نفسك — بالهناء' } },
-
 { id:'service-seated', cat:'service', icon:'fa-chair',
   theme:{ bgType:'solid', bgColor:'#7c3aed', textColor:'#ffffff', accentColor:'#ddd6fe' },
   title:{ en:'Please Wait to be Seated', fr:'Veuillez patienter pour être placé', ar:'انتظر حتى يتم إجلاسك' },
   subtitle:{ en:'A host will assist you', fr:'Un hôte vous aidera', ar:'سيساعدك أحد المضيفين' } },
-
 { id:'service-reservations', cat:'service', icon:'fa-calendar-check',
   theme:{ bgType:'gradient', bg1:'#8b5cf6', bg2:'#ec4899', bgAngle:135, textColor:'#ffffff', accentColor:'#f3e8ff' },
   title:{ en:'Reservations', fr:'Réservations', ar:'الحجوزات' },
   subtitle:{ en:'Book your table in advance', fr:'Réservez votre table à l\'avance', ar:'احجز طاولتك مسبقًا' } },
 
-/* ---- BUSINESS ---- */
+/* BUSINESS */
 { id:'biz-hours', cat:'business', icon:'fa-clock',
   theme:{ bgType:'solid', bgColor:'#0f172a', textColor:'#ffffff', accentColor:'#94a3b8' },
   title:{ en:'Business Hours', fr:'Heures d\'ouverture', ar:'ساعات العمل' },
   subtitle:{ en:'Mon–Fri 9:00 – 18:00 · Sat 10:00 – 14:00', fr:'Lun–Ven 9h–18h · Sam 10h–14h', ar:'الإثنين–الجمعة 9–18 · السبت 10–14' } },
-
 { id:'biz-lunch', cat:'business', icon:'fa-utensils',
   theme:{ bgType:'solid', bgColor:'#f59e0b', textColor:'#ffffff', accentColor:'#fef3c7' },
   title:{ en:'Closed for Lunch', fr:'Fermé pour le déjeuner', ar:'مغلق للغداء' },
   subtitle:{ en:'Back at 14:00', fr:'De retour à 14h00', ar:'نعود في الساعة 14:00' } },
-
 { id:'biz-grandopen', cat:'business', icon:'fa-champagne-glasses',
   theme:{ bgType:'gradient', bg1:'#ec4899', bg2:'#f59e0b', bgAngle:135, textColor:'#ffffff', accentColor:'#fef3c7' },
   title:{ en:'Grand Opening', fr:'Grande Ouverture', ar:'افتتاح كبير' },
   subtitle:{ en:'Join us for our special day!', fr:'Rejoignez-nous pour ce jour spécial !', ar:'شاركنا في يومنا المميز!' } },
-
 { id:'biz-hiring', cat:'business', icon:'fa-user-plus',
   theme:{ bgType:'solid', bgColor:'#059669', textColor:'#ffffff', accentColor:'#a7f3d0' },
   title:{ en:'Now Hiring', fr:'Nous recrutons', ar:'نوظف الآن' },
   subtitle:{ en:'Ask us for details', fr:'Demandez-nous les détails', ar:'اسألنا للحصول على التفاصيل' } },
-
 { id:'biz-delivery', cat:'business', icon:'fa-truck-fast',
   theme:{ bgType:'gradient', bg1:'#0891b2', bg2:'#0369a1', bgAngle:135, textColor:'#ffffff', accentColor:'#bae6fd' },
   title:{ en:'Delivery Available', fr:'Livraison disponible', ar:'التوصيل متاح' },
   subtitle:{ en:'Ask us for our delivery zone', fr:'Demandez notre zone de livraison', ar:'اسأل عن منطقة التوصيل' } },
 
-/* ---- CUSTOM ---- */
+/* CUSTOM */
 { id:'custom-blank', cat:'custom', icon:'fa-pen-ruler',
   theme:{ bgType:'gradient', bg1:'#6366f1', bg2:'#a855f7', bgAngle:135, textColor:'#ffffff', accentColor:'#e9d5ff' },
   title:{ en:'Your Title Here', fr:'Votre titre ici', ar:'عنوانك هنا' },
   subtitle:{ en:'Add your message below', fr:'Ajoutez votre message ci-dessous', ar:'أضف رسالتك أدناه' } },
-
 { id:'custom-fields', cat:'custom', icon:'fa-list',
   theme:{ bgType:'solid', bgColor:'#0f172a', textColor:'#ffffff', accentColor:'#94a3b8' },
   title:{ en:'Custom Notice', fr:'Avis personnalisé', ar:'إشعار مخصص' },
@@ -1175,56 +1178,31 @@ const BORDERS = [
 
 /* ============ 260+ ICONS ============ */
 const ICONS = [
-  // Network & Tech
   'fa-wifi','fa-wifi-slash','fa-network-wired','fa-ethernet','fa-signal','fa-tower-broadcast','fa-satellite-dish','fa-globe','fa-globe-africa','fa-globe-americas','fa-globe-asia','fa-globe-europe','fa-server','fa-database','fa-cloud','fa-cloud-arrow-up','fa-cloud-arrow-down','fa-robot','fa-microchip','fa-memory',
-  // Security
-  'fa-key','fa-lock','fa-lock-open','fa-shield','fa-shield-halved','fa-shield-check','fa-shield-xmark','fa-shield-heart','fa-shield-virus','fa-user-shield','fa-fingerprint','fa-qrcode','fa-barcode','fa-fingerprint','fa-id-card','fa-id-badge','fa-passport','fa-vault','fa-user-lock',
-  // Notification & Communication
+  'fa-key','fa-lock','fa-lock-open','fa-shield','fa-shield-halved','fa-shield-check','fa-shield-xmark','fa-shield-heart','fa-shield-virus','fa-user-shield','fa-fingerprint','fa-qrcode','fa-barcode','fa-id-card','fa-id-badge','fa-passport','fa-vault','fa-user-lock',
   'fa-bell','fa-bell-concierge','fa-bell-slash','fa-bullhorn','fa-megaphone','fa-comment','fa-comment-dots','fa-comments','fa-message','fa-envelope','fa-envelope-open','fa-paper-plane','fa-phone','fa-phone-flip','fa-phone-volume','fa-mobile','fa-mobile-screen','fa-sim-card','fa-inbox','fa-at',
-  // Arrows & Pointing
   'fa-arrow-right','fa-arrow-left','fa-arrow-up','fa-arrow-down','fa-arrow-up-right-from-square','fa-arrow-right-to-bracket','fa-arrow-right-from-bracket','fa-arrow-turn-up','fa-arrow-turn-down','fa-arrow-pointer','fa-hand-point-right','fa-hand-point-left','fa-hand-point-up','fa-hand-point-down','fa-hand-peace','fa-hand-sparkles','fa-hands','fa-handshake','fa-angles-right','fa-angles-left','fa-chevron-right','fa-chevron-left','fa-chevron-up','fa-chevron-down',
-  // People
-  'fa-user','fa-user-group','fa-user-friends','fa-users','fa-user-plus','fa-user-check','fa-user-xmark','fa-user-tie','fa-user-doctor','fa-user-nurse','fa-user-graduate','fa-user-astronaut','fa-user-secret','fa-people-group','fa-people-arrows','fa-people-line','fa-person','fa-person-dress','fa-person-walking','fa-person-running','fa-child','fa-baby','fa-blind','fa-deaf','fa-low-vision','fa-wheelchair','fa-wheelchair-move','fa-crutch','fa-crutches','fa-person-cane','fa-hands-holding-child',
-  // Time
+  'fa-user','fa-user-group','fa-user-friends','fa-users','fa-user-plus','fa-user-check','fa-user-xmark','fa-user-tie','fa-user-doctor','fa-user-nurse','fa-user-graduate','fa-user-astronaut','fa-user-secret','fa-people-group','fa-people-arrows','fa-people-line','fa-person','fa-person-dress','fa-person-walking','fa-person-running','fa-child','fa-baby','fa-blind','fa-deaf','fa-low-vision','fa-wheelchair','fa-wheelchair-move','fa-crutch','fa-crutches','fa-person-cane',
   'fa-clock','fa-stopwatch','fa-stopwatch-20','fa-hourglass','fa-hourglass-start','fa-hourglass-half','fa-hourglass-end','fa-calendar','fa-calendar-check','fa-calendar-day','fa-calendar-days','fa-calendar-xmark','fa-calendar-plus','fa-business-time',
-  // Audio/Media
   'fa-volume-xmark','fa-volume-off','fa-volume-low','fa-volume-high','fa-microphone','fa-microphone-slash','fa-headphones','fa-headset','fa-speaker','fa-ear-listen','fa-ear-deaf','fa-radio','fa-tv','fa-film','fa-video','fa-camera','fa-camera-retro','fa-image','fa-images','fa-photo-film','fa-clapperboard',
-  // Safety & Warning
   'fa-ban','fa-ban-smoking','fa-smoking','fa-mask-ventilator','fa-head-side-mask','fa-head-side-cough','fa-hands-bubbles','fa-soap','fa-pump-soap','fa-spray-can','fa-spray-can-sparkles','fa-fire-extinguisher','fa-fire-flame-curved','fa-fire-flame-simple','fa-fire','fa-triangle-exclamation','fa-circle-exclamation','fa-square-exclamation','fa-circle-radiation','fa-biohazard','fa-syringe','fa-pills','fa-capsules','fa-prescription-bottle','fa-kit-medical','fa-briefcase-medical','fa-heart-pulse','fa-heart-crack','fa-hand-holding-medical','fa-helmet-safety','fa-vest','fa-vest-patches','fa-goggles','fa-temperature-high','fa-temperature-low','fa-droplet-slash',
-  // Status
   'fa-circle-check','fa-circle-xmark','fa-circle-info','fa-circle-question','fa-circle-play','fa-circle-pause','fa-circle-stop','fa-circle-dot','fa-square-check','fa-square-xmark','fa-square-info','fa-circle-half-stroke','fa-bolt','fa-power-off','fa-toggle-on','fa-toggle-off','fa-check','fa-xmark','fa-plus','fa-minus',
-  // Money
-  'fa-money-bill','fa-money-bill-1','fa-money-bill-wave','fa-money-bill-transfer','fa-money-check','fa-money-check-dollar','fa-credit-card','fa-wallet','fa-coins','fa-dollar-sign','fa-euro-sign','fa-sterling-sign','fa-bangladeshi-taka-sign','fa-turkish-lira-sign','fa-indian-rupee-sign','fa-ruble-sign','fa-peso-sign','fa-receipt','fa-cash-register','fa-piggy-bank',
-  // Location & Travel
+  'fa-money-bill','fa-money-bill-1','fa-money-bill-wave','fa-money-bill-transfer','fa-money-check','fa-money-check-dollar','fa-credit-card','fa-wallet','fa-coins','fa-dollar-sign','fa-euro-sign','fa-sterling-sign','fa-receipt','fa-cash-register','fa-piggy-bank',
   'fa-location-dot','fa-location-pin','fa-location-crosshairs','fa-map-pin','fa-map','fa-map-location','fa-map-location-dot','fa-compass','fa-crosshairs','fa-street-view','fa-route','fa-signpost','fa-sign-hanging','fa-signs-post','fa-plane','fa-plane-departure','fa-plane-arrival','fa-globe-pointer',
-  // Transport
   'fa-car','fa-car-side','fa-bus','fa-train','fa-train-subway','fa-train-tram','fa-truck','fa-truck-fast','fa-truck-medical','fa-bicycle','fa-motorcycle','fa-helicopter','fa-ship','fa-anchor','fa-gas-pump','fa-charging-station','fa-road','fa-traffic-light','fa-square-parking','fa-square-parking-slash','fa-taxi','fa-tractor','fa-rocket',
-  // Food & Drink
   'fa-utensils','fa-mug-hot','fa-mug-saucer','fa-coffee','fa-cookie','fa-cookie-bite','fa-pizza-slice','fa-burger','fa-ice-cream','fa-wine-glass','fa-wine-bottle','fa-beer-mug-empty','fa-martini-glass','fa-martini-glass-citrus','fa-champagne-glasses','fa-fish','fa-drumstick-bite','fa-carrot','fa-lemon','fa-bowl-food','fa-cake-candles','fa-birthday-cake','fa-egg','fa-apple-whole',
-  // Shopping
   'fa-cart-shopping','fa-bag-shopping','fa-basket-shopping','fa-store','fa-store-slash','fa-shop','fa-shop-lock','fa-tag','fa-tags','fa-gift','fa-box','fa-boxes-stacked','fa-box-open','fa-box-archive','fa-boxes-packing','fa-truck-ramp-box','fa-comments-dollar',
-  // Documents
-  'fa-clipboard','fa-clipboard-check','fa-clipboard-list','fa-clipboard-question','fa-file','fa-file-lines','fa-file-pdf','fa-file-image','fa-file-word','fa-file-excel','fa-folder','fa-folder-open','fa-book','fa-book-open','fa-bookmark','fa-newspaper','fa-address-book','fa-address-card','fa-scroll','fa-certificate','fa-passport','fa-newspaper',
-  // Writing & Design
+  'fa-clipboard','fa-clipboard-check','fa-clipboard-list','fa-clipboard-question','fa-file','fa-file-lines','fa-file-pdf','fa-file-image','fa-file-word','fa-file-excel','fa-folder','fa-folder-open','fa-book','fa-book-open','fa-bookmark','fa-newspaper','fa-address-book','fa-address-card','fa-scroll','fa-certificate',
   'fa-pen','fa-pencil','fa-pen-fancy','fa-pen-nib','fa-pen-to-square','fa-pen-clip','fa-marker','fa-highlighter','fa-paintbrush','fa-paint-roller','fa-palette','fa-brush','fa-eraser','fa-ruler','fa-ruler-combined','fa-ruler-horizontal','fa-ruler-vertical','fa-compass-drafting','fa-scissors','fa-paperclip','fa-thumbtack','fa-magnet','fa-stamp',
-  // Tools
   'fa-screwdriver','fa-screwdriver-wrench','fa-hammer','fa-wrench','fa-gear','fa-gears','fa-cog','fa-cogs','fa-sliders','fa-toolbox','fa-broom','fa-house-chimney','fa-warehouse','fa-industry','fa-factory','fa-recycle',
-  // Nature & Weather
   'fa-sun','fa-moon','fa-cloud-sun','fa-cloud-moon','fa-cloud-rain','fa-cloud-showers-heavy','fa-cloud-snow','fa-snowflake','fa-umbrella','fa-umbrella-beach','fa-wind','fa-tornado','fa-water','fa-droplet','fa-leaf','fa-tree','fa-seedling','fa-mountain','fa-mountain-sun','fa-snowman','fa-cloud-bolt','fa-smog','fa-rainbow','fa-meteor',
-  // Devices
   'fa-desktop','fa-laptop','fa-tablet','fa-tablet-screen-button','fa-keyboard','fa-mouse','fa-print','fa-fax','fa-hard-drive','fa-usb','fa-sd-card','fa-computer-mouse','fa-display',
-  // Misc Shapes & Emojis
-  'fa-star','fa-star-half','fa-star-half-stroke','fa-heart','fa-face-smile','fa-face-frown','fa-face-meh','fa-face-grin','fa-face-surprise','fa-face-angry','fa-face-grin-stars','fa-face-laugh','fa-face-tired','fa-crown','fa-trophy','fa-medal','fa-award','fa-gem','fa-ring','fa-flag','fa-flag-checkered','fa-bookmark','fa-bolt-lightning','fa-splotch','fa-shapes','fa-cubes','fa-cube',
-  // Bathroom & Building
+  'fa-star','fa-star-half','fa-star-half-stroke','fa-heart','fa-face-smile','fa-face-frown','fa-face-meh','fa-face-grin','fa-face-surprise','fa-face-angry','fa-face-grin-stars','fa-face-laugh','fa-face-tired','fa-crown','fa-trophy','fa-medal','fa-award','fa-gem','fa-ring','fa-flag','fa-flag-checkered','fa-bolt-lightning','fa-splotch','fa-shapes','fa-cubes','fa-cube',
   'fa-restroom','fa-toilet','fa-toilet-paper','fa-shower','fa-bath','fa-sink','fa-bed','fa-couch','fa-chair','fa-door-open','fa-door-closed','fa-stairs','fa-elevator','fa-house','fa-house-chimney-window','fa-building','fa-hotel','fa-hospital','fa-school','fa-church','fa-mosque','fa-landmark',
-  // Workplace
-  'fa-briefcase','fa-briefcase-clock','fa-user-tie','fa-user-nurse','fa-user-graduate','fa-chalkboard','fa-chalkboard-user','fa-graduation-cap','fa-user-doctor','fa-stethoscope','fa-laptop-medical','fa-notes-medical','fa-bell-concierge',
-  // Fashion & Beauty
-  'fa-shirt','fa-vest','fa-shoe-prints','fa-socks','fa-hat-cowboy','fa-glasses','fa-spa','fa-scissors','fa-wand-magic-sparkles','fa-brush','fa-eye','fa-eye-slash','fa-fingerprint',
-  // Sports
+  'fa-briefcase','fa-briefcase-clock','fa-chalkboard','fa-chalkboard-user','fa-graduation-cap','fa-stethoscope','fa-laptop-medical','fa-notes-medical',
+  'fa-shirt','fa-shoe-prints','fa-socks','fa-hat-cowboy','fa-glasses','fa-spa','fa-wand-magic-sparkles','fa-eye','fa-eye-slash',
   'fa-futbol','fa-basketball','fa-baseball','fa-football','fa-volleyball','fa-dumbbell','fa-person-swimming','fa-person-biking','fa-person-hiking','fa-person-skiing','fa-person-snowboarding',
-  // Extra
-  'fa-magic','fa-wand-magic','fa-wand-sparkles','fa-sparkles','fa-hand-holding-heart','fa-hand-holding-dollar','fa-hand-holding-droplet','fa-hand-fist','fa-hands-holding','fa-hands-praying','fa-handcuffs','fa-life-ring','fa-fire-burner','fa-fire-flame-simple','fa-notes-medical','fa-prescription','fa-pills','fa-capsules'
+  'fa-magic','fa-wand-magic','fa-wand-sparkles','fa-sparkles','fa-hand-holding-heart','fa-hand-holding-dollar','fa-hand-holding-droplet','fa-hand-fist','fa-hands-holding','fa-hands-praying','fa-handcuffs','fa-life-ring','fa-fire-burner','fa-prescription'
 ];
 
 /* ============ SIZES ============ */
@@ -1260,7 +1238,8 @@ const state = {
     icon: 'fa-wifi',
     logo: null
   },
-  size: 'a4-portrait'
+  size: 'a4-portrait',
+  isExporting: false
 };
 
 /* ============ HELPERS ============ */
@@ -1279,18 +1258,26 @@ function showToast(msg, type = 'success', dur = 2400) {
   toastTimer = setTimeout(() => el.classList.remove('show'), dur);
 }
 
-// Fixed: renamed parameter from `t` to `tpl` to avoid shadowing translation helper (defensive)
 function getTemplate(id) {
   const found = TEMPLATES.find(tpl => tpl.id === id);
   return found || TEMPLATES[0];
 }
 
-// Small debouncer for color pickers
 function debounce(fn, wait = 60) {
   let tid;
   return (...args) => { clearTimeout(tid); tid = setTimeout(() => fn(...args), wait); };
 }
 const debouncedRenderSign = debounce(renderSign, 40);
+
+/* ============ EXPORT OVERLAY ============ */
+function showExportOverlay(msg) {
+  const ov = $('#exportOverlay');
+  $('#exportOverlayMsg').textContent = msg;
+  ov.classList.add('show');
+}
+function hideExportOverlay() {
+  $('#exportOverlay').classList.remove('show');
+}
 
 /* ============ THEME ============ */
 function applyTheme(theme) {
@@ -1301,20 +1288,16 @@ function applyTheme(theme) {
   try { localStorage.setItem('saivsign:theme', theme); } catch(e){}
 }
 
-/* ============ UI LANGUAGE (interface only) ============ */
+/* ============ UI LANGUAGE ============ */
 function applyUILanguage(lang) {
   state.uiLang = lang;
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   document.body.classList.toggle('lang-ar', lang === 'ar');
 
-  // Update UI text
   $$('[data-i18n]').forEach(el => { const v = uiT(el.dataset.i18n); if (v) el.textContent = v; });
-
-  // UI lang pills
   $$('.lang-pill').forEach(p => p.classList.toggle('active', p.dataset.uiLang === lang));
 
-  // Re-render UI pieces that depend on language
   renderCategories();
   renderTemplateGrid();
   renderBorderGrid();
@@ -1323,12 +1306,11 @@ function applyUILanguage(lang) {
   try { localStorage.setItem('saivsign:uiLang', lang); } catch(e){}
 }
 
-/* ============ SIGN LANGUAGE (sign content only) ============ */
+/* ============ SIGN LANGUAGE ============ */
 function applySignLanguage(lang) {
   state.signLang = lang;
   const tpl = getTemplate(state.templateId);
 
-  // Only translate if user hasn't manually edited
   if (!state.manualTitle) {
     state.title = tpl.title[lang];
     const inp = $('#titleInput');
@@ -1340,22 +1322,18 @@ function applySignLanguage(lang) {
     if (inp) inp.value = state.subtitle;
   }
 
-  // Set sign direction
   const sheet = $('#signSheet');
   if (sheet) sheet.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
 
-  // Sync sign-lang buttons
   $$('#signLangSeg button').forEach(b => b.classList.toggle('active', b.dataset.signLang === lang));
 
-  // Re-render field input labels in content panel (they follow sign language)
   renderFieldInputs();
-  // Re-render sign
   renderSign();
 
   try { localStorage.setItem('saivsign:signLang', lang); } catch(e){}
 }
 
-/* ============ RENDER: CATEGORIES ============ */
+/* ============ RENDER CATEGORIES ============ */
 function renderCategories() {
   const wrap = $('#categoryTabs');
   if (!wrap) return;
@@ -1373,26 +1351,19 @@ function renderCategories() {
     btn.className = 'cat-tab' + (state.category === key ? ' active' : '');
     btn.type = 'button';
     btn.innerHTML = `<i class="fas ${cat.icon}"></i><span>${esc(cat[state.uiLang])}</span>`;
-    btn.addEventListener('click', () => {
-      state.category = key;
-      renderCategories();
-      renderTemplateGrid();
-    });
+    btn.addEventListener('click', () => { state.category = key; renderCategories(); renderTemplateGrid(); });
     wrap.appendChild(btn);
   });
 }
 
-/* ============ RENDER: TEMPLATE GRID ============ */
+/* ============ RENDER TEMPLATE GRID ============ */
 function renderTemplateGrid() {
   const grid = $('#templateGrid');
   const countEl = $('#templateCount');
   if (!grid) return;
   grid.innerHTML = '';
 
-  const list = state.category === 'all'
-    ? TEMPLATES
-    : TEMPLATES.filter(tpl => tpl.cat === state.category);
-
+  const list = state.category === 'all' ? TEMPLATES : TEMPLATES.filter(tpl => tpl.cat === state.category);
   if (countEl) countEl.textContent = list.length + ' templates';
 
   const frag = document.createDocumentFragment();
@@ -1400,7 +1371,6 @@ function renderTemplateGrid() {
     const bg = tpl.theme.bgType === 'gradient'
       ? `linear-gradient(135deg, ${tpl.theme.bg1}, ${tpl.theme.bg2})`
       : (tpl.theme.bgColor || '#4f46e5');
-
     const card = document.createElement('button');
     card.type = 'button';
     card.className = 'tpl-card' + (state.templateId === tpl.id ? ' active' : '');
@@ -1421,25 +1391,16 @@ function applyTemplate(id) {
 
   state.templateId = id;
   state.category = tpl.cat;
-
-  // Reset manual flags — template provides fresh content
   state.manualTitle = false;
   state.manualSubtitle = false;
 
-  // Content in current sign language
   state.title = tpl.title[state.signLang] || tpl.title.en;
   state.subtitle = tpl.subtitle ? (tpl.subtitle[state.signLang] || tpl.subtitle.en) : '';
   state.footer = '';
 
-  // Fields
   state.fields = {};
-  if (tpl.fields) {
-    tpl.fields.forEach(f => {
-      state.fields[f.key] = f.default || '';
-    });
-  }
+  if (tpl.fields) tpl.fields.forEach(f => { state.fields[f.key] = f.default || ''; });
 
-  // Design theme
   state.design = {
     bgType: tpl.theme.bgType || 'solid',
     bgColor: tpl.theme.bgColor || tpl.theme.bg1 || '#4f46e5',
@@ -1450,7 +1411,7 @@ function applyTemplate(id) {
     accentColor: tpl.theme.accentColor || '#c4b5fd',
     border: state.design.border || 'rounded',
     icon: tpl.icon || 'fa-square',
-    logo: state.design.logo // preserve uploaded logo
+    logo: state.design.logo
   };
 
   syncControls();
@@ -1460,17 +1421,14 @@ function applyTemplate(id) {
   renderSign();
 }
 
-/* ============ RENDER: FIELD INPUTS ============ */
+/* ============ RENDER FIELD INPUTS ============ */
 function renderFieldInputs() {
   const tpl = getTemplate(state.templateId);
   const wrap = $('#fieldInputsWrap');
   if (!wrap) return;
   wrap.innerHTML = '';
 
-  if (!tpl.fields || tpl.fields.length === 0) {
-    wrap.classList.add('hidden');
-    return;
-  }
+  if (!tpl.fields || tpl.fields.length === 0) { wrap.classList.add('hidden'); return; }
   wrap.classList.remove('hidden');
 
   const frag = document.createDocumentFragment();
@@ -1479,17 +1437,12 @@ function renderFieldInputs() {
     const lbl = document.createElement('label');
     lbl.className = 'field-label';
     lbl.innerHTML = `<i class="fas ${f.icon || 'fa-tag'} text-emerald-500"></i><span>${esc(f.label[state.signLang] || f.label.en)}</span>`;
-
     const inp = document.createElement('input');
     inp.type = 'text';
     inp.className = 'input-base';
     inp.value = state.fields[f.key] || '';
     inp.placeholder = f.default || '';
-    inp.addEventListener('input', () => {
-      state.fields[f.key] = inp.value;
-      debouncedRenderSign();
-    });
-
+    inp.addEventListener('input', () => { state.fields[f.key] = inp.value; debouncedRenderSign(); });
     div.appendChild(lbl);
     div.appendChild(inp);
     frag.appendChild(div);
@@ -1497,7 +1450,7 @@ function renderFieldInputs() {
   wrap.appendChild(frag);
 }
 
-/* ============ RENDER: BORDER GRID ============ */
+/* ============ RENDER BORDER GRID ============ */
 function renderBorderGrid() {
   const grid = $('#borderGrid');
   if (!grid) return;
@@ -1509,26 +1462,18 @@ function renderBorderGrid() {
     btn.className = 'tpl-card' + (state.design.border === b.id ? ' active' : '');
     btn.style.minHeight = '68px';
     btn.style.padding = '10px 6px';
-    btn.innerHTML = `
-      <i class="fas ${b.icon}" style="font-size:1.3rem;opacity:0.85"></i>
-      <div>${esc(uiT('border.' + b.id))}</div>
-    `;
-    btn.addEventListener('click', () => {
-      state.design.border = b.id;
-      renderBorderGrid();
-      renderSign();
-    });
+    btn.innerHTML = `<i class="fas ${b.icon}" style="font-size:1.3rem;opacity:0.85"></i><div>${esc(uiT('border.' + b.id))}</div>`;
+    btn.addEventListener('click', () => { state.design.border = b.id; renderBorderGrid(); renderSign(); });
     frag.appendChild(btn);
   });
   grid.appendChild(frag);
 }
 
-/* ============ RENDER: SIZE GRID ============ */
+/* ============ RENDER SIZE GRID ============ */
 function renderSizeGrid() {
   const grid = $('#sizeGrid');
   if (!grid) return;
   grid.innerHTML = '';
-
   const frag = document.createDocumentFragment();
   Object.entries(SIZES).forEach(([key, s]) => {
     const isActive = state.size === key;
@@ -1557,23 +1502,18 @@ function renderSizeGrid() {
       </div>
       ${isActive ? '<i class="fas fa-check-circle" style="color:currentColor"></i>' : ''}
     `;
-    btn.addEventListener('click', () => {
-      state.size = key;
-      renderSizeGrid();
-      applySize();
-    });
+    btn.addEventListener('click', () => { state.size = key; renderSizeGrid(); applySize(); });
     frag.appendChild(btn);
   });
   grid.appendChild(frag);
 }
 
-/* ============ RENDER: ICON GRID ============ */
+/* ============ RENDER ICON GRID ============ */
 function renderIconGrid() {
   const grid = $('#iconGrid');
   const countEl = $('#iconCount');
   if (!grid) return;
   grid.innerHTML = '';
-
   if (countEl) countEl.textContent = ICONS.length + ' icons';
 
   const frag = document.createDocumentFragment();
@@ -1585,7 +1525,6 @@ function renderIconGrid() {
     btn.innerHTML = `<i class="fas ${ic}"></i>`;
     btn.addEventListener('click', () => {
       state.design.icon = ic;
-      // Choosing an icon clears any uploaded logo
       if (state.design.logo) {
         state.design.logo = null;
         const thumb = $('#logoPreviewThumb');
@@ -1599,27 +1538,23 @@ function renderIconGrid() {
     frag.appendChild(btn);
   });
   grid.appendChild(frag);
-
-  // Set grid layout
   grid.style.display = 'grid';
   grid.style.gridTemplateColumns = 'repeat(8, minmax(0, 1fr))';
   grid.style.gap = '6px';
 }
 
-/* ============ SYNC CONTROLS ============ */
+/* ============ SYNC ============ */
 function syncControls() {
   const t = $('#titleInput'); if (t) t.value = state.title;
   const s = $('#subtitleInput'); if (s) s.value = state.subtitle;
   const f = $('#footerInput'); if (f) f.value = state.footer;
 
-  // Background type segment
   $$('#bgTypeSeg button').forEach(b => b.classList.toggle('active', b.dataset.value === state.design.bgType));
   const solidWrap = $('#bgSolidWrap');
   const gradWrap = $('#bgGradientWrap');
   if (solidWrap) solidWrap.classList.toggle('hidden', state.design.bgType !== 'solid');
   if (gradWrap) gradWrap.classList.toggle('hidden', state.design.bgType !== 'gradient');
 
-  // Color inputs
   setColorInput('#bgColorInput', '#bgColorHex', state.design.bgColor);
   setColorInput('#bg1Input', '#bg1Hex', state.design.bg1);
   setColorInput('#bg2Input', '#bg2Hex', state.design.bg2);
@@ -1631,7 +1566,6 @@ function syncControls() {
   const angLbl = $('#bgAngleLbl');
   if (angLbl) angLbl.textContent = state.design.bgAngle + '°';
 
-  // Logo
   if (state.design.logo) {
     const thumb = $('#logoPreviewThumb');
     const clearBtn = $('#clearLogoBtn');
@@ -1646,7 +1580,6 @@ function syncControls() {
     if (clearBtn) { clearBtn.classList.add('hidden'); clearBtn.classList.remove('flex'); }
   }
 
-  // Sign lang segment sync
   $$('#signLangSeg button').forEach(b => b.classList.toggle('active', b.dataset.signLang === state.signLang));
 
   renderIconGrid();
@@ -1661,13 +1594,12 @@ function setColorInput(sel, hexSel, value) {
   if (hex) hex.textContent = value;
 }
 
-/* ============ RENDER: SIGN ============ */
+/* ============ RENDER SIGN ============ */
 function renderSign() {
   const sheet = $('#signSheet');
   if (!sheet) return;
   const tpl = getTemplate(state.templateId);
 
-  // Background
   if (state.design.bgType === 'gradient') {
     sheet.style.setProperty('--bg', `linear-gradient(${state.design.bgAngle}deg, ${state.design.bg1}, ${state.design.bg2})`);
   } else {
@@ -1678,7 +1610,6 @@ function renderSign() {
   sheet.className = 'sign-sheet border-' + state.design.border;
   sheet.setAttribute('dir', state.signLang === 'ar' ? 'rtl' : 'ltr');
 
-  // Title/Subtitle/Footer
   const titleEl = $('#signTitle');
   const subEl = $('#signSubtitle');
   const footEl = $('#signFooter');
@@ -1686,7 +1617,6 @@ function renderSign() {
   if (subEl) { subEl.textContent = state.subtitle || ''; subEl.style.display = state.subtitle ? '' : 'none'; }
   if (footEl) { footEl.textContent = state.footer || ''; footEl.style.display = state.footer ? '' : 'none'; }
 
-  // Icon vs Logo
   const iconWrap = $('#signIconWrap');
   const iconEl = $('#signIcon');
   if (iconWrap && iconEl) {
@@ -1704,7 +1634,6 @@ function renderSign() {
     }
   }
 
-  // Fields
   const fieldsWrap = $('#signFields');
   if (fieldsWrap) {
     fieldsWrap.innerHTML = '';
@@ -1732,7 +1661,6 @@ function renderSign() {
     }
   }
 
-  // QR code
   const qrWrap = $('#signQRWrap');
   const qrContainer = $('#signQRCode');
   if (qrWrap && qrContainer) {
@@ -1748,11 +1676,8 @@ function renderSign() {
       try {
         qrContainer.innerHTML = '';
         new QRCode(qrContainer, {
-          text: qrData,
-          width: 220,
-          height: 220,
-          colorDark: '#000000',
-          colorLight: '#ffffff',
+          text: qrData, width: 220, height: 220,
+          colorDark: '#000000', colorLight: '#ffffff',
           correctLevel: QRCode.CorrectLevel.M
         });
         qrWrap.style.display = '';
@@ -1766,13 +1691,12 @@ function renderSign() {
     }
   }
 
-  // Size badge
   const s = SIZES[state.size];
   const badge = $('#previewSizeBadge');
   if (badge && s) badge.textContent = s.label;
 }
 
-/* ============ APPLY SIZE ============ */
+/* ============ APPLY SIZE (updates print rules + preview) ============ */
 function applySize() {
   const s = SIZES[state.size];
   const sheet = $('#signSheet');
@@ -1783,10 +1707,25 @@ function applySize() {
   sheet.style.setProperty('--sign-h', s.h + 'mm');
   sheet.style.setProperty('--base', base + 'mm');
 
-  // Dynamic print page rule
+  // Dynamic print rule with EXACT page size
   const style = $('#dynamicPrintStyle');
   if (style) {
-    style.textContent = `@media print { @page { size: ${s.paper} ${s.orient}; margin: 0; } }`;
+    style.textContent = `
+      @media print {
+        @page {
+          size: ${s.w}mm ${s.h}mm;
+          margin: 0 !important;
+        }
+        html, body {
+          --print-w: ${s.w}mm;
+          --print-h: ${s.h}mm;
+        }
+        #signSheet {
+          width: ${s.w}mm !important;
+          height: ${s.h}mm !important;
+        }
+      }
+    `;
   }
 
   const badge = $('#previewSizeBadge');
@@ -1795,7 +1734,7 @@ function applySize() {
   updatePreviewScale();
 }
 
-/* ============ PREVIEW SCALE (robust) ============ */
+/* ============ PREVIEW SCALE ============ */
 let scaleRAF = null;
 function updatePreviewScale() {
   if (scaleRAF) cancelAnimationFrame(scaleRAF);
@@ -1811,7 +1750,6 @@ function updatePreviewScale() {
     const realW = s.w * MM_TO_PX;
     const realH = s.h * MM_TO_PX;
 
-    // Use getBoundingClientRect for accurate width
     const outerRect = outer.getBoundingClientRect();
     const padding = 32;
     const availW = Math.max(outerRect.width - padding, 200);
@@ -1822,55 +1760,214 @@ function updatePreviewScale() {
     scaler.style.width = realW + 'px';
     scaler.style.height = realH + 'px';
     scaler.style.transform = `scale(${scale})`;
-
     outer.style.height = (realH * scale + padding) + 'px';
   });
 }
 
-/* ============ EVENT BINDINGS ============ */
+/* ============ EXPORT: PNG ============ */
+async function exportPNG() {
+  if (state.isExporting) return;
+  if (typeof html2canvas !== 'function') {
+    showToast(uiT('toast.exportError'), 'error');
+    return;
+  }
+  state.isExporting = true;
+  showExportOverlay(uiT('toast.exportingPNG'));
+
+  const sheet = $('#signSheet');
+  const scaler = $('#previewScaler');
+  const outer = $('#previewOuter');
+
+  // Save current preview state
+  const prevTransform = scaler.style.transform;
+  const prevOuterH = outer.style.height;
+  const prevScalerW = scaler.style.width;
+  const prevScalerH = scaler.style.height;
+
+  // Reset to natural size for capture
+  scaler.style.transform = 'none';
+  scaler.style.width = '';
+  scaler.style.height = '';
+  outer.style.height = 'auto';
+
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  await new Promise(r => setTimeout(r, 100));
+
+  try {
+    // Compute export multiplier for ~2000px on the short side minimum
+    const s = SIZES[state.size];
+    const shortSideMm = Math.min(s.w, s.h);
+    // At scale=1, canvas width in px ≈ shortSideMm * (96/25.4)
+    const baseShortPx = shortSideMm * (96 / 25.4);
+    const multiplier = Math.max(2, 2000 / baseShortPx);
+
+    const canvas = await html2canvas(sheet, {
+      scale: multiplier,
+      backgroundColor: null,
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
+      width: sheet.offsetWidth,
+      height: sheet.offsetHeight,
+      windowWidth: sheet.offsetWidth,
+      windowHeight: sheet.offsetHeight
+    });
+
+    const ts = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+    const filename = `saivsign-${state.templateId}-${s.paper}-${ts}.png`;
+
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+    if (!blob) throw new Error('Blob failed');
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 800);
+
+    showToast(uiT('toast.pngDone'), 'success');
+  } catch (err) {
+    console.error('PNG export failed:', err);
+    showToast(uiT('toast.exportError'), 'error');
+  } finally {
+    // Restore preview
+    scaler.style.transform = prevTransform;
+    scaler.style.width = prevScalerW;
+    scaler.style.height = prevScalerH;
+    outer.style.height = prevOuterH;
+    hideExportOverlay();
+    state.isExporting = false;
+    setTimeout(() => updatePreviewScale(), 50);
+  }
+}
+
+/* ============ EXPORT: PDF ============ */
+async function exportPDF() {
+  if (state.isExporting) return;
+  if (typeof html2canvas !== 'function' || !window.jspdf) {
+    showToast(uiT('toast.exportError'), 'error');
+    return;
+  }
+  state.isExporting = true;
+  showExportOverlay(uiT('toast.exportingPDF'));
+
+  const sheet = $('#signSheet');
+  const scaler = $('#previewScaler');
+  const outer = $('#previewOuter');
+
+  const prevTransform = scaler.style.transform;
+  const prevOuterH = outer.style.height;
+  const prevScalerW = scaler.style.width;
+  const prevScalerH = scaler.style.height;
+
+  scaler.style.transform = 'none';
+  scaler.style.width = '';
+  scaler.style.height = '';
+  outer.style.height = 'auto';
+
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  await new Promise(r => setTimeout(r, 100));
+
+  try {
+    const s = SIZES[state.size];
+    const shortSideMm = Math.min(s.w, s.h);
+    const baseShortPx = shortSideMm * (96 / 25.4);
+    const multiplier = Math.max(2, 2000 / baseShortPx);
+
+    const canvas = await html2canvas(sheet, {
+      scale: multiplier,
+      backgroundColor: '#ffffff',
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
+      width: sheet.offsetWidth,
+      height: sheet.offsetHeight,
+      windowWidth: sheet.offsetWidth,
+      windowHeight: sheet.offsetHeight
+    });
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+    const { jsPDF } = window.jspdf;
+    const orientation = s.orient === 'landscape' ? 'landscape' : 'portrait';
+    const pdf = new jsPDF({
+      orientation: orientation,
+      unit: 'mm',
+      format: [s.w, s.h],
+      compress: true
+    });
+
+    pdf.addImage(imgData, 'JPEG', 0, 0, s.w, s.h, undefined, 'FAST');
+
+    const ts = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+    const filename = `saivsign-${state.templateId}-${s.paper}-${ts}.pdf`;
+    pdf.save(filename);
+
+    showToast(uiT('toast.pdfDone'), 'success');
+  } catch (err) {
+    console.error('PDF export failed:', err);
+    showToast(uiT('toast.exportError'), 'error');
+  } finally {
+    scaler.style.transform = prevTransform;
+    scaler.style.width = prevScalerW;
+    scaler.style.height = prevScalerH;
+    outer.style.height = prevOuterH;
+    hideExportOverlay();
+    state.isExporting = false;
+    setTimeout(() => updatePreviewScale(), 50);
+  }
+}
+
+/* ============ DIRECT PRINT ============ */
+function directPrint() {
+  showToast(uiT('toast.printing'), 'info', 1200);
+
+  // Force the print size variables then print
+  const s = SIZES[state.size];
+  document.documentElement.style.setProperty('--print-w', s.w + 'mm');
+  document.documentElement.style.setProperty('--print-h', s.h + 'mm');
+
+  // Small delay so toasts don't appear in print
+  setTimeout(() => {
+    try {
+      window.print();
+    } catch (e) {
+      console.error('Print failed:', e);
+      showToast(uiT('toast.exportError'), 'error');
+    }
+  }, 200);
+}
+
+/* ============ BIND EVENTS ============ */
 function bindEvents() {
-  // Theme toggle
   const themeBtn = $('#themeToggle');
   if (themeBtn) themeBtn.addEventListener('click', () => applyTheme(state.theme === 'dark' ? 'light' : 'dark'));
 
-  // UI language pills
   $$('.lang-pill').forEach(p => {
     p.addEventListener('click', () => {
       applyUILanguage(p.dataset.uiLang);
-      // Also re-render template grid in case titles need refreshing
       renderTemplateGrid();
     });
   });
 
-  // Sign language segmented control
   $$('#signLangSeg button').forEach(b => {
     b.addEventListener('click', () => {
       applySignLanguage(b.dataset.signLang);
-      renderTemplateGrid(); // template card labels follow sign language
-      showToast(uiT('toast.langChanged'), 'info', 1600);
+      renderTemplateGrid();
+      showToast(uiT('toast.langChanged'), 'info', 1400);
     });
   });
 
-  // Content inputs
   const titleInp = $('#titleInput');
-  if (titleInp) titleInp.addEventListener('input', e => {
-    state.title = e.target.value;
-    state.manualTitle = true;
-    debouncedRenderSign();
-  });
+  if (titleInp) titleInp.addEventListener('input', e => { state.title = e.target.value; state.manualTitle = true; debouncedRenderSign(); });
   const subInp = $('#subtitleInput');
-  if (subInp) subInp.addEventListener('input', e => {
-    state.subtitle = e.target.value;
-    state.manualSubtitle = true;
-    debouncedRenderSign();
-  });
+  if (subInp) subInp.addEventListener('input', e => { state.subtitle = e.target.value; state.manualSubtitle = true; debouncedRenderSign(); });
   const footInp = $('#footerInput');
-  if (footInp) footInp.addEventListener('input', e => {
-    state.footer = e.target.value;
-    debouncedRenderSign();
-  });
+  if (footInp) footInp.addEventListener('input', e => { state.footer = e.target.value; debouncedRenderSign(); });
 
-  // Background type
   $$('#bgTypeSeg button').forEach(btn => {
     btn.addEventListener('click', () => {
       state.design.bgType = btn.dataset.value;
@@ -1883,14 +1980,12 @@ function bindEvents() {
     });
   });
 
-  // Color inputs — bind input + change + debounce
   bindColorInput('#bgColorInput', '#bgColorHex', 'bgColor');
   bindColorInput('#bg1Input', '#bg1Hex', 'bg1');
   bindColorInput('#bg2Input', '#bg2Hex', 'bg2');
   bindColorInput('#textColorInput', '#textColorHex', 'textColor');
   bindColorInput('#accentColorInput', '#accentColorHex', 'accentColor');
 
-  // Angle slider
   const angleInp = $('#bgAngleInput');
   if (angleInp) angleInp.addEventListener('input', e => {
     state.design.bgAngle = parseInt(e.target.value, 10) || 0;
@@ -1899,7 +1994,6 @@ function bindEvents() {
     debouncedRenderSign();
   });
 
-  // Logo
   const uploadBtn = $('#logoUploadBtn');
   const uploadInput = $('#logoUpload');
   if (uploadBtn && uploadInput) {
@@ -1909,42 +2003,40 @@ function bindEvents() {
   const clearBtn = $('#clearLogoBtn');
   if (clearBtn) clearBtn.addEventListener('click', clearLogo);
 
-  // Print
+  // Export buttons
   const printBtn = $('#printBtn');
-  if (printBtn) printBtn.addEventListener('click', () => {
-    showToast(uiT('toast.printing'), 'info', 1500);
-    setTimeout(() => {
-      try { window.print(); } catch(e) { console.error(e); }
-    }, 220);
-  });
+  if (printBtn) printBtn.addEventListener('click', directPrint);
+  const pngBtn = $('#pngBtn');
+  if (pngBtn) pngBtn.addEventListener('click', exportPNG);
+  const pdfBtn = $('#pdfBtn');
+  if (pdfBtn) pdfBtn.addEventListener('click', exportPDF);
 
-  // Reset
   const resetBtn = $('#resetSignBtn');
   if (resetBtn) resetBtn.addEventListener('click', () => {
     applyTemplate(state.templateId);
     showToast(uiT('toast.reset'), 'success');
   });
 
-  // Toast dismiss on click
   const toast = $('#toast');
   if (toast) toast.addEventListener('click', () => toast.classList.remove('show'));
 
-  // Resize — use ResizeObserver for reliable preview scaling
   if (typeof ResizeObserver !== 'undefined') {
     const outer = $('#previewOuter');
-    if (outer) {
-      const ro = new ResizeObserver(() => updatePreviewScale());
-      ro.observe(outer);
-    }
+    if (outer) new ResizeObserver(() => updatePreviewScale()).observe(outer);
   }
-  // Fallback: window resize
   let rTimer = null;
-  window.addEventListener('resize', () => {
-    clearTimeout(rTimer);
-    rTimer = setTimeout(updatePreviewScale, 100);
-  });
-  // Orientation change
+  window.addEventListener('resize', () => { clearTimeout(rTimer); rTimer = setTimeout(updatePreviewScale, 100); });
   window.addEventListener('orientationchange', () => setTimeout(updatePreviewScale, 220));
+
+  // Keyboard: Ctrl+P uses our clean print
+  window.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+      // Allow default but ensure vars are set first
+      const s = SIZES[state.size];
+      document.documentElement.style.setProperty('--print-w', s.w + 'mm');
+      document.documentElement.style.setProperty('--print-h', s.h + 'mm');
+    }
+  });
 }
 
 function bindColorInput(sel, hexSel, key) {
@@ -1964,17 +2056,8 @@ function bindColorInput(sel, hexSel, key) {
 function handleLogoUpload(e) {
   const file = e.target.files && e.target.files[0];
   if (!file) return;
-  if (!file.type.startsWith('image/')) {
-    showToast('Please upload an image file', 'error');
-    e.target.value = '';
-    return;
-  }
-  // Size guard ~2MB
-  if (file.size > 2 * 1024 * 1024) {
-    showToast('Image too large (max 2MB)', 'error');
-    e.target.value = '';
-    return;
-  }
+  if (!file.type.startsWith('image/')) { showToast('Please upload an image file', 'error'); e.target.value = ''; return; }
+  if (file.size > 2 * 1024 * 1024) { showToast('Image too large (max 2MB)', 'error'); e.target.value = ''; return; }
   const reader = new FileReader();
   reader.onload = ev => {
     state.design.logo = ev.target.result;
@@ -1988,7 +2071,7 @@ function handleLogoUpload(e) {
     renderSign();
     showToast(uiT('toast.logoUploaded'), 'success');
   };
-  reader.onerror = () => showToast('Failed to read file', 'error');
+  reader.onerror = () => showToast(uiT('toast.exportError'), 'error');
   reader.readAsDataURL(file);
   e.target.value = '';
 }
@@ -2013,31 +2096,19 @@ function init() {
     savedSign = localStorage.getItem('saivsign:signLang') || 'en';
   } catch(e){}
 
-  // Set theme + UI lang first
   applyTheme(savedTheme);
   applyUILanguage(savedUI);
 
-  // Initial state: apply template in current sign lang
   state.signLang = savedSign;
-
-  // Bind events
   bindEvents();
-
-  // Apply default template (populates title/subtitle/design/etc.)
   applyTemplate('wifi-basic');
-
-  // Now apply sign language (may re-translate content)
   applySignLanguage(savedSign);
-
-  // Sync UI
   syncControls();
   applySize();
   renderSign();
 
-  // Set sign lang button active states
   $$('#signLangSeg button').forEach(b => b.classList.toggle('active', b.dataset.signLang === state.signLang));
 
-  // Delayed scale updates for layout settle
   setTimeout(updatePreviewScale, 80);
   setTimeout(updatePreviewScale, 320);
   setTimeout(updatePreviewScale, 800);
