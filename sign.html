@@ -26,19 +26,12 @@
 
 <style>
   html, body { scroll-behavior: smooth; }
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    min-height: 100vh;
-    background: #f8fafc;
-    color: #0f172a;
-    transition: background-color 0.3s, color 0.3s;
-  }
+  body { font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; background: #f8fafc; color: #0f172a; transition: background-color 0.3s, color 0.3s; }
   html.dark body { background: #020617; color: #e2e8f0; }
   body.lang-ar { font-family: 'Cairo', 'Inter', system-ui, sans-serif; }
 
   body::before {
-    content: '';
-    position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
     background:
       radial-gradient(900px 600px at 15% -10%, rgba(99,102,241,0.12), transparent 60%),
       radial-gradient(800px 500px at 95% 0%, rgba(236,72,153,0.10), transparent 55%),
@@ -54,10 +47,9 @@
   ::-webkit-scrollbar { width: 9px; height: 9px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.5); background-clip: padding-box; }
   html.dark ::-webkit-scrollbar-thumb { background: rgba(129,140,248,0.35); background-clip: padding-box; }
 
-  .brand-text { background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+  .brand-text { background: linear-gradient(135deg, #818cf8, #c084fc 50%, #f472b6); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
   .btn-brand { background: linear-gradient(135deg, #6366f1, #a855f7 55%, #ec4899); background-size: 200% 200%; animation: gradientShift 6s ease infinite; color: #fff; font-weight: 700; border: none; cursor: pointer; transition: transform .15s ease, box-shadow .2s ease, opacity .2s ease; box-shadow: 0 10px 30px -10px rgba(139,92,246,0.6); }
   .btn-brand:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 16px 40px -12px rgba(139,92,246,0.8); }
   .btn-brand:active:not(:disabled) { transform: translateY(0) scale(0.98); }
@@ -70,13 +62,7 @@
   .btn-red:hover:not(:disabled) { transform: translateY(-1px); }
   .btn-red:disabled { opacity: .55; cursor: not-allowed; }
 
-  .glass {
-    background: rgba(255,255,255,0.78);
-    backdrop-filter: blur(16px) saturate(160%);
-    -webkit-backdrop-filter: blur(16px) saturate(160%);
-    border: 1px solid rgba(255,255,255,0.7);
-    box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 12px 32px -12px rgba(15,23,42,0.10);
-  }
+  .glass { background: rgba(255,255,255,0.78); backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%); border: 1px solid rgba(255,255,255,0.7); box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 12px 32px -12px rgba(15,23,42,0.10); }
   html.dark .glass { background: rgba(15,23,42,0.65); border-color: rgba(148,163,184,0.14); box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 16px 40px -16px rgba(0,0,0,0.6); }
 
   .input-base { width: 100%; padding: 11px 14px; border-radius: 12px; border: 1.5px solid rgba(148,163,184,0.3); background: rgba(255,255,255,0.9); color: #0f172a; font-size: 0.9rem; outline: none; transition: all .18s ease; font-family: inherit; }
@@ -101,7 +87,6 @@
 
   input[type="range"].rng { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 999px; background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899); outline: none; cursor: pointer; }
   input[type="range"].rng::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 3px solid #6366f1; cursor: grab; box-shadow: 0 2px 6px rgba(99,102,241,0.45); }
-  input[type="range"].rng::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 3px solid #6366f1; cursor: grab; }
 
   .cat-tab { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 10px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; cursor: pointer; border: 1.5px solid transparent; background: transparent; color: #475569; transition: all .18s ease; }
   html.dark .cat-tab { color: #94a3b8; }
@@ -111,15 +96,15 @@
 
   .tpl-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px 8px; border-radius: 14px; border: 1.5px solid rgba(148,163,184,0.22); background: rgba(255,255,255,0.6); color: #475569; font-size: 0.66rem; font-weight: 700; cursor: pointer; transition: all .18s ease; text-align: center; min-height: 90px; line-height: 1.25; word-break: break-word; }
   html.dark .tpl-card { background: rgba(15,23,42,0.5); border-color: rgba(148,163,184,0.14); color: #94a3b8; }
-  .tpl-card:hover { transform: translateY(-2px); border-color: rgba(99,102,241,0.5); color: #4f46e5; box-shadow: 0 12px 24px -12px rgba(99,102,241,0.4); }
+  .tpl-card:hover { transform: translateY(-2px); border-color: rgba(99,102,241,0.5); color: #4f46e5; }
   html.dark .tpl-card:hover { border-color: rgba(129,140,248,0.4); color: #a5b4fc; }
   .tpl-card.active { border-color: #6366f1; background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.12)); color: #4f46e5; box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
   html.dark .tpl-card.active { border-color: #818cf8; color: #a5b4fc; box-shadow: 0 0 0 3px rgba(129,140,248,0.18); }
-  .tpl-card .tpl-icon { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.95rem; box-shadow: 0 6px 14px -6px rgba(0,0,0,0.35); }
+  .tpl-card .tpl-icon { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.95rem; }
 
   .icon-btn-sm { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid rgba(148,163,184,0.2); background: rgba(255,255,255,0.5); color: #475569; cursor: pointer; transition: all .15s ease; font-size: .85rem; }
   html.dark .icon-btn-sm { background: rgba(15,23,42,0.5); border-color: rgba(148,163,184,0.14); color: #94a3b8; }
-  .icon-btn-sm:hover { border-color: #6366f1; color: #4f46e5; transform: translateY(-1px); }
+  .icon-btn-sm:hover { border-color: #6366f1; color: #4f46e5; }
   .icon-btn-sm.active { border-color: #6366f1; background: rgba(99,102,241,0.15); color: #4f46e5; box-shadow: 0 0 0 3px rgba(99,102,241,0.12); }
   html.dark .icon-btn-sm.active { border-color: #818cf8; color: #a5b4fc; background: rgba(129,140,248,0.18); }
 
@@ -147,10 +132,11 @@
   #toast.error { background: linear-gradient(135deg, #dc2626, #ef4444); }
   #toast.info { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
 
-  .preview-outer { position: relative; width: 100%; overflow: hidden; border-radius: 16px; padding: 16px; background: repeating-conic-gradient(rgba(148,163,184,0.12) 0% 25%, transparent 0% 50%) 50% / 22px 22px; }
+  .preview-outer { position: relative; width: 100%; overflow: hidden; border-radius: 16px; padding: 16px; background: repeating-conic-gradient(rgba(148,163,184,0.12) 0% 25%, transparent 0% 50%) 50% / 22px 22px; display: flex; align-items: center; justify-content: center; }
   html.dark .preview-outer { background: repeating-conic-gradient(rgba(148,163,184,0.07) 0% 25%, transparent 0% 50%) 50% / 22px 22px; }
   .preview-scaler { position: relative; transform-origin: top left; transition: transform 0.25s ease; }
 
+  /* ============ SIGN SHEET — uses mm internally for both preview + capture ============ */
   .sign-sheet {
     --sign-w: 210mm;
     --sign-h: 297mm;
@@ -161,15 +147,20 @@
 
     width: var(--sign-w);
     height: var(--sign-h);
+    min-width: var(--sign-w);
+    min-height: var(--sign-h);
+    max-width: var(--sign-w);
+    max-height: var(--sign-h);
     background: var(--bg);
     color: var(--text-color);
     position: relative;
     overflow: hidden;
     display: flex;
+    flex-direction: row;
     box-sizing: border-box;
-    box-shadow: 0 20px 40px -20px rgba(15,23,42,0.35);
     font-family: 'Inter', 'Cairo', system-ui, sans-serif;
     direction: ltr;
+    box-shadow: 0 20px 40px -20px rgba(15,23,42,0.35);
   }
   .sign-sheet[dir="rtl"] { direction: rtl; font-family: 'Cairo', 'Inter', system-ui, sans-serif; }
 
@@ -182,13 +173,15 @@
 
   .sign-content {
     position: relative; z-index: 1;
-    flex: 1; display: flex;
-    flex-direction: column; align-items: center; justify-content: center;
+    flex: 1 1 auto;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     gap: calc(var(--base) * 0.9);
     padding: calc(var(--base) * 1.6);
     text-align: center;
     box-sizing: border-box;
-    min-width: 0;
+    min-width: 0; min-height: 0;
+    overflow: hidden;
   }
   .sign-icon-wrap {
     width: calc(var(--base) * 4.2);
@@ -197,22 +190,31 @@
     background: var(--accent);
     display: flex; align-items: center; justify-content: center;
     box-shadow: 0 calc(var(--base) * 0.25) calc(var(--base) * 0.6) rgba(0,0,0,0.18);
-    overflow: hidden; flex-shrink: 0;
+    overflow: hidden;
+    flex-shrink: 0;
   }
   .sign-icon-wrap i { font-size: calc(var(--base) * 2); color: var(--bg); line-height: 1; }
   .sign-icon-wrap img { width: 70%; height: 70%; object-fit: contain; }
+
   .sign-title {
     font-size: calc(var(--base) * 1.9);
     font-weight: 900; line-height: 1.08;
     letter-spacing: -0.02em; margin: 0;
-    word-break: break-word; max-width: 95%;
+    max-width: 95%;
+    overflow-wrap: anywhere; word-wrap: break-word;
   }
   .sign-subtitle {
     font-size: calc(var(--base) * 0.85);
     font-weight: 500; opacity: .9; margin: 0;
-    line-height: 1.35; max-width: 90%; word-break: break-word;
+    line-height: 1.35; max-width: 90%;
+    overflow-wrap: anywhere; word-wrap: break-word;
   }
-  .sign-fields { display: flex; flex-direction: column; gap: calc(var(--base) * 0.4); width: 80%; max-width: 80%; margin-top: calc(var(--base) * 0.5); }
+  .sign-fields {
+    display: flex; flex-direction: column;
+    gap: calc(var(--base) * 0.4);
+    width: 80%; max-width: 80%;
+    margin-top: calc(var(--base) * 0.5);
+  }
   .sign-field {
     background: rgba(255,255,255,0.16);
     border: 1px solid rgba(255,255,255,0.14);
@@ -222,9 +224,21 @@
     display: flex; flex-direction: column;
     gap: calc(var(--base) * 0.05);
     box-sizing: border-box;
+    overflow: hidden;
   }
-  .sign-field-label { font-size: calc(var(--base) * 0.5); text-transform: uppercase; letter-spacing: .08em; font-weight: 700; opacity: .78; }
-  .sign-field-value { font-size: calc(var(--base) * 0.85); font-weight: 700; font-family: 'JetBrains Mono', ui-monospace, monospace; word-break: break-all; line-height: 1.2; }
+  .sign-field-label {
+    font-size: calc(var(--base) * 0.5);
+    text-transform: uppercase; letter-spacing: .08em;
+    font-weight: 700; opacity: .78;
+    overflow-wrap: anywhere;
+  }
+  .sign-field-value {
+    font-size: calc(var(--base) * 0.85);
+    font-weight: 700;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    line-height: 1.2;
+    overflow-wrap: anywhere; word-break: break-word;
+  }
   .sign-qr-wrap {
     background: #fff;
     padding: calc(var(--base) * 0.35);
@@ -232,109 +246,85 @@
     display: inline-flex; align-items: center; justify-content: center;
     box-shadow: 0 calc(var(--base) * 0.15) calc(var(--base) * 0.4) rgba(0,0,0,0.15);
     margin-top: calc(var(--base) * 0.35);
-    line-height: 0;
-    overflow: hidden;
+    line-height: 0; overflow: hidden;
+    flex-shrink: 0;
   }
   .sign-qr-wrap canvas, .sign-qr-wrap img {
     display: block !important;
     width: calc(var(--base) * 3.6) !important;
     height: calc(var(--base) * 3.6) !important;
     image-rendering: pixelated;
-    margin: 0 !important;
-    padding: 0 !important;
+    margin: 0 !important; padding: 0 !important;
   }
-  /* Hide any duplicate QR children (defensive) */
   .sign-qr-wrap > div > *:not(:last-child) { display: none !important; }
-  .sign-footer { font-size: calc(var(--base) * 0.55); opacity: .72; font-weight: 600; letter-spacing: .03em; max-width: 90%; word-break: break-word; line-height: 1.3; }
+  .sign-footer {
+    font-size: calc(var(--base) * 0.55);
+    opacity: .72; font-weight: 600;
+    letter-spacing: .03em;
+    max-width: 90%;
+    overflow-wrap: anywhere; line-height: 1.3;
+  }
 
-  /* ============ PRINT — BULLETPROOF A4/A5 ============ */
+  /* ============ PRINT ============ */
   @media print {
-    /* Kill decorative backgrounds */
     body::before, body::after { display: none !important; }
-
-    /* Reset document to page size with NO margins */
     html, body {
-      margin: 0 !important;
-      padding: 0 !important;
+      margin: 0 !important; padding: 0 !important;
       width: var(--print-w, 210mm) !important;
       height: var(--print-h, 297mm) !important;
       overflow: hidden !important;
       background: #fff !important;
-      box-sizing: border-box !important;
     }
-
-    /* Hide absolutely everything */
-    body * {
-      visibility: hidden !important;
-    }
-
-    /* Reset ALL transforms & filters globally — critical for fixed positioning to work */
-    body, body *,
-    body *::before, body *::after {
-      transform: none !important;
-      filter: none !important;
-      -webkit-filter: none !important;
-      perspective: none !important;
-      will-change: auto !important;
-    }
-
-    /* Show the sign and its children */
-    #signSheet, #signSheet * {
-      visibility: visible !important;
-    }
-
-    /* Pin the sign to (0,0) at exact page size */
+    body * { visibility: hidden !important; }
+    #signSheet, #signSheet * { visibility: visible !important; }
     #signSheet {
       position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      right: auto !important;
-      bottom: auto !important;
+      top: 0 !important; left: 0 !important;
       width: var(--print-w, 210mm) !important;
       height: var(--print-h, 297mm) !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: none !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
-      outline: none !important;
+      margin: 0 !important; padding: 0 !important;
+      border: none !important; border-radius: 0 !important;
+      box-shadow: none !important; outline: none !important;
       overflow: hidden !important;
-      box-sizing: border-box !important;
-      page-break-after: avoid !important;
-      page-break-before: avoid !important;
-      page-break-inside: avoid !important;
-      break-after: avoid !important;
-      break-before: avoid !important;
-      break-inside: avoid !important;
+      page-break-after: avoid !important; page-break-before: avoid !important; page-break-inside: avoid !important;
+      break-after: avoid !important; break-before: avoid !important; break-inside: avoid !important;
     }
-
-    /* Restore flex layout inside the sign (overrides visibility resets) */
-    #signSheet { display: flex !important; }
+    #signSheet { display: flex !important; flex-direction: row !important; }
     #signSheet .sign-content { display: flex !important; flex-direction: column !important; }
     #signSheet .sign-fields { display: flex !important; flex-direction: column !important; }
     #signSheet .sign-qr-wrap { display: inline-flex !important; }
     #signSheet .sign-icon-wrap { display: flex !important; }
-
-    /* Force color printing */
-    * {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-      color-adjust: exact !important;
-    }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
   }
 
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { scrollbar-width: none; }
   .icon-scroll { max-height: 200px; overflow-y: auto; scrollbar-width: thin; }
 
-  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
-
-  #exportOverlay { position: fixed; inset: 0; z-index: 9998; background: rgba(2,6,23,0.7); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; }
+  #exportOverlay { position: fixed; inset: 0; z-index: 9998; background: rgba(2,6,23,0.75); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; }
   #exportOverlay.show { display: flex; }
   #exportOverlay .spinner-box { background: rgba(255,255,255,0.95); padding: 28px 36px; border-radius: 20px; text-align: center; box-shadow: 0 24px 60px -20px rgba(0,0,0,0.4); }
   html.dark #exportOverlay .spinner-box { background: rgba(15,23,42,0.95); border: 1px solid rgba(148,163,184,0.2); }
   .spin { animation: spin 1s linear infinite; display: inline-block; }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Hidden capture stage - offscreen */
+  #captureHost {
+    position: fixed !important;
+    top: 0 !important;
+    left: -100000px !important;
+    z-index: -9999 !important;
+    pointer-events: none !important;
+    transform: none !important;
+    filter: none !important;
+    perspective: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+  }
 </style>
 </head>
 
@@ -422,7 +412,7 @@
         <div class="glass rounded-2xl p-4">
           <div class="flex items-start gap-3">
             <span class="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-500/15 text-amber-600 dark:text-amber-300 flex items-center justify-center text-sm shrink-0"><i class="fas fa-lightbulb"></i></span>
-            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="tip.body">PNG & PDF export at 300 DPI A4/A5 exact size. Print dialog opens with zero margins.</p>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="tip.body">PNG & PDF export at exact A4/A5 300 DPI. Print dialog opens edge-to-edge.</p>
           </div>
         </div>
       </div>
@@ -594,7 +584,7 @@
 
 <script>
 /* ============================================================================
-   SaivSIGN v6 — Fixed icons + exact A4/A5 exports (300 DPI) + bulletproof print
+   SaivSIGN v7 — Fixed PNG/PDF export (off-screen capture) + landscape + print
    ============================================================================ */
 (function () {
 'use strict';
@@ -610,7 +600,7 @@ const UI_I18N = {
     'design.background':'Background','design.solid':'Solid','design.gradient':'Gradient','design.angle':'Angle',
     'design.textColor':'Text Color','design.accent':'Accent Color','design.border':'Border Style','design.icon':'Icon',
     'design.uploadLogo':'Upload Logo','design.clearLogo':'Clear Logo',
-    'tip.body':'PNG & PDF export at 300 DPI A4/A5 exact size. Print dialog opens with zero margins.',
+    'tip.body':'PNG & PDF export at exact A4/A5 300 DPI. Print dialog opens edge-to-edge.',
     'export.title':'Export',
     'footer.powered':'Powered by','footer.made':'Made with','footer.in':'in','footer.country':'Algeria',
     'toast.reset':'Design reset to template','toast.logoRemoved':'Logo removed','toast.logoUploaded':'Logo uploaded',
@@ -624,7 +614,7 @@ const UI_I18N = {
     'section.templates':'Choisir un modèle','section.content':'Contenu','section.design':'Design','section.size':'Taille & Format',
     'preview.title':'Aperçu en direct','btn.print':'Imprimer','btn.reset':'Réinitialiser',
     'content.title':'Titre','content.subtitle':'Sous-titre','content.footer':'Pied de page (optionnel)',
-    'content.signLang':'Langue du panneau','content.signLangHint':'Change uniquement le contenu du panneau — pas toute l\'interface.',
+    'content.signLang':'Langue du panneau','content.signLangHint':'Change uniquement le contenu du panneau.',
     'design.background':'Arrière-plan','design.solid':'Uni','design.gradient':'Dégradé','design.angle':'Angle',
     'design.textColor':'Couleur du texte','design.accent':'Couleur d\'accent','design.border':'Style de bordure','design.icon':'Icône',
     'design.uploadLogo':'Télécharger un logo','design.clearLogo':'Effacer le logo',
@@ -632,7 +622,7 @@ const UI_I18N = {
     'export.title':'Export',
     'footer.powered':'Propulsé par','footer.made':'Fait avec','footer.in':'en','footer.country':'Algérie',
     'toast.reset':'Design réinitialisé','toast.logoRemoved':'Logo supprimé','toast.logoUploaded':'Logo téléchargé',
-    'toast.printing':'Ouverture de l\'impression...','toast.langChanged':'Langue du panneau changée',
+    'toast.printing':'Ouverture de l\'impression...','toast.langChanged':'Langue changée',
     'toast.exportingPNG':'Export PNG à 300 DPI...','toast.exportingPDF':'Export PDF A4/A5...',
     'toast.pngDone':'PNG téléchargé !','toast.pdfDone':'PDF téléchargé !','toast.exportError':'Échec de l\'export.',
     'border.clean':'Épuré','border.rounded':'Arrondi','border.double':'Double','border.minimal':'Minimal'
@@ -642,16 +632,16 @@ const UI_I18N = {
     'section.templates':'اختر قالبًا','section.content':'المحتوى','section.design':'التصميم','section.size':'الحجم والتنسيق',
     'preview.title':'معاينة مباشرة','btn.print':'طباعة','btn.reset':'إعادة تعيين',
     'content.title':'العنوان','content.subtitle':'العنوان الفرعي','content.footer':'التذييل (اختياري)',
-    'content.signLang':'لغة اللافتة','content.signLangHint':'تُغيّر محتوى اللافتة فقط — وليس الواجهة بالكامل.',
+    'content.signLang':'لغة اللافتة','content.signLangHint':'تُغيّر محتوى اللافتة فقط.',
     'design.background':'الخلفية','design.solid':'لون واحد','design.gradient':'تدرج','design.angle':'الزاوية',
     'design.textColor':'لون النص','design.accent':'لون التمييز','design.border':'نمط الحدود','design.icon':'الأيقونة',
     'design.uploadLogo':'تحميل شعار','design.clearLogo':'إزالة الشعار',
     'tip.body':'تصدير PNG و PDF بدقة 300 DPI بحجم A4/A5 بالضبط. طباعة بلا هوامش.',
     'export.title':'تصدير',
     'footer.powered':'مدعوم من','footer.made':'صُنع بـ','footer.in':'في','footer.country':'الجزائر',
-    'toast.reset':'تمت إعادة تعيين التصميم','toast.logoRemoved':'تمت إزالة الشعار','toast.logoUploaded':'تم رفع الشعار',
-    'toast.printing':'جارٍ فتح نافذة الطباعة...','toast.langChanged':'تم تغيير لغة اللافتة',
-    'toast.exportingPNG':'تصدير PNG بدقة 300 DPI...','toast.exportingPDF':'تصدير PDF بحجم A4/A5...',
+    'toast.reset':'تمت إعادة التعيين','toast.logoRemoved':'تمت إزالة الشعار','toast.logoUploaded':'تم رفع الشعار',
+    'toast.printing':'جارٍ فتح نافذة الطباعة...','toast.langChanged':'تم تغيير اللغة',
+    'toast.exportingPNG':'تصدير PNG بدقة 300 DPI...','toast.exportingPDF':'تصدير PDF...',
     'toast.pngDone':'تم تنزيل PNG!','toast.pdfDone':'تم تنزيل PDF!','toast.exportError':'فشل التصدير.',
     'border.clean':'نظيف','border.rounded':'دائري','border.double':'مزدوج','border.minimal':'بسيط'
   }
@@ -670,7 +660,7 @@ const CATEGORIES = {
   custom:    { icon:'fa-pen-ruler',       en:'Custom',      fr:'Personnalisé',   ar:'مخصص' }
 };
 
-/* ============ TEMPLATES (60) ============ */
+/* ============ TEMPLATES ============ */
 const TEMPLATES = [
 { id:'wifi-basic', cat:'wifi', icon:'fa-wifi',
   theme:{ bgType:'gradient', bg1:'#4f46e5', bg2:'#7c3aed', bgAngle:135, textColor:'#ffffff', accentColor:'#c4b5fd' },
@@ -720,7 +710,7 @@ const TEMPLATES = [
 { id:'reception-hours', cat:'reception', icon:'fa-clock',
   theme:{ bgType:'solid', bgColor:'#0f172a', textColor:'#ffffff', accentColor:'#94a3b8' },
   title:{ en:'Reception Hours', fr:'Heures d\'accueil', ar:'ساعات الاستقبال' },
-  subtitle:{ en:'Mon–Fri · 9AM – 6PM', fr:'Lun–Ven · 9h – 18h', ar:'الإثنين–الجمعة · 9ص – 6م' } },
+  subtitle:{ en:'Mon–Fri · 9AM – 6PM', fr:'Lun–Ven · 9h – 18h', ar:'الإثنين–الجمعة' } },
 { id:'reception-signin', cat:'reception', icon:'fa-pen-to-square',
   theme:{ bgType:'solid', bgColor:'#7c3aed', textColor:'#ffffff', accentColor:'#ddd6fe' },
   title:{ en:'Please Sign In', fr:'Veuillez vous enregistrer', ar:'الرجاء تسجيل الدخول' },
@@ -786,11 +776,11 @@ const TEMPLATES = [
 { id:'safety-first', cat:'safety', icon:'fa-shield-heart',
   theme:{ bgType:'gradient', bg1:'#0891b2', bg2:'#0369a1', bgAngle:135, textColor:'#ffffff', accentColor:'#bae6fd' },
   title:{ en:'Safety First', fr:'La sécurité d\'abord', ar:'السلامة أولاً' },
-  subtitle:{ en:'Follow all safety guidelines', fr:'Suivez toutes les consignes de sécurité', ar:'اتبع جميع إرشادات السلامة' } },
+  subtitle:{ en:'Follow all safety guidelines', fr:'Suivez toutes les consignes', ar:'اتبع جميع إرشادات السلامة' } },
 { id:'safety-cctv', cat:'safety', icon:'fa-video',
   theme:{ bgType:'solid', bgColor:'#0f172a', textColor:'#ffffff', accentColor:'#94a3b8' },
   title:{ en:'CCTV in Operation', fr:'Vidéosurveillance active', ar:'كاميرات المراقبة قيد التشغيل' },
-  subtitle:{ en:'24/7 security monitoring', fr:'Surveillance 24h/24', ar:'مراقبة أمنية على مدار الساعة' } },
+  subtitle:{ en:'24/7 security monitoring', fr:'Surveillance 24h/24', ar:'مراقبة أمنية دائمة' } },
 { id:'safety-wetfloor', cat:'safety', icon:'fa-triangle-exclamation',
   theme:{ bgType:'solid', bgColor:'#f59e0b', textColor:'#ffffff', accentColor:'#fef3c7' },
   title:{ en:'Caution — Wet Floor', fr:'Attention — Sol glissant', ar:'احترس — أرضية مبتلة' },
@@ -803,7 +793,7 @@ const TEMPLATES = [
 { id:'status-closed', cat:'status', icon:'fa-circle-xmark',
   theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
   title:{ en:'CLOSED', fr:'FERMÉ', ar:'مغلق' },
-  subtitle:{ en:'Sorry for the inconvenience', fr:'Désolé pour la gêne occasionnée', ar:'نعتذر عن الإزعاج' } },
+  subtitle:{ en:'Sorry for the inconvenience', fr:'Désolé pour la gêne', ar:'نعتذر عن الإزعاج' } },
 { id:'status-pull', cat:'status', icon:'fa-arrow-left',
   theme:{ bgType:'solid', bgColor:'#4f46e5', textColor:'#ffffff', accentColor:'#c7d2fe' },
   title:{ en:'PULL', fr:'TIRER', ar:'اسحب' },
@@ -819,11 +809,11 @@ const TEMPLATES = [
 { id:'status-back', cat:'status', icon:'fa-clock',
   theme:{ bgType:'solid', bgColor:'#0891b2', textColor:'#ffffff', accentColor:'#cffafe' },
   title:{ en:'Back in 5 Minutes', fr:'De retour dans 5 minutes', ar:'نعود خلال 5 دقائق' },
-  subtitle:{ en:'Please wait a moment', fr:'Veuillez patienter un instant', ar:'الرجاء الانتظار قليلًا' } },
+  subtitle:{ en:'Please wait a moment', fr:'Veuillez patienter', ar:'الرجاء الانتظار' } },
 { id:'status-outoforder', cat:'status', icon:'fa-ban',
   theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
   title:{ en:'Out of Order', fr:'Hors service', ar:'خارج الخدمة' },
-  subtitle:{ en:'We apologize for the inconvenience', fr:'Nous nous excusons pour la gêne', ar:'نعتذر عن الإزعاج' } },
+  subtitle:{ en:'We apologize for the inconvenience', fr:'Nous nous excusons', ar:'نعتذر عن الإزعاج' } },
 { id:'status-maintenance', cat:'status', icon:'fa-gear',
   theme:{ bgType:'solid', bgColor:'#f59e0b', textColor:'#ffffff', accentColor:'#fef3c7' },
   title:{ en:'Under Maintenance', fr:'En maintenance', ar:'تحت الصيانة' },
@@ -894,7 +884,7 @@ const TEMPLATES = [
 { id:'biz-hours', cat:'business', icon:'fa-clock',
   theme:{ bgType:'solid', bgColor:'#0f172a', textColor:'#ffffff', accentColor:'#94a3b8' },
   title:{ en:'Business Hours', fr:'Heures d\'ouverture', ar:'ساعات العمل' },
-  subtitle:{ en:'Mon–Fri 9:00 – 18:00 · Sat 10:00 – 14:00', fr:'Lun–Ven 9h–18h · Sam 10h–14h', ar:'الإثنين–الجمعة 9–18 · السبت 10–14' } },
+  subtitle:{ en:'Mon–Fri · 9:00–18:00', fr:'Lun–Ven · 9h–18h', ar:'الإثنين–الجمعة · 9–18' } },
 { id:'biz-lunch', cat:'business', icon:'fa-utensils',
   theme:{ bgType:'solid', bgColor:'#f59e0b', textColor:'#ffffff', accentColor:'#fef3c7' },
   title:{ en:'Closed for Lunch', fr:'Fermé pour le déjeuner', ar:'مغلق للغداء' },
@@ -902,7 +892,7 @@ const TEMPLATES = [
 { id:'biz-grandopen', cat:'business', icon:'fa-champagne-glasses',
   theme:{ bgType:'gradient', bg1:'#ec4899', bg2:'#f59e0b', bgAngle:135, textColor:'#ffffff', accentColor:'#fef3c7' },
   title:{ en:'Grand Opening', fr:'Grande Ouverture', ar:'افتتاح كبير' },
-  subtitle:{ en:'Join us for our special day!', fr:'Rejoignez-nous pour ce jour spécial !', ar:'شاركنا في يومنا المميز!' } },
+  subtitle:{ en:'Join us for our special day!', fr:'Rejoignez-nous !', ar:'شاركنا في يومنا المميز!' } },
 { id:'biz-hiring', cat:'business', icon:'fa-user-plus',
   theme:{ bgType:'solid', bgColor:'#059669', textColor:'#ffffff', accentColor:'#a7f3d0' },
   title:{ en:'Now Hiring', fr:'Nous recrutons', ar:'نوظف الآن' },
@@ -910,12 +900,12 @@ const TEMPLATES = [
 { id:'biz-delivery', cat:'business', icon:'fa-truck-fast',
   theme:{ bgType:'gradient', bg1:'#0891b2', bg2:'#0369a1', bgAngle:135, textColor:'#ffffff', accentColor:'#bae6fd' },
   title:{ en:'Delivery Available', fr:'Livraison disponible', ar:'التوصيل متاح' },
-  subtitle:{ en:'Ask us for our delivery zone', fr:'Demandez notre zone de livraison', ar:'اسأل عن منطقة التوصيل' } },
+  subtitle:{ en:'Ask us for our delivery zone', fr:'Demandez notre zone', ar:'اسأل عن منطقة التوصيل' } },
 
 { id:'custom-blank', cat:'custom', icon:'fa-pen-ruler',
   theme:{ bgType:'gradient', bg1:'#6366f1', bg2:'#a855f7', bgAngle:135, textColor:'#ffffff', accentColor:'#e9d5ff' },
   title:{ en:'Your Title Here', fr:'Votre titre ici', ar:'عنوانك هنا' },
-  subtitle:{ en:'Add your message below', fr:'Ajoutez votre message ci-dessous', ar:'أضف رسالتك أدناه' } },
+  subtitle:{ en:'Add your message below', fr:'Ajoutez votre message', ar:'أضف رسالتك أدناه' } },
 { id:'custom-fields', cat:'custom', icon:'fa-list',
   theme:{ bgType:'solid', bgColor:'#0f172a', textColor:'#ffffff', accentColor:'#94a3b8' },
   title:{ en:'Custom Notice', fr:'Avis personnalisé', ar:'إشعار مخصص' },
@@ -934,57 +924,48 @@ const BORDERS = [
   { id:'minimal', icon:'fa-minus' }
 ];
 
-/* ============ VERIFIED FREE ICONS — FA 6.5.1 Solid only ============ */
+/* ============ VERIFIED FREE ICONS ONLY ============ */
 const ICONS = [
-  /* Status & shapes */
+  /* Status / shapes */
   'fa-check','fa-xmark','fa-plus','fa-minus','fa-circle-check','fa-circle-xmark',
   'fa-circle-info','fa-circle-question','fa-circle-play','fa-circle-pause','fa-circle-stop',
   'fa-circle-dot','fa-circle-half-stroke','fa-circle-exclamation','fa-circle-notch',
   'fa-square-check','fa-square-xmark','fa-square-info','fa-square-plus','fa-square-minus',
   'fa-triangle-exclamation','fa-ban','fa-star','fa-star-half','fa-star-half-stroke',
   'fa-heart','fa-crown','fa-award','fa-certificate','fa-medal','fa-trophy','fa-gem','fa-ring',
-  'fa-thumbs-up','fa-thumbs-down',
-
+  'fa-thumbs-up','fa-thumbs-down','fa-sparkles',
   /* Arrows */
   'fa-arrow-right','fa-arrow-left','fa-arrow-up','fa-arrow-down','fa-arrow-up-right-from-square',
   'fa-arrow-right-to-bracket','fa-arrow-right-from-bracket','fa-arrow-turn-up','fa-arrow-turn-down',
   'fa-arrow-pointer','fa-angles-right','fa-angles-left','fa-chevron-right','fa-chevron-left',
-  'fa-chevron-up','fa-chevron-down','fa-arrows-rotate','fa-shuffle','fa-up-down','fa-up-down-left-right',
-
+  'fa-chevron-up','fa-chevron-down','fa-arrows-rotate','fa-shuffle','fa-up-down-left-right',
   /* People */
   'fa-user','fa-user-group','fa-users','fa-user-plus','fa-user-minus','fa-user-check','fa-user-xmark',
   'fa-user-tie','fa-user-doctor','fa-user-nurse','fa-user-graduate','fa-user-astronaut','fa-user-secret',
-  'fa-user-shield','fa-user-lock','fa-user-pen','fa-user-clock','fa-user-injured','fa-user-tag',
-  'fa-person','fa-person-dress','fa-person-walking','fa-person-running','fa-child','fa-baby',
-  'fa-wheelchair','fa-wheelchair-move','fa-crutch','fa-people-group','fa-people-arrows','fa-people-line',
-  'fa-handshake','fa-handshake-simple','fa-handshake-angle',
-
+  'fa-user-shield','fa-user-lock','fa-user-pen','fa-user-clock','fa-person','fa-person-dress',
+  'fa-person-walking','fa-person-running','fa-child','fa-baby','fa-wheelchair','fa-wheelchair-move',
+  'fa-people-group','fa-people-arrows','fa-people-line','fa-handshake','fa-handshake-simple',
   /* Hands */
   'fa-hand','fa-hand-holding','fa-hand-holding-heart','fa-hand-holding-dollar',
   'fa-hand-holding-droplet','fa-hand-holding-medical','fa-hands-praying','fa-hand-peace',
-  'fa-hand-fist','fa-hand-scissors','fa-hand-spock','fa-hand-pointer',
   'fa-hand-point-right','fa-hand-point-left','fa-hand-point-up','fa-hand-point-down',
-  'fa-hand-middle-finger','fa-hand-sparkles','fa-handcuffs','fa-life-ring',
-
+  'fa-hand-sparkles','fa-handcuffs','fa-life-ring',
   /* Communication */
   'fa-envelope','fa-envelope-open','fa-paper-plane','fa-phone','fa-phone-flip','fa-phone-volume',
-  'fa-mobile','fa-mobile-screen','fa-mobile-screen-button','fa-mobile-button','fa-sim-card',
-  'fa-inbox','fa-at','fa-headset','fa-headphones','fa-comment','fa-comment-dots','fa-comments',
-  'fa-message','fa-bell','fa-bell-concierge','fa-bell-slash','fa-bullhorn','fa-megaphone',
-
+  'fa-mobile','fa-mobile-screen','fa-mobile-screen-button','fa-sim-card','fa-inbox','fa-at',
+  'fa-headset','fa-headphones','fa-comment','fa-comment-dots','fa-comments','fa-message',
+  'fa-bell','fa-bell-concierge','fa-bell-slash','fa-bullhorn','fa-megaphone',
   /* Time */
-  'fa-clock','fa-stopwatch','fa-stopwatch-20','fa-hourglass','fa-hourglass-start','fa-hourglass-half',
+  'fa-clock','fa-stopwatch','fa-hourglass','fa-hourglass-start','fa-hourglass-half',
   'fa-hourglass-end','fa-calendar','fa-calendar-check','fa-calendar-day','fa-calendar-days',
   'fa-calendar-week','fa-calendar-xmark','fa-calendar-plus','fa-calendar-minus','fa-clock-rotate-left',
   'fa-business-time',
-
   /* Media */
   'fa-volume-high','fa-volume-low','fa-volume-off','fa-volume-xmark','fa-microphone',
-  'fa-microphone-slash','fa-microphone-lines','fa-speaker','fa-ear-listen','fa-ear-deaf',
-  'fa-radio','fa-tv','fa-film','fa-video','fa-camera','fa-camera-retro','fa-image',
-  'fa-images','fa-clapperboard','fa-compact-disc','fa-music','fa-photo-film',
-
-  /* Tech / Network */
+  'fa-microphone-slash','fa-microphone-lines','fa-speaker','fa-ear-listen','fa-radio',
+  'fa-tv','fa-film','fa-video','fa-camera','fa-camera-retro','fa-image','fa-images',
+  'fa-clapperboard','fa-compact-disc','fa-music','fa-photo-film',
+  /* Tech */
   'fa-wifi','fa-signal','fa-tower-broadcast','fa-satellite-dish','fa-satellite','fa-globe',
   'fa-server','fa-database','fa-cloud','fa-cloud-arrow-up','fa-cloud-arrow-down','fa-robot',
   'fa-microchip','fa-memory','fa-network-wired','fa-ethernet','fa-plug','fa-bolt','fa-power-off',
@@ -992,78 +973,69 @@ const ICONS = [
   'fa-fingerprint','fa-qrcode','fa-barcode','fa-id-card','fa-vault',
   'fa-desktop','fa-laptop','fa-tablet','fa-tablet-screen-button','fa-keyboard','fa-mouse',
   'fa-print','fa-fax','fa-hard-drive','fa-usb','fa-sd-card','fa-display','fa-computer-mouse',
-
-  /* Health / Safety */
+  /* Health / safety */
   'fa-hands-bubbles','fa-soap','fa-pump-soap','fa-spray-can','fa-fire-extinguisher',
   'fa-fire-flame-curved','fa-fire-flame-simple','fa-fire','fa-biohazard','fa-syringe',
   'fa-pills','fa-capsules','fa-prescription-bottle','fa-kit-medical','fa-briefcase-medical',
   'fa-heart-pulse','fa-heart-crack','fa-stethoscope','fa-mask-ventilator','fa-head-side-mask',
-  'fa-head-side-cough','fa-virus','fa-virus-covid','fa-viruses','fa-virus-slash','fa-skull',
-  'fa-skull-crossbones','fa-bone','fa-teeth','fa-tooth','fa-ban-smoking','fa-smoking',
-
+  'fa-head-side-cough','fa-virus','fa-virus-slash','fa-skull','fa-skull-crossbones',
+  'fa-bone','fa-tooth','fa-ban-smoking','fa-smoking',
   /* Money */
   'fa-money-bill','fa-money-bill-1','fa-money-bill-wave','fa-money-bill-transfer','fa-money-check',
   'fa-money-check-dollar','fa-credit-card','fa-wallet','fa-coins','fa-dollar-sign',
   'fa-euro-sign','fa-sterling-sign','fa-receipt','fa-cash-register',
-
-  /* Location / Navigation */
+  /* Location / navigation */
   'fa-location-dot','fa-location-pin','fa-location-arrow','fa-location-crosshairs','fa-map-pin',
   'fa-map','fa-map-location','fa-map-location-dot','fa-compass','fa-crosshairs','fa-street-view',
   'fa-route','fa-signpost','fa-sign-hanging','fa-signs-post','fa-plane','fa-plane-departure',
   'fa-plane-arrival','fa-ship','fa-anchor','fa-helicopter','fa-rocket',
-
   /* Transport */
   'fa-car','fa-car-side','fa-car-rear','fa-bus','fa-bus-simple','fa-train','fa-train-subway',
   'fa-train-tram','fa-truck','fa-truck-fast','fa-truck-medical','fa-truck-moving','fa-truck-pickup',
   'fa-bicycle','fa-motorcycle','fa-gas-pump','fa-charging-station','fa-road','fa-traffic-light',
   'fa-square-parking','fa-square-parking-slash','fa-taxi','fa-tractor',
-
   /* Food */
   'fa-utensils','fa-mug-hot','fa-mug-saucer','fa-coffee','fa-cookie','fa-cookie-bite',
   'fa-pizza-slice','fa-burger','fa-ice-cream','fa-wine-glass','fa-wine-bottle','fa-beer-mug-empty',
   'fa-martini-glass','fa-martini-glass-citrus','fa-champagne-glasses','fa-fish','fa-drumstick-bite',
   'fa-carrot','fa-lemon','fa-bowl-food','fa-cake-candles','fa-birthday-cake','fa-egg','fa-apple-whole',
-
   /* Shopping */
   'fa-cart-shopping','fa-bag-shopping','fa-basket-shopping','fa-store','fa-store-slash','fa-shop',
   'fa-tag','fa-tags','fa-gift','fa-gifts','fa-box','fa-boxes-stacked','fa-box-open','fa-box-archive',
   'fa-boxes-packing','fa-truck-ramp-box',
-
   /* Documents */
   'fa-clipboard','fa-clipboard-check','fa-clipboard-list','fa-clipboard-question','fa-file',
   'fa-file-lines','fa-file-pdf','fa-file-image','fa-file-word','fa-file-excel','fa-file-code',
   'fa-file-signature','fa-file-medical','fa-file-prescription','fa-folder','fa-folder-open',
   'fa-folder-minus','fa-folder-plus','fa-folder-closed','fa-book','fa-book-open','fa-book-bookmark',
-  'fa-bookmark','fa-newspaper','fa-address-book','fa-address-card','fa-scroll','fa-landmark','fa-landmark-dome',
-
-  /* Writing / Design */
+  'fa-bookmark','fa-newspaper','fa-address-book','fa-address-card','fa-scroll','fa-landmark',
+  'fa-landmark-dome',
+  /* Writing / design */
   'fa-pen','fa-pencil','fa-pen-fancy','fa-pen-nib','fa-pen-to-square','fa-pen-clip','fa-pen-ruler',
   'fa-marker','fa-highlighter','fa-paintbrush','fa-paint-roller','fa-palette','fa-brush','fa-eraser',
   'fa-ruler','fa-ruler-combined','fa-ruler-horizontal','fa-ruler-vertical','fa-compass-drafting',
   'fa-scissors','fa-paperclip','fa-thumbtack','fa-magnet','fa-stamp',
-
   /* Tools */
   'fa-screwdriver','fa-screwdriver-wrench','fa-hammer','fa-wrench','fa-gear','fa-gears','fa-cog',
-  'fa-cogs','fa-sliders','fa-toolbox','fa-broom','fa-house-chimney','fa-warehouse','fa-industry',
+  'fa-cogs','fa-sliders','fa-toolbox','fa-broom','fa-house','fa-warehouse','fa-industry',
   'fa-factory','fa-recycle','fa-infinity',
-
   /* Nature */
   'fa-sun','fa-moon','fa-cloud-sun','fa-cloud-moon','fa-cloud-rain','fa-cloud-showers-heavy',
   'fa-cloud-snow','fa-snowflake','fa-umbrella','fa-umbrella-beach','fa-wind','fa-tornado',
   'fa-water','fa-droplet','fa-droplet-slash','fa-leaf','fa-tree','fa-seedling','fa-mountain',
-  'fa-mountain-sun','fa-snowman','fa-cloud-bolt','fa-smog','fa-rainbow','fa-meteor','fa-volcano','fa-hurricane',
-
+  'fa-mountain-sun','fa-snowman','fa-cloud-bolt','fa-smog','fa-rainbow','fa-meteor',
   /* Buildings */
   'fa-restroom','fa-toilet','fa-toilet-paper','fa-shower','fa-bath','fa-sink','fa-bed','fa-couch',
-  'fa-chair','fa-door-open','fa-door-closed','fa-stairs','fa-elevator','fa-house','fa-building',
-  'fa-hotel','fa-hospital','fa-school','fa-church','fa-mosque','fa-synagogue','fa-place-of-worship',
-  'fa-kaaba','fa-torii-gate','fa-vihara',
-
-  /* Fashion / Sports */
-  'fa-shirt','fa-shoe-prints','fa-socks','fa-hat-cowboy','fa-hat-cowboy-side','fa-hat-wizard',
-  'fa-glasses','fa-spa','fa-wand-magic-sparkles','fa-wand-magic','fa-magic',
+  'fa-chair','fa-door-open','fa-door-closed','fa-stairs','fa-elevator','fa-building',
+  'fa-hotel','fa-hospital','fa-school','fa-church','fa-mosque',
+  /* Work */
+  'fa-briefcase','fa-chalkboard','fa-chalkboard-user','fa-graduation-cap','fa-stethoscope',
+  'fa-laptop-medical','fa-notes-medical',
+  /* Fashion / sports */
+  'fa-shirt','fa-shoe-prints','fa-socks','fa-hat-cowboy','fa-glasses','fa-spa',
+  'fa-wand-magic-sparkles','fa-wand-magic','fa-magic',
   'fa-futbol','fa-basketball','fa-baseball','fa-football','fa-volleyball','fa-dumbbell',
-  'fa-person-swimming','fa-person-biking','fa-person-hiking','fa-person-skiing','fa-person-snowboarding'
+  'fa-person-swimming','fa-person-biking','fa-person-hiking','fa-person-skiing'
 ];
 const UNIQUE_ICONS = Array.from(new Set(ICONS));
 
@@ -1076,8 +1048,8 @@ const SIZES = {
 };
 
 const MM_PER_INCH = 25.4;
-const CSS_DPI = 96;
-const EXPORT_DPI = 300;   // Target export resolution
+const CSS_DPI = 96;      // Preview rendering DPI (browser standard)
+const EXPORT_DPI = 300;  // Target output DPI
 
 /* ============ STATE ============ */
 const state = {
@@ -1136,11 +1108,7 @@ function debounce(fn, wait = 60) {
 }
 const debouncedRenderSign = debounce(renderSign, 40);
 
-function showExportOverlay(msg) {
-  const ov = $('#exportOverlay');
-  $('#exportOverlayMsg').textContent = msg;
-  ov.classList.add('show');
-}
+function showExportOverlay(msg) { $('#exportOverlayMsg').textContent = msg; $('#exportOverlay').classList.add('show'); }
 function hideExportOverlay() { $('#exportOverlay').classList.remove('show'); }
 
 /* ============ THEME ============ */
@@ -1158,15 +1126,12 @@ function applyUILanguage(lang) {
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   document.body.classList.toggle('lang-ar', lang === 'ar');
-
   $$('[data-i18n]').forEach(el => { const v = uiT(el.dataset.i18n); if (v) el.textContent = v; });
   $$('.lang-pill').forEach(p => p.classList.toggle('active', p.dataset.uiLang === lang));
-
   renderCategories();
   renderTemplateGrid();
   renderBorderGrid();
   renderSizeGrid();
-
   try { localStorage.setItem('saivsign:uiLang', lang); } catch(e){}
 }
 
@@ -1174,7 +1139,6 @@ function applyUILanguage(lang) {
 function applySignLanguage(lang) {
   state.signLang = lang;
   const tpl = getTemplate(state.templateId);
-
   if (!state.manualTitle) {
     state.title = tpl.title[lang];
     const inp = $('#titleInput');
@@ -1185,15 +1149,11 @@ function applySignLanguage(lang) {
     const inp = $('#subtitleInput');
     if (inp) inp.value = state.subtitle;
   }
-
   const sheet = $('#signSheet');
   if (sheet) sheet.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-
   $$('#signLangSeg button').forEach(b => b.classList.toggle('active', b.dataset.signLang === lang));
-
   renderFieldInputs();
   renderSign();
-
   try { localStorage.setItem('saivsign:signLang', lang); } catch(e){}
 }
 
@@ -1202,14 +1162,12 @@ function renderCategories() {
   const wrap = $('#categoryTabs');
   if (!wrap) return;
   wrap.innerHTML = '';
-
   const allBtn = document.createElement('button');
   allBtn.className = 'cat-tab' + (state.category === 'all' ? ' active' : '');
   allBtn.type = 'button';
   allBtn.innerHTML = `<i class="fas fa-grip"></i><span>All</span>`;
   allBtn.addEventListener('click', () => { state.category = 'all'; renderCategories(); renderTemplateGrid(); });
   wrap.appendChild(allBtn);
-
   Object.entries(CATEGORIES).forEach(([key, cat]) => {
     const btn = document.createElement('button');
     btn.className = 'cat-tab' + (state.category === key ? ' active' : '');
@@ -1226,10 +1184,8 @@ function renderTemplateGrid() {
   const countEl = $('#templateCount');
   if (!grid) return;
   grid.innerHTML = '';
-
   const list = state.category === 'all' ? TEMPLATES : TEMPLATES.filter(tpl => tpl.cat === state.category);
   if (countEl) countEl.textContent = list.length + ' templates';
-
   const frag = document.createDocumentFragment();
   list.forEach(tpl => {
     const bg = tpl.theme.bgType === 'gradient'
@@ -1252,20 +1208,16 @@ function renderTemplateGrid() {
 function applyTemplate(id) {
   const tpl = getTemplate(id);
   if (!tpl) return;
-
   state.templateId = id;
   state.category = tpl.cat;
   state.manualTitle = false;
   state.manualSubtitle = false;
-  state.lastQRData = ''; // force QR regen
-
+  state.lastQRData = '';
   state.title = tpl.title[state.signLang] || tpl.title.en;
   state.subtitle = tpl.subtitle ? (tpl.subtitle[state.signLang] || tpl.subtitle.en) : '';
   state.footer = '';
-
   state.fields = {};
   if (tpl.fields) tpl.fields.forEach(f => { state.fields[f.key] = f.default || ''; });
-
   state.design = {
     bgType: tpl.theme.bgType || 'solid',
     bgColor: tpl.theme.bgColor || tpl.theme.bg1 || '#4f46e5',
@@ -1278,7 +1230,6 @@ function applyTemplate(id) {
     icon: tpl.icon || 'fa-square',
     logo: state.design.logo
   };
-
   syncControls();
   renderCategories();
   renderTemplateGrid();
@@ -1292,10 +1243,8 @@ function renderFieldInputs() {
   const wrap = $('#fieldInputsWrap');
   if (!wrap) return;
   wrap.innerHTML = '';
-
   if (!tpl.fields || tpl.fields.length === 0) { wrap.classList.add('hidden'); return; }
   wrap.classList.remove('hidden');
-
   const frag = document.createDocumentFragment();
   tpl.fields.forEach(f => {
     const div = document.createElement('div');
@@ -1351,12 +1300,10 @@ function renderSizeGrid() {
     btn.style.padding = '12px 14px';
     btn.style.textAlign = 'start';
     btn.style.gap = '12px';
-
     const maxDim = 40;
     const ratio = s.w / s.h;
     const rw = ratio > 1 ? maxDim : maxDim * ratio;
     const rh = ratio > 1 ? maxDim / ratio : maxDim;
-
     btn.innerHTML = `
       <div style="width:${maxDim}px;height:${maxDim}px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
         <div style="width:${rw}px;height:${rh}px;border:2px solid currentColor;border-radius:4px;opacity:0.7"></div>
@@ -1380,7 +1327,6 @@ function renderIconGrid() {
   if (!grid) return;
   grid.innerHTML = '';
   if (countEl) countEl.textContent = UNIQUE_ICONS.length + ' icons';
-
   const frag = document.createDocumentFragment();
   UNIQUE_ICONS.forEach(ic => {
     const btn = document.createElement('button');
@@ -1413,24 +1359,20 @@ function syncControls() {
   const t = $('#titleInput'); if (t) t.value = state.title;
   const s = $('#subtitleInput'); if (s) s.value = state.subtitle;
   const f = $('#footerInput'); if (f) f.value = state.footer;
-
   $$('#bgTypeSeg button').forEach(b => b.classList.toggle('active', b.dataset.value === state.design.bgType));
   const solidWrap = $('#bgSolidWrap');
   const gradWrap = $('#bgGradientWrap');
   if (solidWrap) solidWrap.classList.toggle('hidden', state.design.bgType !== 'solid');
   if (gradWrap) gradWrap.classList.toggle('hidden', state.design.bgType !== 'gradient');
-
   setColorInput('#bgColorInput', '#bgColorHex', state.design.bgColor);
   setColorInput('#bg1Input', '#bg1Hex', state.design.bg1);
   setColorInput('#bg2Input', '#bg2Hex', state.design.bg2);
   setColorInput('#textColorInput', '#textColorHex', state.design.textColor);
   setColorInput('#accentColorInput', '#accentColorHex', state.design.accentColor);
-
   const angInp = $('#bgAngleInput');
   if (angInp) angInp.value = state.design.bgAngle;
   const angLbl = $('#bgAngleLbl');
   if (angLbl) angLbl.textContent = state.design.bgAngle + '°';
-
   if (state.design.logo) {
     const thumb = $('#logoPreviewThumb');
     const clearBtn = $('#clearLogoBtn');
@@ -1444,9 +1386,7 @@ function syncControls() {
     if (thumb) thumb.classList.add('hidden');
     if (clearBtn) { clearBtn.classList.add('hidden'); clearBtn.classList.remove('flex'); }
   }
-
   $$('#signLangSeg button').forEach(b => b.classList.toggle('active', b.dataset.signLang === state.signLang));
-
   renderIconGrid();
   renderBorderGrid();
   renderSizeGrid();
@@ -1459,38 +1399,26 @@ function setColorInput(sel, hexSel, value) {
   if (hex) hex.textContent = value;
 }
 
-/* ============ QR RENDER (bulletproof — no duplicates) ============ */
+/* ============ QR RENDER (bulletproof) ============ */
 function renderQRCode(text, size) {
-  // If nothing changed and container already has content, skip
   const existing = $('#signQRCode');
   if (existing && text === state.lastQRData && existing.children.length > 0) return;
-
   const parent = existing ? existing.parentNode : null;
   if (!parent) return;
-
-  // Completely replace container
   const fresh = document.createElement('div');
   fresh.id = 'signQRCode';
   fresh.style.lineHeight = '0';
   fresh.style.margin = '0';
   fresh.style.padding = '0';
   parent.replaceChild(fresh, existing);
-
   if (!text || typeof QRCode === 'undefined') return;
-
   state.lastQRData = text;
-
   try {
     new QRCode(fresh, {
-      text: text,
-      width: size,
-      height: size,
-      colorDark: '#000000',
-      colorLight: '#ffffff',
+      text: text, width: size, height: size,
+      colorDark: '#000000', colorLight: '#ffffff',
       correctLevel: QRCode.CorrectLevel.M
     });
-
-    // Defensive sweep: remove any accidental duplicate children
     setTimeout(() => {
       const kids = fresh.children;
       if (kids.length > 1) {
@@ -1499,9 +1427,7 @@ function renderQRCode(text, size) {
         }
       }
     }, 30);
-  } catch (e) {
-    console.error('QR generation failed:', e);
-  }
+  } catch (e) { console.error('QR failed:', e); }
 }
 
 /* ============ RENDER SIGN ============ */
@@ -1509,7 +1435,6 @@ function renderSign() {
   const sheet = $('#signSheet');
   if (!sheet) return;
   const tpl = getTemplate(state.templateId);
-
   if (state.design.bgType === 'gradient') {
     sheet.style.setProperty('--bg', `linear-gradient(${state.design.bgAngle}deg, ${state.design.bg1}, ${state.design.bg2})`);
   } else {
@@ -1609,27 +1534,14 @@ function applySize() {
   sheet.style.setProperty('--sign-h', s.h + 'mm');
   sheet.style.setProperty('--base', base + 'mm');
 
-  // Inject dynamic @page + print css
   const style = $('#dynamicPrintStyle');
   if (style) {
     style.textContent = `
-      @page {
-        size: ${s.paper} ${s.orient};
-        margin: 0;
-      }
-      :root {
-        --print-w: ${s.w}mm;
-        --print-h: ${s.h}mm;
-      }
+      @page { size: ${s.w}mm ${s.h}mm; margin: 0; }
+      :root { --print-w: ${s.w}mm; --print-h: ${s.h}mm; }
       @media print {
-        html, body {
-          --print-w: ${s.w}mm;
-          --print-h: ${s.h}mm;
-        }
-        #signSheet {
-          width: ${s.w}mm !important;
-          height: ${s.h}mm !important;
-        }
+        html, body { --print-w: ${s.w}mm; --print-h: ${s.h}mm; }
+        #signSheet { width: ${s.w}mm !important; height: ${s.h}mm !important; }
       }
     `;
   }
@@ -1637,6 +1549,13 @@ function applySize() {
   const badge = $('#previewSizeBadge');
   if (badge) badge.textContent = s.label;
 
+  // Reset preview scaler to force fresh calc
+  const scaler = $('#previewScaler');
+  if (scaler) {
+    scaler.style.width = '';
+    scaler.style.height = '';
+    scaler.style.transform = '';
+  }
   updatePreviewScale();
 }
 
@@ -1648,7 +1567,6 @@ function updatePreviewScale() {
     const outer = $('#previewOuter');
     const scaler = $('#previewScaler');
     if (!outer || !scaler) return;
-
     const s = SIZES[state.size];
     if (!s) return;
 
@@ -1656,89 +1574,159 @@ function updatePreviewScale() {
     const realW = s.w * MM_TO_PX;
     const realH = s.h * MM_TO_PX;
 
+    // Measure outer's content width (clientWidth = inner, excluding padding)
     const outerRect = outer.getBoundingClientRect();
-    const padding = 32;
-    const availW = Math.max(outerRect.width - padding, 200);
-    const availH = Math.min(window.innerHeight * 0.70, 680);
+    const availW = Math.max(outerRect.width - 32, 150);
+    const availH = Math.max(window.innerHeight * 0.62, 380);
 
     const scale = Math.min(availW / realW, availH / realH, 1);
 
     scaler.style.width = realW + 'px';
     scaler.style.height = realH + 'px';
     scaler.style.transform = `scale(${scale})`;
-    outer.style.height = (realH * scale + padding) + 'px';
+    outer.style.height = (realH * scale + 32) + 'px';
   });
 }
 
-/* ============ CAPTURE THE SIGN AT EXPORT DPI ============ */
-async function captureSign(backgroundColor) {
-  const sheet = $('#signSheet');
-  const scaler = $('#previewScaler');
-  const outer = $('#previewOuter');
-  if (!sheet || !scaler || !outer) throw new Error('Sign not found');
+/* ============================================================================
+   CAPTURE — Move sheet to off-screen stage at natural size, then html2canvas
+   ============================================================================ */
+async function captureSign(bgColor) {
+  const sheet = document.getElementById('signSheet');
+  if (!sheet) throw new Error('Sign not found');
 
-  // Save preview state
-  const prev = {
-    transform: scaler.style.transform,
-    width: scaler.style.width,
-    height: scaler.style.height,
-    outerH: outer.style.height,
-    outerOverflow: outer.style.overflow
-  };
+  const originalParent = sheet.parentNode;
+  const originalNext = sheet.nextSibling;
+  const s = SIZES[state.size];
 
-  // Reset to natural size
-  scaler.style.transform = 'none';
-  scaler.style.width = 'auto';
-  scaler.style.height = 'auto';
-  outer.style.height = 'auto';
-  outer.style.overflow = 'visible';
+  // Create off-screen host - absolutely NO transforms anywhere
+  const host = document.createElement('div');
+  host.id = 'captureHost';
+  host.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: -100000px;
+    width: ${s.w}mm;
+    height: ${s.h}mm;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    background: transparent;
+    z-index: -9999;
+    pointer-events: none;
+    transform: none;
+    filter: none;
+    perspective: none;
+  `;
+  document.body.appendChild(host);
+
+  // Move sheet into host
+  host.appendChild(sheet);
+
+  // Force natural dimensions
+  sheet.style.width = s.w + 'mm';
+  sheet.style.height = s.h + 'mm';
+  sheet.style.minWidth = s.w + 'mm';
+  sheet.style.minHeight = s.h + 'mm';
+  sheet.style.maxWidth = s.w + 'mm';
+  sheet.style.maxHeight = s.h + 'mm';
+  sheet.style.transform = 'none';
+  sheet.style.position = 'relative';
+  sheet.style.top = 'auto';
+  sheet.style.left = 'auto';
+  sheet.style.margin = '0';
+  sheet.style.padding = '0';
+  sheet.style.boxShadow = 'none';
 
   // Let layout settle
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
-  await new Promise(r => setTimeout(r, 120));
+  await new Promise(r => setTimeout(r, 150));
+
+  let canvas;
+  let cssW = sheet.offsetWidth;
+  let cssH = sheet.offsetHeight;
+
+  // Fallback: if offsetWidth is 0, force to computed px size
+  if (cssW <= 0 || cssH <= 0) {
+    const MM_TO_PX = CSS_DPI / MM_PER_INCH;
+    cssW = Math.round(s.w * MM_TO_PX);
+    cssH = Math.round(s.h * MM_TO_PX);
+  }
+
+  // 300 DPI target dimensions
+  const targetW = Math.round(s.w * EXPORT_DPI / MM_PER_INCH);
+  const targetH = Math.round(s.h * EXPORT_DPI / MM_PER_INCH);
+  const captureScale = targetW / cssW;
 
   try {
-    const s = SIZES[state.size];
-    const MM_TO_PX = CSS_DPI / MM_PER_INCH;
-    const naturalW = Math.round(s.w * MM_TO_PX);   // e.g. A4: 794
-    const naturalH = Math.round(s.h * MM_TO_PX);   // e.g. A4: 1123
-    const targetW  = Math.round(s.w * EXPORT_DPI / MM_PER_INCH); // e.g. A4: 2480
-    const targetH  = Math.round(s.h * EXPORT_DPI / MM_PER_INCH); // e.g. A4: 3508
-    const scale = targetW / naturalW;              // 300/96 = 3.125
-
-    // Force natural size on the sheet for capture
-    sheet.style.setProperty('--sign-w', s.w + 'mm');
-    sheet.style.setProperty('--sign-h', s.h + 'mm');
-
-    const canvas = await html2canvas(sheet, {
-      scale: scale,
-      backgroundColor: backgroundColor || null,
+    canvas = await html2canvas(sheet, {
+      scale: captureScale,
+      backgroundColor: bgColor || null,
       useCORS: true,
       allowTaint: false,
       logging: false,
-      width: naturalW,
-      height: naturalH,
-      windowWidth: naturalW,
-      windowHeight: naturalH,
+      width: cssW,
+      height: cssH,
+      windowWidth: cssW,
+      windowHeight: cssH,
       scrollX: 0,
       scrollY: 0,
       x: 0,
       y: 0
     });
 
-    return { canvas, targetW, targetH, naturalW, naturalH };
+    // Force exact dimensions if html2canvas returned slightly off values
+    if (canvas.width !== targetW || canvas.height !== targetH) {
+      const resized = document.createElement('canvas');
+      resized.width = targetW;
+      resized.height = targetH;
+      const rctx = resized.getContext('2d');
+      // Preserve background for JPEG
+      if (bgColor) {
+        rctx.fillStyle = bgColor;
+        rctx.fillRect(0, 0, targetW, targetH);
+      }
+      rctx.drawImage(canvas, 0, 0, targetW, targetH);
+      canvas = resized;
+    }
   } finally {
-    // Restore preview
-    scaler.style.transform = prev.transform;
-    scaler.style.width = prev.width;
-    scaler.style.height = prev.height;
-    outer.style.height = prev.outerH;
-    outer.style.overflow = prev.outerOverflow;
-    setTimeout(() => updatePreviewScale(), 40);
+    // Restore sheet to original location
+    try {
+      if (originalNext && originalNext.parentNode === originalParent) {
+        originalParent.insertBefore(sheet, originalNext);
+      } else {
+        originalParent.appendChild(sheet);
+      }
+    } catch (e) {
+      originalParent.appendChild(sheet);
+    }
+
+    // Clear all the forced inline styles so CSS vars take over
+    sheet.style.width = '';
+    sheet.style.height = '';
+    sheet.style.minWidth = '';
+    sheet.style.minHeight = '';
+    sheet.style.maxWidth = '';
+    sheet.style.maxHeight = '';
+    sheet.style.transform = '';
+    sheet.style.position = '';
+    sheet.style.top = '';
+    sheet.style.left = '';
+    sheet.style.margin = '';
+    sheet.style.padding = '';
+    sheet.style.boxShadow = '';
+
+    // Remove host
+    try { document.body.removeChild(host); } catch (e) {}
+
+    // Force preview recalculation
+    setTimeout(() => updatePreviewScale(), 60);
   }
+
+  return canvas;
 }
 
-/* ============ EXPORT: PNG (300 DPI exact) ============ */
+/* ============ EXPORT PNG ============ */
 async function exportPNG() {
   if (state.isExporting) return;
   if (typeof html2canvas !== 'function') { showToast(uiT('toast.exportError'), 'error'); return; }
@@ -1747,22 +1735,12 @@ async function exportPNG() {
 
   try {
     const s = SIZES[state.size];
-    const { canvas, targetW, targetH } = await captureSign(null);
-
-    // Extra safety: force exact target dimensions
-    let finalCanvas = canvas;
-    if (canvas.width !== targetW || canvas.height !== targetH) {
-      finalCanvas = document.createElement('canvas');
-      finalCanvas.width = targetW;
-      finalCanvas.height = targetH;
-      const ctx = finalCanvas.getContext('2d');
-      ctx.drawImage(canvas, 0, 0, targetW, targetH);
-    }
+    const canvas = await captureSign(null);
 
     const ts = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
     const filename = `saivsign-${state.templateId}-${s.paper}-${s.orient}-300dpi-${ts}.png`;
 
-    const blob = await new Promise(resolve => finalCanvas.toBlob(resolve, 'image/png'));
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
     if (!blob) throw new Error('Blob failed');
 
     const url = URL.createObjectURL(blob);
@@ -1774,7 +1752,7 @@ async function exportPNG() {
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 800);
 
-    showToast(uiT('toast.pngDone'), 'success');
+    showToast(uiT('toast.pngDone') + ` (${canvas.width}×${canvas.height}px)`, 'success', 3000);
   } catch (err) {
     console.error('PNG export failed:', err);
     showToast(uiT('toast.exportError'), 'error');
@@ -1784,7 +1762,7 @@ async function exportPNG() {
   }
 }
 
-/* ============ EXPORT: PDF (exact A4/A5) ============ */
+/* ============ EXPORT PDF ============ */
 async function exportPDF() {
   if (state.isExporting) return;
   if (typeof html2canvas !== 'function' || !window.jspdf) { showToast(uiT('toast.exportError'), 'error'); return; }
@@ -1793,14 +1771,12 @@ async function exportPDF() {
 
   try {
     const s = SIZES[state.size];
-    const { canvas } = await captureSign('#ffffff');
+    const canvas = await captureSign('#ffffff');
 
-    // Use JPEG for compact PDF, high quality
     const imgData = canvas.toDataURL('image/jpeg', 0.95);
 
     const { jsPDF } = window.jspdf;
     const orientation = s.orient === 'landscape' ? 'landscape' : 'portrait';
-    // jsPDF with unit 'mm' and format [w, h] in mm gives exact A4/A5
     const pdf = new jsPDF({
       orientation: orientation,
       unit: 'mm',
@@ -1808,14 +1784,14 @@ async function exportPDF() {
       compress: true
     });
 
-    // Place at 0,0 filling exact mm dimensions
+    // Fill exact mm dimensions
     pdf.addImage(imgData, 'JPEG', 0, 0, s.w, s.h, undefined, 'FAST');
 
     const ts = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
     const filename = `saivsign-${state.templateId}-${s.paper}-${s.orient}-${ts}.pdf`;
     pdf.save(filename);
 
-    showToast(uiT('toast.pdfDone'), 'success');
+    showToast(uiT('toast.pdfDone') + ` (${s.w}×${s.h}mm)`, 'success', 3000);
   } catch (err) {
     console.error('PDF export failed:', err);
     showToast(uiT('toast.exportError'), 'error');
@@ -1825,55 +1801,47 @@ async function exportPDF() {
   }
 }
 
-/* ============ DIRECT PRINT (with DOM move for edge-to-edge) ============ */
-function directPrint() {
+/* ============ PRINT ============ */
+async function directPrint() {
   if (state.isExporting) return;
-  showToast(uiT('toast.printing'), 'info', 1200);
+  showToast(uiT('toast.printing'), 'info', 1400);
 
   const s = SIZES[state.size];
-  // Ensure print size vars are set
   document.documentElement.style.setProperty('--print-w', s.w + 'mm');
   document.documentElement.style.setProperty('--print-h', s.h + 'mm');
 
   const sheet = document.getElementById('signSheet');
-  if (!sheet) {
-    setTimeout(() => window.print(), 200);
-    return;
+  if (!sheet) { setTimeout(() => window.print(), 200); return; }
+
+  const originalParent = sheet.parentNode;
+  const originalNext = sheet.nextSibling;
+
+  // Move sheet to be a direct child of body (no transforms)
+  document.body.appendChild(sheet);
+
+  // Wait for layout
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  await new Promise(r => setTimeout(r, 120));
+
+  try {
+    window.print();
+  } catch (e) {
+    console.error('Print failed:', e);
   }
 
-  // Save original position
-  const parent = sheet.parentNode;
-  const nextSibling = sheet.nextSibling;
-
-  // Temporarily move the sheet to be a direct child of <body>
-  // This guarantees position: fixed is relative to viewport, not to any transformed ancestor
-  document.body.appendChild(sheet);
-  document.body.classList.add('saivsign-print-mode');
-
-  // Give browser a moment to settle
+  // Restore
   setTimeout(() => {
     try {
-      window.print();
-    } catch (e) {
-      console.error('Print failed:', e);
-    }
-
-    // Restore after print dialog closes
-    setTimeout(() => {
-      document.body.classList.remove('saivsign-print-mode');
-      try {
-        if (nextSibling && nextSibling.parentNode === parent) {
-          parent.insertBefore(sheet, nextSibling);
-        } else {
-          parent.appendChild(sheet);
-        }
-      } catch (e) {
-        // Fallback: append to original parent
-        try { parent.appendChild(sheet); } catch(_) {}
+      if (originalNext && originalNext.parentNode === originalParent) {
+        originalParent.insertBefore(sheet, originalNext);
+      } else {
+        originalParent.appendChild(sheet);
       }
-      setTimeout(() => updatePreviewScale(), 60);
-    }, 400);
-  }, 120);
+    } catch (e) {
+      originalParent.appendChild(sheet);
+    }
+    setTimeout(() => updatePreviewScale(), 60);
+  }, 400);
 }
 
 /* ============ BIND EVENTS ============ */
@@ -1962,7 +1930,6 @@ function bindEvents() {
   window.addEventListener('resize', () => { clearTimeout(rTimer); rTimer = setTimeout(updatePreviewScale, 100); });
   window.addEventListener('orientationchange', () => setTimeout(updatePreviewScale, 220));
 
-  // Ctrl+P: set print vars then let browser handle it (with DOM move via afterprint)
   window.addEventListener('beforeprint', () => {
     const s = SIZES[state.size];
     document.documentElement.style.setProperty('--print-w', s.w + 'mm');
