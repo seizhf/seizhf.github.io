@@ -27,6 +27,7 @@
   --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   --shadow-lg: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
   --transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --print-w: 210mm; --print-h: 297mm;
 }
 html.dark {
   --bg: #09090b; --bg-card: #18181b; --bg-subtle: #27272a; --bg-hover: #27272a;
@@ -38,10 +39,7 @@ html.dark {
   --shadow: 0 1px 3px rgba(0,0,0,0.5);
   --shadow-lg: 0 4px 12px rgba(0,0,0,0.5);
 }
-html, body {
-  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
+html, body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-text-size-adjust: 100%; }
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background: var(--bg); color: var(--text);
@@ -144,18 +142,11 @@ img { display: block; max-width: 100%; }
 .btn-danger { color: var(--danger); }
 .btn-danger:hover:not(:disabled) { background: var(--danger-soft); border-color: var(--danger); }
 
-/* Small "reset" pill used next to color labels */
 .btn-reset {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: var(--bg-subtle);
-  color: var(--text-muted);
-  border: 1px solid transparent;
-  transition: all var(--transition);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+  font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
+  background: var(--bg-subtle); color: var(--text-muted);
+  border: 1px solid transparent; transition: all var(--transition);
+  text-transform: uppercase; letter-spacing: 0.02em;
 }
 .btn-reset:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
 .btn-reset:disabled { opacity: 0.4; cursor: default; }
@@ -195,9 +186,7 @@ img { display: block; max-width: 100%; }
   background: var(--accent); cursor: pointer;
   border: 2px solid var(--bg-card);
   box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-  transition: transform var(--transition);
 }
-.range::-webkit-slider-thumb:hover { transform: scale(1.15); }
 .range::-moz-range-thumb {
   width: 16px; height: 16px; border-radius: 50%;
   background: var(--accent); cursor: pointer;
@@ -210,8 +199,7 @@ img { display: block; max-width: 100%; }
   background: var(--bg-subtle); border-radius: var(--radius-sm); gap: 2px; width: 100%;
 }
 .seg button {
-  flex: 1; padding: 7px 10px;
-  font-size: 12px; font-weight: 600;
+  flex: 1; padding: 7px 10px; font-size: 12px; font-weight: 600;
   color: var(--text-muted); border-radius: 6px;
   transition: all var(--transition);
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
@@ -219,7 +207,7 @@ img { display: block; max-width: 100%; }
 .seg button:hover { color: var(--text); }
 .seg button.active { background: var(--bg-card); color: var(--text); box-shadow: var(--shadow-sm); }
 
-.tabs { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; -ms-overflow-style: none; }
+.tabs { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
 .tab {
   display: inline-flex; align-items: center; gap: 6px;
@@ -296,9 +284,7 @@ img { display: block; max-width: 100%; }
   text-align: right; padding: 3px 6px; background: var(--bg-subtle); border-radius: 6px;
 }
 
-.icon-size-actions {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 8px;
-}
+.icon-size-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 8px; }
 .icon-size-btn {
   padding: 7px 4px; font-size: 11px; font-weight: 700;
   background: var(--bg); border: 1px solid var(--border);
@@ -307,12 +293,10 @@ img { display: block; max-width: 100%; }
 .icon-size-btn:hover { border-color: var(--border-strong); color: var(--text); }
 .icon-size-btn:active { transform: scale(0.95); }
 
-/* Preview */
 .preview-area {
   position: relative; width: 100%;
   background: repeating-conic-gradient(var(--bg-subtle) 0% 25%, transparent 0% 50%) 50% / 20px 20px;
   border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;
-  transition: background-color var(--transition);
 }
 .preview-scale {
   position: absolute; top: 50%; left: 50%;
@@ -320,21 +304,47 @@ img { display: block; max-width: 100%; }
 }
 .preview-scale .sign-sheet { box-shadow: var(--shadow-lg); }
 
-/* Sign sheet */
+/* ============================================================
+   SIGN SHEET — high DPI aware
+   ============================================================ */
 .sign-sheet {
   --sign-w: 210mm; --sign-h: 297mm; --base: 9.5mm;
   --bg-color: #4f46e5; --text-color: #ffffff; --accent-color: #c7d2fe;
   --icon-scale: 1;
 
-  width: var(--sign-w); height: var(--sign-h);
-  min-width: var(--sign-w); min-height: var(--sign-h);
-  max-width: var(--sign-w); max-height: var(--sign-h);
-  background: var(--bg-color); color: var(--text-color);
-  overflow: hidden; display: flex; position: relative; box-sizing: border-box;
+  width: var(--sign-w);
+  height: var(--sign-h);
+  min-width: var(--sign-w);
+  min-height: var(--sign-h);
+  max-width: var(--sign-w);
+  max-height: var(--sign-h);
+  background: var(--bg-color);
+  color: var(--text-color);
+  overflow: hidden;
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
   font-family: 'Inter', 'Cairo', system-ui, sans-serif;
-  direction: ltr; border-radius: 0;
+  direction: ltr;
+  /* Anti-blur for text */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
 }
-.sign-sheet[dir="rtl"] { direction: rtl; font-family: 'Cairo', 'Inter', system-ui, sans-serif; }
+.sign-sheet[dir="rtl"] {
+  direction: rtl;
+  font-family: 'Cairo', 'Inter', system-ui, sans-serif;
+}
+/* Arabic letter-spacing fix — prevents broken connections */
+.sign-sheet[dir="rtl"] .sign-title,
+.sign-sheet[dir="rtl"] .sign-subtitle,
+.sign-sheet[dir="rtl"] .sign-field-label,
+.sign-sheet[dir="rtl"] .sign-field-value,
+.sign-sheet[dir="rtl"] .sign-footer {
+  letter-spacing: 0 !important;
+  word-spacing: 0 !important;
+  font-family: 'Cairo', 'Inter', system-ui, sans-serif !important;
+}
 
 .sign-border { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
 .sign-sheet.border-clean .sign-border { display: none; }
@@ -371,28 +381,24 @@ img { display: block; max-width: 100%; }
   border-radius: 50%; background: var(--accent-color);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; color: var(--text-color); overflow: hidden;
-  transition: width 120ms ease, height 120ms ease;
 }
 .sign-icon i {
   font-size: calc(var(--base) * 1.9 * var(--icon-scale));
   line-height: 1;
-  /* Icon color: explicit override wins, otherwise falls back to text color */
   color: var(--icon-color, var(--text-color));
-  transition: font-size 120ms ease, color 150ms ease;
 }
-.sign-icon img {
-  width: 70%; height: 70%; object-fit: contain;
-}
+.sign-icon img { width: 70%; height: 70%; object-fit: contain; }
 
 .sign-title {
-  font-size: calc(var(--base) * 1.9); font-weight: 900;
-  line-height: 1.1; letter-spacing: -0.02em;
+  font-size: calc(var(--base) * 1.9);
+  font-weight: 900; line-height: 1.1;
+  letter-spacing: -0.02em;
   max-width: 92%; word-break: break-word; overflow-wrap: anywhere;
 }
 .sign-subtitle {
-  font-size: calc(var(--base) * 0.9); font-weight: 500;
-  line-height: 1.4; opacity: 0.9; max-width: 88%;
-  word-break: break-word; overflow-wrap: anywhere;
+  font-size: calc(var(--base) * 0.9);
+  font-weight: 500; line-height: 1.4; opacity: 0.9;
+  max-width: 88%; word-break: break-word; overflow-wrap: anywhere;
 }
 .sign-fields {
   display: flex; flex-direction: column;
@@ -413,7 +419,8 @@ img { display: block; max-width: 100%; }
   opacity: 0.75; word-break: break-word;
 }
 .sign-field-value {
-  font-size: calc(var(--base) * 0.9); font-weight: 700;
+  font-size: calc(var(--base) * 0.9);
+  font-weight: 700;
   font-family: ui-monospace, 'SF Mono', Menlo, monospace;
   line-height: 1.2; word-break: break-word; overflow-wrap: anywhere;
 }
@@ -430,40 +437,67 @@ img { display: block; max-width: 100%; }
   image-rendering: pixelated;
 }
 .sign-footer {
-  font-size: calc(var(--base) * 0.55); font-weight: 600;
-  opacity: 0.72; letter-spacing: 0.02em; max-width: 90%;
+  font-size: calc(var(--base) * 0.55);
+  font-weight: 600; opacity: 0.72;
+  letter-spacing: 0.02em; max-width: 90%;
   line-height: 1.3; word-break: break-word; overflow-wrap: anywhere;
 }
 
+/* ============================================================
+   OFF-SCREEN CAPTURE STAGE
+   ============================================================ */
 #captureWrap {
-  position: fixed !important; top: 0 !important; left: -100000px !important;
-  z-index: -1 !important; pointer-events: none !important;
-  transform: none !important; filter: none !important;
-  perspective: none !important; opacity: 1 !important; visibility: visible !important;
+  position: fixed !important;
+  top: 0 !important; left: -100000px !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
 }
 #signCapture { box-shadow: none !important; }
 
+/* ============================================================
+   PRINT — uses dynamic print style injected by JS
+   ============================================================ */
 @media print {
   html, body {
-    margin: 0 !important; padding: 0 !important; background: #fff !important;
+    margin: 0 !important; padding: 0 !important;
+    background: #fff !important;
     overflow: hidden !important;
-    width: var(--print-w, 210mm) !important; height: var(--print-h, 297mm) !important;
+    width: var(--print-w) !important;
+    height: var(--print-h) !important;
   }
-  body > * { display: none !important; }
+  body > *:not(#captureWrap) { display: none !important; }
   body > #captureWrap {
-    display: block !important; position: fixed !important;
+    display: block !important;
+    position: absolute !important;
     top: 0 !important; left: 0 !important;
-    width: var(--print-w, 210mm) !important; height: var(--print-h, 297mm) !important;
-    z-index: 9999 !important; transform: none !important;
-    opacity: 1 !important; visibility: visible !important; pointer-events: auto !important;
+    width: var(--print-w) !important;
+    height: var(--print-h) !important;
+    overflow: hidden !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
   }
-  #signCapture { box-shadow: none !important; border-radius: 0 !important; transform: none !important; }
-  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+  #signCapture {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    transform: none !important;
+  }
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
 }
 
 .app-footer {
   border-top: 1px solid var(--border); background: var(--bg);
-  padding: 20px; transition: background-color var(--transition), border-color var(--transition);
+  padding: 20px;
 }
 .app-footer-inner {
   max-width: 1280px; margin: 0 auto;
@@ -510,7 +544,6 @@ img { display: block; max-width: 100%; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .overlay-text { font-size: 13px; font-weight: 600; color: var(--text); }
 
-.row { display: flex; align-items: center; gap: 8px; }
 .row-between { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .stack > * + * { margin-top: 12px; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -652,7 +685,6 @@ img { display: block; max-width: 100%; }
       </div>
       <div class="card-body stack">
 
-        <!-- Background -->
         <div>
           <label class="label" data-i18n="background">Background</label>
           <div class="seg" id="bgTypeSeg" style="margin-bottom: 10px;">
@@ -687,7 +719,6 @@ img { display: block; max-width: 100%; }
           </div>
         </div>
 
-        <!-- Text & Accent colors -->
         <div class="grid-2">
           <div>
             <label class="label" data-i18n="textColor">Text Color</label>
@@ -705,7 +736,6 @@ img { display: block; max-width: 100%; }
           </div>
         </div>
 
-        <!-- === NEW: Icon & Logo Colors === -->
         <div>
           <div class="row-between" style="margin-bottom: 6px;">
             <label class="label" style="margin: 0;" data-i18n="iconColor">Icon Color</label>
@@ -717,7 +747,6 @@ img { display: block; max-width: 100%; }
           </div>
         </div>
 
-        <!-- Logo color (only visible when logo uploaded) -->
         <div id="logoColorBlock" class="hidden">
           <div class="row-between" style="margin-bottom: 6px;">
             <label class="label" style="margin: 0;" data-i18n="logoColor">Logo Color</label>
@@ -729,13 +758,11 @@ img { display: block; max-width: 100%; }
           </div>
         </div>
 
-        <!-- Border -->
         <div>
           <label class="label" data-i18n="border">Border Style</label>
           <div class="border-grid" id="borderGrid"></div>
         </div>
 
-        <!-- Icon -->
         <div>
           <div class="row-between" style="margin-bottom: 6px;">
             <label class="label" style="margin: 0;" data-i18n="icon">Icon</label>
@@ -829,7 +856,7 @@ img { display: block; max-width: 100%; }
 
 <script>
 /* ============================================================================
-   SaivSIGN v10 — Icon color + Logo tinting
+   SaivSIGN v11 — High-DPI capture + Arabic fix + print fix
    ============================================================================ */
 (function () {
 'use strict';
@@ -1020,7 +1047,7 @@ const TEMPLATES = [
     subtitle:{ en:'Ask our staff for help', fr:'Demandez de l\'aide', ar:'اسأل موظفينا للمساعدة' } }
 ];
 
-/* ============ VERIFIED FREE ICONS ============ */
+/* ============ ICONS ============ */
 const ICONS = [
   'fa-check','fa-xmark','fa-plus','fa-minus','fa-circle-check','fa-circle-xmark',
   'fa-circle-info','fa-circle-question','fa-circle-exclamation','fa-circle-dot','fa-circle-notch',
@@ -1127,10 +1154,10 @@ const state = {
     border: 'rounded',
     icon: 'fa-wifi',
     iconScale: 1.0,
-    iconColor: null,       // null = auto (falls back to text color)
-    logo: null,            // currently displayed (may be tinted)
-    logoOriginal: null,    // original uploaded data URI
-    logoColor: null,       // null = original colors
+    iconColor: null,
+    logo: null,
+    logoOriginal: null,
+    logoColor: null,
     logoProcessing: false
   },
   qrDataUri: '',
@@ -1171,24 +1198,42 @@ function toast(msg, type = 'success', duration = 2200) {
   toastTimer = setTimeout(() => el.className = '', duration);
 }
 
-function showOverlay(msg) {
-  $('overlayMsg').textContent = msg;
-  $('overlay').classList.add('show');
-}
+function showOverlay(msg) { $('overlayMsg').textContent = msg; $('overlay').classList.add('show'); }
 function hideOverlay() { $('overlay').classList.remove('show'); }
 
-function getTemplate(id) {
-  return TEMPLATES.find(x => x.id === id) || TEMPLATES[0];
-}
+function getTemplate(id) { return TEMPLATES.find(x => x.id === id) || TEMPLATES[0]; }
+function getLangValue(obj) { return obj ? (obj[state.signLang] || obj.en || '') : ''; }
 
-function getLangValue(obj) {
-  if (!obj) return '';
-  return obj[state.signLang] || obj.en || '';
+/* ============================================================================
+   FONT LOADING — critical for crisp Arabic
+   ============================================================================ */
+let fontsReady = false;
+
+async function waitForFonts() {
+  if (fontsReady) return;
+  try {
+    if (document.fonts && document.fonts.ready) {
+      await document.fonts.ready;
+    }
+    if (document.fonts && document.fonts.load) {
+      await Promise.allSettled([
+        document.fonts.load('400 16px Inter'),
+        document.fonts.load('700 16px Inter'),
+        document.fonts.load('900 16px Inter'),
+        document.fonts.load('400 16px Cairo'),
+        document.fonts.load('700 16px Cairo'),
+        document.fonts.load('900 16px Cairo'),
+        document.fonts.load('900 16px "Font Awesome 6 Free"')
+      ]);
+    }
+    fontsReady = true;
+  } catch (e) {
+    console.warn('Font preload warning:', e);
+  }
 }
 
 /* ============================================================================
-   LOGO TINTING VIA CANVAS
-   Recolors the entire logo to a single color while preserving transparency
+   LOGO TINTING
    ============================================================================ */
 async function tintImage(dataUri, color) {
   return new Promise((resolve, reject) => {
@@ -1200,21 +1245,12 @@ async function tintImage(dataUri, color) {
         canvas.width = img.naturalWidth || 256;
         canvas.height = img.naturalHeight || 256;
         const ctx = canvas.getContext('2d');
-
-        // Step 1: Draw original image (destination)
         ctx.drawImage(img, 0, 0);
-
-        // Step 2: Set composite so source (new color) draws only where dest has alpha
         ctx.globalCompositeOperation = 'source-in';
-
-        // Step 3: Fill with tint color
         ctx.fillStyle = color;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-
         resolve(canvas.toDataURL('image/png'));
-      } catch (err) {
-        reject(err);
-      }
+      } catch (err) { reject(err); }
     };
     img.onerror = () => reject(new Error('Failed to load image for tinting'));
     img.src = dataUri;
@@ -1231,10 +1267,7 @@ async function regenerateQRCode() {
   const tpl = getTemplate(state.templateId);
 
   if (!tpl.qr) {
-    if (state.qrDataUri) {
-      state.qrDataUri = '';
-      renderSigns();
-    }
+    if (state.qrDataUri) { state.qrDataUri = ''; renderSigns(); }
     return;
   }
 
@@ -1251,24 +1284,17 @@ async function regenerateQRCode() {
     document.body.appendChild(temp);
 
     new QRCode(temp, {
-      text: text, width: 256, height: 256,
+      text, width: 256, height: 256,
       colorDark: '#000000', colorLight: '#ffffff',
       correctLevel: QRCode.CorrectLevel.M
     });
 
     await new Promise(r => setTimeout(r, 80));
-
-    if (myId !== qrGenerationId) {
-      try { document.body.removeChild(temp); } catch(e){}
-      return;
-    }
+    if (myId !== qrGenerationId) { try { document.body.removeChild(temp); } catch(e){} return; }
 
     const canvas = temp.querySelector('canvas');
     const img = temp.querySelector('img');
-    let uri = '';
-    if (canvas) uri = canvas.toDataURL('image/png');
-    else if (img && img.src) uri = img.src;
-
+    let uri = canvas ? canvas.toDataURL('image/png') : (img && img.src ? img.src : '');
     try { document.body.removeChild(temp); } catch(e){}
     if (myId !== qrGenerationId) return;
 
@@ -1279,9 +1305,7 @@ async function regenerateQRCode() {
       state.qrDataUri = uri;
       renderSigns();
     }
-  } catch (err) {
-    console.warn('QR generation failed:', err);
-  }
+  } catch (err) { console.warn('QR failed:', err); }
 }
 
 const regenerateQRCodeDebounced = debounce(() => regenerateQRCode(), 250);
@@ -1293,15 +1317,10 @@ function buildSignHTML() {
   const tpl = getTemplate(state.templateId);
   const d = state.design;
 
-  // Icon OR logo
-  let iconHTML;
-  if (d.logo) {
-    iconHTML = `<img src="${esc(d.logo)}" alt="">`;
-  } else {
-    iconHTML = `<i class="fas ${esc(d.icon)}"></i>`;
-  }
+  let iconHTML = d.logo
+    ? `<img src="${esc(d.logo)}" alt="">`
+    : `<i class="fas ${esc(d.icon)}"></i>`;
 
-  // Fields
   let fieldsHTML = '';
   if (tpl.fields && tpl.fields.length) {
     const visible = tpl.fields
@@ -1313,31 +1332,18 @@ function buildSignHTML() {
           <div class="sign-field">
             <div class="sign-field-label">${esc(getLangValue(f.label))}</div>
             <div class="sign-field-value">${esc(val)}</div>
-          </div>`).join('') +
-        '</div>';
+          </div>`).join('') + '</div>';
     }
   }
 
-  // QR
   let qrHTML = '';
   if (tpl.qr && state.qrDataUri) {
     qrHTML = `<div class="sign-qr"><img src="${esc(state.qrDataUri)}" alt="QR code"></div>`;
   }
 
-  // Footer
-  let footerHTML = '';
-  if (state.footer) {
-    footerHTML = `<div class="sign-footer">${esc(state.footer)}</div>`;
-  }
-
-  // Subtitle
-  let subtitleHTML = '';
-  if (state.subtitle) {
-    subtitleHTML = `<div class="sign-subtitle">${esc(state.subtitle)}</div>`;
-  }
-
-  // Title
-  const titleHTML = state.title ? `<div class="sign-title">${esc(state.title)}</div>` : '';
+  let footerHTML = state.footer ? `<div class="sign-footer">${esc(state.footer)}</div>` : '';
+  let subtitleHTML = state.subtitle ? `<div class="sign-subtitle">${esc(state.subtitle)}</div>` : '';
+  let titleHTML = state.title ? `<div class="sign-title">${esc(state.title)}</div>` : '';
 
   return `
     <div class="sign-border"></div>
@@ -1351,14 +1357,25 @@ function buildSignHTML() {
     </div>`;
 }
 
-function applySignStyles(el) {
+/* ============================================================================
+   APPLY SIGN STYLES — accepts optional pixel dims for high-res capture
+   ============================================================================ */
+function applySignStyles(el, pixelDims) {
   const s = SIZES[state.size];
   const d = state.design;
-  const baseMm = Math.min(s.w, s.h) / 22;
 
-  el.style.setProperty('--sign-w', s.w + 'mm');
-  el.style.setProperty('--sign-h', s.h + 'mm');
-  el.style.setProperty('--base', baseMm + 'mm');
+  if (pixelDims && pixelDims.w && pixelDims.h) {
+    // HIGH-RES MODE — use pixels for 300 DPI native rendering
+    el.style.setProperty('--sign-w', pixelDims.w + 'px');
+    el.style.setProperty('--sign-h', pixelDims.h + 'px');
+    el.style.setProperty('--base', (Math.min(pixelDims.w, pixelDims.h) / 22) + 'px');
+  } else {
+    // NORMAL MODE — use mm (physical size)
+    el.style.setProperty('--sign-w', s.w + 'mm');
+    el.style.setProperty('--sign-h', s.h + 'mm');
+    el.style.setProperty('--base', (Math.min(s.w, s.h) / 22) + 'mm');
+  }
+
   el.style.setProperty('--icon-scale', d.iconScale);
 
   if (d.bgType === 'gradient') {
@@ -1369,7 +1386,6 @@ function applySignStyles(el) {
   el.style.setProperty('--text-color', d.textColor);
   el.style.setProperty('--accent-color', d.accentColor);
 
-  // Icon color override
   if (d.iconColor) {
     el.style.setProperty('--icon-color', d.iconColor);
   } else {
@@ -1380,6 +1396,9 @@ function applySignStyles(el) {
   el.setAttribute('dir', state.signLang === 'ar' ? 'rtl' : 'ltr');
 }
 
+/* ============================================================================
+   RENDER SIGNS
+   ============================================================================ */
 function renderSigns() {
   const html = buildSignHTML();
 
@@ -1392,10 +1411,73 @@ function renderSigns() {
   const badge = $('sizeBadge');
   if (badge) badge.textContent = s.label;
 
+  // Update print variables
   document.documentElement.style.setProperty('--print-w', s.w + 'mm');
   document.documentElement.style.setProperty('--print-h', s.h + 'mm');
 
+  // Update dynamic print style
+  updatePrintStyle();
+
   updatePreviewScale();
+}
+
+/* ============================================================================
+   DYNAMIC PRINT STYLE — exact page dimensions
+   ============================================================================ */
+function updatePrintStyle() {
+  const s = SIZES[state.size];
+  let styleEl = document.getElementById('dynamicPrintStyle');
+  if (!styleEl) {
+    styleEl = document.createElement('style');
+    styleEl.id = 'dynamicPrintStyle';
+    document.head.appendChild(styleEl);
+  }
+  styleEl.textContent = `
+    @page {
+      size: ${s.w}mm ${s.h}mm;
+      margin: 0;
+    }
+    @media print {
+      html, body {
+        width: ${s.w}mm !important;
+        height: ${s.h}mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        background: #fff !important;
+      }
+      body > *:not(#captureWrap) {
+        display: none !important;
+      }
+      body > #captureWrap {
+        display: block !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: ${s.w}mm !important;
+        height: ${s.h}mm !important;
+        overflow: hidden !important;
+        pointer-events: auto !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+        break-after: avoid !important;
+        break-inside: avoid !important;
+      }
+      #signCapture {
+        width: ${s.w}mm !important;
+        height: ${s.h}mm !important;
+        min-width: ${s.w}mm !important;
+        min-height: ${s.h}mm !important;
+        max-width: ${s.w}mm !important;
+        max-height: ${s.h}mm !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        transform: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+    }
+  `;
 }
 
 /* ============================================================================
@@ -1427,7 +1509,7 @@ function updatePreviewScale() {
 }
 
 /* ============================================================================
-   APPLY TEMPLATE — preserves logo, logoColor, iconColor, iconScale, border
+   APPLY TEMPLATE
    ============================================================================ */
 function applyTemplate(id) {
   const tpl = getTemplate(id);
@@ -1446,7 +1528,6 @@ function applyTemplate(id) {
 
   if (tpl.fields) tpl.fields.forEach(f => { state.fields[f.key] = f.default || ''; });
 
-  // Preserve user's custom choices
   const keepIconScale = state.design.iconScale;
   const keepLogo = state.design.logo;
   const keepLogoOriginal = state.design.logoOriginal;
@@ -1482,9 +1563,7 @@ function applyTemplate(id) {
   setColorInput('textColor', 'textColorHex', state.design.textColor);
   setColorInput('accentColor', 'accentColorHex', state.design.accentColor);
 
-  qsa('#bgTypeSeg button').forEach(b => {
-    b.classList.toggle('active', b.dataset.val === state.design.bgType);
-  });
+  qsa('#bgTypeSeg button').forEach(b => b.classList.toggle('active', b.dataset.val === state.design.bgType));
   $('bgSolid').classList.toggle('hidden', state.design.bgType !== 'solid');
   $('bgGradient').classList.toggle('hidden', state.design.bgType !== 'gradient');
 
@@ -1502,31 +1581,27 @@ function applyTemplate(id) {
 }
 
 /* ============================================================================
-   FAST SELECTION UPDATES
+   SELECTION UPDATES
    ============================================================================ */
 function updateIconSelection() {
   const buttons = $('iconGrid').children;
   for (let i = 0; i < buttons.length; i++) {
     const ic = ICONS_UNIQUE[i];
-    const isActive = state.design.icon === ic && !state.design.logo;
-    buttons[i].classList.toggle('active', isActive);
+    buttons[i].classList.toggle('active', state.design.icon === ic && !state.design.logo);
   }
 }
-
 function updateTemplateSelection() {
   const buttons = $('tplGrid').children;
   for (let i = 0; i < buttons.length; i++) {
     buttons[i].classList.toggle('active', buttons[i].dataset.tplId === state.templateId);
   }
 }
-
 function updateBorderSelection() {
   const buttons = $('borderGrid').children;
   for (let i = 0; i < buttons.length; i++) {
     buttons[i].classList.toggle('active', buttons[i].dataset.borderId === state.design.border);
   }
 }
-
 function updateSizeSelection() {
   const buttons = $('sizeGrid').children;
   for (let i = 0; i < buttons.length; i++) {
@@ -1565,7 +1640,6 @@ function renderTemplates() {
     const bg = tpl.theme.bgType === 'gradient'
       ? `linear-gradient(135deg, ${tpl.theme.bg1}, ${tpl.theme.bg2})`
       : (tpl.theme.bgColor || '#4f46e5');
-
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.dataset.tplId = tpl.id;
@@ -1584,10 +1658,7 @@ function renderFields() {
   const tpl = getTemplate(state.templateId);
   inner.innerHTML = '';
 
-  if (!tpl.fields || !tpl.fields.length) {
-    wrap.classList.add('hidden');
-    return;
-  }
+  if (!tpl.fields || !tpl.fields.length) { wrap.classList.add('hidden'); return; }
   wrap.classList.remove('hidden');
 
   tpl.fields.forEach(f => {
@@ -1624,9 +1695,7 @@ function renderIcons() {
     btn.innerHTML = `<i class="fas ${ic}"></i>`;
     btn.addEventListener('click', () => {
       state.design.icon = ic;
-      if (state.design.logo) {
-        clearLogoState();
-      }
+      if (state.design.logo) clearLogoState();
       updateIconSelection();
       renderSigns();
     });
@@ -1690,16 +1759,14 @@ function renderSizes() {
 }
 
 /* ============================================================================
-   SYNC UI FROM STATE (startup)
+   SYNC UI FROM STATE
    ============================================================================ */
 function syncUIFromState() {
   $('titleInput').value = state.title;
   $('subtitleInput').value = state.subtitle;
   $('footerInput').value = state.footer;
 
-  qsa('#bgTypeSeg button').forEach(b => {
-    b.classList.toggle('active', b.dataset.val === state.design.bgType);
-  });
+  qsa('#bgTypeSeg button').forEach(b => b.classList.toggle('active', b.dataset.val === state.design.bgType));
   $('bgSolid').classList.toggle('hidden', state.design.bgType !== 'solid');
   $('bgGradient').classList.toggle('hidden', state.design.bgType !== 'gradient');
 
@@ -1712,15 +1779,12 @@ function syncUIFromState() {
   $('angle').value = state.design.bgAngle;
   $('angleVal').textContent = state.design.bgAngle + '°';
 
-  const iconScalePercent = Math.round(state.design.iconScale * 100);
-  $('iconScale').value = iconScalePercent;
-  $('iconScaleVal').textContent = iconScalePercent + '%';
+  const pct = Math.round(state.design.iconScale * 100);
+  $('iconScale').value = pct;
+  $('iconScaleVal').textContent = pct + '%';
 
-  // Icon color UI
   syncIconColorUI();
-  // Logo color UI
   syncLogoColorUI();
-
   updateLogoUI();
 }
 
@@ -1731,9 +1795,6 @@ function setColorInput(inputId, hexId, value) {
   if (hex) hex.textContent = value;
 }
 
-/* ============================================================================
-   ICON COLOR UI
-   ============================================================================ */
 function syncIconColorUI() {
   const picker = $('iconColor');
   const hexLabel = $('iconColorHex');
@@ -1743,7 +1804,6 @@ function syncIconColorUI() {
     hexLabel.textContent = state.design.iconColor.toUpperCase();
     resetBtn.disabled = false;
   } else {
-    // Auto mode — show default near-white as starting point
     picker.value = state.design.textColor || '#ffffff';
     hexLabel.textContent = t('auto');
     resetBtn.disabled = true;
@@ -1763,21 +1823,13 @@ function resetIconColor() {
   toast(t('toastIconColorReset'), 'info', 1600);
 }
 
-/* ============================================================================
-   LOGO COLOR UI + TINTING
-   ============================================================================ */
 function syncLogoColorUI() {
   const block = $('logoColorBlock');
   const picker = $('logoColor');
   const hexLabel = $('logoColorHex');
   const resetBtn = $('logoColorReset');
-
-  if (state.design.logoOriginal) {
-    block.classList.remove('hidden');
-  } else {
-    block.classList.add('hidden');
-    return;
-  }
+  if (state.design.logoOriginal) block.classList.remove('hidden');
+  else { block.classList.add('hidden'); return; }
 
   if (state.design.logoColor) {
     picker.value = state.design.logoColor;
@@ -1793,12 +1845,10 @@ function syncLogoColorUI() {
 async function setLogoColor(color) {
   if (!state.design.logoOriginal || state.design.logoProcessing) return;
   state.design.logoProcessing = true;
-
   try {
     const tinted = await tintImage(state.design.logoOriginal, color);
     state.design.logo = tinted;
     state.design.logoColor = color;
-    // Update thumbnail
     $('logoThumbImg').src = tinted;
     syncLogoColorUI();
     renderSigns();
@@ -1843,7 +1893,7 @@ function clearLogoState() {
 }
 
 /* ============================================================================
-   APPLY UI LANGUAGE
+   LANGUAGES
    ============================================================================ */
 function applyUILanguage(lang) {
   state.uiLang = lang;
@@ -1857,9 +1907,7 @@ function applyUILanguage(lang) {
     if (val) el.textContent = val;
   });
 
-  qsa('#langSeg button').forEach(b => {
-    b.classList.toggle('active', b.dataset.lang === lang);
-  });
+  qsa('#langSeg button').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
 
   renderCategories();
   renderTemplates();
@@ -1870,9 +1918,6 @@ function applyUILanguage(lang) {
   try { localStorage.setItem('saivsign:uiLang', lang); } catch (e) {}
 }
 
-/* ============================================================================
-   APPLY SIGN LANGUAGE
-   ============================================================================ */
 function applySignLanguage(lang) {
   state.signLang = lang;
   const tpl = getTemplate(state.templateId);
@@ -1886,9 +1931,7 @@ function applySignLanguage(lang) {
     $('subtitleInput').value = state.subtitle;
   }
 
-  qsa('#signLangSeg button').forEach(b => {
-    b.classList.toggle('active', b.dataset.sl === lang);
-  });
+  qsa('#signLangSeg button').forEach(b => b.classList.toggle('active', b.dataset.sl === lang));
 
   renderTemplates();
   renderFields();
@@ -1897,9 +1940,6 @@ function applySignLanguage(lang) {
   try { localStorage.setItem('saivsign:signLang', lang); } catch (e) {}
 }
 
-/* ============================================================================
-   THEME
-   ============================================================================ */
 function applyTheme(theme) {
   state.theme = theme;
   document.documentElement.classList.toggle('dark', theme === 'dark');
@@ -1922,54 +1962,61 @@ function setIconScale(percent) {
 }
 
 /* ============================================================================
-   CAPTURE & EXPORT
+   CAPTURE — HIGH-RES NATIVE RENDERING
+   The KEY fix: render the sign at 2480px width (not 794px then upscale)
    ============================================================================ */
 async function captureSign(backgroundColor) {
   const sheet = $('signCapture');
   if (!sheet) throw new Error('Capture sheet not found');
 
+  // 1. Wait for all fonts (CRITICAL for Arabic)
+  await waitForFonts();
+
   const s = SIZES[state.size];
-  sheet.style.setProperty('--sign-w', s.w + 'mm');
-  sheet.style.setProperty('--sign-h', s.h + 'mm');
+  const pixelW = Math.round(s.w * EXPORT_DPI / MM_PER_INCH);
+  const pixelH = Math.round(s.h * EXPORT_DPI / MM_PER_INCH);
 
+  // 2. Rebuild sign HTML to ensure fresh state
+  sheet.innerHTML = buildSignHTML();
+
+  // 3. Apply high-res pixel dimensions (native 300 DPI rendering)
+  applySignStyles(sheet, { w: pixelW, h: pixelH });
+
+  // 4. Force reflow
+  void sheet.offsetWidth;
   void sheet.offsetHeight;
+
+  // 5. Wait for browser to lay out at high-res
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  await new Promise(r => setTimeout(r, 120));
 
-  const MM_TO_PX = CSS_DPI / MM_PER_INCH;
-  const naturalW = Math.round(s.w * MM_TO_PX);
-  const naturalH = Math.round(s.h * MM_TO_PX);
-  const targetW = Math.round(s.w * EXPORT_DPI / MM_PER_INCH);
-  const targetH = Math.round(s.h * EXPORT_DPI / MM_PER_INCH);
-  const scale = targetW / naturalW;
-
-  const canvas = await html2canvas(sheet, {
-    scale: scale,
-    backgroundColor: backgroundColor || null,
-    useCORS: true,
-    allowTaint: false,
-    logging: false,
-    width: naturalW,
-    height: naturalH,
-    windowWidth: naturalW,
-    windowHeight: naturalH,
-    x: 0, y: 0, scrollX: 0, scrollY: 0
-  });
-
-  if (canvas.width !== targetW || canvas.height !== targetH) {
-    const resized = document.createElement('canvas');
-    resized.width = targetW;
-    resized.height = targetH;
-    const ctx = resized.getContext('2d');
-    if (backgroundColor) {
-      ctx.fillStyle = backgroundColor;
-      ctx.fillRect(0, 0, targetW, targetH);
-    }
-    ctx.drawImage(canvas, 0, 0, targetW, targetH);
-    return resized;
+  try {
+    // 6. Capture at scale 1 — the DOM itself IS the high-res target
+    const canvas = await html2canvas(sheet, {
+      scale: 1,
+      backgroundColor: backgroundColor || null,
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
+      width: pixelW,
+      height: pixelH,
+      windowWidth: pixelW,
+      windowHeight: pixelH,
+      x: 0,
+      y: 0,
+      scrollX: 0,
+      scrollY: 0
+    });
+    return canvas;
+  } finally {
+    // 7. Restore normal mm dimensions
+    applySignStyles(sheet);
   }
-  return canvas;
 }
 
+/* ============================================================================
+   EXPORTS
+   ============================================================================ */
 async function exportPNG() {
   if (state.isExporting) return;
   if (typeof html2canvas !== 'function') { toast(t('toastError'), 'error'); return; }
@@ -2013,12 +2060,20 @@ async function exportPDF() {
   try {
     const s = SIZES[state.size];
     const canvas = await captureSign('#ffffff');
-    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+    // Use PNG (lossless) for maximum text clarity in PDF
+    const imgData = canvas.toDataURL('image/png');
 
     const { jsPDF } = window.jspdf;
     const orientation = s.orient === 'landscape' ? 'landscape' : 'portrait';
-    const pdf = new jsPDF({ orientation, unit: 'mm', format: [s.w, s.h], compress: true });
-    pdf.addImage(imgData, 'JPEG', 0, 0, s.w, s.h, undefined, 'FAST');
+    const pdf = new jsPDF({
+      orientation,
+      unit: 'mm',
+      format: [s.w, s.h],
+      compress: true
+    });
+
+    pdf.addImage(imgData, 'PNG', 0, 0, s.w, s.h, undefined, 'FAST');
 
     const ts = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
     const filename = `saivsign-${state.templateId}-${s.paper}-${s.orient}-${ts}.pdf`;
@@ -2033,23 +2088,32 @@ async function exportPDF() {
   }
 }
 
-function doPrint() {
+/* ============================================================================
+   PRINT — bulletproof single-page A4/A5
+   ============================================================================ */
+async function doPrint() {
+  if (state.isExporting) return;
   const s = SIZES[state.size];
+
+  // Update print vars and dynamic style
   document.documentElement.style.setProperty('--print-w', s.w + 'mm');
   document.documentElement.style.setProperty('--print-h', s.h + 'mm');
+  updatePrintStyle();
 
-  let styleEl = document.getElementById('dynamicPageStyle');
-  if (!styleEl) {
-    styleEl = document.createElement('style');
-    styleEl.id = 'dynamicPageStyle';
-    document.head.appendChild(styleEl);
-  }
-  styleEl.textContent = `@page { size: ${s.w}mm ${s.h}mm; margin: 0; }`;
+  // Wait for fonts
+  await waitForFonts();
 
   toast(t('toastPrinting'), 'success', 1400);
+
+  // Small delay to allow style to apply
   setTimeout(() => {
-    try { window.print(); } catch (e) { console.error(e); toast(t('toastError'), 'error'); }
-  }, 200);
+    try {
+      window.print();
+    } catch (e) {
+      console.error(e);
+      toast(t('toastError'), 'error');
+    }
+  }, 250);
 }
 
 /* ============================================================================
@@ -2099,12 +2163,10 @@ function bindEvents() {
   bindColorInput('textColor', 'textColorHex', 'textColor');
   bindColorInput('accentColor', 'accentColorHex', 'accentColor');
 
-  // === ICON COLOR ===
   $('iconColor').addEventListener('input', e => setIconColor(e.target.value));
   $('iconColor').addEventListener('change', e => setIconColor(e.target.value));
   $('iconColorReset').addEventListener('click', resetIconColor);
 
-  // === LOGO COLOR ===
   $('logoColor').addEventListener('input', e => setLogoColor(e.target.value));
   $('logoColor').addEventListener('change', e => setLogoColor(e.target.value));
   $('logoColorReset').addEventListener('click', resetLogoColor);
@@ -2115,7 +2177,6 @@ function bindEvents() {
     renderSignsDebounced();
   });
 
-  // Icon scale
   $('iconScale').addEventListener('input', e => setIconScale(parseInt(e.target.value, 10)));
   $('iconScaleUp').addEventListener('click', () => setIconScale(Math.round(state.design.iconScale * 100) + 10));
   $('iconScaleDown').addEventListener('click', () => setIconScale(Math.round(state.design.iconScale * 100) - 10));
@@ -2123,12 +2184,10 @@ function bindEvents() {
     btn.addEventListener('click', () => setIconScale(parseInt(btn.dataset.preset, 10)));
   });
 
-  // Logo
   $('uploadLogoBtn').addEventListener('click', () => $('logoFile').click());
   $('logoFile').addEventListener('change', handleLogoUpload);
   $('clearLogoBtn').addEventListener('click', clearLogo);
 
-  // Export
   $('printBtn').addEventListener('click', doPrint);
   $('pngBtn').addEventListener('click', exportPNG);
   $('pdfBtn').addEventListener('click', exportPDF);
@@ -2221,6 +2280,9 @@ function init() {
 
   applyTheme(savedTheme);
   state.signLang = savedSign;
+
+  // Preload fonts ASAP
+  waitForFonts();
 
   renderIcons();
   renderBorders();
