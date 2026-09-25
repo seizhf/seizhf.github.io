@@ -1,1347 +1,1342 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>شيفرة النبض - سيف الإسلام زحاف</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
-    <style>
-        /* ============================================================
-           SAME STYLE AS index.html & novel-1.html
-           ============================================================ */
-        :root {
-            --bg-body: #f0f4f8;
-            --bg-card: rgba(255, 255, 255, 0.65);
-            --bg-header: rgba(255, 255, 255, 0.60);
-            --bg-nav: rgba(255, 255, 255, 0.40);
-            --text-primary: #1a2a3a;
-            --text-secondary: #3a5a6a;
-            --text-muted: #7a8a9a;
-            --accent: #2b6c8c;
-            --accent-light: #4a9fc7;
-            --accent-focus: #1a8fbf;
-            --accent-gradient: linear-gradient(135deg, #2b6c8c, #4a9fc7);
-            --shadow: 0 2px 20px rgba(43, 108, 140, 0.06);
-            --shadow-hover: 0 6px 30px rgba(43, 108, 140, 0.10);
-            --border: 1px solid rgba(43, 108, 140, 0.06);
-            --radius: 14px;
-            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        body.dark {
-            --bg-body: #121a24;
-            --bg-card: rgba(255, 255, 255, 0.04);
-            --bg-header: rgba(255, 255, 255, 0.03);
-            --bg-nav: rgba(255, 255, 255, 0.03);
-            --text-primary: #e8eef2;
-            --text-secondary: #b0c8d8;
-            --text-muted: #708090;
-            --accent: #4a9fc7;
-            --accent-light: #6bc2e8;
-            --accent-focus: #6bc2e8;
-            --accent-gradient: linear-gradient(135deg, #4a9fc7, #6bc2e8);
-            --shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-            --shadow-hover: 0 6px 30px rgba(0, 0, 0, 0.5);
-            --border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background: var(--bg-body);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 14px 16px 12px;
-            transition: background 0.5s ease, color 0.5s ease;
-            line-height: 1.7;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-        }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeSlide {
-            0% {
-                opacity: 0;
-                transform: translateY(16px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-6px);
-            }
-        }
-
-        .animate-in {
-            animation: fadeSlide 0.5s ease both;
-        }
-        .animate-in-1 {
-            animation-delay: 0.05s;
-        }
-        .animate-in-2 {
-            animation-delay: 0.10s;
-        }
-        .animate-in-3 {
-            animation-delay: 0.15s;
-        }
-        .animate-in-4 {
-            animation-delay: 0.20s;
-        }
-
-        /* ===== HEADER ===== */
-        .header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 18px;
-            background: var(--bg-header);
-            border-radius: var(--radius);
-            border: var(--border);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            margin-bottom: 16px;
-            box-shadow: var(--shadow);
-            transition: all var(--transition);
-            animation: fadeSlide 0.5s ease;
-        }
-
-        .header:hover {
-            box-shadow: var(--shadow-hover);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1rem;
-            font-weight: 900;
-        }
-
-        .logo .flag {
-            font-size: 1.1rem;
-        }
-
-        .logo .name {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            flex-wrap: wrap;
-        }
-
-        .lang-btn {
-            background: transparent;
-            border: none;
-            padding: 3px 12px;
-            border-radius: 20px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            transition: all var(--transition);
-        }
-
-        .lang-btn:hover {
-            color: var(--text-primary);
-            background: rgba(43, 108, 140, 0.04);
-        }
-
-        body.dark .lang-btn:hover {
-            background: rgba(74, 159, 199, 0.06);
-        }
-
-        .lang-btn.active {
-            color: #fff;
-            background: var(--accent-gradient);
-            box-shadow: 0 2px 12px rgba(43, 108, 140, 0.15);
-        }
-
-        body.dark .lang-btn.active {
-            box-shadow: 0 2px 12px rgba(74, 159, 199, 0.15);
-        }
-
-        .theme-btn {
-            background: transparent;
-            border: none;
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all var(--transition);
-        }
-
-        .theme-btn:hover {
-            color: var(--accent);
-            transform: rotate(20deg);
-        }
-
-        /* ===== NAV ===== */
-        .nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3px;
-            margin-bottom: 16px;
-            padding: 4px 6px;
-            background: var(--bg-nav);
-            border-radius: var(--radius);
-            border: var(--border);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            justify-content: center;
-            transition: all var(--transition);
-            animation: fadeSlide 0.5s ease 0.05s both;
-        }
-
-        .nav a {
-            padding: 6px 18px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            transition: all var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            position: relative;
-        }
-
-        .nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 2px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: var(--accent-gradient);
-            border-radius: 2px;
-            transition: width var(--transition);
-        }
-
-        .nav a:hover::after {
-            width: 60%;
-        }
-
-        .nav a i {
-            font-size: 0.7rem;
-            opacity: 0.4;
-            transition: opacity var(--transition);
-        }
-
-        .nav a:hover {
-            color: var(--text-primary);
-            background: rgba(43, 108, 140, 0.04);
-        }
-
-        body.dark .nav a:hover {
-            background: rgba(74, 159, 199, 0.04);
-        }
-
-        .nav a.active {
-            color: #fff;
-            background: var(--accent-gradient);
-            box-shadow: 0 2px 16px rgba(43, 108, 140, 0.15);
-        }
-
-        body.dark .nav a.active {
-            box-shadow: 0 2px 16px rgba(74, 159, 199, 0.15);
-        }
-
-        .nav a.active::after {
-            width: 0;
-        }
-
-        .nav a.active i {
-            opacity: 1;
-        }
-
-        /* ===== LANG SECTIONS ===== */
-        .lang-section {
-            display: none;
-            animation: fadeSlide 0.5s ease;
-        }
-
-        .lang-section.active {
-            display: block;
-        }
-
-        .lang-section[dir="ltr"] {
-            direction: ltr;
-            text-align: left;
-        }
-
-        .lang-section[dir="ltr"] .btn-back i {
-            transform: rotate(180deg);
-        }
-
-        .lang-section[dir="ltr"] .btn-back:hover i {
-            transform: rotate(180deg) translateX(4px);
-        }
-
-        /* ===== COVER SECTION ===== */
-        .cover-section {
-            display: grid;
-            grid-template-columns: 220px 1fr;
-            gap: 28px;
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 24px 28px;
-            border: var(--border);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            box-shadow: var(--shadow);
-            margin-bottom: 14px;
-            transition: all var(--transition);
-            align-items: start;
-        }
-
-        .cover-section:hover {
-            box-shadow: var(--shadow-hover);
-        }
-
-        .cover-section .cover-img {
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow-hover);
-            transition: all var(--transition);
-            animation: float 4s ease-in-out infinite;
-        }
-
-        .cover-section .cover-img:hover {
-            transform: scale(1.02);
-        }
-
-        .cover-section .cover-img img {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 12px;
-        }
-
-        .cover-section .cover-img .placeholder {
-            width: 100%;
-            aspect-ratio: 2/3;
-            background: var(--accent-gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.5rem;
-            color: rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-        }
-
-        .cover-section .info .tag {
-            font-size: 0.55rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: var(--accent);
-            display: inline-block;
-            margin-bottom: 2px;
-        }
-
-        .cover-section .info h1 {
-            font-size: 1.6rem;
-            font-weight: 900;
-            margin-bottom: 2px;
-        }
-
-        .cover-section .info .author {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .cover-section .info .author i {
-            color: var(--accent);
-            margin-left: 4px;
-        }
-
-        .cover-section .info .status-badge {
-            display: inline-block;
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: var(--accent);
-            background: rgba(43, 108, 140, 0.06);
-            padding: 3px 16px;
-            border-radius: 20px;
-            border: var(--border);
-            margin-bottom: 10px;
-        }
-
-        body.dark .cover-section .info .status-badge {
-            background: rgba(74, 159, 199, 0.06);
-        }
-
-        .cover-section .info .meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px 20px;
-            margin-bottom: 12px;
-        }
-
-        .cover-section .info .meta span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .cover-section .info .meta span i {
-            color: var(--accent);
-            font-size: 0.7rem;
-        }
-
-        .cover-section .info .desc {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.8;
-        }
-
-        .cover-section .info .desc strong {
-            color: var(--text-primary);
-        }
-
-        /* ===== CHAPTER ===== */
-        .chapter-section {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 24px 28px;
-            border: var(--border);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            box-shadow: var(--shadow);
-            margin-bottom: 14px;
-            transition: all var(--transition);
-        }
-
-        .chapter-section:hover {
-            box-shadow: var(--shadow-hover);
-        }
-
-        .chapter-section .chapter-title {
-            font-size: 1.1rem;
-            font-weight: 800;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 10px;
-            border-bottom: var(--border);
-        }
-
-        .chapter-section .chapter-title i {
-            color: var(--accent);
-        }
-
-        .chapter-section .chapter-content {
-            color: var(--text-secondary);
-            font-size: 0.92rem;
-            line-height: 2;
-            text-align: justify;
-        }
-
-        .chapter-section .chapter-content p {
-            margin-bottom: 12px;
-            text-indent: 30px;
-        }
-
-        .chapter-section .chapter-content p:first-of-type {
-            text-indent: 0;
-        }
-
-        /* ===== NOTICE ===== */
-        .notice {
-            background: rgba(43, 108, 140, 0.06);
-            border-radius: var(--radius-sm);
-            padding: 12px 16px;
-            border: 1px solid var(--accent);
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        body.dark .notice {
-            background: rgba(74, 159, 199, 0.06);
-        }
-
-        .notice i {
-            color: var(--accent);
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-
-        /* ===== ACTION BAR ===== */
-        .action-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding-top: 16px;
-            border-top: var(--border);
-            margin-top: 4px;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 24px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #fff;
-            background: var(--accent-gradient);
-            border: none;
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            transition: all var(--transition);
-            box-shadow: 0 2px 16px rgba(43, 108, 140, 0.15);
-        }
-
-        body.dark .btn-primary {
-            box-shadow: 0 2px 16px rgba(74, 159, 199, 0.15);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 30px rgba(43, 108, 140, 0.25);
-        }
-
-        body.dark .btn-primary:hover {
-            box-shadow: 0 6px 30px rgba(74, 159, 199, 0.25);
-        }
-
-        .btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 24px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            background: var(--bg-card);
-            border: var(--border);
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            transition: all var(--transition);
-        }
-
-        .btn-secondary:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--accent);
-        }
-
-        .btn-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            transition: all var(--transition);
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            margin-bottom: 10px;
-        }
-
-        .btn-back:hover {
-            color: var(--accent);
-            gap: 10px;
-        }
-
-        .btn-back i {
-            font-size: 0.65rem;
-            transition: transform var(--transition);
-        }
-
-        .btn-back:hover i {
-            transform: translateX(-4px);
-        }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            text-align: center;
-            padding: 14px 0 4px;
-            margin-top: 18px;
-            border-top: var(--border);
-            color: var(--text-muted);
-            font-size: 0.65rem;
-            transition: all var(--transition);
-        }
-
-        .footer .links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 4px;
-        }
-
-        .footer .links a {
-            font-size: 0.65rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            color: var(--text-muted);
-            transition: color var(--transition);
-        }
-
-        .footer .links a:hover {
-            color: var(--accent);
-        }
-
-        .footer .heart {
-            color: #d21034;
-            display: inline-block;
-            animation: pulseHeart 1.8s ease-in-out infinite;
-        }
-
-        @keyframes pulseHeart {
-            0%,
-            100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.15);
-            }
-        }
-
-        .footer .flag {
-            display: inline-block;
-            margin: 0 2px;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            body {
-                padding: 10px 12px 10px;
-            }
-
-            .header {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-                gap: 6px;
-                padding: 10px 14px;
-            }
-
-            .logo {
-                justify-content: center;
-                font-size: 0.9rem;
-            }
-
-            .header-actions {
-                justify-content: center;
-            }
-
-            .lang-btn {
-                font-size: 0.6rem;
-                padding: 3px 10px;
-            }
-
-            .theme-btn {
-                font-size: 0.7rem;
-                padding: 3px 8px;
-            }
-
-            .nav {
-                justify-content: center;
-                padding: 4px;
-                gap: 2px;
-            }
-
-            .nav a {
-                font-size: 0.65rem;
-                padding: 4px 12px;
-                gap: 4px;
-            }
-
-            .nav a i {
-                font-size: 0.6rem;
-            }
-
-            .cover-section {
-                grid-template-columns: 1fr;
-                gap: 16px;
-                padding: 18px 16px;
-            }
-
-            .cover-section .cover-img {
-                max-width: 200px;
-                margin: 0 auto;
-            }
-
-            .cover-section .info h1 {
-                font-size: 1.3rem;
-            }
-
-            .chapter-section {
-                padding: 18px 16px;
-            }
-
-            .chapter-section .chapter-content {
-                font-size: 0.85rem;
-            }
-
-            .action-bar {
-                justify-content: center;
-            }
-
-            .notice {
-                font-size: 0.8rem;
-                padding: 10px 12px;
-            }
-
-            .footer .links {
-                gap: 6px;
-            }
-
-            .footer .links a {
-                font-size: 0.55rem;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .nav a {
-                font-size: 0.55rem;
-                padding: 3px 8px;
-            }
-
-            .cover-section {
-                padding: 14px 12px;
-            }
-
-            .cover-section .info h1 {
-                font-size: 1.1rem;
-            }
-
-            .cover-section .info .desc {
-                font-size: 0.8rem;
-            }
-
-            .chapter-section {
-                padding: 14px 12px;
-            }
-
-            .chapter-section .chapter-content {
-                font-size: 0.78rem;
-            }
-
-            .btn-primary,
-            .btn-secondary {
-                font-size: 0.7rem;
-                padding: 8px 16px;
-            }
-
-            .notice {
-                font-size: 0.7rem;
-                padding: 8px 10px;
-                flex-wrap: wrap;
-            }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#ffffff" />
+
+<title>شيفرة النبض | سيف الإسلام زحاف</title>
+<meta name="description" content="شيفرة النبض — رواية لسيف الإسلام زحاف." />
+<meta name="author" content="Saif El Islem Zahaf" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23111'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='Arial' font-weight='600'%3ESZ%3C/text%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+  /* =========================================================
+     DESIGN SYSTEM — Minimalist · Modern · Light/Dark · RTL/LTR
+     ========================================================= */
+  :root {
+    --bg: #ffffff;
+    --bg-soft: #fafafa;
+    --surface: #ffffff;
+    --border: #e5e5e5;
+    --border-strong: #d4d4d4;
+    --text: #111111;
+    --text-2: #404040;
+    --muted: #737373;
+    --green: #16a34a;
+    --amber: #d97706;
+    --amber-soft: #fef3c7;
+    --wattpad: #ff500a;
+  }
+
+  html.dark {
+    --bg: #0a0a0a;
+    --bg-soft: #0f0f0f;
+    --surface: #141414;
+    --border: #262626;
+    --border-strong: #333333;
+    --text: #fafafa;
+    --text-2: #d4d4d4;
+    --muted: #a3a3a3;
+    --green: #22c55e;
+    --amber: #fbbf24;
+    --amber-soft: rgba(251, 191, 36, 0.08);
+    --wattpad: #ff6b35;
+  }
+
+  * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', 'Cairo', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.65;
+    font-size: 15px;
+    transition: background-color .25s ease, color .25s ease;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  html[dir="rtl"] body { font-family: 'Cairo', 'Inter', sans-serif; }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  button { font-family: inherit; }
+  ::selection { background: var(--text); color: var(--bg); }
+
+  /* ---------- NAVBAR ---------- */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s ease, background-color .25s ease;
+  }
+  .navbar.scrolled { border-bottom-color: var(--border); }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; color: var(--text); }
+  .brand-mark {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--text); color: var(--bg);
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 700;
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 2px; }
+  .nav-link {
+    padding: 8px 14px; font-size: 14px; color: var(--muted);
+    border-radius: 8px; transition: color .15s ease; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .nav-link:hover { color: var(--text); }
+  .nav-link.active { color: var(--text); font-weight: 600; }
+  .nav-link .ext { font-size: 10px; opacity: .6; }
+
+  .nav-actions { display: flex; align-items: center; gap: 8px; }
+
+  .icon-btn {
+    width: 36px; height: 36px; border-radius: 8px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--text-2); cursor: pointer;
+    display: grid; place-items: center; font-size: 13px;
+    transition: all .15s ease;
+  }
+  .icon-btn:hover { border-color: var(--border-strong); color: var(--text); }
+
+  .lang-wrap { position: relative; }
+  .lang-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 0 12px; height: 36px; border-radius: 8px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--text-2); cursor: pointer; font-size: 12.5px;
+    font-weight: 600; transition: all .15s ease;
+  }
+  .lang-btn:hover { border-color: var(--border-strong); color: var(--text); }
+
+  .lang-menu {
+    position: absolute; top: calc(100% + 6px); inset-inline-end: 0;
+    min-width: 140px; padding: 4px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; box-shadow: 0 10px 30px -12px rgba(0,0,0,.15);
+    opacity: 0; visibility: hidden; transform: translateY(-4px);
+    transition: all .15s ease; z-index: 10;
+  }
+  html.dark .lang-menu { box-shadow: 0 10px 30px -12px rgba(0,0,0,.7); }
+  .lang-wrap.open .lang-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+
+  .lang-option {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: 8px 12px; border: none; background: transparent;
+    color: var(--text-2); font-size: 13px; cursor: pointer;
+    border-radius: 6px; font-family: inherit; text-align: inherit;
+    transition: background .12s ease;
+  }
+  .lang-option:hover { background: var(--bg-soft); color: var(--text); }
+  .lang-option.active { color: var(--text); font-weight: 600; }
+
+  .menu-toggle { display: none; }
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .menu-toggle { display: grid; }
+  }
+
+  /* ---------- DRAWER ---------- */
+  .drawer-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.4);
+    opacity: 0; visibility: hidden; transition: all .25s ease; z-index: 150;
+  }
+  .drawer-overlay.open { opacity: 1; visibility: visible; }
+
+  .drawer {
+    position: fixed; top: 0; inset-inline-end: 0; bottom: 0;
+    width: min(320px, 85vw); background: var(--bg);
+    border-inline-start: 1px solid var(--border);
+    transform: translateX(100%); transition: transform .3s ease;
+    z-index: 160; display: flex; flex-direction: column;
+    padding: 20px; overflow-y: auto;
+  }
+  html[dir="rtl"] .drawer { transform: translateX(-100%); }
+  .drawer.open { transform: translateX(0) !important; }
+  .drawer-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .drawer-links { display: flex; flex-direction: column; gap: 2px; }
+  .drawer-link {
+    padding: 12px 14px; border-radius: 8px; color: var(--text-2);
+    font-size: 14px; font-weight: 500; transition: all .15s ease;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .drawer-link i { width: 16px; font-size: 13px; opacity: .7; }
+  .drawer-link:hover, .drawer-link.active { background: var(--bg-soft); color: var(--text); }
+
+  /* ---------- LAYOUT ---------- */
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; width: 100%; }
+  main { flex: 1; }
+
+  /* ---------- LANGUAGE SECTIONS ---------- */
+  .lang-section { display: none; padding-bottom: 60px; }
+  .lang-section.active { display: block; animation: fadeUp .3s ease both; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* ---------- BACK ---------- */
+  .back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13.5px; font-weight: 500;
+    color: var(--muted);
+    padding: 8px 12px;
+    margin: 40px 0 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: all .15s ease;
+  }
+  .back-link:hover { border-color: var(--border-strong); color: var(--text); }
+  .back-link i { font-size: 11px; }
+  html[dir="rtl"] .back-link i { transform: scaleX(-1); }
+
+  /* ---------- NOTICE ---------- */
+  .notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    margin-bottom: 32px;
+    border-radius: 10px;
+    background: var(--amber-soft);
+    border: 1px solid var(--border);
+    font-size: 13.5px;
+    color: var(--text-2);
+    line-height: 1.6;
+  }
+  html.dark .notice {
+    border-color: rgba(251, 191, 36, 0.2);
+  }
+  .notice i {
+    color: var(--amber);
+    font-size: 15px;
+    margin-top: 2px;
+    flex: none;
+  }
+
+  /* ---------- NOVEL HEADER ---------- */
+  .novel-header {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  @media (max-width: 700px) {
+    .novel-header { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  .novel-cover {
+    position: relative;
+    aspect-ratio: 2/3;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+  }
+  .novel-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .novel-cover-fallback {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--muted); font-size: 48px;
+  }
+  @media (max-width: 700px) {
+    .novel-cover { max-width: 200px; margin: 0 auto; }
+  }
+
+  .novel-info { display: flex; flex-direction: column; gap: 16px; justify-content: center; }
+
+  .novel-eyebrow {
+    font-size: 12px; font-weight: 500; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .12em;
+  }
+
+  .novel-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: -.02em;
+    line-height: 1.15;
+    margin: 0;
+    color: var(--text);
+  }
+
+  .novel-author {
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .novel-author i { font-size: 12px; }
+
+  .novel-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .novel-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 11px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text-2);
+    font-weight: 500;
+    background: var(--bg-soft);
+  }
+  .novel-meta span i { font-size: 11px; color: var(--muted); }
+
+  .novel-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-2);
+    margin-top: 2px;
+  }
+  .novel-status .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+  }
+  .novel-status.pending .dot {
+    background: var(--amber);
+  }
+
+  .novel-synopsis {
+    font-size: 14.5px;
+    line-height: 1.8;
+    color: var(--text-2);
+    margin: 0;
+  }
+  .novel-synopsis strong {
+    display: block;
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+  /* ---------- CHAPTER ---------- */
+  .chapter { margin-bottom: 40px; }
+
+  .chapter-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    margin: 0 0 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+  }
+  .chapter-title i { font-size: 15px; color: var(--muted); }
+
+  .chapter-content {
+    font-size: 16px;
+    line-height: 2;
+    color: var(--text-2);
+    max-width: 720px;
+  }
+  .chapter-content p {
+    margin: 0 0 20px;
+    text-align: justify;
+  }
+  .chapter-content p:last-child { margin-bottom: 0; }
+
+  /* ---------- ACTIONS ---------- */
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all .15s ease;
+    font-family: inherit;
+    line-height: 1;
+  }
+
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+  }
+  .btn-primary:hover { opacity: .88; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+  .btn-outline:hover { border-color: var(--text); }
+
+  /* ---------- WATTPAD DROPDOWN ---------- */
+  .wattpad-wrap {
+    position: relative;
+    display: inline-block;
+  }
+
+  .btn-wattpad {
+    background: var(--wattpad);
+    color: #ffffff;
+    font-weight: 600;
+    position: relative;
+  }
+  .btn-wattpad:hover { opacity: .9; }
+  .btn-wattpad i.fa-wattpad { font-size: 15px; }
+
+  .wattpad-chevron {
+    font-size: 10px !important;
+    margin-inline-start: 4px;
+    transition: transform .25s ease;
+    opacity: .85;
+  }
+  .wattpad-wrap.open .wattpad-chevron {
+    transform: rotate(180deg);
+  }
+
+  .wattpad-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    inset-inline-start: 0;
+    min-width: 240px;
+    padding: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px -12px rgba(0,0,0,.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity .2s ease, transform .25s cubic-bezier(.34, 1.3, .64, 1), visibility 0s .25s;
+    z-index: 20;
+  }
+  html.dark .wattpad-menu {
+    box-shadow: 0 10px 30px -12px rgba(0,0,0,.7);
+  }
+  .wattpad-wrap.open .wattpad-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity .2s ease, transform .25s cubic-bezier(.34, 1.3, .64, 1), visibility 0s;
+  }
+
+  .wattpad-menu-head {
+    padding: 8px 12px 6px;
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .wattpad-menu-head i {
+    color: var(--wattpad);
+    font-size: 11px;
+  }
+
+  .wattpad-option {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--text-2);
+    transition: background .12s ease, color .12s ease;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .wattpad-option:hover {
+    background: var(--bg-soft);
+    color: var(--text);
+  }
+
+  .wattpad-flag {
+    font-size: 16px;
+    flex: none;
+    line-height: 1;
+    filter: saturate(1.1);
+  }
+
+  .wattpad-lang {
+    flex: 1;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .wattpad-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: var(--muted);
+    padding: 2px 7px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    flex: none;
+  }
+
+  .wattpad-option:hover .wattpad-tag {
+    border-color: var(--wattpad);
+    color: var(--wattpad);
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 0 30px;
+    margin-top: auto;
+  }
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 16px; text-align: center;
+  }
+  .footer-text {
+    font-size: 13.5px; color: var(--muted);
+    display: flex; flex-wrap: wrap; align-items: center;
+    justify-content: center; gap: 6px;
+  }
+  .footer-heart { color: #dc2626; }
+  .footer-links {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 6px 18px; font-size: 13px; color: var(--muted);
+  }
+  .footer-links a { transition: color .15s ease; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-copy { font-size: 12.5px; color: var(--muted); }
+
+  .no-scroll { overflow: hidden; }
+
+  @media (max-width: 500px) {
+    .wattpad-wrap { width: 100%; }
+    .btn-wattpad { width: 100%; justify-content: center; }
+    .wattpad-menu { inset-inline-start: 0; inset-inline-end: 0; min-width: auto; }
+    .actions .btn { flex: 1 1 auto; justify-content: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+</style>
 </head>
+
 <body>
 
-    <div class="container">
+<!-- =========================================================
+     NAVBAR
+     ========================================================= -->
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark">SZ</span>
+      <span class="brand-name" data-i18n="brand">سيف الإسلام زحاف</span>
+    </a>
 
-        <!-- ===== HEADER ===== -->
-        <header class="header">
-            <div class="logo">
-                <span class="flag">🇩🇿</span>
-                <span class="name">سيف الإسلام زحاف</span>
-            </div>
-            <div class="header-actions">
-                <button class="lang-btn active" data-lang="ar">عربي</button>
-                <button class="lang-btn" data-lang="en">EN</button>
-                <button class="lang-btn" data-lang="fr">FR</button>
-                <button class="theme-btn" id="themeBtn"><i class="fas fa-moon"></i></button>
-            </div>
-        </header>
+    <nav class="nav-links">
+      <a href="../index.html" class="nav-link" data-i18n="nav_home">الرئيسية</a>
+      <a href="../novels.html" class="nav-link active" data-i18n="nav_novels">الروايات</a>
+      <a href="../contact.html" class="nav-link" data-i18n="nav_contact">التواصل</a>
+      <a href="https://SaivCORE.github.io" target="_blank" rel="noopener noreferrer" class="nav-link">
+        <span>SaivCORE</span>
+        <i class="fa-solid fa-arrow-up-right-from-square ext"></i>
+      </a>
+    </nav>
 
-        <!-- ===== NAV ===== -->
-        <nav class="nav">
-            <a href="../index.html"><i class="fas fa-home"></i> <span data-i18n="home">الرئيسية</span></a>
-            <a href="../novels.html"><i class="fas fa-book"></i> <span data-i18n="novels">الروايات</span></a>
-            <a href="../contact.html"><i class="fas fa-envelope"></i> <span data-i18n="contact">التواصل</span></a>
-            <a href="https://SaivCORE.github.io" target="_blank"><i class="fas fa-building"></i> SaivCORE</a>
-            <a href="https://SaivCORE.github.io/saivtube" target="_blank"><i class="fas fa-video"></i> SaivTUBE</a>
-        </nav>
-
-        <!-- ============================================================
-        ARABIC
-        ============================================================ -->
-        <div class="lang-section active" id="lang-ar" dir="rtl">
-
-            <!-- ===== BACK BUTTON ===== -->
-            <a href="../novels.html" class="btn-back animate-in animate-in-1">
-                <i class="fas fa-arrow-right"></i> <span data-i18n="back">العودة إلى قائمة الروايات</span>
-            </a>
-
-            <!-- ===== NOTICE ===== -->
-            <div class="notice animate-in animate-in-1">
-                <i class="fas fa-info-circle"></i>
-                <span data-i18n="notice">📌 هذه الرواية ما زالت قيد المراجعة. يمكنك تسجيل طلبك للحصول على النسخة النهائية فور اكتمالها.</span>
-            </div>
-
-            <!-- ===== COVER + INFO ===== -->
-            <div class="cover-section animate-in animate-in-1">
-                <div class="cover-img">
-                    <img src="../images/cover-2.jpg" alt="غلاف رواية شيفرة النبض" onerror="this.style.display='none'" />
-                    <div class="placeholder" style="display:none;"><i class="fas fa-bolt"></i></div>
-                </div>
-                <div class="info">
-                    <span class="tag">✦ رواية</span>
-                    <h1>شيفرة النبض</h1>
-                    <div class="author"><i class="fas fa-user-pen"></i> سيف الإسلام زحاف</div>
-                    <div class="status-badge"><i class="fas fa-clock"></i> قيد المراجعة</div>
-                    <div class="meta">
-                        <span><i class="fas fa-tag"></i> رواية جزائرية</span>
-                        <span><i class="fas fa-list"></i> 45 فصلاً</span>
-                        <span><i class="fas fa-calendar"></i> 2025</span>
-                    </div>
-                    <div class="desc">
-                        <strong>ملخص الرواية:</strong>
-                        <p style="margin-top:4px;">
-                            في عالم يسوده الذكاء الاصطناعي والتزييف العميق، تروي "شيفرة النبض"
-                            قصة ليلى بن عودة، المهندسة المعمارية التي تجد نفسها ضحية لمؤامرة رقمية
-                            تهدد سمعتها وحياتها. تتشابك الأحداث في رحلة بين وهران، تلمسان، باريس
-                            والعاصمة، حيث يتكشف خيط مؤامرة عالمية تستهدف تفكيك الوعي الجمعي
-                            للجزائريين باستخدام تقنيات الذكاء الاصطناعي التوليدي والحرب السيبرانية.
-                            الرواية تستعرض صراعاً وجودياً بين الحقيقة والزيف، بين الإنسانية والآلة.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== CHAPTER 1 ===== -->
-            <div class="chapter-section animate-in animate-in-2">
-                <div class="chapter-title">
-                    <i class="fas fa-book-open"></i> الفصل الأول
-                </div>
-                <div class="chapter-content">
-
-                    <p>
-                        إشعاع مفاجئ من تطبيق "تليغرام" في الثانية صباحاً كان كافياً لقلب حياة "ليلى بن عودة" رأساً على عقب. في غرفتها الهادئة بحي "كاستور" بوهران، انكسر صمت الليل برنين الهاتف فوق الطاولة الخشبية، ليعلن عن وصول ملف مرئي من مستخدم مجهول. ليلى، تلك الفتاة التي عُرفت برزانتها وتفوقها في هندسة العمارة بجامعة "إيسطو"، فتحت الرسالة بقلب يرتجف، لتجد فيديو مدمراً دقيقاً.. دقيقاً كانت كفيلة بإعدام سمعتها قبل أن يرتد إليها طرفها.
-                    </p>
-
-                    <p>
-                        تسمّرت عيناها على الشاشة، ولم يكن ما تراه مجرد "تركيب" وجوه ساذج، بل كان "اغتيالاً رقمياً" فائق الدقة. الفيديو يعرضها في وضعيات مخلة بالحياء، بجودة عالية تجعل من المستحيل على العين البشرية المجردة اكتشاف التزييف. صرخت صرخة صامتة وهي تتحسس وجهها؛ نفس الملامح، نفس طريقة رمش العين، وحتى تلك الشامة الصغيرة المميزة مرسومة بدقة. كل شيء كان مطابقاً لها تماماً.
-                    </p>
-
-                    <p>
-                        كانت ليلى ضحية لـ "بتر الهوية"، حيث تم استنساخ بصرها وبصيرتها رقمياً لضرب عائلتها المحافظة في مقتل. هي التي لم تخرج يوماً عن طوع والدها، الرجل الذي أمضى عمره وهو يرفع رأسه فخراً بـ "بنت بن عودة"، تجد نفسها الآن رهينة "بكسلت ميتة ولكنها تتنفس فضيحة".
-                    </p>
-
-                    <p>
-                        "أمامك 24 ساعة. إما الدفع، أو الفضيحة". كانت هذه الجملة تتردد في ذهن ليلى بن عودة كصوت مطرقة تهوي على سندان. لم تنم ليلى تلك الليلة؛ بل قضت ساعاتها الأولى في دهاليز محركات البحث، تحاول فهم لغة غريبة عنها.. لغة "الكريبتو" و"البلوكشين". بيدين مرتجفتين، قامت بتحميل تطبيق "Binance"، تلك المنصة التي تحولت في نظرها من تطبيق مالي إلى بوابة للنجاة أو الهلاك.
-                    </p>
-
-                    <p>
-                        عندما فتحت ليلى واجهة التداول، صدمتها الأرقام المتسارعة باللونين الأحمر والأخضر. بحثت عن "إيثيريوم 2.0"، لتجد أن سعر العملة الواحدة يتجاوز آلاف الدولارات. وحين قامت بعملية حسابية بسيطة لتحويل إيثيريوم 2.0 إلى الدينار الجزائري في "السوق السوداء"، شعرت بركبتيها تخونانها. المبلغ كان خيالياً؛ يتجاوز ثمن سيارة، أو ربما مدخرات عائلة بن عودة لعشر سنوات قادمة.
-                    </p>
-
-                    <p>
-                        دخلت ليلى في دوامة من الذعر التقني. لم تكن تعرف كيف تعمل منصات P2P (من شخص لشخص)، وكيف يمكنها إقناع "تاجر رقمي" غريب بأن يبيعها عملات مشفرة مقابل مبالغ نقدية ضخمة في وقت قياسي. كانت العمليات تتطلب "توثيق الهوية" (KYC)، وانتظاراً لا تملكه. كل دقيقة تمر، كانت الخوارزمية في الطرف الآخر تقترب من "أمر النشر" التلقائي، والعملة المشفرة التي صممت لتكون رمزاً للحرية المالية صارت في يد المبتز "سلسلة" تختنق عنقها.
-                    </p>
-
-                    <p>
-                        جلست ليلى في زاوية غرفتها، تنظر إلى حصالتها البسيطة وإلى عقدها الذهبي الذي ورثته عن جدتها، وشعرت بسخف المقارنة. كيف يمكن لذهب حقيقي، ملموس، وله تاريخ، أن يعجز عن شراء "بكسلت" مشفرة في فضاء افتراضي؟ الفجوة بين عالمها الواقعي المحافظ وبين العالم الرقمي المتوحش كانت تتسع لتبتلع مستقبلها. لم تكن ليلى تبحث عن ثروة، بل كانت تحاول شراء "صمت الآلة"، في سوق لا يعترف بالدموع، بل يعترف فقط بـ "المعاملة الناجحة".
-                    </p>
-
-                    <p>
-                        بينما كانت الشاشة تومض بأسعار الصرف المتغيرة، أدركت ليلى أن "بتر اللسان" لم يكن مجرد استعارة، بل هو واقع مادي؛ فمن لا يملك لغة المال الرقمي، لن يملك حق الدفاع عن شرفه في هذا العصر الجديد. ضاعت ليلى بين خيارات "التحويل" و"الإيداع"، بينما كان عداد الوقت في "تليغرام" يزحف ببرود نحو الصفر، معلناً اقتراب لحظة الانفجار الكبير الذي سيهدم جدران بيتها وسمعة والدها تحت أقدام خوارزمية لا تفهم معنى "الستر".
-                    </p>
-
-                </div>
-            </div>
-
-            <!-- ===== ACTION BAR ===== -->
-            <div class="action-bar animate-in animate-in-3">
-                <a href="../assets/pdf/shifrat-al-nabd-chapters-1-5.pdf" class="btn-primary" target="_blank">
-                    <i class="fas fa-download"></i> <span data-i18n="download">تحميل 5 فصول</span>
-                </a>
-                <a href="https://forms.google.com/your-form-link" target="_blank" class="btn-secondary">
-                    <i class="fas fa-envelope"></i> <span data-i18n="request">طلب الأولوية في القراءة</span>
-                </a>
-            </div>
-
+    <div class="nav-actions">
+      <div class="lang-wrap" id="langWrap">
+        <button class="lang-btn" id="langBtn">
+          <i class="fa-solid fa-globe" style="font-size:11px"></i>
+          <span id="langLabel">AR</span>
+        </button>
+        <div class="lang-menu">
+          <button class="lang-option active" data-lang="ar">العربية <span style="color:var(--muted);font-size:11px;font-weight:700">AR</span></button>
+          <button class="lang-option" data-lang="en">English <span style="color:var(--muted);font-size:11px;font-weight:700">EN</span></button>
+          <button class="lang-option" data-lang="fr">Français <span style="color:var(--muted);font-size:11px;font-weight:700">FR</span></button>
+          <button class="lang-option" data-lang="es">Español <span style="color:var(--muted);font-size:11px;font-weight:700">ES</span></button>
         </div>
-        <!-- ===== نهاية العربي ===== -->
+      </div>
 
+      <button class="icon-btn" id="themeBtn" aria-label="Theme">
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+      </button>
 
-        <!-- ============================================================
-        ENGLISH
-        ============================================================ -->
-        <div class="lang-section" id="lang-en" dir="ltr">
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
 
-            <a href="../novels.html" class="btn-back animate-in animate-in-1">
-                <i class="fas fa-arrow-left"></i> <span data-i18n="back">Back to Novels List</span>
-            </a>
+<!-- =========================================================
+     MOBILE DRAWER
+     ========================================================= -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer" aria-label="Mobile navigation">
+  <div class="drawer-head">
+    <div class="brand">
+      <span class="brand-mark">SZ</span>
+      <span class="brand-name" data-i18n="brand">سيف الإسلام زحاف</span>
+    </div>
+    <button class="icon-btn" id="drawerClose" aria-label="Close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  <nav class="drawer-links">
+    <a href="../index.html" class="drawer-link">
+      <i class="fa-solid fa-house"></i>
+      <span data-i18n="nav_home">الرئيسية</span>
+    </a>
+    <a href="../novels.html" class="drawer-link active">
+      <i class="fa-solid fa-book"></i>
+      <span data-i18n="nav_novels">الروايات</span>
+    </a>
+    <a href="../contact.html" class="drawer-link">
+      <i class="fa-solid fa-envelope"></i>
+      <span data-i18n="nav_contact">التواصل</span>
+    </a>
+    <a href="https://SaivCORE.github.io" target="_blank" rel="noopener noreferrer" class="drawer-link">
+      <i class="fa-solid fa-building"></i>
+      <span>SaivCORE</span>
+    </a>
+  </nav>
+</aside>
 
-            <div class="notice animate-in animate-in-1">
-                <i class="fas fa-info-circle"></i>
-                <span data-i18n="notice">📌 This novel is still under review. You can register your request to get the final version as soon as it's ready.</span>
-            </div>
+<!-- =========================================================
+     MAIN
+     ========================================================= -->
+<main>
+  <div class="wrap">
 
-            <div class="cover-section animate-in animate-in-1">
-                <div class="cover-img">
-                    <img src="../images/cover-2.jpg" alt="Shifrat Al-Nabd cover" onerror="this.style.display='none'" />
-                    <div class="placeholder" style="display:none;"><i class="fas fa-bolt"></i></div>
-                </div>
-                <div class="info">
-                    <span class="tag">✦ Novel</span>
-                    <h1>Shifrat Al-Nabd</h1>
-                    <div class="author"><i class="fas fa-user-pen"></i> Saif El Islem Zahaf</div>
-                    <div class="status-badge"><i class="fas fa-clock"></i> Under Review</div>
-                    <div class="meta">
-                        <span><i class="fas fa-tag"></i> Algerian Novel</span>
-                        <span><i class="fas fa-list"></i> 45 Chapters</span>
-                        <span><i class="fas fa-calendar"></i> 2025</span>
-                    </div>
-                    <div class="desc">
-                        <strong>Synopsis:</strong>
-                        <p style="margin-top:4px;">
-                            In a world dominated by artificial intelligence and deepfake, "Shifrat Al-Nabd"
-                            (Pulse Code) tells the story of Leila Ben Aouda, an architect who finds herself
-                            a victim of a digital conspiracy threatening her reputation and life. The events
-                            intertwine in a journey between Oran, Tlemcen, Paris and the capital, where the
-                            thread of a global conspiracy to dismantle the collective consciousness of
-                            Algerians unfolds using generative AI technologies and cyber warfare. The novel
-                            explores an existential struggle between truth and falsehood, between humanity
-                            and the machine.
-                        </p>
-                    </div>
-                </div>
-            </div>
+    <!-- =================== ARABIC =================== -->
+    <section class="lang-section active" data-lang="ar">
+      <a href="../novels.html" class="back-link">
+        <i class="fa-solid fa-arrow-right"></i>
+        <span data-i18n="back">العودة إلى الروايات</span>
+      </a>
 
-            <div class="chapter-section animate-in animate-in-2">
-                <div class="chapter-title">
-                    <i class="fas fa-book-open"></i> Chapter 1
-                </div>
-                <div class="chapter-content">
+      <div class="notice">
+        <i class="fa-solid fa-circle-info"></i>
+        <span data-i18n="notice">هذه الرواية ما زالت قيد المراجعة. يمكنك تسجيل طلبك للحصول على النسخة النهائية فور اكتمالها.</span>
+      </div>
 
-                    <p>
-                        A sudden flash from the "Telegram" app at two in the morning was enough to turn
-                        "Leila Ben Aouda's" life upside down. In her quiet room in the "Castor" neighborhood
-                        of Oran, the silence of the night was broken by the ringing of the phone on the
-                        wooden table, announcing the arrival of a video file from an unknown user. Leila,
-                        known for her intelligence and excellence in architecture at "USTO" University,
-                        opened the message with a trembling heart, only to find a devastating video so
-                        precise that it was enough to destroy her reputation before she could even react.
-                    </p>
-
-                    <p>
-                        Her eyes froze on the screen, and what she saw was not just a naive "face swap,"
-                        but a sophisticated "digital assassination." The video showed her in compromising
-                        positions, with such high quality that it was impossible for the naked human eye
-                        to detect the forgery. She screamed silently as she touched her face; the same
-                        features, the same way of blinking, and even that small distinctive mole were
-                        drawn with precision. Everything matched her perfectly.
-                    </p>
-
-                    <p>
-                        Leila was a victim of "identity amputation," where her image and likeness were
-                        digitally cloned to strike at her conservative family's core. She, who had never
-                        disobeyed her father—a man who spent his life proudly raising his head with
-                        "Bent Ben Aouda"—now found herself a hostage to "dead pixels that breathe scandal."
-                    </p>
-
-                    <p>
-                        "You have 24 hours. Either pay, or the scandal." This sentence echoed in Leila
-                        Ben Aouda's mind like a hammer striking an anvil. She didn't sleep that night;
-                        she spent her first hours in the depths of search engines, trying to understand a
-                        language foreign to her.. the language of "crypto" and "blockchain." With trembling
-                        hands, she downloaded the "Binance" app, a platform that in her eyes transformed
-                        from a financial app to a gateway to salvation or perdition.
-                    </p>
-
-                    <p>
-                        When Leila opened the trading interface, she was shocked by the rapidly changing
-                        numbers in red and green. She searched for "Ethereum 2.0," only to find that the
-                        price of a single coin exceeded thousands of dollars. When she did a simple
-                        calculation to convert Ethereum 2.0 to Algerian dinars in the "black market,"
-                        she felt her knees give way. The amount was astronomical; exceeding the price of
-                        a car, or perhaps the savings of the Ben Aouda family for ten years to come.
-                    </p>
-
-                    <p>
-                        Leila fell into a spiral of tech panic. She didn't know how P2P platforms worked
-                        (person to person), or how she could convince a strange "digital trader" to sell
-                        her cryptocurrency for large cash sums in record time. The transactions required
-                        "identity verification" (KYC), and waiting time she didn't have. With every passing
-                        minute, the algorithm on the other end was approaching the "publication command,"
-                        and the cryptocurrency designed to be a symbol of financial freedom became in the
-                        blackmailer's hand a "chain" strangling her neck.
-                    </p>
-
-                    <p>
-                        Leila sat in the corner of her room, looking at her simple piggy bank and her
-                        gold necklace inherited from her grandmother, feeling the absurdity of the
-                        comparison. How could real gold, tangible and with history, fail to buy "pixels"
-                        in a virtual space? The gap between her conservative real world and the wild
-                        digital world was widening to swallow her future. Leila wasn't looking for wealth;
-                        she was trying to buy the "silence of the machine," in a market that doesn't
-                        recognize tears, only "successful transactions."
-                    </p>
-
-                    <p>
-                        While the screen flickered with changing exchange rates, Leila realized that
-                        "cutting the tongue" was not just a metaphor, but a physical reality; those who
-                        don't speak the language of digital money won't have the right to defend their
-                        honor in this new era. Leila was lost between "transfer" and "deposit" options,
-                        while the timer on "Telegram" coldly crawled toward zero, announcing the approach
-                        of the moment of explosion that would destroy the walls of her home and her
-                        father's reputation under the feet of an algorithm that doesn't understand the
-                        meaning of "privacy."
-                    </p>
-
-                </div>
-            </div>
-
-            <div class="action-bar animate-in animate-in-3">
-                <a href="../assets/pdf/shifrat-al-nabd-chapters-1-5.pdf" class="btn-primary" target="_blank">
-                    <i class="fas fa-download"></i> <span data-i18n="download">Download 5 Chapters</span>
-                </a>
-                <a href="https://forms.google.com/your-form-link" target="_blank" class="btn-secondary">
-                    <i class="fas fa-envelope"></i> <span data-i18n="request">Request Priority Reading</span>
-                </a>
-            </div>
-
+      <div class="novel-header">
+        <div class="novel-cover">
+          <div class="novel-cover-fallback"><i class="fa-solid fa-bolt"></i></div>
+          <img src="../images/cover-2.jpg" alt="غلاف رواية شيفرة النبض" onerror="this.remove()" />
         </div>
-        <!-- ===== نهاية الإنجليزي ===== -->
 
-
-        <!-- ============================================================
-        FRENCH
-        ============================================================ -->
-        <div class="lang-section" id="lang-fr" dir="ltr">
-
-            <a href="../novels.html" class="btn-back animate-in animate-in-1">
-                <i class="fas fa-arrow-left"></i> <span data-i18n="back">Retour à la liste</span>
-            </a>
-
-            <div class="notice animate-in animate-in-1">
-                <i class="fas fa-info-circle"></i>
-                <span data-i18n="notice">📌 Ce roman est encore en révision. Vous pouvez enregistrer votre demande pour obtenir la version finale dès qu'elle sera prête.</span>
-            </div>
-
-            <div class="cover-section animate-in animate-in-1">
-                <div class="cover-img">
-                    <img src="../images/cover-2.jpg" alt="Couverture Shifrat Al-Nabd" onerror="this.style.display='none'" />
-                    <div class="placeholder" style="display:none;"><i class="fas fa-bolt"></i></div>
-                </div>
-                <div class="info">
-                    <span class="tag">✦ Roman</span>
-                    <h1>Shifrat Al-Nabd</h1>
-                    <div class="author"><i class="fas fa-user-pen"></i> Saif El Islem Zahaf</div>
-                    <div class="status-badge"><i class="fas fa-clock"></i> En révision</div>
-                    <div class="meta">
-                        <span><i class="fas fa-tag"></i> Roman algérien</span>
-                        <span><i class="fas fa-list"></i> 45 Chapitres</span>
-                        <span><i class="fas fa-calendar"></i> 2025</span>
-                    </div>
-                    <div class="desc">
-                        <strong>Résumé:</strong>
-                        <p style="margin-top:4px;">
-                            Dans un monde dominé par l'intelligence artificielle et le deepfake, "Shifrat
-                            Al-Nabd" (Code du pouls) raconte l'histoire de Leila Ben Aouda, une architecte
-                            qui se retrouve victime d'une conspiration numérique menaçant sa réputation et
-                            sa vie. Les événements s'entremêlent dans un voyage entre Oran, Tlemcen, Paris
-                            et la capitale, où se dévoile le fil d'une conspiration mondiale visant à
-                            démanteler la conscience collective des Algériens en utilisant les technologies
-                            d'IA générative et la cyber-guerre. Le roman explore une lutte existentielle
-                            entre la vérité et le faux, entre l'humanité et la machine.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="chapter-section animate-in animate-in-2">
-                <div class="chapter-title">
-                    <i class="fas fa-book-open"></i> Chapitre 1
-                </div>
-                <div class="chapter-content">
-
-                    <p>
-                        Une lueur soudaine de l'application "Telegram" à deux heures du matin suffit à
-                        bouleverser la vie de "Leila Ben Aouda". Dans sa chambre calme du quartier
-                        "Castor" à Oran, le silence de la nuit fut brisé par la sonnerie du téléphone sur
-                        la table en bois, annonçant l'arrivée d'un fichier vidéo d'un utilisateur inconnu.
-                        Leila, connue pour son intelligence et son excellence en architecture à l'université
-                        "USTO", ouvrit le message avec un cœur tremblant, pour trouver une vidéo dévastatrice
-                        si précise qu'elle suffisait à anéantir sa réputation avant même qu'elle puisse
-                        réagir.
-                    </p>
-
-                    <p>
-                        Ses yeux se figèrent sur l'écran, et ce qu'elle vit n'était pas un simple "montage"
-                        de visages naïf, mais un "assassinat numérique" sophistiqué. La vidéo la montrait
-                        dans des positions compromettantes, avec une qualité si élevée qu'il était
-                        impossible à l'œil humain nu de détecter la supercherie. Elle poussa un cri
-                        silencieux en touchant son visage; les mêmes traits, la même manière de cligner
-                        des yeux, et même ce petit grain de beauté distinctif étaient dessinés avec
-                        précision. Tout lui correspondait parfaitement.
-                    </p>
-
-                    <p>
-                        Leila était victime d'une "amputation d'identité", où son image et sa ressemblance
-                        étaient clonées numériquement pour frapper au cœur sa famille conservatrice. Elle,
-                        qui n'avait jamais désobéi à son père—un homme qui avait passé sa vie à lever
-                        fièrement la tête avec "Bent Ben Aouda"—se retrouvait maintenant otage de "pixels
-                        morts qui respirent le scandale."
-                    </p>
-
-                    <p>
-                        "Vous avez 24 heures. Soit vous payez, soit le scandale." Cette phrase résonnait
-                        dans l'esprit de Leila Ben Aouda comme un marteau frappant une enclume. Elle ne
-                        dormit pas cette nuit-là; elle passa ses premières heures dans les profondeurs des
-                        moteurs de recherche, essayant de comprendre un langage qui lui était étranger..
-                        le langage de la "crypto" et de la "blockchain." De mains tremblantes, elle
-                        téléchargea l'application "Binance", une plateforme qui se transforma à ses yeux
-                        d'une application financière en une porte vers le salut ou la perdition.
-                    </p>
-
-                    <p>
-                        Lorsque Leila ouvrit l'interface de trading, elle fut choquée par les nombres
-                        changeant rapidement en rouge et vert. Elle chercha "Ethereum 2.0," pour découvrir
-                        que le prix d'une seule pièce dépassait les milliers de dollars. Lorsqu'elle fit
-                        un calcul simple pour convertir Ethereum 2.0 en dinars algériens sur le "marché
-                        noir," elle sentit ses genoux se dérober. Le montant était astronomique; dépassant
-                        le prix d'une voiture, ou peut-être les économies de la famille Ben Aouda pour les
-                        dix prochaines années.
-                    </p>
-
-                    <p>
-                        Leila entra dans une spirale de panique technologique. Elle ne savait pas comment
-                        fonctionnaient les plateformes P2P (de personne à personne), ni comment convaincre
-                        un "marchand numérique" étrange de lui vendre des cryptomonnaies contre de grosses
-                        sommes en espèces en un temps record. Les transactions nécessitaient une
-                        "vérification d'identité" (KYC), et un temps d'attente qu'elle n'avait pas. Chaque
-                        minute qui passait, l'algorithme de l'autre côté se rapprochait de "l'ordre de
-                        publication," et la cryptomonnaie conçue pour être un symbole de liberté financière
-                        devenait entre les mains du maître-chanteur une "chaîne" lui serrant le cou.
-                    </p>
-
-                    <p>
-                        Leila s'assit dans un coin de sa chambre, regardant sa simple tirelire et son
-                        collier en or hérité de sa grand-mère, ressentant l'absurdité de la comparaison.
-                        Comment l'or réel, tangible et chargé d'histoire, pouvait-il échouer à acheter des
-                        "pixels" dans un espace virtuel? L'écart entre son monde réel conservateur et le
-                        monde numérique sauvage s'élargissait pour engloutir son avenir. Leila ne cherchait
-                        pas la richesse; elle essayait d'acheter le "silence de la machine," dans un marché
-                        qui ne reconnaît pas les larmes, seulement les "transactions réussies."
-                    </p>
-
-                    <p>
-                        Alors que l'écran clignotait avec des taux de change variables, Leila réalisa que
-                        "couper la langue" n'était pas qu'une métaphore, mais une réalité physique; ceux
-                        qui ne parlent pas le langage de l'argent numérique n'auront pas le droit de
-                        défendre leur honneur dans cette nouvelle ère. Leila était perdue entre les
-                        options de "transfert" et de "dépôt," tandis que le compteur sur "Telegram"
-                        avançait froidement vers zéro, annonçant l'approche du moment de l'explosion qui
-                        détruirait les murs de sa maison et la réputation de son père sous les pieds d'un
-                        algorithme qui ne comprend pas le sens de la "pudeur."
-                    </p>
-
-                </div>
-            </div>
-
-            <div class="action-bar animate-in animate-in-3">
-                <a href="../assets/pdf/shifrat-al-nabd-chapters-1-5.pdf" class="btn-primary" target="_blank">
-                    <i class="fas fa-download"></i> <span data-i18n="download">Télécharger 5 chapitres</span>
-                </a>
-                <a href="https://forms.google.com/your-form-link" target="_blank" class="btn-secondary">
-                    <i class="fas fa-envelope"></i> <span data-i18n="request">Demander la priorité de lecture</span>
-                </a>
-            </div>
-
+        <div class="novel-info">
+          <div class="novel-eyebrow">✦ رواية · الجزء الثاني</div>
+          <h1 class="novel-title">شيفرة النبض</h1>
+          <div class="novel-author">
+            <i class="fa-solid fa-user-pen"></i>
+            <span>سيف الإسلام زحاف</span>
+          </div>
+          <div class="novel-status pending"><span class="dot"></span> قيد المراجعة</div>
+          <div class="novel-meta">
+            <span><i class="fa-solid fa-tag"></i> رواية جزائرية</span>
+            <span><i class="fa-solid fa-list"></i> 45 فصلاً</span>
+            <span><i class="fa-solid fa-calendar"></i> 2025</span>
+          </div>
+          <p class="novel-synopsis">
+            <strong>ملخص الرواية</strong>
+            في عالم يسوده الذكاء الاصطناعي والتزييف العميق، تروي "شيفرة النبض" قصة ليلى بن عودة، المهندسة المعمارية التي تجد نفسها ضحية لمؤامرة رقمية تهدد سمعتها وحياتها. تتشابك الأحداث في رحلة بين وهران، تلمسان، باريس والعاصمة، حيث يتكشف خيط مؤامرة عالمية تستهدف تفكيك الوعي الجمعي للجزائريين باستخدام تقنيات الذكاء الاصطناعي التوليدي والحرب السيبرانية.
+          </p>
         </div>
-        <!-- ===== نهاية الفرنسي ===== -->
+      </div>
 
+      <article class="chapter">
+        <h2 class="chapter-title">
+          <i class="fa-solid fa-book-open"></i>
+          الفصل الأول
+        </h2>
+        <div class="chapter-content">
+          <p>إشعاع مفاجئ من تطبيق "تليغرام" في الثانية صباحاً كان كافياً لقلب حياة "ليلى بن عودة" رأساً على عقب. في غرفتها الهادئة بحي "كاستور" بوهران، انكسر صمت الليل برنين الهاتف فوق الطاولة الخشبية، ليعلن عن وصول ملف مرئي من مستخدم مجهول. ليلى، تلك الفتاة التي عُرفت برزانتها وتفوقها في هندسة العمارة بجامعة "إيسطو"، فتحت الرسالة بقلب يرتجف، لتجد فيديو مدمراً دقيقاً.. دقيقاً كانت كفيلة بإعدام سمعتها قبل أن يرتد إليها طرفها.</p>
+          <p>تسمّرت عيناها على الشاشة، ولم يكن ما تراه مجرد "تركيب" وجوه ساذج، بل كان "اغتيالاً رقمياً" فائق الدقة. الفيديو يعرضها في وضعيات مخلة بالحياء، بجودة عالية تجعل من المستحيل على العين البشرية المجردة اكتشاف التزييف. صرخت صرخة صامتة وهي تتحسس وجهها؛ نفس الملامح، نفس طريقة رمش العين، وحتى تلك الشامة الصغيرة المميزة مرسومة بدقة. كل شيء كان مطابقاً لها تماماً.</p>
+          <p>كانت ليلى ضحية لـ "بتر الهوية"، حيث تم استنساخ بصرها وبصيرتها رقمياً لضرب عائلتها المحافظة في مقتل. هي التي لم تخرج يوماً عن طوع والدها، الرجل الذي أمضى عمره وهو يرفع رأسه فخراً بـ "بنت بن عودة"، تجد نفسها الآن رهينة "بكسلت ميتة ولكنها تتنفس فضيحة".</p>
+          <p>"أمامك 24 ساعة. إما الدفع، أو الفضيحة". كانت هذه الجملة تتردد في ذهن ليلى بن عودة كصوت مطرقة تهوي على سندان. لم تنم ليلى تلك الليلة؛ بل قضت ساعاتها الأولى في دهاليز محركات البحث، تحاول فهم لغة غريبة عنها.. لغة "الكريبتو" و"البلوكشين". بيدين مرتجفتين، قامت بتحميل تطبيق "Binance"، تلك المنصة التي تحولت في نظرها من تطبيق مالي إلى بوابة للنجاة أو الهلاك.</p>
+          <p>عندما فتحت ليلى واجهة التداول، صدمتها الأرقام المتسارعة باللونين الأحمر والأخضر. بحثت عن "إيثيريوم 2.0"، لتجد أن سعر العملة الواحدة يتجاوز آلاف الدولارات. وحين قامت بعملية حسابية بسيطة لتحويل إيثيريوم 2.0 إلى الدينار الجزائري في "السوق السوداء"، شعرت بركبتيها تخونانها. المبلغ كان خيالياً؛ يتجاوز ثمن سيارة، أو ربما مدخرات عائلة بن عودة لعشر سنوات قادمة.</p>
+          <p>دخلت ليلى في دوامة من الذعر التقني. لم تكن تعرف كيف تعمل منصات P2P (من شخص لشخص)، وكيف يمكنها إقناع "تاجر رقمي" غريب بأن يبيعها عملات مشفرة مقابل مبالغ نقدية ضخمة في وقت قياسي. كانت العمليات تتطلب "توثيق الهوية" (KYC)، وانتظاراً لا تملكه. كل دقيقة تمر، كانت الخوارزمية في الطرف الآخر تقترب من "أمر النشر" التلقائي، والعملة المشفرة التي صممت لتكون رمزاً للحرية المالية صارت في يد المبتز "سلسلة" تختنق عنقها.</p>
+          <p>جلست ليلى في زاوية غرفتها، تنظر إلى حصالتها البسيطة وإلى عقدها الذهبي الذي ورثته عن جدتها، وشعرت بسخف المقارنة. كيف يمكن لذهب حقيقي، ملموس، وله تاريخ، أن يعجز عن شراء "بكسلت" مشفرة في فضاء افتراضي؟ الفجوة بين عالمها الواقعي المحافظ وبين العالم الرقمي المتوحش كانت تتسع لتبتلع مستقبلها. لم تكن ليلى تبحث عن ثروة، بل كانت تحاول شراء "صمت الآلة"، في سوق لا يعترف بالدموع، بل يعترف فقط بـ "المعاملة الناجحة".</p>
+          <p>بينما كانت الشاشة تومض بأسعار الصرف المتغيرة، أدركت ليلى أن "بتر اللسان" لم يكن مجرد استعارة، بل هو واقع مادي؛ فمن لا يملك لغة المال الرقمي، لن يملك حق الدفاع عن شرفه في هذا العصر الجديد. ضاعت ليلى بين خيارات "التحويل" و"الإيداع"، بينما كان عداد الوقت في "تليغرام" يزحف ببرود نحو الصفر، معلناً اقتراب لحظة الانفجار الكبير الذي سيهدم جدران بيتها وسمعة والدها تحت أقدام خوارزمية لا تفهم معنى "الستر".</p>
+        </div>
+      </article>
 
-        <!-- ===== FOOTER ===== -->
-        <footer class="footer">
-            <div class="links">
-                <a href="../index.html"><i class="fas fa-home"></i> <span data-i18n="footer-home">الرئيسية</span></a>
-                <a href="../novels.html"><i class="fas fa-book"></i> <span data-i18n="footer-novels">الروايات</span></a>
-                <a href="../contact.html"><i class="fas fa-envelope"></i> <span data-i18n="footer-contact">التواصل</span></a>
-                <a href="https://SaivCORE.github.io" target="_blank"><i class="fas fa-building"></i> SaivCORE</a>
+      <div class="actions">
+        <!-- ═══════ Wattpad Dropdown ═══════ -->
+        <div class="wattpad-wrap" data-wattpad>
+          <button type="button" class="btn btn-wattpad wattpad-toggle">
+            <i class="fa-brands fa-wattpad"></i>
+            <span data-i18n="wattpad">اقرأها على واتباد</span>
+            <i class="fa-solid fa-chevron-down wattpad-chevron"></i>
+          </button>
+          <div class="wattpad-menu">
+            <div class="wattpad-menu-head">
+              <i class="fa-brands fa-wattpad"></i>
+              <span data-i18n="wattpad_choose">اختر اللغة</span>
             </div>
-            <p>
-                <i class="fas fa-code"></i>
-                <span data-i18n="footer-made">صُنع بـ</span>
-                <i class="fas fa-heart heart"></i>
-                <span data-i18n="footer-by">بواسطة</span>
-                <strong>سيف الإسلام زحاف</strong>
-                <span class="flag">🇩🇿</span>
-                · 2025
-            </p>
-        </footer>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-AR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇸🇦</span>
+              <span class="wattpad-lang">العربية</span>
+              <span class="wattpad-tag">AR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-EN-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇬🇧</span>
+              <span class="wattpad-lang">English</span>
+              <span class="wattpad-tag">EN</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-FR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇫🇷</span>
+              <span class="wattpad-lang">Français</span>
+              <span class="wattpad-tag">FR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-ES-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇪🇸</span>
+              <span class="wattpad-lang">Español</span>
+              <span class="wattpad-tag">ES</span>
+            </a>
+          </div>
+        </div>
 
+        <!-- ═══════ Request Priority ═══════ -->
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline request-btn">
+          <i class="fa-solid fa-star"></i>
+          <span data-i18n="request">طلب الأولوية في القراءة</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- =================== ENGLISH =================== -->
+    <section class="lang-section" data-lang="en">
+      <a href="../novels.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="back">Back to Novels</span>
+      </a>
+
+      <div class="notice">
+        <i class="fa-solid fa-circle-info"></i>
+        <span data-i18n="notice">This novel is still under review. You can register your request to get the final version as soon as it's ready.</span>
+      </div>
+
+      <div class="novel-header">
+        <div class="novel-cover">
+          <div class="novel-cover-fallback"><i class="fa-solid fa-bolt"></i></div>
+          <img src="../images/cover-2.jpg" alt="Shifrat Al-Nabd cover" onerror="this.remove()" />
+        </div>
+
+        <div class="novel-info">
+          <div class="novel-eyebrow">✦ Novel · Volume Two</div>
+          <h1 class="novel-title">Shifrat Al-Nabd</h1>
+          <div class="novel-author">
+            <i class="fa-solid fa-user-pen"></i>
+            <span>Saif El Islem Zahaf</span>
+          </div>
+          <div class="novel-status pending"><span class="dot"></span> Under Review</div>
+          <div class="novel-meta">
+            <span><i class="fa-solid fa-tag"></i> Algerian Novel</span>
+            <span><i class="fa-solid fa-list"></i> 45 Chapters</span>
+            <span><i class="fa-solid fa-calendar"></i> 2025</span>
+          </div>
+          <p class="novel-synopsis">
+            <strong>Synopsis</strong>
+            In a world dominated by artificial intelligence and deepfake, "Shifrat Al-Nabd" (Pulse Code) tells the story of Leila Ben Aouda, an architect who finds herself a victim of a digital conspiracy threatening her reputation and life. The events intertwine in a journey between Oran, Tlemcen, Paris and the capital, where the thread of a global conspiracy to dismantle the collective consciousness of Algerians unfolds using generative AI technologies and cyber warfare.
+          </p>
+        </div>
+      </div>
+
+      <article class="chapter">
+        <h2 class="chapter-title">
+          <i class="fa-solid fa-book-open"></i>
+          Chapter One
+        </h2>
+        <div class="chapter-content">
+          <p>A sudden flash from the "Telegram" app at two in the morning was enough to turn "Leila Ben Aouda's" life upside down. In her quiet room in the "Castor" neighborhood of Oran, the silence of the night was broken by the ringing of the phone on the wooden table, announcing the arrival of a video file from an unknown user. Leila, known for her intelligence and excellence in architecture at "USTO" University, opened the message with a trembling heart, only to find a devastating video so precise that it was enough to destroy her reputation before she could even react.</p>
+          <p>Her eyes froze on the screen, and what she saw was not just a naive "face swap," but a sophisticated "digital assassination." The video showed her in compromising positions, with such high quality that it was impossible for the naked human eye to detect the forgery. She screamed silently as she touched her face; the same features, the same way of blinking, and even that small distinctive mole were drawn with precision. Everything matched her perfectly.</p>
+          <p>Leila was a victim of "identity amputation," where her image and likeness were digitally cloned to strike at her conservative family's core. She, who had never disobeyed her father—a man who spent his life proudly raising his head with "Bent Ben Aouda"—now found herself a hostage to "dead pixels that breathe scandal."</p>
+          <p>"You have 24 hours. Either pay, or the scandal." This sentence echoed in Leila Ben Aouda's mind like a hammer striking an anvil. She didn't sleep that night; she spent her first hours in the depths of search engines, trying to understand a language foreign to her.. the language of "crypto" and "blockchain." With trembling hands, she downloaded the "Binance" app, a platform that in her eyes transformed from a financial app to a gateway to salvation or perdition.</p>
+          <p>When Leila opened the trading interface, she was shocked by the rapidly changing numbers in red and green. She searched for "Ethereum 2.0," only to find that the price of a single coin exceeded thousands of dollars. When she did a simple calculation to convert Ethereum 2.0 to Algerian dinars in the "black market," she felt her knees give way. The amount was astronomical; exceeding the price of a car, or perhaps the savings of the Ben Aouda family for ten years to come.</p>
+          <p>Leila fell into a spiral of tech panic. She didn't know how P2P platforms worked (person to person), or how she could convince a strange "digital trader" to sell her cryptocurrency for large cash sums in record time. The transactions required "identity verification" (KYC), and waiting time she didn't have. With every passing minute, the algorithm on the other end was approaching the "publication command," and the cryptocurrency designed to be a symbol of financial freedom became in the blackmailer's hand a "chain" strangling her neck.</p>
+          <p>Leila sat in the corner of her room, looking at her simple piggy bank and her gold necklace inherited from her grandmother, feeling the absurdity of the comparison. How could real gold, tangible and with history, fail to buy "pixels" in a virtual space? The gap between her conservative real world and the wild digital world was widening to swallow her future. Leila wasn't looking for wealth; she was trying to buy the "silence of the machine," in a market that doesn't recognize tears, only "successful transactions."</p>
+          <p>While the screen flickered with changing exchange rates, Leila realized that "cutting the tongue" was not just a metaphor, but a physical reality; those who don't speak the language of digital money won't have the right to defend their honor in this new era. Leila was lost between "transfer" and "deposit" options, while the timer on "Telegram" coldly crawled toward zero, announcing the approach of the moment of explosion that would destroy the walls of her home and her father's reputation under the feet of an algorithm that doesn't understand the meaning of "privacy."</p>
+        </div>
+      </article>
+
+      <div class="actions">
+        <div class="wattpad-wrap" data-wattpad>
+          <button type="button" class="btn btn-wattpad wattpad-toggle">
+            <i class="fa-brands fa-wattpad"></i>
+            <span data-i18n="wattpad">Read on Wattpad</span>
+            <i class="fa-solid fa-chevron-down wattpad-chevron"></i>
+          </button>
+          <div class="wattpad-menu">
+            <div class="wattpad-menu-head">
+              <i class="fa-brands fa-wattpad"></i>
+              <span data-i18n="wattpad_choose">Choose language</span>
+            </div>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-AR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇸🇦</span>
+              <span class="wattpad-lang">العربية</span>
+              <span class="wattpad-tag">AR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-EN-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇬🇧</span>
+              <span class="wattpad-lang">English</span>
+              <span class="wattpad-tag">EN</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-FR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇫🇷</span>
+              <span class="wattpad-lang">Français</span>
+              <span class="wattpad-tag">FR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-ES-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇪🇸</span>
+              <span class="wattpad-lang">Español</span>
+              <span class="wattpad-tag">ES</span>
+            </a>
+          </div>
+        </div>
+
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline request-btn">
+          <i class="fa-solid fa-star"></i>
+          <span data-i18n="request">Request Priority Reading</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- =================== FRENCH =================== -->
+    <section class="lang-section" data-lang="fr">
+      <a href="../novels.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="back">Retour aux romans</span>
+      </a>
+
+      <div class="notice">
+        <i class="fa-solid fa-circle-info"></i>
+        <span data-i18n="notice">Ce roman est encore en révision. Vous pouvez enregistrer votre demande pour obtenir la version finale dès qu'elle sera prête.</span>
+      </div>
+
+      <div class="novel-header">
+        <div class="novel-cover">
+          <div class="novel-cover-fallback"><i class="fa-solid fa-bolt"></i></div>
+          <img src="../images/cover-2.jpg" alt="Couverture Shifrat Al-Nabd" onerror="this.remove()" />
+        </div>
+
+        <div class="novel-info">
+          <div class="novel-eyebrow">✦ Roman · Tome 2</div>
+          <h1 class="novel-title">Shifrat Al-Nabd</h1>
+          <div class="novel-author">
+            <i class="fa-solid fa-user-pen"></i>
+            <span>Saif El Islem Zahaf</span>
+          </div>
+          <div class="novel-status pending"><span class="dot"></span> En révision</div>
+          <div class="novel-meta">
+            <span><i class="fa-solid fa-tag"></i> Roman algérien</span>
+            <span><i class="fa-solid fa-list"></i> 45 Chapitres</span>
+            <span><i class="fa-solid fa-calendar"></i> 2025</span>
+          </div>
+          <p class="novel-synopsis">
+            <strong>Résumé</strong>
+            Dans un monde dominé par l'intelligence artificielle et le deepfake, "Shifrat Al-Nabd" (Code du pouls) raconte l'histoire de Leila Ben Aouda, une architecte qui se retrouve victime d'une conspiration numérique menaçant sa réputation et sa vie. Les événements s'entremêlent dans un voyage entre Oran, Tlemcen, Paris et la capitale, où se dévoile le fil d'une conspiration mondiale visant à démanteler la conscience collective des Algériens en utilisant les technologies d'IA générative et la cyber-guerre.
+          </p>
+        </div>
+      </div>
+
+      <article class="chapter">
+        <h2 class="chapter-title">
+          <i class="fa-solid fa-book-open"></i>
+          Chapitre Un
+        </h2>
+        <div class="chapter-content">
+          <p>Une lueur soudaine de l'application "Telegram" à deux heures du matin suffit à bouleverser la vie de "Leila Ben Aouda". Dans sa chambre calme du quartier "Castor" à Oran, le silence de la nuit fut brisé par la sonnerie du téléphone sur la table en bois, annonçant l'arrivée d'un fichier vidéo d'un utilisateur inconnu. Leila, connue pour son intelligence et son excellence en architecture à l'université "USTO", ouvrit le message avec un cœur tremblant, pour trouver une vidéo dévastatrice si précise qu'elle suffisait à anéantir sa réputation avant même qu'elle puisse réagir.</p>
+          <p>Ses yeux se figèrent sur l'écran, et ce qu'elle vit n'était pas un simple "montage" de visages naïf, mais un "assassinat numérique" sophistiqué. La vidéo la montrait dans des positions compromettantes, avec une qualité si élevée qu'il était impossible à l'œil humain nu de détecter la supercherie. Elle poussa un cri silencieux en touchant son visage; les mêmes traits, la même manière de cligner des yeux, et même ce petit grain de beauté distinctif étaient dessinés avec précision. Tout lui correspondait parfaitement.</p>
+          <p>Leila était victime d'une "amputation d'identité", où son image et sa ressemblance étaient clonées numériquement pour frapper au cœur sa famille conservatrice. Elle, qui n'avait jamais désobéi à son père—un homme qui avait passé sa vie à lever fièrement la tête avec "Bent Ben Aouda"—se retrouvait maintenant otage de "pixels morts qui respirent le scandale."</p>
+          <p>"Vous avez 24 heures. Soit vous payez, soit le scandale." Cette phrase résonnait dans l'esprit de Leila Ben Aouda comme un marteau frappant une enclume. Elle ne dormit pas cette nuit-là; elle passa ses premières heures dans les profondeurs des moteurs de recherche, essayant de comprendre un langage qui lui était étranger.. le langage de la "crypto" et de la "blockchain." De mains tremblantes, elle téléchargea l'application "Binance", une plateforme qui se transforma à ses yeux d'une application financière en une porte vers le salut ou la perdition.</p>
+          <p>Lorsque Leila ouvrit l'interface de trading, elle fut choquée par les nombres changeant rapidement en rouge et vert. Elle chercha "Ethereum 2.0," pour découvrir que le prix d'une seule pièce dépassait les milliers de dollars. Lorsqu'elle fit un calcul simple pour convertir Ethereum 2.0 en dinars algériens sur le "marché noir," elle sentit ses genoux se dérober. Le montant était astronomique; dépassant le prix d'une voiture, ou peut-être les économies de la famille Ben Aouda pour les dix prochaines années.</p>
+          <p>Leila entra dans une spirale de panique technologique. Elle ne savait pas comment fonctionnaient les plateformes P2P (de personne à personne), ni comment convaincre un "marchand numérique" étrange de lui vendre des cryptomonnaies contre de grosses sommes en espèces en un temps record. Les transactions nécessitaient une "vérification d'identité" (KYC), et un temps d'attente qu'elle n'avait pas. Chaque minute qui passait, l'algorithme de l'autre côté se rapprochait de "l'ordre de publication," et la cryptomonnaie conçue pour être un symbole de liberté financière devenait entre les mains du maître-chanteur une "chaîne" lui serrant le cou.</p>
+          <p>Leila s'assit dans un coin de sa chambre, regardant sa simple tirelire et son collier en or hérité de sa grand-mère, ressentant l'absurdité de la comparaison. Comment l'or réel, tangible et chargé d'histoire, pouvait-il échouer à acheter des "pixels" dans un espace virtuel? L'écart entre son monde réel conservateur et le monde numérique sauvage s'élargissait pour engloutir son avenir. Leila ne cherchait pas la richesse; elle essayait d'acheter le "silence de la machine," dans un marché qui ne reconnaît pas les larmes, seulement les "transactions réussies."</p>
+          <p>Alors que l'écran clignotait avec des taux de change variables, Leila réalisa que "couper la langue" n'était pas qu'une métaphore, mais une réalité physique; ceux qui ne parlent pas le langage de l'argent numérique n'auront pas le droit de défendre leur honneur dans cette nouvelle ère. Leila était perdue entre les options de "transfert" et de "dépôt," tandis que le compteur sur "Telegram" avançait froidement vers zéro, annonçant l'approche du moment de l'explosion qui détruirait les murs de sa maison et la réputation de son père sous les pieds d'un algorithme qui ne comprend pas le sens de la "pudeur."</p>
+        </div>
+      </article>
+
+      <div class="actions">
+        <div class="wattpad-wrap" data-wattpad>
+          <button type="button" class="btn btn-wattpad wattpad-toggle">
+            <i class="fa-brands fa-wattpad"></i>
+            <span data-i18n="wattpad">Lire sur Wattpad</span>
+            <i class="fa-solid fa-chevron-down wattpad-chevron"></i>
+          </button>
+          <div class="wattpad-menu">
+            <div class="wattpad-menu-head">
+              <i class="fa-brands fa-wattpad"></i>
+              <span data-i18n="wattpad_choose">Choisir la langue</span>
+            </div>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-AR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇸🇦</span>
+              <span class="wattpad-lang">العربية</span>
+              <span class="wattpad-tag">AR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-EN-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇬🇧</span>
+              <span class="wattpad-lang">English</span>
+              <span class="wattpad-tag">EN</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-FR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇫🇷</span>
+              <span class="wattpad-lang">Français</span>
+              <span class="wattpad-tag">FR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-ES-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇪🇸</span>
+              <span class="wattpad-lang">Español</span>
+              <span class="wattpad-tag">ES</span>
+            </a>
+          </div>
+        </div>
+
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline request-btn">
+          <i class="fa-solid fa-star"></i>
+          <span data-i18n="request">Demander la priorité de lecture</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- =================== SPANISH =================== -->
+    <section class="lang-section" data-lang="es">
+      <a href="../novels.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="back">Volver a las novelas</span>
+      </a>
+
+      <div class="notice">
+        <i class="fa-solid fa-circle-info"></i>
+        <span data-i18n="notice">Esta novela aún está en revisión. Puedes registrar tu solicitud para obtener la versión final en cuanto esté lista.</span>
+      </div>
+
+      <div class="novel-header">
+        <div class="novel-cover">
+          <div class="novel-cover-fallback"><i class="fa-solid fa-bolt"></i></div>
+          <img src="../images/cover-2.jpg" alt="Portada de Shifrat Al-Nabd" onerror="this.remove()" />
+        </div>
+
+        <div class="novel-info">
+          <div class="novel-eyebrow">✦ Novela · Tomo 2</div>
+          <h1 class="novel-title">Shifrat Al-Nabd</h1>
+          <div class="novel-author">
+            <i class="fa-solid fa-user-pen"></i>
+            <span>Saif El Islem Zahaf</span>
+          </div>
+          <div class="novel-status pending"><span class="dot"></span> En revisión</div>
+          <div class="novel-meta">
+            <span><i class="fa-solid fa-tag"></i> Novela argelina</span>
+            <span><i class="fa-solid fa-list"></i> 45 Capítulos</span>
+            <span><i class="fa-solid fa-calendar"></i> 2025</span>
+          </div>
+          <p class="novel-synopsis">
+            <strong>Sinopsis</strong>
+            En un mundo dominado por la inteligencia artificial y el deepfake, "Shifrat Al-Nabd" (Código del pulso) cuenta la historia de Leila Ben Aouda, una arquitecta que se encuentra víctima de una conspiración digital que amenaza su reputación y su vida. Los acontecimientos se entrelazan en un viaje entre Orán, Tlemcen, París y la capital, donde se desvela el hilo de una conspiración mundial destinada a desmantelar la conciencia colectiva de los argelinos mediante tecnologías de IA generativa y guerra cibernética.
+          </p>
+        </div>
+      </div>
+
+      <article class="chapter">
+        <h2 class="chapter-title">
+          <i class="fa-solid fa-book-open"></i>
+          Capítulo Uno
+        </h2>
+        <div class="chapter-content">
+          <p>Un destello repentino de la aplicación "Telegram" a las dos de la madrugada fue suficiente para poner patas arriba la vida de "Leila Ben Aouda". En su tranquila habitación del barrio "Castor" en Orán, el silencio de la noche se rompió por el timbre del teléfono sobre la mesa de madera, anunciando la llegada de un archivo de vídeo de un usuario desconocido. Leila, conocida por su inteligencia y excelencia en arquitectura en la universidad "USTO", abrió el mensaje con el corazón tembloroso, solo para encontrar un vídeo devastador tan preciso que bastaba para destruir su reputación antes de que pudiera reaccionar.</p>
+          <p>Sus ojos se congelaron en la pantalla, y lo que vio no era solo un "montaje" de caras ingenuo, sino un "asesinato digital" sofisticado. El vídeo la mostraba en posiciones comprometedoras, con una calidad tan alta que era imposible para el ojo humano desnudo detectar la falsificación. Gritó en silencio mientras se tocaba la cara; los mismos rasgos, la misma forma de parpadear, e incluso ese pequeño lunar distintivo estaban dibujados con precisión. Todo coincidía perfectamente con ella.</p>
+          <p>Leila era víctima de una "amputación de identidad", donde su imagen y semejanza fueron clonadas digitalmente para atacar el núcleo de su familia conservadora. Ella, que nunca había desobedecido a su padre—un hombre que había pasado su vida levantando orgullosamente la cabeza con "Bent Ben Aouda"—ahora se encontraba como rehén de "píxeles muertos que respiran escándalo."</p>
+          <p>"Tienes 24 horas. O pagas, o el escándalo." Esta frase resonaba en la mente de Leila Ben Aouda como un martillo golpeando un yunque. No durmió esa noche; pasó sus primeras horas en las profundidades de los motores de búsqueda, tratando de entender un lenguaje que le era ajeno.. el lenguaje de las "cripto" y la "blockchain." Con manos temblorosas, descargó la aplicación "Binance", una plataforma que a sus ojos se transformó de una aplicación financiera en una puerta hacia la salvación o la perdición.</p>
+          <p>Cuando Leila abrió la interfaz de trading, quedó impactada por los números que cambiaban rápidamente en rojo y verde. Buscó "Ethereum 2.0," solo para descubrir que el precio de una sola moneda superaba los miles de dólares. Cuando hizo un cálculo simple para convertir Ethereum 2.0 a dinares argelinos en el "mercado negro," sintió que sus rodillas cedían. La cantidad era astronómica; superando el precio de un coche, o quizás los ahorros de la familia Ben Aouda para los próximos diez años.</p>
+          <p>Leila cayó en una espiral de pánico tecnológico. No sabía cómo funcionaban las plataformas P2P (de persona a persona), ni cómo podía convencer a un extraño "comerciante digital" de venderle criptomonedas por grandes sumas en efectivo en tiempo récord. Las transacciones requerían "verificación de identidad" (KYC), y un tiempo de espera que no tenía. Con cada minuto que pasaba, el algoritmo del otro lado se acercaba al "comando de publicación," y la criptomoneda diseñada para ser un símbolo de libertad financiera se convertía en manos del chantajista en una "cadena" que le estrangulaba el cuello.</p>
+          <p>Leila se sentó en un rincón de su habitación, mirando su sencilla hucha y su collar de oro heredado de su abuela, sintiendo lo absurdo de la comparación. ¿Cómo podía el oro real, tangible y con historia, fallar a la hora de comprar "píxeles" en un espacio virtual? La brecha entre su mundo real conservador y el salvaje mundo digital se ampliaba para tragarse su futuro. Leila no buscaba riqueza; estaba tratando de comprar el "silencio de la máquina," en un mercado que no reconoce las lágrimas, solo las "transacciones exitosas."</p>
+          <p>Mientras la pantalla parpadeaba con tipos de cambio cambiantes, Leila se dio cuenta de que "cortar la lengua" no era solo una metáfora, sino una realidad física; quienes no hablan el lenguaje del dinero digital no tendrán derecho a defender su honor en esta nueva era. Leila estaba perdida entre las opciones de "transferencia" y "depósito," mientras el temporizador en "Telegram" avanzaba fríamente hacia cero, anunciando la aproximación del momento de la explosión que destruiría las paredes de su casa y la reputación de su padre bajo los pies de un algoritmo que no entiende el significado de la "privacidad."</p>
+        </div>
+      </article>
+
+      <div class="actions">
+        <div class="wattpad-wrap" data-wattpad>
+          <button type="button" class="btn btn-wattpad wattpad-toggle">
+            <i class="fa-brands fa-wattpad"></i>
+            <span data-i18n="wattpad">Leer en Wattpad</span>
+            <i class="fa-solid fa-chevron-down wattpad-chevron"></i>
+          </button>
+          <div class="wattpad-menu">
+            <div class="wattpad-menu-head">
+              <i class="fa-brands fa-wattpad"></i>
+              <span data-i18n="wattpad_choose">Elegir idioma</span>
+            </div>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-AR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇸🇦</span>
+              <span class="wattpad-lang">العربية</span>
+              <span class="wattpad-tag">AR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-EN-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇬🇧</span>
+              <span class="wattpad-lang">English</span>
+              <span class="wattpad-tag">EN</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-FR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇫🇷</span>
+              <span class="wattpad-lang">Français</span>
+              <span class="wattpad-tag">FR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-ES-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇪🇸</span>
+              <span class="wattpad-lang">Español</span>
+              <span class="wattpad-tag">ES</span>
+            </a>
+          </div>
+        </div>
+
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline request-btn">
+          <i class="fa-solid fa-star"></i>
+          <span data-i18n="request">Solicitar prioridad de lectura</span>
+        </a>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-text">
+      <span data-i18n="footer_made">صُنع بـ</span>
+      <span class="footer-heart">♥</span>
+      <span data-i18n="footer_by">بواسطة سيف الإسلام زحاف</span>
+      <span>·</span>
+      <span>Made in Algeria 🇩🇿</span>
     </div>
 
-    <!-- ============================================================
-    JAVASCRIPT
-    ============================================================ -->
-    <script>
-        (function() {
+    <nav class="footer-links">
+      <a href="../index.html" data-i18n="nav_home">الرئيسية</a>
+      <a href="../novels.html" data-i18n="nav_novels">الروايات</a>
+      <a href="../contact.html" data-i18n="nav_contact">التواصل</a>
+    </nav>
 
-            const langBtns = document.querySelectorAll('.lang-btn');
-            const langSections = {
-                ar: document.getElementById('lang-ar'),
-                en: document.getElementById('lang-en'),
-                fr: document.getElementById('lang-fr')
-            };
-            const themeBtn = document.getElementById('themeBtn');
-            const body = document.body;
+    <div class="footer-copy">
+      © <span id="year"></span> Saif El Islem Zahaf — SaivCORE
+    </div>
+  </div>
+</footer>
 
-            const t = {
-                ar: {
-                    home: 'الرئيسية',
-                    novels: 'الروايات',
-                    contact: 'التواصل',
-                    'footer-home': 'الرئيسية',
-                    'footer-novels': 'الروايات',
-                    'footer-contact': 'التواصل',
-                    'footer-made': 'صُنع بـ',
-                    'footer-by': 'بواسطة',
-                    back: 'العودة إلى قائمة الروايات',
-                    download: 'تحميل 5 فصول',
-                    request: 'طلب الأولوية في القراءة',
-                    notice: '📌 هذه الرواية ما زالت قيد المراجعة. يمكنك تسجيل طلبك للحصول على النسخة النهائية فور اكتمالها.'
-                },
-                en: {
-                    home: 'Home',
-                    novels: 'Novels',
-                    contact: 'Contact',
-                    'footer-home': 'Home',
-                    'footer-novels': 'Novels',
-                    'footer-contact': 'Contact',
-                    'footer-made': 'Made with',
-                    'footer-by': 'by',
-                    back: 'Back to Novels List',
-                    download: 'Download 5 Chapters',
-                    request: 'Request Priority Reading',
-                    notice: '📌 This novel is still under review. You can register your request to get the final version as soon as it\'s ready.'
-                },
-                fr: {
-                    home: 'Accueil',
-                    novels: 'Romans',
-                    contact: 'Contact',
-                    'footer-home': 'Accueil',
-                    'footer-novels': 'Romans',
-                    'footer-contact': 'Contact',
-                    'footer-made': 'Fait avec',
-                    'footer-by': 'par',
-                    back: 'Retour à la liste des romans',
-                    download: 'Télécharger 5 chapitres',
-                    request: 'Demander la priorité de lecture',
-                    notice: '📌 Ce roman est encore en révision. Vous pouvez enregistrer votre demande pour obtenir la version finale dès qu\'elle sera prête.'
-                }
-            };
+<script>
+(function () {
+  'use strict';
 
-            function applyTranslation(lang) {
-                const data = t[lang];
-                if (!data) return;
-                document.querySelectorAll('[data-i18n]').forEach(el => {
-                    const key = el.getAttribute('data-i18n');
-                    if (data[key]) el.textContent = data[key];
-                });
-            }
+  /* =========================================================
+     TRANSLATIONS
+     ========================================================= */
+  const I18N = {
+    ar: {
+      dir: 'rtl', htmlLang: 'ar', font: "'Cairo', 'Inter', sans-serif",
+      labels: {
+        lang: 'AR',
+        brand: 'سيف الإسلام زحاف',
+        nav_home: 'الرئيسية',
+        nav_novels: 'الروايات',
+        nav_contact: 'التواصل',
+        back: 'العودة إلى الروايات',
+        notice: 'هذه الرواية ما زالت قيد المراجعة. يمكنك تسجيل طلبك للحصول على النسخة النهائية فور اكتمالها.',
+        wattpad: 'اقرأها على واتباد',
+        wattpad_choose: 'اختر اللغة',
+        request: 'طلب الأولوية في القراءة',
+        footer_made: 'صُنع بـ',
+        footer_by: 'بواسطة سيف الإسلام زحاف',
+      }
+    },
+    en: {
+      dir: 'ltr', htmlLang: 'en', font: "'Inter', sans-serif",
+      labels: {
+        lang: 'EN',
+        brand: 'Saif El Islem Zahaf',
+        nav_home: 'Home',
+        nav_novels: 'Novels',
+        nav_contact: 'Contact',
+        back: 'Back to Novels',
+        notice: 'This novel is still under review. You can register your request to get the final version as soon as it\'s ready.',
+        wattpad: 'Read on Wattpad',
+        wattpad_choose: 'Choose language',
+        request: 'Request Priority Reading',
+        footer_made: 'Made with',
+        footer_by: 'by Saif El Islem Zahaf',
+      }
+    },
+    fr: {
+      dir: 'ltr', htmlLang: 'fr', font: "'Inter', sans-serif",
+      labels: {
+        lang: 'FR',
+        brand: 'Saif El Islem Zahaf',
+        nav_home: 'Accueil',
+        nav_novels: 'Romans',
+        nav_contact: 'Contact',
+        back: 'Retour aux romans',
+        notice: 'Ce roman est encore en révision. Vous pouvez enregistrer votre demande pour obtenir la version finale dès qu\'elle sera prête.',
+        wattpad: 'Lire sur Wattpad',
+        wattpad_choose: 'Choisir la langue',
+        request: 'Demander la priorité de lecture',
+        footer_made: 'Fait avec',
+        footer_by: 'par Saif El Islem Zahaf',
+      }
+    },
+    es: {
+      dir: 'ltr', htmlLang: 'es', font: "'Inter', sans-serif",
+      labels: {
+        lang: 'ES',
+        brand: 'Saif El Islem Zahaf',
+        nav_home: 'Inicio',
+        nav_novels: 'Novelas',
+        nav_contact: 'Contacto',
+        back: 'Volver a las novelas',
+        notice: 'Esta novela aún está en revisión. Puedes registrar tu solicitud para obtener la versión final en cuanto esté lista.',
+        wattpad: 'Leer en Wattpad',
+        wattpad_choose: 'Elegir idioma',
+        request: 'Solicitar prioridad de lectura',
+        footer_made: 'Hecho con',
+        footer_by: 'por Saif El Islem Zahaf',
+      }
+    },
+  };
 
-            function switchLanguage(lang) {
-                langBtns.forEach(btn => btn.classList.remove('active'));
-                langBtns.forEach(btn => {
-                    if (btn.dataset.lang === lang) btn.classList.add('active');
-                });
-                Object.keys(langSections).forEach(key => {
-                    langSections[key].classList.toggle('active', key === lang);
-                });
-                applyTranslation(lang);
-                localStorage.setItem('lang', lang);
-            }
+  /* =========================================================
+     STATE
+     ========================================================= */
+  const LANG_KEY = 'saivcore-lang';
+  const THEME_KEY = 'saivcore-theme';
 
-            langBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    switchLanguage(this.dataset.lang);
-                });
-            });
+  let currentLang  = localStorage.getItem(LANG_KEY)  || 'ar';
+  let currentTheme = localStorage.getItem(THEME_KEY) || 'light';
 
-            const savedLang = localStorage.getItem('lang');
-            if (savedLang && langSections[savedLang]) {
-                switchLanguage(savedLang);
-            } else {
-                applyTranslation('ar');
-            }
+  if (!I18N[currentLang]) currentLang = 'ar';
 
-            function toggleTheme() {
-                body.classList.toggle('dark');
-                const isDark = body.classList.contains('dark');
-                themeBtn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-                localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            }
+  const htmlEl        = document.documentElement;
+  const body          = document.body;
+  const navbar        = document.getElementById('navbar');
+  const themeBtn      = document.getElementById('themeBtn');
+  const themeIcon     = document.getElementById('themeIcon');
+  const langWrap      = document.getElementById('langWrap');
+  const langBtn       = document.getElementById('langBtn');
+  const langLabel     = document.getElementById('langLabel');
+  const menuToggle    = document.getElementById('menuToggle');
+  const drawer        = document.getElementById('drawer');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const drawerClose   = document.getElementById('drawerClose');
 
-            themeBtn.addEventListener('click', toggleTheme);
+  /* =========================================================
+     LANGUAGE
+     ========================================================= */
+  function applyLanguage(lang) {
+    const dict = I18N[lang];
+    if (!dict) return;
 
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                body.classList.add('dark');
-                themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
-            }
+    currentLang = lang;
+    localStorage.setItem(LANG_KEY, lang);
 
-            if (!localStorage.getItem('theme')) {
-                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    body.classList.add('dark');
-                    themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
-                }
-            }
+    htmlEl.setAttribute('lang', dict.htmlLang);
+    htmlEl.setAttribute('dir', dict.dir);
+    body.style.fontFamily = dict.font;
 
-        })();
-    </script>
+    document.querySelectorAll('[data-i18n]').forEach(function (node) {
+      const key = node.getAttribute('data-i18n');
+      const val = dict.labels[key];
+      if (val != null) node.textContent = val;
+    });
+
+    if (langLabel) langLabel.textContent = dict.labels.lang;
+    document.querySelectorAll('.lang-option').forEach(function (opt) {
+      opt.classList.toggle('active', opt.getAttribute('data-lang') === lang);
+    });
+
+    document.querySelectorAll('.lang-section').forEach(function (sec) {
+      sec.classList.toggle('active', sec.getAttribute('data-lang') === lang);
+    });
+
+    if (lang === 'ar')      document.title = 'شيفرة النبض | سيف الإسلام زحاف';
+    else if (lang === 'fr') document.title = 'Shifrat Al-Nabd | Saif El Islem Zahaf';
+    else if (lang === 'es') document.title = 'Shifrat Al-Nabd | Saif El Islem Zahaf';
+    else                    document.title = 'Shifrat Al-Nabd | Saif El Islem Zahaf';
+
+    langWrap.classList.remove('open');
+  }
+
+  /* =========================================================
+     THEME
+     ========================================================= */
+  function applyTheme(theme) {
+    currentTheme = theme;
+    localStorage.setItem(THEME_KEY, theme);
+
+    if (theme === 'dark') {
+      htmlEl.classList.add('dark');
+      if (themeIcon) themeIcon.className = 'fa-solid fa-sun';
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', '#0a0a0a');
+    } else {
+      htmlEl.classList.remove('dark');
+      if (themeIcon) themeIcon.className = 'fa-solid fa-moon';
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', '#ffffff');
+    }
+  }
+
+  /* =========================================================
+     EVENTS
+     ========================================================= */
+  themeBtn.addEventListener('click', function () {
+    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+  });
+
+  langBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    langWrap.classList.toggle('open');
+  });
+
+  document.querySelectorAll('.lang-option').forEach(function (opt) {
+    opt.addEventListener('click', function () {
+      applyLanguage(opt.getAttribute('data-lang'));
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!langWrap.contains(e.target)) langWrap.classList.remove('open');
+  });
+
+  /* =========================================================
+     WATTPAD DROPDOWN
+     ========================================================= */
+  document.querySelectorAll('[data-wattpad]').forEach(function (wrap) {
+    const toggle = wrap.querySelector('.wattpad-toggle');
+
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      document.querySelectorAll('[data-wattpad].open').forEach(function (other) {
+        if (other !== wrap) other.classList.remove('open');
+      });
+      wrap.classList.toggle('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('[data-wattpad].open').forEach(function (wrap) {
+      if (!wrap.contains(e.target)) wrap.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('[data-wattpad].open').forEach(function (wrap) {
+        wrap.classList.remove('open');
+      });
+    }
+  });
+
+  /* =========================================================
+     MOBILE DRAWER
+     ========================================================= */
+  function openDrawer() {
+    drawer.classList.add('open');
+    drawerOverlay.classList.add('open');
+    body.classList.add('no-scroll');
+  }
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    drawerOverlay.classList.remove('open');
+    body.classList.remove('no-scroll');
+  }
+
+  menuToggle.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  drawerOverlay.addEventListener('click', closeDrawer);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      closeDrawer();
+      langWrap.classList.remove('open');
+    }
+  });
+
+  /* =========================================================
+     NAVBAR SCROLL
+     ========================================================= */
+  function onScroll() {
+    navbar.classList.toggle('scrolled', window.scrollY > 10);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* =========================================================
+     YEAR
+     ========================================================= */
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+
+  /* =========================================================
+     BOOT
+     ========================================================= */
+  applyTheme(currentTheme);
+  applyLanguage(currentLang);
+
+})();
+</script>
 
 </body>
 </html>
