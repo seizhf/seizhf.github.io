@@ -14,88 +14,52 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   DESIGN SYSTEM
-   ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #fafafa;
-  --bg-card: #ffffff;
-  --bg-subtle: #f4f4f5;
-  --bg-hover: #f4f4f5;
-  --border: #e4e4e7;
-  --border-strong: #d4d4d8;
-  --text: #18181b;
-  --text-muted: #71717a;
-  --text-subtle: #a1a1aa;
-  --accent: #4f46e5;
-  --accent-hover: #4338ca;
-  --accent-soft: #eef2ff;
-  --danger: #dc2626;
-  --danger-soft: #fef2f2;
-  --success: #16a34a;
-  --radius: 10px;
-  --radius-sm: 8px;
-  --radius-lg: 14px;
+  --bg: #fafafa; --bg-card: #ffffff; --bg-subtle: #f4f4f5; --bg-hover: #f4f4f5;
+  --border: #e4e4e7; --border-strong: #d4d4d8;
+  --text: #18181b; --text-muted: #71717a; --text-subtle: #a1a1aa;
+  --accent: #4f46e5; --accent-hover: #4338ca; --accent-soft: #eef2ff;
+  --danger: #dc2626; --danger-soft: #fef2f2; --success: #16a34a;
+  --radius: 10px; --radius-sm: 8px; --radius-lg: 14px;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
   --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   --shadow-lg: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
   --transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 html.dark {
-  --bg: #09090b;
-  --bg-card: #18181b;
-  --bg-subtle: #27272a;
-  --bg-hover: #27272a;
-  --border: #27272a;
-  --border-strong: #3f3f46;
-  --text: #fafafa;
-  --text-muted: #a1a1aa;
-  --text-subtle: #71717a;
-  --accent: #818cf8;
-  --accent-hover: #a5b4fc;
-  --accent-soft: rgba(129,140,248,0.12);
-  --danger: #f87171;
-  --danger-soft: rgba(248,113,113,0.1);
-  --success: #4ade80;
+  --bg: #09090b; --bg-card: #18181b; --bg-subtle: #27272a; --bg-hover: #27272a;
+  --border: #27272a; --border-strong: #3f3f46;
+  --text: #fafafa; --text-muted: #a1a1aa; --text-subtle: #71717a;
+  --accent: #818cf8; --accent-hover: #a5b4fc; --accent-soft: rgba(129,140,248,0.12);
+  --danger: #f87171; --danger-soft: rgba(248,113,113,0.1); --success: #4ade80;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
   --shadow: 0 1px 3px rgba(0,0,0,0.5);
   --shadow-lg: 0 4px 12px rgba(0,0,0,0.5);
 }
-
 html, body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  font-size: 14px;
-  line-height: 1.5;
+  background: var(--bg); color: var(--text);
+  min-height: 100vh; font-size: 14px; line-height: 1.5;
   transition: background-color var(--transition), color var(--transition);
 }
 body.lang-ar { font-family: 'Cairo', system-ui, sans-serif; }
-
 button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 input, textarea, select { font-family: inherit; font-size: inherit; color: inherit; }
 img { display: block; max-width: 100%; }
 
-/* ============================================================
-   LAYOUT
-   ============================================================ */
 .app-header {
   position: sticky; top: 0; z-index: 40;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  background: var(--bg); border-bottom: 1px solid var(--border);
   transition: background-color var(--transition), border-color var(--transition);
 }
 .app-header-inner {
-  max-width: 1280px; margin: 0 auto;
-  padding: 14px 20px;
+  max-width: 1280px; margin: 0 auto; padding: 14px 20px;
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
 }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
@@ -110,16 +74,11 @@ img { display: block; max-width: 100%; }
 .header-actions { display: flex; align-items: center; gap: 8px; }
 
 .app-main {
-  max-width: 1280px; margin: 0 auto;
-  padding: 24px 20px;
-  display: grid; gap: 24px;
-  grid-template-columns: 1fr;
+  max-width: 1280px; margin: 0 auto; padding: 24px 20px;
+  display: grid; gap: 24px; grid-template-columns: 1fr;
 }
 @media (min-width: 1024px) {
-  .app-main {
-    grid-template-columns: minmax(0, 1fr) 420px;
-    gap: 28px; align-items: start;
-  }
+  .app-main { grid-template-columns: minmax(0, 1fr) 420px; gap: 28px; align-items: start; }
 }
 .preview-col { order: 1; }
 .controls-col { order: 2; }
@@ -128,24 +87,18 @@ img { display: block; max-width: 100%; }
   .controls-col { order: 1; }
 }
 
-/* ============================================================
-   CARDS
-   ============================================================ */
 .card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: var(--bg-card); border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   transition: background-color var(--transition), border-color var(--transition);
 }
 .card + .card { margin-top: 16px; }
 .card-header {
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--border);
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
   display: flex; align-items: center; gap: 10px;
 }
 .card-title {
-  font-size: 13px; font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: 13px; font-weight: 700; letter-spacing: -0.01em;
   display: flex; align-items: center; gap: 8px;
 }
 .card-title-icon {
@@ -156,27 +109,20 @@ img { display: block; max-width: 100%; }
 }
 .card-body { padding: 18px; }
 
-/* ============================================================
-   FORM CONTROLS
-   ============================================================ */
 .label {
   display: block; font-size: 11px; font-weight: 600;
   color: var(--text-muted); margin-bottom: 6px;
   letter-spacing: 0.02em; text-transform: uppercase;
 }
 .input, .textarea, .select {
-  width: 100%; padding: 9px 12px;
-  font-size: 13px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text); outline: none;
+  width: 100%; padding: 9px 12px; font-size: 13px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text); outline: none;
   transition: border-color var(--transition), background-color var(--transition);
 }
 .input::placeholder, .textarea::placeholder { color: var(--text-subtle); }
 .input:focus, .textarea:focus, .select:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+  border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft);
 }
 .textarea { resize: vertical; min-height: 64px; font-family: inherit; }
 
@@ -184,32 +130,42 @@ img { display: block; max-width: 100%; }
   display: inline-flex; align-items: center; justify-content: center;
   gap: 8px; padding: 9px 14px;
   font-size: 13px; font-weight: 600;
-  border-radius: var(--radius-sm);
-  border: 1px solid transparent;
+  border-radius: var(--radius-sm); border: 1px solid transparent;
   background: var(--bg); color: var(--text);
-  transition: all var(--transition);
-  white-space: nowrap;
+  transition: all var(--transition); white-space: nowrap;
 }
 .btn:hover:not(:disabled) { background: var(--bg-hover); border-color: var(--border-strong); }
 .btn:active:not(:disabled) { transform: scale(0.98); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn i { font-size: 12px; }
-.btn-primary {
-  background: var(--accent); color: #fff; border-color: var(--accent);
-}
+.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
 .btn-primary:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
 .btn-icon { width: 34px; height: 34px; padding: 0; border-radius: 9px; }
 .btn-danger { color: var(--danger); }
 .btn-danger:hover:not(:disabled) { background: var(--danger-soft); border-color: var(--danger); }
 
+/* Small "reset" pill used next to color labels */
+.btn-reset {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+  border: 1px solid transparent;
+  transition: all var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.btn-reset:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
+.btn-reset:disabled { opacity: 0.4; cursor: default; }
+
 .color-input-wrap {
   display: flex; align-items: center; gap: 8px;
   padding: 4px 10px 4px 4px;
-  background: var(--bg);
-  border: 1px solid var(--border);
+  background: var(--bg); border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  transition: border-color var(--transition);
-  cursor: pointer;
+  transition: border-color var(--transition); cursor: pointer;
 }
 .color-input-wrap:hover { border-color: var(--border-strong); }
 .color-input-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
@@ -230,8 +186,7 @@ img { display: block; max-width: 100%; }
 
 .range {
   -webkit-appearance: none; appearance: none;
-  width: 100%; height: 4px;
-  background: var(--bg-subtle);
+  width: 100%; height: 4px; background: var(--bg-subtle);
   border-radius: 2px; outline: none; cursor: pointer;
 }
 .range::-webkit-slider-thumb {
@@ -252,254 +207,134 @@ img { display: block; max-width: 100%; }
 
 .seg {
   display: inline-flex; padding: 3px;
-  background: var(--bg-subtle);
-  border-radius: var(--radius-sm); gap: 2px;
-  width: 100%;
+  background: var(--bg-subtle); border-radius: var(--radius-sm); gap: 2px; width: 100%;
 }
 .seg button {
   flex: 1; padding: 7px 10px;
   font-size: 12px; font-weight: 600;
-  color: var(--text-muted);
-  border-radius: 6px;
+  color: var(--text-muted); border-radius: 6px;
   transition: all var(--transition);
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
 }
 .seg button:hover { color: var(--text); }
-.seg button.active {
-  background: var(--bg-card); color: var(--text);
-  box-shadow: var(--shadow-sm);
-}
+.seg button.active { background: var(--bg-card); color: var(--text); box-shadow: var(--shadow-sm); }
 
-.tabs {
-  display: flex; gap: 4px; overflow-x: auto;
-  padding-bottom: 2px;
-  scrollbar-width: none; -ms-overflow-style: none;
-}
+.tabs { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; -ms-overflow-style: none; }
 .tabs::-webkit-scrollbar { display: none; }
 .tab {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 12px;
-  font-size: 12px; font-weight: 600;
-  color: var(--text-muted);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 999px; white-space: nowrap;
-  transition: all var(--transition);
+  padding: 6px 12px; font-size: 12px; font-weight: 600;
+  color: var(--text-muted); background: transparent;
+  border: 1px solid transparent; border-radius: 999px;
+  white-space: nowrap; transition: all var(--transition);
 }
 .tab:hover { background: var(--bg-hover); color: var(--text); }
 .tab.active { background: var(--text); color: var(--bg-card); }
 
-.tpl-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-@media (min-width: 640px) {
-  .tpl-grid { grid-template-columns: repeat(4, 1fr); }
-}
+.tpl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+@media (min-width: 640px) { .tpl-grid { grid-template-columns: repeat(4, 1fr); } }
 .tpl-btn {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 6px; padding: 12px 6px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  transition: all var(--transition);
-  text-align: center;
-  min-height: 76px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); transition: all var(--transition);
+  text-align: center; min-height: 76px;
 }
-.tpl-btn:hover {
-  background: var(--bg-hover);
-  border-color: var(--border-strong);
-  transform: translateY(-1px);
-}
-.tpl-btn.active {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-  color: var(--accent);
-}
+.tpl-btn:hover { background: var(--bg-hover); border-color: var(--border-strong); transform: translateY(-1px); }
+.tpl-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
 .tpl-btn-icon {
-  width: 26px; height: 26px;
-  border-radius: 7px;
+  width: 26px; height: 26px; border-radius: 7px;
   display: flex; align-items: center; justify-content: center;
   color: #fff; font-size: 12px; flex-shrink: 0;
 }
-.tpl-btn-name {
-  font-size: 10px; font-weight: 600;
-  line-height: 1.2; word-break: break-word;
-}
+.tpl-btn-name { font-size: 10px; font-weight: 600; line-height: 1.2; word-break: break-word; }
 
 .icon-grid {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 4px;
-  max-height: 168px;
-  overflow-y: auto;
-  padding: 6px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  display: grid; grid-template-columns: repeat(8, 1fr);
+  gap: 4px; max-height: 168px; overflow-y: auto; padding: 6px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm);
 }
 .icon-btn {
-  aspect-ratio: 1;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 7px;
-  color: var(--text-muted);
-  font-size: 12px;
-  transition: all var(--transition);
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  border-radius: 7px; color: var(--text-muted); font-size: 12px; transition: all var(--transition);
 }
 .icon-btn:hover { background: var(--bg-hover); color: var(--text); }
 .icon-btn.active { background: var(--accent); color: #fff; }
 
-.border-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-}
+.border-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .border-btn {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 4px; padding: 10px 4px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-size: 10px; font-weight: 600;
-  color: var(--text-muted);
-  transition: all var(--transition);
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 10px; font-weight: 600;
+  color: var(--text-muted); transition: all var(--transition);
 }
 .border-btn:hover { border-color: var(--border-strong); color: var(--text); }
-.border-btn.active {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-  color: var(--accent);
-}
+.border-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
 .border-btn i { font-size: 14px; }
 
-.size-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
+.size-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .size-btn {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  text-align: left;
-  transition: all var(--transition);
+  display: flex; align-items: center; gap: 10px; padding: 12px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); text-align: left; transition: all var(--transition);
 }
 .size-btn:hover { border-color: var(--border-strong); }
-.size-btn.active {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-.size-preview {
-  width: 32px; height: 32px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.size-preview-shape {
-  border: 1.5px solid currentColor;
-  border-radius: 3px;
-  opacity: 0.6;
-}
+.size-btn.active { border-color: var(--accent); background: var(--accent-soft); }
+.size-preview { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.size-preview-shape { border: 1.5px solid currentColor; border-radius: 3px; opacity: 0.6; }
 .size-info { flex: 1; min-width: 0; }
 .size-info-title { font-size: 12px; font-weight: 700; line-height: 1.2; }
 .size-info-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
 .size-btn.active .size-info-sub { color: var(--accent); }
 
-/* Slider row */
-.slider-row {
-  display: flex; align-items: center; gap: 12px;
-}
+.slider-row { display: flex; align-items: center; gap: 12px; }
 .slider-row .range { flex: 1; }
 .slider-value {
-  min-width: 44px;
-  font-size: 11px; font-weight: 700;
-  color: var(--text);
-  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-  text-align: right;
-  padding: 3px 6px;
-  background: var(--bg-subtle);
-  border-radius: 6px;
+  min-width: 44px; font-size: 11px; font-weight: 700;
+  color: var(--text); font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  text-align: right; padding: 3px 6px; background: var(--bg-subtle); border-radius: 6px;
 }
 
-/* Quick icon-size buttons */
 .icon-size-actions {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
-  margin-top: 8px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 8px;
 }
 .icon-size-btn {
-  padding: 7px 4px;
-  font-size: 11px;
-  font-weight: 700;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  color: var(--text-muted);
-  transition: all var(--transition);
+  padding: 7px 4px; font-size: 11px; font-weight: 700;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 7px; color: var(--text-muted); transition: all var(--transition);
 }
 .icon-size-btn:hover { border-color: var(--border-strong); color: var(--text); }
 .icon-size-btn:active { transform: scale(0.95); }
 
-/* ============================================================
-   PREVIEW AREA
-   ============================================================ */
+/* Preview */
 .preview-area {
-  position: relative;
-  width: 100%;
-  background:
-    repeating-conic-gradient(var(--bg-subtle) 0% 25%, transparent 0% 50%) 50% / 20px 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
+  position: relative; width: 100%;
+  background: repeating-conic-gradient(var(--bg-subtle) 0% 25%, transparent 0% 50%) 50% / 20px 20px;
+  border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;
   transition: background-color var(--transition);
 }
 .preview-scale {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform-origin: center center;
-  will-change: transform;
+  position: absolute; top: 50%; left: 50%;
+  transform-origin: center center; will-change: transform;
 }
-.preview-scale .sign-sheet {
-  box-shadow: var(--shadow-lg);
-}
+.preview-scale .sign-sheet { box-shadow: var(--shadow-lg); }
 
-/* ============================================================
-   SIGN SHEET
-   ============================================================ */
+/* Sign sheet */
 .sign-sheet {
-  --sign-w: 210mm;
-  --sign-h: 297mm;
-  --base: 9.5mm;
-  --bg-color: #4f46e5;
-  --text-color: #ffffff;
-  --accent-color: #c7d2fe;
+  --sign-w: 210mm; --sign-h: 297mm; --base: 9.5mm;
+  --bg-color: #4f46e5; --text-color: #ffffff; --accent-color: #c7d2fe;
   --icon-scale: 1;
 
-  width: var(--sign-w);
-  height: var(--sign-h);
-  min-width: var(--sign-w);
-  min-height: var(--sign-h);
-  max-width: var(--sign-w);
-  max-height: var(--sign-h);
-  background: var(--bg-color);
-  color: var(--text-color);
-  overflow: hidden;
-  display: flex;
-  position: relative;
-  box-sizing: border-box;
+  width: var(--sign-w); height: var(--sign-h);
+  min-width: var(--sign-w); min-height: var(--sign-h);
+  max-width: var(--sign-w); max-height: var(--sign-h);
+  background: var(--bg-color); color: var(--text-color);
+  overflow: hidden; display: flex; position: relative; box-sizing: border-box;
   font-family: 'Inter', 'Cairo', system-ui, sans-serif;
-  direction: ltr;
-  border-radius: 0;
+  direction: ltr; border-radius: 0;
 }
-.sign-sheet[dir="rtl"] {
-  direction: rtl;
-  font-family: 'Cairo', 'Inter', system-ui, sans-serif;
-}
+.sign-sheet[dir="rtl"] { direction: rtl; font-family: 'Cairo', 'Inter', system-ui, sans-serif; }
 
 .sign-border { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
 .sign-sheet.border-clean .sign-border { display: none; }
@@ -513,9 +348,7 @@ img { display: block; max-width: 100%; }
   border: calc(var(--base) * 0.08) solid currentColor;
 }
 .sign-sheet.border-double .sign-border::after {
-  content: '';
-  position: absolute;
-  inset: calc(var(--base) * 0.3);
+  content: ''; position: absolute; inset: calc(var(--base) * 0.3);
   border: calc(var(--base) * 0.12) solid currentColor;
 }
 .sign-sheet.border-minimal .sign-border {
@@ -525,66 +358,45 @@ img { display: block; max-width: 100%; }
 }
 
 .sign-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: calc(var(--base) * 0.9);
-  padding: calc(var(--base) * 1.6);
-  text-align: center;
-  position: relative;
-  z-index: 1;
-  min-width: 0; min-height: 0;
-  overflow: hidden;
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: calc(var(--base) * 0.9); padding: calc(var(--base) * 1.6);
+  text-align: center; position: relative; z-index: 1;
+  min-width: 0; min-height: 0; overflow: hidden;
 }
 
-/* ===== ICON WITH SCALE SUPPORT ===== */
 .sign-icon {
   width: calc(var(--base) * 4 * var(--icon-scale));
   height: calc(var(--base) * 4 * var(--icon-scale));
-  border-radius: 50%;
-  background: var(--accent-color);
+  border-radius: 50%; background: var(--accent-color);
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  color: var(--bg-color);
-  overflow: hidden;
+  flex-shrink: 0; color: var(--text-color); overflow: hidden;
   transition: width 120ms ease, height 120ms ease;
 }
 .sign-icon i {
   font-size: calc(var(--base) * 1.9 * var(--icon-scale));
   line-height: 1;
-  color: var(--bg-color);
-  transition: font-size 120ms ease;
+  /* Icon color: explicit override wins, otherwise falls back to text color */
+  color: var(--icon-color, var(--text-color));
+  transition: font-size 120ms ease, color 150ms ease;
 }
 .sign-icon img {
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
+  width: 70%; height: 70%; object-fit: contain;
 }
 
 .sign-title {
-  font-size: calc(var(--base) * 1.9);
-  font-weight: 900;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  max-width: 92%;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  font-size: calc(var(--base) * 1.9); font-weight: 900;
+  line-height: 1.1; letter-spacing: -0.02em;
+  max-width: 92%; word-break: break-word; overflow-wrap: anywhere;
 }
 .sign-subtitle {
-  font-size: calc(var(--base) * 0.9);
-  font-weight: 500;
-  line-height: 1.4;
-  opacity: 0.9;
-  max-width: 88%;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  font-size: calc(var(--base) * 0.9); font-weight: 500;
+  line-height: 1.4; opacity: 0.9; max-width: 88%;
+  word-break: break-word; overflow-wrap: anywhere;
 }
 .sign-fields {
   display: flex; flex-direction: column;
-  gap: calc(var(--base) * 0.4);
-  width: 82%;
+  gap: calc(var(--base) * 0.4); width: 82%;
   margin-top: calc(var(--base) * 0.4);
 }
 .sign-field {
@@ -592,34 +404,24 @@ img { display: block; max-width: 100%; }
   background: rgba(255,255,255,0.14);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: calc(var(--base) * 0.4);
-  text-align: start;
-  display: flex; flex-direction: column;
-  gap: calc(var(--base) * 0.08);
-  overflow: hidden;
+  text-align: start; display: flex; flex-direction: column;
+  gap: calc(var(--base) * 0.08); overflow: hidden;
 }
 .sign-field-label {
-  font-size: calc(var(--base) * 0.5);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.75;
-  word-break: break-word;
+  font-size: calc(var(--base) * 0.5); font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  opacity: 0.75; word-break: break-word;
 }
 .sign-field-value {
-  font-size: calc(var(--base) * 0.9);
-  font-weight: 700;
+  font-size: calc(var(--base) * 0.9); font-weight: 700;
   font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-  line-height: 1.2;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  line-height: 1.2; word-break: break-word; overflow-wrap: anywhere;
 }
 .sign-qr {
-  background: #fff;
-  padding: calc(var(--base) * 0.4);
+  background: #fff; padding: calc(var(--base) * 0.4);
   border-radius: calc(var(--base) * 0.35);
   display: inline-flex; align-items: center; justify-content: center;
-  margin-top: calc(var(--base) * 0.3);
-  flex-shrink: 0; line-height: 0;
+  margin-top: calc(var(--base) * 0.3); flex-shrink: 0; line-height: 0;
 }
 .sign-qr img, .sign-qr canvas {
   display: block;
@@ -628,108 +430,60 @@ img { display: block; max-width: 100%; }
   image-rendering: pixelated;
 }
 .sign-footer {
-  font-size: calc(var(--base) * 0.55);
-  font-weight: 600;
-  opacity: 0.72;
-  letter-spacing: 0.02em;
-  max-width: 90%;
-  line-height: 1.3;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  font-size: calc(var(--base) * 0.55); font-weight: 600;
+  opacity: 0.72; letter-spacing: 0.02em; max-width: 90%;
+  line-height: 1.3; word-break: break-word; overflow-wrap: anywhere;
 }
 
-/* ============================================================
-   OFF-SCREEN CAPTURE
-   ============================================================ */
 #captureWrap {
-  position: fixed !important;
-  top: 0 !important; left: -100000px !important;
-  z-index: -1 !important;
-  pointer-events: none !important;
-  transform: none !important;
-  filter: none !important;
-  perspective: none !important;
-  opacity: 1 !important;
-  visibility: visible !important;
+  position: fixed !important; top: 0 !important; left: -100000px !important;
+  z-index: -1 !important; pointer-events: none !important;
+  transform: none !important; filter: none !important;
+  perspective: none !important; opacity: 1 !important; visibility: visible !important;
 }
 #signCapture { box-shadow: none !important; }
 
-/* ============================================================
-   PRINT
-   ============================================================ */
 @media print {
   html, body {
-    margin: 0 !important; padding: 0 !important;
-    background: #fff !important;
+    margin: 0 !important; padding: 0 !important; background: #fff !important;
     overflow: hidden !important;
-    width: var(--print-w, 210mm) !important;
-    height: var(--print-h, 297mm) !important;
+    width: var(--print-w, 210mm) !important; height: var(--print-h, 297mm) !important;
   }
   body > * { display: none !important; }
   body > #captureWrap {
-    display: block !important;
-    position: fixed !important;
+    display: block !important; position: fixed !important;
     top: 0 !important; left: 0 !important;
-    width: var(--print-w, 210mm) !important;
-    height: var(--print-h, 297mm) !important;
-    z-index: 9999 !important;
-    transform: none !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
+    width: var(--print-w, 210mm) !important; height: var(--print-h, 297mm) !important;
+    z-index: 9999 !important; transform: none !important;
+    opacity: 1 !important; visibility: visible !important; pointer-events: auto !important;
   }
-  #signCapture {
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    transform: none !important;
-  }
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    color-adjust: exact !important;
-  }
+  #signCapture { box-shadow: none !important; border-radius: 0 !important; transform: none !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
 }
 
-/* ============================================================
-   FOOTER
-   ============================================================ */
 .app-footer {
-  border-top: 1px solid var(--border);
-  background: var(--bg);
-  padding: 20px;
-  transition: background-color var(--transition), border-color var(--transition);
+  border-top: 1px solid var(--border); background: var(--bg);
+  padding: 20px; transition: background-color var(--transition), border-color var(--transition);
 }
 .app-footer-inner {
   max-width: 1280px; margin: 0 auto;
-  display: flex; flex-direction: column;
-  gap: 8px; align-items: center; justify-content: space-between;
+  display: flex; flex-direction: column; gap: 8px;
+  align-items: center; justify-content: space-between;
   font-size: 12px; color: var(--text-muted);
 }
-@media (min-width: 640px) {
-  .app-footer-inner { flex-direction: row; }
-}
-.footer-credit {
-  display: flex; align-items: center; gap: 6px;
-  flex-wrap: wrap; justify-content: center;
-}
+@media (min-width: 640px) { .app-footer-inner { flex-direction: row; } }
+.footer-credit { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center; }
 .footer-credit strong { color: var(--text); font-weight: 700; }
 .heart { color: #ef4444; }
 
-/* ============================================================
-   TOAST & OVERLAY
-   ============================================================ */
 #toast {
   position: fixed; bottom: 24px; left: 50%;
   transform: translateX(-50%) translateY(100px);
-  padding: 10px 16px;
-  background: var(--text); color: var(--bg-card);
-  border-radius: var(--radius-sm);
-  font-size: 13px; font-weight: 600;
+  padding: 10px 16px; background: var(--text); color: var(--bg-card);
+  border-radius: var(--radius-sm); font-size: 13px; font-weight: 600;
   display: flex; align-items: center; gap: 8px;
-  box-shadow: var(--shadow-lg);
-  opacity: 0; pointer-events: none;
-  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 9999;
+  box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); z-index: 9999;
   max-width: calc(100vw - 32px);
 }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -737,33 +491,25 @@ img { display: block; max-width: 100%; }
 #toast.error { background: var(--danger); color: #fff; }
 
 #overlay {
-  position: fixed; inset: 0; z-index: 9998;
-  background: rgba(0,0,0,0.5);
+  position: fixed; inset: 0; z-index: 9998; background: rgba(0,0,0,0.5);
   backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
   display: none; align-items: center; justify-content: center;
 }
 #overlay.show { display: flex; }
 .overlay-box {
-  background: var(--bg-card);
-  padding: 24px 32px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  text-align: center;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 12px;
-  border: 1px solid var(--border);
+  background: var(--bg-card); padding: 24px 32px;
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+  text-align: center; display: flex; flex-direction: column;
+  align-items: center; gap: 12px; border: 1px solid var(--border);
 }
 .spinner {
-  width: 24px; height: 24px;
-  border: 2px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
+  width: 24px; height: 24px; border: 2px solid var(--border);
+  border-top-color: var(--accent); border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .overlay-text { font-size: 13px; font-weight: 600; color: var(--text); }
 
-/* Utilities */
 .row { display: flex; align-items: center; gap: 8px; }
 .row-between { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .stack > * + * { margin-top: 12px; }
@@ -803,7 +549,6 @@ img { display: block; max-width: 100%; }
 
 <main class="app-main">
 
-  <!-- Preview Column -->
   <section class="preview-col">
     <div class="card">
       <div class="card-header">
@@ -845,10 +590,8 @@ img { display: block; max-width: 100%; }
     </div>
   </section>
 
-  <!-- Controls Column -->
   <section class="controls-col">
 
-    <!-- Templates -->
     <div class="card">
       <div class="card-header">
         <div class="card-title">
@@ -863,7 +606,6 @@ img { display: block; max-width: 100%; }
       </div>
     </div>
 
-    <!-- Content -->
     <div class="card">
       <div class="card-header">
         <div class="card-title">
@@ -901,7 +643,6 @@ img { display: block; max-width: 100%; }
       </div>
     </div>
 
-    <!-- Style -->
     <div class="card">
       <div class="card-header">
         <div class="card-title">
@@ -946,7 +687,7 @@ img { display: block; max-width: 100%; }
           </div>
         </div>
 
-        <!-- Colors -->
+        <!-- Text & Accent colors -->
         <div class="grid-2">
           <div>
             <label class="label" data-i18n="textColor">Text Color</label>
@@ -961,6 +702,30 @@ img { display: block; max-width: 100%; }
               <input type="color" id="accentColor" value="#c7d2fe">
               <span class="color-hex" id="accentColorHex">#c7d2fe</span>
             </div>
+          </div>
+        </div>
+
+        <!-- === NEW: Icon & Logo Colors === -->
+        <div>
+          <div class="row-between" style="margin-bottom: 6px;">
+            <label class="label" style="margin: 0;" data-i18n="iconColor">Icon Color</label>
+            <button class="btn-reset" id="iconColorReset" type="button" title="Use auto color" data-i18n="auto">Auto</button>
+          </div>
+          <div class="color-input-wrap">
+            <input type="color" id="iconColor" value="#ffffff">
+            <span class="color-hex" id="iconColorHex">Auto</span>
+          </div>
+        </div>
+
+        <!-- Logo color (only visible when logo uploaded) -->
+        <div id="logoColorBlock" class="hidden">
+          <div class="row-between" style="margin-bottom: 6px;">
+            <label class="label" style="margin: 0;" data-i18n="logoColor">Logo Color</label>
+            <button class="btn-reset" id="logoColorReset" type="button" title="Original color" data-i18n="original">Original</button>
+          </div>
+          <div class="color-input-wrap">
+            <input type="color" id="logoColor" value="#ffffff">
+            <span class="color-hex" id="logoColorHex">Original</span>
           </div>
         </div>
 
@@ -981,7 +746,6 @@ img { display: block; max-width: 100%; }
           </div>
           <div class="icon-grid" id="iconGrid"></div>
 
-          <!-- === ICON SIZE CONTROL (NEW) === -->
           <div style="margin-top: 12px;">
             <div class="row-between" style="margin-bottom: 8px;">
               <label class="label" style="margin: 0;" data-i18n="iconSize">Icon Size</label>
@@ -1004,7 +768,6 @@ img { display: block; max-width: 100%; }
             </div>
           </div>
 
-          <!-- Logo upload -->
           <div style="display: flex; gap: 8px; margin-top: 12px; align-items: center;">
             <input type="file" id="logoFile" accept="image/*" hidden>
             <button class="btn" style="flex: 1;" id="uploadLogoBtn">
@@ -1020,7 +783,6 @@ img { display: block; max-width: 100%; }
       </div>
     </div>
 
-    <!-- Format -->
     <div class="card">
       <div class="card-header">
         <div class="card-title">
@@ -1053,7 +815,6 @@ img { display: block; max-width: 100%; }
   </div>
 </footer>
 
-<!-- Off-screen capture sheet -->
 <div id="captureWrap">
   <div class="sign-sheet border-rounded" id="signCapture" dir="ltr"></div>
 </div>
@@ -1068,14 +829,12 @@ img { display: block; max-width: 100%; }
 
 <script>
 /* ============================================================================
-   SaivSIGN v9 — Icon size control + fixed template switching + fixed QR
+   SaivSIGN v10 — Icon color + Logo tinting
    ============================================================================ */
 (function () {
 'use strict';
 
-/* ============================================================================
-   1. TRANSLATIONS
-   ============================================================================ */
+/* ============ TRANSLATIONS ============ */
 const I18N = {
   en: {
     tagline: 'Signage made simple',
@@ -1084,7 +843,8 @@ const I18N = {
     signLang: 'Sign Language', background: 'Background',
     solid: 'Solid', gradient: 'Gradient', angle: 'Angle',
     textColor: 'Text Color', accent: 'Accent Color', border: 'Border Style', icon: 'Icon',
-    iconSize: 'Icon Size',
+    iconSize: 'Icon Size', iconColor: 'Icon Color', logoColor: 'Logo Color',
+    auto: 'Auto', original: 'Original',
     uploadLogo: 'Upload Logo', clearLogo: 'Clear Logo',
     exportHint: 'PNG & PDF at exact 300 DPI A4/A5 size',
     poweredBy: 'Powered by', madeWith: 'Made with', inCountry: 'in Algeria',
@@ -1093,7 +853,8 @@ const I18N = {
     toastLogoAdded: 'Logo added', toastPrinting: 'Opening print dialog...',
     toastPng: 'Exporting PNG...', toastPdf: 'Exporting PDF...',
     toastPngDone: 'PNG downloaded', toastPdfDone: 'PDF downloaded',
-    toastError: 'Something went wrong', toastNoImage: 'Please upload an image'
+    toastError: 'Something went wrong', toastNoImage: 'Please upload an image',
+    toastLogoColorReset: 'Logo color reset', toastIconColorReset: 'Icon color reset to auto'
   },
   fr: {
     tagline: 'Signalétique simplifiée',
@@ -1102,7 +863,8 @@ const I18N = {
     signLang: 'Langue du panneau', background: 'Arrière-plan',
     solid: 'Uni', gradient: 'Dégradé', angle: 'Angle',
     textColor: 'Couleur du texte', accent: 'Couleur d\'accent', border: 'Bordure', icon: 'Icône',
-    iconSize: 'Taille de l\'icône',
+    iconSize: 'Taille de l\'icône', iconColor: 'Couleur de l\'icône', logoColor: 'Couleur du logo',
+    auto: 'Auto', original: 'Original',
     uploadLogo: 'Ajouter un logo', clearLogo: 'Effacer',
     exportHint: 'PNG et PDF en A4/A5 exact à 300 DPI',
     poweredBy: 'Propulsé par', madeWith: 'Fait avec', inCountry: 'en Algérie',
@@ -1111,7 +873,8 @@ const I18N = {
     toastLogoAdded: 'Logo ajouté', toastPrinting: 'Ouverture impression...',
     toastPng: 'Export PNG...', toastPdf: 'Export PDF...',
     toastPngDone: 'PNG téléchargé', toastPdfDone: 'PDF téléchargé',
-    toastError: 'Une erreur est survenue', toastNoImage: 'Veuillez ajouter une image'
+    toastError: 'Une erreur est survenue', toastNoImage: 'Veuillez ajouter une image',
+    toastLogoColorReset: 'Couleur du logo réinitialisée', toastIconColorReset: 'Couleur icône réinitialisée'
   },
   ar: {
     tagline: 'لافتات بكل بساطة',
@@ -1120,7 +883,8 @@ const I18N = {
     signLang: 'لغة اللافتة', background: 'الخلفية',
     solid: 'لون واحد', gradient: 'تدرج', angle: 'الزاوية',
     textColor: 'لون النص', accent: 'لون التمييز', border: 'الحدود', icon: 'الأيقونة',
-    iconSize: 'حجم الأيقونة',
+    iconSize: 'حجم الأيقونة', iconColor: 'لون الأيقونة', logoColor: 'لون الشعار',
+    auto: 'تلقائي', original: 'الأصلي',
     uploadLogo: 'تحميل شعار', clearLogo: 'مسح',
     exportHint: 'PNG و PDF بدقة 300 DPI بحجم A4/A5 بالضبط',
     poweredBy: 'مدعوم من', madeWith: 'صُنع بـ', inCountry: 'في الجزائر',
@@ -1129,13 +893,12 @@ const I18N = {
     toastLogoAdded: 'تم إضافة الشعار', toastPrinting: 'جارٍ فتح الطباعة...',
     toastPng: 'تصدير PNG...', toastPdf: 'تصدير PDF...',
     toastPngDone: 'تم تنزيل PNG', toastPdfDone: 'تم تنزيل PDF',
-    toastError: 'حدث خطأ', toastNoImage: 'الرجاء إضافة صورة'
+    toastError: 'حدث خطأ', toastNoImage: 'الرجاء إضافة صورة',
+    toastLogoColorReset: 'تمت إعادة لون الشعار', toastIconColorReset: 'تمت إعادة لون الأيقونة'
   }
 };
 
-/* ============================================================================
-   2. CATEGORIES
-   ============================================================================ */
+/* ============ CATEGORIES ============ */
 const CATS = [
   { id: 'wifi',      icon: 'fa-wifi',           en: 'Wi-Fi',       fr: 'Wi-Fi',         ar: 'واي فاي' },
   { id: 'reception', icon: 'fa-bell-concierge', en: 'Reception',   fr: 'Réception',     ar: 'الاستقبال' },
@@ -1145,9 +908,7 @@ const CATS = [
   { id: 'info',      icon: 'fa-circle-info',    en: 'Info',        fr: 'Info',          ar: 'معلومات' }
 ];
 
-/* ============================================================================
-   3. TEMPLATES
-   ============================================================================ */
+/* ============ TEMPLATES ============ */
 const TEMPLATES = [
   { id:'wifi-basic', cat:'wifi', icon:'fa-wifi',
     theme:{ bgType:'gradient', bg1:'#4f46e5', bg2:'#7c3aed', bgAngle:135, textColor:'#ffffff', accentColor:'#c4b5fd' },
@@ -1157,7 +918,6 @@ const TEMPLATES = [
       { key:'ssid', icon:'fa-wifi', label:{ en:'Network', fr:'Réseau', ar:'الشبكة' }, default:'MyWiFi' },
       { key:'password', icon:'fa-key', label:{ en:'Password', fr:'Mot de passe', ar:'كلمة المرور' }, default:'welcome123' }
     ], qr:true },
-
   { id:'wifi-guest', cat:'wifi', icon:'fa-user-group',
     theme:{ bgType:'solid', bgColor:'#0f766e', textColor:'#ffffff', accentColor:'#a7f3d0' },
     title:{ en:'Guest Wi-Fi', fr:'Wi-Fi Invité', ar:'واي فاي للزوار' },
@@ -1166,7 +926,6 @@ const TEMPLATES = [
       { key:'ssid', icon:'fa-wifi', label:{ en:'Network', fr:'Réseau', ar:'الشبكة' }, default:'Guest' },
       { key:'password', icon:'fa-key', label:{ en:'Password', fr:'Mot de passe', ar:'كلمة المرور' }, default:'guest2025' }
     ], qr:true },
-
   { id:'wifi-scan', cat:'wifi', icon:'fa-qrcode',
     theme:{ bgType:'gradient', bg1:'#0891b2', bg2:'#0ea5e9', bgAngle:135, textColor:'#ffffff', accentColor:'#bae6fd' },
     title:{ en:'Scan for Wi-Fi', fr:'Scannez pour le Wi-Fi', ar:'امسح للاتصال' },
@@ -1175,116 +934,93 @@ const TEMPLATES = [
       { key:'ssid', icon:'fa-wifi', label:{ en:'Network', fr:'Réseau', ar:'الشبكة' }, default:'MyWiFi' },
       { key:'password', icon:'fa-key', label:{ en:'Password', fr:'Mot de passe', ar:'كلمة المرور' }, default:'welcome123' }
     ], qr:true },
-
   { id:'welcome', cat:'reception', icon:'fa-hand-sparkles',
     theme:{ bgType:'gradient', bg1:'#f59e0b', bg2:'#ef4444', bgAngle:135, textColor:'#ffffff', accentColor:'#fef3c7' },
     title:{ en:'Welcome', fr:'Bienvenue', ar:'مرحبًا بكم' },
     subtitle:{ en:'We are happy to see you', fr:'Nous sommes ravis de vous voir', ar:'يسعدنا رؤيتكم' } },
-
   { id:'wait-here', cat:'reception', icon:'fa-chair',
     theme:{ bgType:'solid', bgColor:'#4f46e5', textColor:'#ffffff', accentColor:'#c7d2fe' },
     title:{ en:'Please Wait Here', fr:'Veuillez patienter ici', ar:'الرجاء الانتظار هنا' },
     subtitle:{ en:'Someone will assist you shortly', fr:'Quelqu\'un vous aidera bientôt', ar:'سيأتي أحدهم قريبًا' } },
-
   { id:'ring-bell', cat:'reception', icon:'fa-bell',
     theme:{ bgType:'solid', bgColor:'#f59e0b', textColor:'#ffffff', accentColor:'#fef3c7' },
     title:{ en:'Ring for Service', fr:'Sonnez pour le service', ar:'اضغط الجرس للخدمة' },
     subtitle:{ en:'Press the bell for assistance', fr:'Appuyez sur la sonnette pour l\'aide', ar:'اضغط على الجرس للمساعدة' } },
-
   { id:'take-number', cat:'reception', icon:'fa-people-line',
     theme:{ bgType:'gradient', bg1:'#8b5cf6', bg2:'#ec4899', bgAngle:135, textColor:'#ffffff', accentColor:'#f3e8ff' },
     title:{ en:'Take a Number', fr:'Prenez un numéro', ar:'خذ رقمًا' },
     subtitle:{ en:'We will call you shortly', fr:'Nous vous appellerons bientôt', ar:'سنناديك قريبًا' } },
-
   { id:'silence', cat:'quiet', icon:'fa-volume-xmark',
     theme:{ bgType:'gradient', bg1:'#1e293b', bg2:'#334155', bgAngle:180, textColor:'#ffffff', accentColor:'#94a3b8' },
     title:{ en:'Silence Please', fr:'Silence s\'il vous plaît', ar:'الرجاء الهدوء' },
     subtitle:{ en:'Thank you for your cooperation', fr:'Merci de votre coopération', ar:'شكرًا لتعاونكم' } },
-
   { id:'meeting', cat:'quiet', icon:'fa-user-group',
     theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
     title:{ en:'Meeting in Progress', fr:'Réunion en cours', ar:'اجتماع جارٍ' },
     subtitle:{ en:'Please do not disturb', fr:'Merci de ne pas déranger', ar:'الرجاء عدم الإزعاج' } },
-
   { id:'quiet-zone', cat:'quiet', icon:'fa-volume-off',
     theme:{ bgType:'gradient', bg1:'#0f766e', bg2:'#0e7490', bgAngle:135, textColor:'#ffffff', accentColor:'#a7f3d0' },
     title:{ en:'Quiet Zone', fr:'Zone calme', ar:'منطقة هادئة' },
     subtitle:{ en:'Please keep your voice down', fr:'Baissez la voix', ar:'الرجاء خفض الصوت' } },
-
   { id:'no-smoking', cat:'safety', icon:'fa-ban-smoking',
     theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
     title:{ en:'No Smoking', fr:'Défense de fumer', ar:'ممنوع التدخين' },
     subtitle:{ en:'This is a smoke-free area', fr:'Zone non-fumeur', ar:'منطقة خالية من التدخين' } },
-
   { id:'sanitize', cat:'safety', icon:'fa-hands-bubbles',
     theme:{ bgType:'gradient', bg1:'#059669', bg2:'#10b981', bgAngle:135, textColor:'#ffffff', accentColor:'#a7f3d0' },
     title:{ en:'Sanitize Your Hands', fr:'Désinfectez vos mains', ar:'عقّم يديك' },
     subtitle:{ en:'For everyone\'s safety', fr:'Pour la sécurité de tous', ar:'لسلامة الجميع' } },
-
   { id:'mask', cat:'safety', icon:'fa-head-side-mask',
     theme:{ bgType:'solid', bgColor:'#0891b2', textColor:'#ffffff', accentColor:'#cffafe' },
     title:{ en:'Mask Required', fr:'Masque obligatoire', ar:'الكمامة إلزامية' },
     subtitle:{ en:'Please wear your mask', fr:'Portez votre masque', ar:'الرجاء ارتداء الكمامة' } },
-
   { id:'fire-exit', cat:'safety', icon:'fa-fire-extinguisher',
     theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
     title:{ en:'Fire Exit', fr:'Sortie de secours', ar:'مخرج الطوارئ' },
     subtitle:{ en:'Keep clear at all times', fr:'Ne pas obstruer', ar:'الرجاء عدم الإعاقة' } },
-
   { id:'open', cat:'status', icon:'fa-circle-check',
     theme:{ bgType:'gradient', bg1:'#10b981', bg2:'#059669', bgAngle:135, textColor:'#ffffff', accentColor:'#a7f3d0' },
     title:{ en:'OPEN', fr:'OUVERT', ar:'مفتوح' },
     subtitle:{ en:'We are open for business', fr:'Nous sommes ouverts', ar:'نحن مفتوحون' } },
-
   { id:'closed', cat:'status', icon:'fa-circle-xmark',
     theme:{ bgType:'solid', bgColor:'#dc2626', textColor:'#ffffff', accentColor:'#fecaca' },
     title:{ en:'CLOSED', fr:'FERMÉ', ar:'مغلق' },
     subtitle:{ en:'Sorry for the inconvenience', fr:'Désolé pour la gêne', ar:'نعتذر عن الإزعاج' } },
-
   { id:'pull', cat:'status', icon:'fa-arrow-left',
     theme:{ bgType:'solid', bgColor:'#4f46e5', textColor:'#ffffff', accentColor:'#c7d2fe' },
     title:{ en:'PULL', fr:'TIRER', ar:'اسحب' },
     subtitle:{ en:'Pull the door to enter', fr:'Tirez la porte pour entrer', ar:'اسحب الباب للدخول' } },
-
   { id:'push', cat:'status', icon:'fa-arrow-right',
     theme:{ bgType:'solid', bgColor:'#4f46e5', textColor:'#ffffff', accentColor:'#c7d2fe' },
     title:{ en:'PUSH', fr:'POUSSER', ar:'ادفع' },
     subtitle:{ en:'Push the door to enter', fr:'Poussez la porte pour entrer', ar:'ادفع الباب للدخول' } },
-
   { id:'cash-only', cat:'status', icon:'fa-money-bill-wave',
     theme:{ bgType:'gradient', bg1:'#f59e0b', bg2:'#dc2626', bgAngle:135, textColor:'#ffffff', accentColor:'#fef3c7' },
     title:{ en:'Cash Only', fr:'Espèces uniquement', ar:'نقدًا فقط' },
     subtitle:{ en:'We do not accept cards', fr:'Cartes non acceptées', ar:'لا نقبل البطاقات' } },
-
   { id:'back-5', cat:'status', icon:'fa-clock',
     theme:{ bgType:'solid', bgColor:'#0891b2', textColor:'#ffffff', accentColor:'#cffafe' },
     title:{ en:'Back in 5 Minutes', fr:'De retour dans 5 minutes', ar:'نعود خلال 5 دقائق' },
     subtitle:{ en:'Please wait a moment', fr:'Veuillez patienter', ar:'الرجاء الانتظار' } },
-
   { id:'restroom', cat:'info', icon:'fa-restroom',
     theme:{ bgType:'solid', bgColor:'#0f172a', textColor:'#ffffff', accentColor:'#94a3b8' },
     title:{ en:'Restrooms', fr:'Toilettes', ar:'دورات المياه' },
     subtitle:{ en:'Men · Women · Accessible', fr:'Hommes · Femmes · Accessible', ar:'رجال · نساء · متاح' } },
-
   { id:'elevator', cat:'info', icon:'fa-elevator',
     theme:{ bgType:'solid', bgColor:'#4f46e5', textColor:'#ffffff', accentColor:'#c7d2fe' },
     title:{ en:'Elevator', fr:'Ascenseur', ar:'المصعد' },
     subtitle:{ en:'Straight ahead', fr:'Tout droit', ar:'إلى الأمام مباشرة' } },
-
   { id:'parking', cat:'info', icon:'fa-square-parking',
     theme:{ bgType:'solid', bgColor:'#0369a1', textColor:'#ffffff', accentColor:'#bae6fd' },
     title:{ en:'Parking', fr:'Stationnement', ar:'موقف السيارات' },
     subtitle:{ en:'Free for customers', fr:'Gratuit pour les clients', ar:'مجاني للعملاء' } },
-
   { id:'information', cat:'info', icon:'fa-circle-info',
     theme:{ bgType:'solid', bgColor:'#0891b2', textColor:'#ffffff', accentColor:'#cffafe' },
     title:{ en:'Information', fr:'Information', ar:'معلومات' },
     subtitle:{ en:'Ask our staff for help', fr:'Demandez de l\'aide', ar:'اسأل موظفينا للمساعدة' } }
 ];
 
-/* ============================================================================
-   4. VERIFIED FREE ICONS
-   ============================================================================ */
+/* ============ VERIFIED FREE ICONS ============ */
 const ICONS = [
   'fa-check','fa-xmark','fa-plus','fa-minus','fa-circle-check','fa-circle-xmark',
   'fa-circle-info','fa-circle-question','fa-circle-exclamation','fa-circle-dot','fa-circle-notch',
@@ -1354,9 +1090,7 @@ const ICONS = [
 ];
 const ICONS_UNIQUE = Array.from(new Set(ICONS));
 
-/* ============================================================================
-   5. SIZES
-   ============================================================================ */
+/* ============ SIZES ============ */
 const SIZES = {
   'a4-p': { w:210, h:297, label:'A4 · P', name:'A4 Portrait',  paper:'A4', orient:'portrait' },
   'a4-l': { w:297, h:210, label:'A4 · L', name:'A4 Landscape', paper:'A4', orient:'landscape' },
@@ -1368,9 +1102,7 @@ const CSS_DPI = 96;
 const EXPORT_DPI = 300;
 const MM_PER_INCH = 25.4;
 
-/* ============================================================================
-   6. STATE
-   ============================================================================ */
+/* ============ STATE ============ */
 const state = {
   uiLang: 'en',
   signLang: 'en',
@@ -1395,15 +1127,17 @@ const state = {
     border: 'rounded',
     icon: 'fa-wifi',
     iconScale: 1.0,
-    logo: null
+    iconColor: null,       // null = auto (falls back to text color)
+    logo: null,            // currently displayed (may be tinted)
+    logoOriginal: null,    // original uploaded data URI
+    logoColor: null,       // null = original colors
+    logoProcessing: false
   },
   qrDataUri: '',
   isExporting: false
 };
 
-/* ============================================================================
-   7. UTILITIES
-   ============================================================================ */
+/* ============ UTILITIES ============ */
 const $ = id => document.getElementById(id);
 const qsa = sel => Array.from(document.querySelectorAll(sel));
 
@@ -1443,9 +1177,6 @@ function showOverlay(msg) {
 }
 function hideOverlay() { $('overlay').classList.remove('show'); }
 
-/* ============================================================================
-   8. TEMPLATE HELPERS
-   ============================================================================ */
 function getTemplate(id) {
   return TEMPLATES.find(x => x.id === id) || TEMPLATES[0];
 }
@@ -1456,7 +1187,42 @@ function getLangValue(obj) {
 }
 
 /* ============================================================================
-   9. QR CODE — with generation IDs (fixes silent drops)
+   LOGO TINTING VIA CANVAS
+   Recolors the entire logo to a single color while preserving transparency
+   ============================================================================ */
+async function tintImage(dataUri, color) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth || 256;
+        canvas.height = img.naturalHeight || 256;
+        const ctx = canvas.getContext('2d');
+
+        // Step 1: Draw original image (destination)
+        ctx.drawImage(img, 0, 0);
+
+        // Step 2: Set composite so source (new color) draws only where dest has alpha
+        ctx.globalCompositeOperation = 'source-in';
+
+        // Step 3: Fill with tint color
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        resolve(canvas.toDataURL('image/png'));
+      } catch (err) {
+        reject(err);
+      }
+    };
+    img.onerror = () => reject(new Error('Failed to load image for tinting'));
+    img.src = dataUri;
+  });
+}
+
+/* ============================================================================
+   QR CODE
    ============================================================================ */
 let qrGenerationId = 0;
 
@@ -1464,7 +1230,6 @@ async function regenerateQRCode() {
   const myId = ++qrGenerationId;
   const tpl = getTemplate(state.templateId);
 
-  // If no QR needed, clear and bail
   if (!tpl.qr) {
     if (state.qrDataUri) {
       state.qrDataUri = '';
@@ -1486,18 +1251,13 @@ async function regenerateQRCode() {
     document.body.appendChild(temp);
 
     new QRCode(temp, {
-      text: text,
-      width: 256,
-      height: 256,
-      colorDark: '#000000',
-      colorLight: '#ffffff',
+      text: text, width: 256, height: 256,
+      colorDark: '#000000', colorLight: '#ffffff',
       correctLevel: QRCode.CorrectLevel.M
     });
 
-    // Wait for library to render the canvas
     await new Promise(r => setTimeout(r, 80));
 
-    // Abort if a newer generation started
     if (myId !== qrGenerationId) {
       try { document.body.removeChild(temp); } catch(e){}
       return;
@@ -1510,11 +1270,8 @@ async function regenerateQRCode() {
     else if (img && img.src) uri = img.src;
 
     try { document.body.removeChild(temp); } catch(e){}
-
-    // Abort if a newer generation started during extraction
     if (myId !== qrGenerationId) return;
 
-    // Verify current template still needs QR
     const currentTpl = getTemplate(state.templateId);
     if (!currentTpl.qr) return;
 
@@ -1530,13 +1287,13 @@ async function regenerateQRCode() {
 const regenerateQRCodeDebounced = debounce(() => regenerateQRCode(), 250);
 
 /* ============================================================================
-   10. BUILD SIGN HTML
+   BUILD SIGN HTML
    ============================================================================ */
 function buildSignHTML() {
   const tpl = getTemplate(state.templateId);
   const d = state.design;
 
-  // Icon or logo
+  // Icon OR logo
   let iconHTML;
   if (d.logo) {
     iconHTML = `<img src="${esc(d.logo)}" alt="">`;
@@ -1612,6 +1369,13 @@ function applySignStyles(el) {
   el.style.setProperty('--text-color', d.textColor);
   el.style.setProperty('--accent-color', d.accentColor);
 
+  // Icon color override
+  if (d.iconColor) {
+    el.style.setProperty('--icon-color', d.iconColor);
+  } else {
+    el.style.removeProperty('--icon-color');
+  }
+
   el.className = 'sign-sheet border-' + d.border;
   el.setAttribute('dir', state.signLang === 'ar' ? 'rtl' : 'ltr');
 }
@@ -1635,7 +1399,7 @@ function renderSigns() {
 }
 
 /* ============================================================================
-   11. PREVIEW SCALING
+   PREVIEW SCALING
    ============================================================================ */
 function updatePreviewScale() {
   const area = $('previewArea');
@@ -1663,7 +1427,7 @@ function updatePreviewScale() {
 }
 
 /* ============================================================================
-   12. APPLY TEMPLATE — FAST VERSION (no re-render of grids)
+   APPLY TEMPLATE — preserves logo, logoColor, iconColor, iconScale, border
    ============================================================================ */
 function applyTemplate(id) {
   const tpl = getTemplate(id);
@@ -1680,14 +1444,15 @@ function applyTemplate(id) {
   state.fields = {};
   state.qrDataUri = '';
 
-  if (tpl.fields) {
-    tpl.fields.forEach(f => { state.fields[f.key] = f.default || ''; });
-  }
+  if (tpl.fields) tpl.fields.forEach(f => { state.fields[f.key] = f.default || ''; });
 
-  // Preserve user's iconScale and logo, override everything else
-  const preservedIconScale = state.design.iconScale;
-  const preservedLogo = state.design.logo;
-  const preservedBorder = state.design.border;
+  // Preserve user's custom choices
+  const keepIconScale = state.design.iconScale;
+  const keepLogo = state.design.logo;
+  const keepLogoOriginal = state.design.logoOriginal;
+  const keepLogoColor = state.design.logoColor;
+  const keepIconColor = state.design.iconColor;
+  const keepBorder = state.design.border;
 
   state.design = {
     bgType: tpl.theme.bgType || 'solid',
@@ -1697,18 +1462,20 @@ function applyTemplate(id) {
     bgAngle: typeof tpl.theme.bgAngle === 'number' ? tpl.theme.bgAngle : 135,
     textColor: tpl.theme.textColor || '#ffffff',
     accentColor: tpl.theme.accentColor || '#c4b5fd',
-    border: preservedBorder,
+    border: keepBorder,
     icon: tpl.icon || 'fa-square',
-    iconScale: preservedIconScale,
-    logo: preservedLogo
+    iconScale: keepIconScale,
+    iconColor: keepIconColor,
+    logo: keepLogo,
+    logoOriginal: keepLogoOriginal,
+    logoColor: keepLogoColor,
+    logoProcessing: false
   };
 
-  // Sync inputs (fast)
   $('titleInput').value = state.title;
   $('subtitleInput').value = state.subtitle;
   $('footerInput').value = state.footer;
 
-  // Sync color pickers
   setColorInput('bgColor', 'bgColorHex', state.design.bgColor);
   setColorInput('bg1', 'bg1Hex', state.design.bg1);
   setColorInput('bg2', 'bg2Hex', state.design.bg2);
@@ -1724,11 +1491,8 @@ function applyTemplate(id) {
   $('angle').value = state.design.bgAngle;
   $('angleVal').textContent = state.design.bgAngle + '°';
 
-  // Update icon active state WITHOUT rebuilding grid
   updateIconSelection();
-  // Update template active state WITHOUT rebuilding grid
   updateTemplateSelection();
-  // Update border active state
   updateBorderSelection();
 
   renderFields();
@@ -1738,7 +1502,7 @@ function applyTemplate(id) {
 }
 
 /* ============================================================================
-   13. FAST SELECTION UPDATES (no grid rebuild)
+   FAST SELECTION UPDATES
    ============================================================================ */
 function updateIconSelection() {
   const buttons = $('iconGrid').children;
@@ -1752,29 +1516,26 @@ function updateIconSelection() {
 function updateTemplateSelection() {
   const buttons = $('tplGrid').children;
   for (let i = 0; i < buttons.length; i++) {
-    const tplId = buttons[i].dataset.tplId;
-    buttons[i].classList.toggle('active', tplId === state.templateId);
+    buttons[i].classList.toggle('active', buttons[i].dataset.tplId === state.templateId);
   }
 }
 
 function updateBorderSelection() {
   const buttons = $('borderGrid').children;
   for (let i = 0; i < buttons.length; i++) {
-    const id = buttons[i].dataset.borderId;
-    buttons[i].classList.toggle('active', id === state.design.border);
+    buttons[i].classList.toggle('active', buttons[i].dataset.borderId === state.design.border);
   }
 }
 
 function updateSizeSelection() {
   const buttons = $('sizeGrid').children;
   for (let i = 0; i < buttons.length; i++) {
-    const id = buttons[i].dataset.sizeId;
-    buttons[i].classList.toggle('active', id === state.size);
+    buttons[i].classList.toggle('active', buttons[i].dataset.sizeId === state.size);
   }
 }
 
 /* ============================================================================
-   14. RENDER UI PIECES (only called once)
+   RENDER UI PIECES
    ============================================================================ */
 function renderCategories() {
   const wrap = $('catTabs');
@@ -1864,9 +1625,7 @@ function renderIcons() {
     btn.addEventListener('click', () => {
       state.design.icon = ic;
       if (state.design.logo) {
-        state.design.logo = null;
-        $('logoThumb').hidden = true;
-        $('clearLogoBtn').hidden = true;
+        clearLogoState();
       }
       updateIconSelection();
       renderSigns();
@@ -1879,10 +1638,10 @@ function renderBorders() {
   const grid = $('borderGrid');
   grid.innerHTML = '';
   const items = [
-    { id: 'clean',   icon: 'fa-square',      name: 'bClean' },
-    { id: 'rounded', icon: 'fa-square',      name: 'bRounded' },
-    { id: 'double',  icon: 'fa-clone',       name: 'bDouble' },
-    { id: 'minimal', icon: 'fa-minus',       name: 'bMinimal' }
+    { id: 'clean',   icon: 'fa-square',  name: 'bClean' },
+    { id: 'rounded', icon: 'fa-square',  name: 'bRounded' },
+    { id: 'double',  icon: 'fa-clone',   name: 'bDouble' },
+    { id: 'minimal', icon: 'fa-minus',   name: 'bMinimal' }
   ];
   items.forEach(item => {
     const btn = document.createElement('button');
@@ -1931,7 +1690,7 @@ function renderSizes() {
 }
 
 /* ============================================================================
-   15. SYNC UI FROM STATE (used at startup)
+   SYNC UI FROM STATE (startup)
    ============================================================================ */
 function syncUIFromState() {
   $('titleInput').value = state.title;
@@ -1953,19 +1712,16 @@ function syncUIFromState() {
   $('angle').value = state.design.bgAngle;
   $('angleVal').textContent = state.design.bgAngle + '°';
 
-  // Icon scale
   const iconScalePercent = Math.round(state.design.iconScale * 100);
   $('iconScale').value = iconScalePercent;
   $('iconScaleVal').textContent = iconScalePercent + '%';
 
-  if (state.design.logo) {
-    $('logoThumb').hidden = false;
-    $('logoThumbImg').src = state.design.logo;
-    $('clearLogoBtn').hidden = false;
-  } else {
-    $('logoThumb').hidden = true;
-    $('clearLogoBtn').hidden = true;
-  }
+  // Icon color UI
+  syncIconColorUI();
+  // Logo color UI
+  syncLogoColorUI();
+
+  updateLogoUI();
 }
 
 function setColorInput(inputId, hexId, value) {
@@ -1976,7 +1732,118 @@ function setColorInput(inputId, hexId, value) {
 }
 
 /* ============================================================================
-   16. APPLY UI LANGUAGE
+   ICON COLOR UI
+   ============================================================================ */
+function syncIconColorUI() {
+  const picker = $('iconColor');
+  const hexLabel = $('iconColorHex');
+  const resetBtn = $('iconColorReset');
+  if (state.design.iconColor) {
+    picker.value = state.design.iconColor;
+    hexLabel.textContent = state.design.iconColor.toUpperCase();
+    resetBtn.disabled = false;
+  } else {
+    // Auto mode — show default near-white as starting point
+    picker.value = state.design.textColor || '#ffffff';
+    hexLabel.textContent = t('auto');
+    resetBtn.disabled = true;
+  }
+}
+
+function setIconColor(color) {
+  state.design.iconColor = color;
+  syncIconColorUI();
+  renderSigns();
+}
+
+function resetIconColor() {
+  state.design.iconColor = null;
+  syncIconColorUI();
+  renderSigns();
+  toast(t('toastIconColorReset'), 'info', 1600);
+}
+
+/* ============================================================================
+   LOGO COLOR UI + TINTING
+   ============================================================================ */
+function syncLogoColorUI() {
+  const block = $('logoColorBlock');
+  const picker = $('logoColor');
+  const hexLabel = $('logoColorHex');
+  const resetBtn = $('logoColorReset');
+
+  if (state.design.logoOriginal) {
+    block.classList.remove('hidden');
+  } else {
+    block.classList.add('hidden');
+    return;
+  }
+
+  if (state.design.logoColor) {
+    picker.value = state.design.logoColor;
+    hexLabel.textContent = state.design.logoColor.toUpperCase();
+    resetBtn.disabled = false;
+  } else {
+    picker.value = '#ffffff';
+    hexLabel.textContent = t('original');
+    resetBtn.disabled = true;
+  }
+}
+
+async function setLogoColor(color) {
+  if (!state.design.logoOriginal || state.design.logoProcessing) return;
+  state.design.logoProcessing = true;
+
+  try {
+    const tinted = await tintImage(state.design.logoOriginal, color);
+    state.design.logo = tinted;
+    state.design.logoColor = color;
+    // Update thumbnail
+    $('logoThumbImg').src = tinted;
+    syncLogoColorUI();
+    renderSigns();
+  } catch (err) {
+    console.error('Tint failed:', err);
+    toast(t('toastError'), 'error');
+  } finally {
+    state.design.logoProcessing = false;
+  }
+}
+
+function resetLogoColor() {
+  if (!state.design.logoOriginal) return;
+  state.design.logo = state.design.logoOriginal;
+  state.design.logoColor = null;
+  $('logoThumbImg').src = state.design.logoOriginal;
+  syncLogoColorUI();
+  renderSigns();
+  toast(t('toastLogoColorReset'), 'info', 1600);
+}
+
+function updateLogoUI() {
+  if (state.design.logo) {
+    $('logoThumb').hidden = false;
+    $('logoThumbImg').src = state.design.logo;
+    $('clearLogoBtn').hidden = false;
+    $('logoColorBlock').classList.remove('hidden');
+  } else {
+    $('logoThumb').hidden = true;
+    $('clearLogoBtn').hidden = true;
+    $('logoColorBlock').classList.add('hidden');
+  }
+}
+
+function clearLogoState() {
+  state.design.logo = null;
+  state.design.logoOriginal = null;
+  state.design.logoColor = null;
+  $('logoThumb').hidden = true;
+  $('clearLogoBtn').hidden = true;
+  $('logoColorBlock').classList.add('hidden');
+}
+
+/* ============================================================================
+   APPLY UI LANGUAGE
    ============================================================================ */
 function applyUILanguage(lang) {
   state.uiLang = lang;
@@ -1994,18 +1861,17 @@ function applyUILanguage(lang) {
     b.classList.toggle('active', b.dataset.lang === lang);
   });
 
-  // Re-render categories (they have language text)
   renderCategories();
-  // Re-render template grid (title is language-dependent)
   renderTemplates();
-  // Re-render border grid (labels are language-dependent)
   renderBorders();
+  syncIconColorUI();
+  syncLogoColorUI();
 
   try { localStorage.setItem('saivsign:uiLang', lang); } catch (e) {}
 }
 
 /* ============================================================================
-   17. APPLY SIGN LANGUAGE
+   APPLY SIGN LANGUAGE
    ============================================================================ */
 function applySignLanguage(lang) {
   state.signLang = lang;
@@ -2024,7 +1890,6 @@ function applySignLanguage(lang) {
     b.classList.toggle('active', b.dataset.sl === lang);
   });
 
-  // Re-render templates because their titles change with sign language
   renderTemplates();
   renderFields();
   renderSigns();
@@ -2033,7 +1898,7 @@ function applySignLanguage(lang) {
 }
 
 /* ============================================================================
-   18. THEME
+   THEME
    ============================================================================ */
 function applyTheme(theme) {
   state.theme = theme;
@@ -2043,14 +1908,13 @@ function applyTheme(theme) {
 }
 
 /* ============================================================================
-   19. ICON SCALE CONTROL
+   ICON SCALE
    ============================================================================ */
 function setIconScale(percent) {
   percent = Math.max(40, Math.min(200, Math.round(percent)));
   state.design.iconScale = percent / 100;
   $('iconScale').value = percent;
   $('iconScaleVal').textContent = percent + '%';
-  // Update icon size in both signs (only need to set CSS variable)
   const preview = $('signPreview');
   const capture = $('signCapture');
   if (preview) preview.style.setProperty('--icon-scale', state.design.iconScale);
@@ -2058,7 +1922,7 @@ function setIconScale(percent) {
 }
 
 /* ============================================================================
-   20. CAPTURE & EXPORT
+   CAPTURE & EXPORT
    ============================================================================ */
 async function captureSign(backgroundColor) {
   const sheet = $('signCapture');
@@ -2069,7 +1933,6 @@ async function captureSign(backgroundColor) {
   sheet.style.setProperty('--sign-h', s.h + 'mm');
 
   void sheet.offsetHeight;
-
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 
   const MM_TO_PX = CSS_DPI / MM_PER_INCH;
@@ -2190,25 +2053,21 @@ function doPrint() {
 }
 
 /* ============================================================================
-   21. BIND EVENTS
+   BIND EVENTS
    ============================================================================ */
 function bindEvents() {
-  /* Theme */
   $('themeBtn').addEventListener('click', () => {
     applyTheme(state.theme === 'dark' ? 'light' : 'dark');
   });
 
-  /* UI language */
   qsa('#langSeg button').forEach(btn => {
     btn.addEventListener('click', () => applyUILanguage(btn.dataset.lang));
   });
 
-  /* Sign language */
   qsa('#signLangSeg button').forEach(btn => {
     btn.addEventListener('click', () => applySignLanguage(btn.dataset.sl));
   });
 
-  /* Content inputs */
   $('titleInput').addEventListener('input', e => {
     state.title = e.target.value;
     state.manualTitle = true;
@@ -2224,7 +2083,6 @@ function bindEvents() {
     renderSigns();
   });
 
-  /* Background type */
   qsa('#bgTypeSeg button').forEach(btn => {
     btn.addEventListener('click', () => {
       state.design.bgType = btn.dataset.val;
@@ -2235,50 +2093,48 @@ function bindEvents() {
     });
   });
 
-  /* Colors */
   bindColorInput('bgColor', 'bgColorHex', 'bgColor');
   bindColorInput('bg1', 'bg1Hex', 'bg1');
   bindColorInput('bg2', 'bg2Hex', 'bg2');
   bindColorInput('textColor', 'textColorHex', 'textColor');
   bindColorInput('accentColor', 'accentColorHex', 'accentColor');
 
-  /* Angle */
+  // === ICON COLOR ===
+  $('iconColor').addEventListener('input', e => setIconColor(e.target.value));
+  $('iconColor').addEventListener('change', e => setIconColor(e.target.value));
+  $('iconColorReset').addEventListener('click', resetIconColor);
+
+  // === LOGO COLOR ===
+  $('logoColor').addEventListener('input', e => setLogoColor(e.target.value));
+  $('logoColor').addEventListener('change', e => setLogoColor(e.target.value));
+  $('logoColorReset').addEventListener('click', resetLogoColor);
+
   $('angle').addEventListener('input', e => {
     state.design.bgAngle = parseInt(e.target.value, 10) || 0;
     $('angleVal').textContent = state.design.bgAngle + '°';
     renderSignsDebounced();
   });
 
-  /* === ICON SCALE === */
-  $('iconScale').addEventListener('input', e => {
-    setIconScale(parseInt(e.target.value, 10));
-  });
-  $('iconScaleUp').addEventListener('click', () => {
-    setIconScale(Math.round(state.design.iconScale * 100) + 10);
-  });
-  $('iconScaleDown').addEventListener('click', () => {
-    setIconScale(Math.round(state.design.iconScale * 100) - 10);
-  });
+  // Icon scale
+  $('iconScale').addEventListener('input', e => setIconScale(parseInt(e.target.value, 10)));
+  $('iconScaleUp').addEventListener('click', () => setIconScale(Math.round(state.design.iconScale * 100) + 10));
+  $('iconScaleDown').addEventListener('click', () => setIconScale(Math.round(state.design.iconScale * 100) - 10));
   qsa('.icon-size-btn[data-preset]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      setIconScale(parseInt(btn.dataset.preset, 10));
-    });
+    btn.addEventListener('click', () => setIconScale(parseInt(btn.dataset.preset, 10)));
   });
 
-  /* Logo */
+  // Logo
   $('uploadLogoBtn').addEventListener('click', () => $('logoFile').click());
   $('logoFile').addEventListener('change', handleLogoUpload);
   $('clearLogoBtn').addEventListener('click', clearLogo);
 
-  /* Export */
+  // Export
   $('printBtn').addEventListener('click', doPrint);
   $('pngBtn').addEventListener('click', exportPNG);
   $('pdfBtn').addEventListener('click', exportPDF);
 
-  /* Toast dismiss */
   $('toast').addEventListener('click', () => { $('toast').className = ''; });
 
-  /* Resize */
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
@@ -2308,7 +2164,7 @@ function bindColorInput(inputId, hexId, key) {
 }
 
 /* ============================================================================
-   22. LOGO
+   LOGO HANDLING
    ============================================================================ */
 function handleLogoUpload(e) {
   const file = e.target.files && e.target.files[0];
@@ -2326,10 +2182,11 @@ function handleLogoUpload(e) {
 
   const reader = new FileReader();
   reader.onload = ev => {
+    state.design.logoOriginal = ev.target.result;
     state.design.logo = ev.target.result;
-    $('logoThumb').hidden = false;
-    $('logoThumbImg').src = ev.target.result;
-    $('clearLogoBtn').hidden = false;
+    state.design.logoColor = null;
+    updateLogoUI();
+    syncLogoColorUI();
     updateIconSelection();
     renderSigns();
     toast(t('toastLogoAdded'), 'success');
@@ -2340,19 +2197,16 @@ function handleLogoUpload(e) {
 }
 
 function clearLogo() {
-  state.design.logo = null;
-  $('logoThumb').hidden = true;
-  $('clearLogoBtn').hidden = true;
+  clearLogoState();
   updateIconSelection();
   renderSigns();
   toast(t('toastLogoRemoved'), 'info');
 }
 
 /* ============================================================================
-   23. INIT
+   INIT
    ============================================================================ */
 function init() {
-  // Load prefs
   let savedTheme = 'dark';
   let savedUI = 'en';
   let savedSign = 'en';
@@ -2365,41 +2219,29 @@ function init() {
   if (!I18N[savedUI]) savedUI = 'en';
   if (!I18N[savedSign]) savedSign = 'en';
 
-  // Apply theme
   applyTheme(savedTheme);
-
-  // Sign lang state
   state.signLang = savedSign;
 
-  // Build all static UI (once)
   renderIcons();
   renderBorders();
   renderSizes();
 
-  // Apply UI lang (this rebuilds cat tabs, template grid, border grid)
   applyUILanguage(savedUI);
 
-  // Set sign lang buttons
   qsa('#signLangSeg button').forEach(b => {
     b.classList.toggle('active', b.dataset.sl === savedSign);
   });
 
-  // Bind all events
   bindEvents();
 
-  // Load initial template
   applyTemplate('wifi-basic');
-
-  // Sync UI (color pickers etc — mostly for icon scale at startup)
   syncUIFromState();
 
-  // Preview scale retries
   setTimeout(updatePreviewScale, 50);
   setTimeout(updatePreviewScale, 200);
   setTimeout(updatePreviewScale, 600);
   window.addEventListener('load', updatePreviewScale);
 
-  // Init QR
   setTimeout(regenerateQRCode, 200);
 }
 
