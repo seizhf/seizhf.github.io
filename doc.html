@@ -1,0 +1,2984 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SaivDOC — Document &amp; Letterhead Creator</title>
+<meta name="description" content="Create professional letterheads, official documents, certificates and notices. Free, private, browser-based. Powered by SaivCORE." />
+<meta name="theme-color" content="#4f46e5" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%234f46e5'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E" />
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          cairo: ['Cairo', 'sans-serif'],
+          tajawal: ['Tajawal', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<!-- SortableJS -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+
+<!-- QR Code Styling -->
+<script src="https://unpkg.com/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script>
+
+<!-- Google Fonts (UI + document fonts, incl. Arabic) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&family=Playfair+Display:wght@400;500;600;700;900&family=Lora:wght@400;500;600;700&family=Roboto:wght@400;500;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
+
+<style>
+  /* ============================================================
+     BASE
+     ============================================================ */
+  :root { color-scheme: light; }
+  html.dark { color-scheme: dark; }
+  * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    margin: 0;
+    background: #f1f5f9;
+    color: #0f172a;
+  }
+  html.dark body { background: #0b1220; color: #e2e8f0; }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  html.dark ::-webkit-scrollbar-thumb { background: #334155; background-clip: content-box; }
+  ::-webkit-scrollbar-thumb:hover { background: #94a3b8; background-clip: content-box; }
+
+  /* ============================================================
+     FORM CONTROLS
+     ============================================================ */
+  .inp {
+    width: 100%;
+    border-radius: 0.65rem;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: #0f172a;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    font-family: inherit;
+  }
+  .inp::placeholder { color: #94a3b8; }
+  .inp:hover { border-color: #cbd5e1; }
+  .inp:focus { border-color: #818cf8; box-shadow: 0 0 0 4px rgba(99, 102, 241, .14); }
+  html.dark .inp {
+    background: #0f172a;
+    border-color: #1e293b;
+    color: #e2e8f0;
+  }
+  html.dark .inp:hover { border-color: #334155; }
+  html.dark .inp:focus { border-color: #6366f1; box-shadow: 0 0 0 4px rgba(99, 102, 241, .22); }
+  textarea.inp { resize: vertical; min-height: 70px; }
+
+  select.inp {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2394a3b8'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 1rem;
+    padding-right: 2rem;
+  }
+  html[dir="rtl"] select.inp {
+    background-position: left 0.6rem center;
+    padding-right: 0.7rem;
+    padding-left: 2rem;
+  }
+
+  .lbl {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: .35rem;
+  }
+  html.dark .lbl { color: #94a3b8; }
+
+  /* ============================================================
+     BUTTONS
+     ============================================================ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    padding: .55rem .75rem;
+    border-radius: .65rem;
+    font-size: .75rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all .15s ease;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .btn:active { transform: translateY(1px) scale(.99); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  .btn-primary {
+    color: #fff;
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 60%, #818cf8 100%);
+    box-shadow: 0 8px 16px -8px rgba(79, 70, 229, .9);
+  }
+  .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 20px -10px rgba(79, 70, 229, 1); }
+
+  .btn-ghost {
+    color: #334155;
+    background: #fff;
+    border-color: #e2e8f0;
+  }
+  .btn-ghost:hover:not(:disabled) { border-color: #c7d2fe; color: #4338ca; background: #f8faff; }
+  html.dark .btn-ghost {
+    color: #cbd5e1;
+    background: #0f172a;
+    border-color: #1e293b;
+  }
+  html.dark .btn-ghost:hover:not(:disabled) { border-color: #4f46e5; color: #a5b4fc; background: #111c33; }
+
+  .btn-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: .6rem;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #475569;
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .btn-icon:hover { border-color: #c7d2fe; color: #4338ca; background: #f8faff; }
+  html.dark .btn-icon { background: #0f172a; border-color: #1e293b; color: #cbd5e1; }
+  html.dark .btn-icon:hover { border-color: #4f46e5; color: #a5b4fc; }
+
+  /* ============================================================
+     TABS / SEGMENTS
+     ============================================================ */
+  .tabs {
+    display: flex;
+    gap: .2rem;
+    padding: .22rem;
+    border-radius: .7rem;
+    background: #f1f5f9;
+    overflow-x: auto;
+  }
+  html.dark .tabs { background: #0f172a; }
+  .tabs button {
+    flex: 1 1 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .35rem;
+    padding: .48rem .55rem;
+    border: none;
+    border-radius: .55rem;
+    background: transparent;
+    font-size: .75rem;
+    font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .15s ease;
+    font-family: inherit;
+  }
+  .tabs button:hover { color: #334155; }
+  html.dark .tabs button:hover { color: #cbd5e1; }
+  .tabs button.is-active {
+    background: #fff;
+    color: #4f46e5;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, .12);
+  }
+  html.dark .tabs button.is-active {
+    background: #1e293b;
+    color: #a5b4fc;
+  }
+
+  .seg { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .seg button {
+    flex: 1 1 auto;
+    min-width: 3rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .3rem;
+    padding: .45rem .5rem;
+    border-radius: .55rem;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    font-size: .7rem;
+    font-weight: 700;
+    color: #475569;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .15s ease;
+    font-family: inherit;
+  }
+  .seg button:hover { border-color: #cbd5e1; background: #f8fafc; }
+  html.dark .seg button { background: #0f172a; border-color: #1e293b; color: #94a3b8; }
+  html.dark .seg button:hover { border-color: #334155; background: #111c33; }
+  .seg button.is-active {
+    border-color: #6366f1;
+    background: #eef2ff;
+    color: #4338ca;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, .1);
+  }
+  html.dark .seg button.is-active {
+    border-color: #6366f1;
+    background: #1e1b4b;
+    color: #a5b4fc;
+  }
+
+  /* ============================================================
+     RANGE / SWITCH
+     ============================================================ */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: #e2e8f0;
+    outline: none;
+    cursor: pointer;
+  }
+  html.dark input[type="range"] { background: #1e293b; }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #4f46e5;
+    border: 3px solid #fff;
+    box-shadow: 0 1px 6px rgba(79, 70, 229, .5);
+    cursor: pointer;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #4f46e5;
+    border: 3px solid #fff;
+    box-shadow: 0 1px 6px rgba(79, 70, 229, .5);
+    cursor: pointer;
+  }
+
+  .switch { position: relative; display: inline-block; width: 40px; height: 22px; flex: none; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider {
+    position: absolute;
+    inset: 0;
+    background: #cbd5e1;
+    border-radius: 999px;
+    transition: background .2s ease;
+    cursor: pointer;
+  }
+  html.dark .switch .slider { background: #334155; }
+  .switch .slider::before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform .2s cubic-bezier(.4, 0, .2, 1);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, .25);
+  }
+  .switch input:checked + .slider { background: #4f46e5; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+
+  .color-input {
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    background: transparent;
+    width: 44px;
+    height: 36px;
+    padding: 0;
+    border-radius: .55rem;
+    cursor: pointer;
+    flex: none;
+  }
+  .color-input::-webkit-color-swatch-wrapper { padding: 0; }
+  .color-input::-webkit-color-swatch { border: 1px solid #e2e8f0; border-radius: .55rem; }
+  .color-input::-moz-color-swatch { border: 1px solid #e2e8f0; border-radius: .55rem; }
+
+  /* ============================================================
+     APP LAYOUT
+     ============================================================ */
+  .app-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(255, 255, 255, .88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid #e2e8f0;
+  }
+  html.dark .app-header {
+    background: rgba(11, 18, 32, .88);
+    border-bottom-color: #1e293b;
+  }
+
+  .toolbar {
+    position: sticky;
+    top: 57px;
+    z-index: 35;
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid #e2e8f0;
+  }
+  html.dark .toolbar {
+    background: rgba(11, 18, 32, .92);
+    border-bottom-color: #1e293b;
+  }
+
+  .tool-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: .5rem;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #475569;
+    cursor: pointer;
+    transition: all .13s ease;
+    font-size: .8125rem;
+  }
+  .tool-btn:hover { background: #f1f5f9; color: #1e293b; }
+  .tool-btn.is-active { background: #eef2ff; color: #4338ca; }
+  html.dark .tool-btn { color: #cbd5e1; }
+  html.dark .tool-btn:hover { background: #1e293b; color: #fff; }
+  html.dark .tool-btn.is-active { background: #1e1b4b; color: #a5b4fc; }
+
+  .tool-divider { width: 1px; height: 22px; background: #e2e8f0; margin: 0 .2rem; }
+  html.dark .tool-divider { background: #1e293b; }
+
+  /* ============================================================
+     SIDEBAR
+     ============================================================ */
+  .sidebar {
+    width: 372px;
+    flex: none;
+    border-right: 1px solid #e2e8f0;
+    background: #fff;
+    height: calc(100vh - 57px - 49px);
+    position: sticky;
+    top: 106px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  html.dark .sidebar { background: #0b1220; border-right-color: #1e293b; }
+  @media (max-width: 1024px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: static;
+      border-right: none;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    html.dark .sidebar { border-bottom-color: #1e293b; }
+  }
+
+  .section {
+    padding: 1.1rem 1.15rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  html.dark .section { border-bottom-color: #1e293b; }
+  .section:last-child { border-bottom: none; }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: .9rem;
+    font-size: .6875rem;
+    font-weight: 800;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+  html.dark .section-title { color: #94a3b8; }
+
+  .section-title .ico {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: .4rem;
+    background: #eef2ff;
+    color: #4f46e5;
+    font-size: .625rem;
+  }
+  html.dark .section-title .ico { background: #1e1b4b; color: #a5b4fc; }
+
+  /* ============================================================
+     CANVAS & A4 PAGE
+     ============================================================ */
+  .canvas {
+    flex: 1;
+    min-width: 0;
+    padding: 28px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .a4-scroll {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    padding-bottom: 20px;
+  }
+
+  .a4-wrapper {
+    transform-origin: top center;
+    transition: transform .18s ease;
+  }
+
+  .a4-page {
+    --accent: #1e3a8a;
+    --ink: #111827;
+    --muted: #6b7280;
+    --line: #d1d5db;
+    width: 210mm;
+    min-height: 297mm;
+    background: #ffffff;
+    color: var(--ink);
+    padding: 22mm 18mm;
+    font-family: 'Inter', sans-serif;
+    font-size: 11pt;
+    line-height: 1.55;
+    position: relative;
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, .08),
+      0 12px 32px -10px rgba(15, 23, 42, .28),
+      0 40px 80px -30px rgba(15, 23, 42, .22);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .a4-page * { box-sizing: border-box; }
+
+  /* ---------- Blocks ---------- */
+  .doc-block {
+    position: relative;
+    margin-bottom: 6mm;
+  }
+  .doc-block:last-child { margin-bottom: 0; }
+
+  .block-tools {
+    position: absolute;
+    top: -4px;
+    inset-inline-end: -6px;
+    display: flex;
+    gap: .2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+    z-index: 20;
+    background: rgba(255, 255, 255, .96);
+    border: 1px solid #e2e8f0;
+    border-radius: .5rem;
+    padding: .18rem;
+    box-shadow: 0 6px 18px -6px rgba(15, 23, 42, .3);
+    transform: translate(0, -100%);
+  }
+  .doc-block:hover > .block-tools { opacity: 1; pointer-events: auto; }
+
+  .block-tools button {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: .35rem;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    cursor: pointer;
+    font-size: .625rem;
+    transition: all .13s ease;
+  }
+  .block-tools button:hover { background: #f1f5f9; color: #1e293b; }
+  .block-tools button.danger:hover { background: #fef2f2; color: #e11d48; }
+  .block-tools .drag-handle { cursor: grab; }
+  .block-tools .drag-handle:active { cursor: grabbing; }
+
+  .sortable-ghost { opacity: .35; }
+  .sortable-chosen > .block-tools { opacity: 1 !important; pointer-events: auto !important; }
+  .sortable-drag { opacity: .95; }
+
+  /* ---------- Logo block ---------- */
+  .logo-wrap {
+    display: flex;
+    width: 100%;
+  }
+  .logo-wrap.align-left { justify-content: flex-start; }
+  .logo-wrap.align-center { justify-content: center; }
+  .logo-wrap.align-right { justify-content: flex-end; }
+
+  .logo-frame {
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: #fff;
+  }
+  .logo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .logo-placeholder {
+    display: grid;
+    place-items: center;
+    width: 160px;
+    height: 90px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    color: #94a3b8;
+    font-size: 10pt;
+    font-weight: 600;
+    background: #f8fafc;
+  }
+
+  /* ---------- Header block ---------- */
+  .doc-company-name {
+    font-size: 22pt;
+    font-weight: 800;
+    letter-spacing: -.01em;
+    line-height: 1.15;
+    color: var(--ink);
+    margin: 0;
+  }
+  .doc-company-tagline {
+    font-size: 10pt;
+    color: var(--muted);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+  .doc-meta-grid {
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2px 18px;
+    font-size: 9pt;
+    color: var(--muted);
+  }
+  .doc-meta-grid .row {
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+  }
+  .doc-meta-grid .k {
+    font-weight: 700;
+    color: var(--ink);
+    opacity: .75;
+    flex: none;
+  }
+
+  /* ---------- Meta block (date / ref / subject) ---------- */
+  .doc-meta-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 10pt;
+    color: var(--muted);
+    margin-bottom: 6mm;
+  }
+  .doc-subject {
+    font-size: 12pt;
+    font-weight: 700;
+    color: var(--ink);
+    margin-top: 4mm;
+  }
+  .doc-subject .lbl-subject {
+    color: var(--accent);
+    margin-inline-end: 6px;
+  }
+  .doc-subject .val-subject {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(0,0,0,.25);
+  }
+
+  /* ---------- Body ---------- */
+  .doc-body {
+    font-size: 11pt;
+    line-height: 1.7;
+    color: var(--ink);
+    min-height: 40mm;
+    outline: none;
+    flex: 1;
+  }
+  .doc-body:focus { outline: none; }
+  .doc-body:empty::before {
+    content: attr(data-placeholder);
+    color: #9ca3af;
+    font-style: italic;
+  }
+  .doc-body p { margin: 0 0 .75em; }
+  .doc-body p:last-child { margin-bottom: 0; }
+  .doc-body h1 { font-size: 20pt; font-weight: 800; margin: .8em 0 .5em; line-height: 1.2; }
+  .doc-body h2 { font-size: 15pt; font-weight: 700; margin: .8em 0 .5em; line-height: 1.25; }
+  .doc-body h3 { font-size: 12.5pt; font-weight: 700; margin: .8em 0 .4em; line-height: 1.3; }
+  .doc-body ul, .doc-body ol { margin: .5em 0 .9em; padding-inline-start: 1.4em; }
+  .doc-body li { margin-bottom: .25em; }
+  .doc-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  .doc-body strong, .doc-body b { font-weight: 700; }
+  .doc-body em, .doc-body i { font-style: italic; }
+
+  /* ---------- Signature ---------- */
+  .doc-signature {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10mm;
+    page-break-inside: avoid;
+  }
+  .sig-box {
+    min-width: 62mm;
+    text-align: center;
+  }
+  .sig-line {
+    border-bottom: 1px solid var(--line);
+    height: 18mm;
+    margin-bottom: 3mm;
+    position: relative;
+  }
+  .sig-line::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: -1px;
+    height: 1px;
+    background: var(--accent);
+    opacity: .35;
+  }
+  .sig-name {
+    font-weight: 700;
+    font-size: 10.5pt;
+    color: var(--ink);
+  }
+  .sig-title {
+    font-size: 9pt;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  /* ---------- Footer ---------- */
+  .doc-footer {
+    margin-top: auto;
+    padding-top: 6mm;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6mm;
+    font-size: 8.5pt;
+    color: var(--muted);
+  }
+  .doc-footer-text { flex: 1; line-height: 1.5; }
+  .doc-footer-text strong { color: var(--ink); }
+  .footer-qr-wrap {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  #qrContainer {
+    line-height: 0;
+  }
+  #qrContainer svg, #qrContainer canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .qr-caption {
+    font-size: 6.5pt;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Page number ---------- */
+  .page-number {
+    position: absolute;
+    bottom: 8mm;
+    inset-inline-end: 18mm;
+    font-size: 8pt;
+    color: var(--muted);
+  }
+  .page-number.rtl { inset-inline-end: auto; inset-inline-start: 18mm; }
+
+  /* ============================================================
+     TEMPLATES
+     ============================================================ */
+
+  /* ---- 1. Administrative (Official) ---- */
+  .tpl-administrative { padding: 20mm 18mm; }
+  .tpl-administrative::before {
+    content: "";
+    position: absolute;
+    inset: 10mm;
+    border: 1.5px solid var(--accent);
+    border-radius: 2px;
+    pointer-events: none;
+    opacity: .55;
+  }
+  .tpl-administrative::after {
+    content: "";
+    position: absolute;
+    inset: 11.5mm;
+    border: .5px solid var(--accent);
+    border-radius: 2px;
+    pointer-events: none;
+    opacity: .3;
+  }
+  .tpl-administrative > .doc-block { position: relative; z-index: 2; }
+  .tpl-administrative .doc-company-name {
+    font-family: 'Playfair Display', 'Cairo', serif;
+    text-align: center;
+    letter-spacing: .01em;
+  }
+  .tpl-administrative .doc-company-tagline { text-align: center; letter-spacing: .12em; text-transform: uppercase; font-size: 8.5pt; }
+  .tpl-administrative .doc-meta-grid { justify-content: center; text-align: center; }
+  .tpl-administrative .doc-meta-grid .row { justify-content: center; }
+  .tpl-administrative .logo-wrap { justify-content: center !important; }
+  .tpl-administrative .doc-body { text-align: justify; }
+  .tpl-administrative .doc-subject { text-align: center; }
+
+  /* ---- 2. Modern Startup ---- */
+  .tpl-modern { padding: 18mm 18mm 18mm 26mm; }
+  .tpl-modern::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+    width: 8mm;
+    height: 100%;
+    background: var(--accent);
+    pointer-events: none;
+  }
+  .tpl-modern::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    inset-inline-start: 8mm;
+    width: 2mm;
+    height: 100%;
+    background: var(--accent);
+    opacity: .28;
+    pointer-events: none;
+  }
+  .tpl-modern > .doc-block { position: relative; z-index: 2; }
+  .tpl-modern .doc-company-name {
+    font-family: 'Inter', 'Cairo', sans-serif;
+    font-weight: 900;
+    letter-spacing: -.02em;
+  }
+  .tpl-modern .doc-company-name .accent-dot { color: var(--accent); }
+  .tpl-modern .doc-company-tagline {
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    font-size: 8pt;
+  }
+  .tpl-modern .doc-subject { font-weight: 800; font-size: 13pt; }
+  .tpl-modern .doc-subject .lbl-subject { background: var(--accent); color: #fff; padding: 1px 6px; border-radius: 4px; font-size: 9pt; }
+  .tpl-modern .sig-line::after { background: var(--accent); opacity: .8; height: 2px; }
+  .tpl-modern .doc-footer { border-top-color: var(--accent); border-top-width: 1.5px; }
+
+  /* ---- 3. Minimalist Executive ---- */
+  .tpl-minimal { padding: 26mm 22mm; }
+  .tpl-minimal .doc-company-name {
+    font-family: 'Playfair Display', 'Cairo', serif;
+    font-weight: 600;
+    font-size: 24pt;
+    letter-spacing: .02em;
+  }
+  .tpl-minimal .doc-company-tagline {
+    font-size: 8.5pt;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .tpl-minimal .doc-meta-grid { font-size: 8.5pt; }
+  .tpl-minimal .doc-body { font-family: 'Lora', 'Cairo', serif; font-size: 11.5pt; line-height: 1.75; }
+  .tpl-minimal .doc-footer { border-top: none; }
+  .tpl-minimal .doc-footer::before {
+    content: "";
+    display: block;
+    width: 30mm;
+    height: 1px;
+    background: var(--accent);
+    margin-bottom: 4mm;
+    opacity: .4;
+  }
+  .tpl-minimal .doc-subject { font-family: 'Inter', sans-serif; font-size: 11pt; font-weight: 600; }
+
+  /* ---- 4. Official Notice / Certificate ---- */
+  .tpl-notice { padding: 22mm 22mm; }
+  .tpl-notice::before {
+    content: "";
+    position: absolute;
+    inset: 12mm;
+    border: 1px solid var(--accent);
+    pointer-events: none;
+    opacity: .5;
+  }
+  .tpl-notice::after {
+    content: "";
+    position: absolute;
+    inset: 14mm;
+    border: 3px double var(--accent);
+    pointer-events: none;
+    opacity: .35;
+  }
+  .tpl-notice > .doc-block { position: relative; z-index: 2; }
+  .tpl-notice .logo-wrap { justify-content: center !important; }
+  .tpl-notice .doc-company-name {
+    font-family: 'Playfair Display', 'Cairo', serif;
+    text-align: center;
+    font-size: 20pt;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  .tpl-notice .doc-company-tagline { text-align: center; letter-spacing: .2em; text-transform: uppercase; font-size: 8pt; }
+  .tpl-notice .doc-meta-grid { justify-content: center; text-align: center; max-width: 130mm; margin-inline: auto; }
+  .tpl-notice .doc-meta-grid .row { justify-content: center; }
+  .tpl-notice .doc-subject {
+    text-align: center;
+    font-size: 16pt;
+    font-family: 'Playfair Display', 'Cairo', serif;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-top: 6mm;
+    margin-bottom: 4mm;
+    padding-bottom: 4mm;
+    border-bottom: 1px solid var(--line);
+  }
+  .tpl-notice .doc-subject .lbl-subject { display: none; }
+  .tpl-notice .doc-body { text-align: justify; font-size: 11pt; }
+  .tpl-notice .doc-signature { justify-content: space-between; margin-top: 14mm; }
+  .tpl-notice .sig-box { text-align: center; }
+  .tpl-notice .doc-footer { justify-content: center; text-align: center; }
+
+  /* ============================================================
+     ANIMATIONS / UTILS
+     ============================================================ */
+  .fade-in { animation: fadeIn .3s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+
+  .hidden { display: none !important; }
+
+  #toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translate(-50%, 130%);
+    z-index: 200;
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    padding: .65rem 1rem;
+    border-radius: .7rem;
+    background: #0f172a;
+    color: #fff;
+    font-size: .8125rem;
+    font-weight: 600;
+    box-shadow: 0 20px 40px -14px rgba(15, 23, 42, .6);
+    transition: transform .35s cubic-bezier(.22, 1, .36, 1), opacity .3s ease;
+    opacity: 0;
+    pointer-events: none;
+    max-width: calc(100vw - 32px);
+  }
+  #toast.show { transform: translate(-50%, 0); opacity: 1; }
+  #toast.error { background: #be123c; }
+  #toast.success { background: #0f172a; }
+
+  .dropzone.dragover {
+    border-color: #6366f1 !important;
+    background: #eef2ff !important;
+    transform: scale(1.01);
+  }
+  html.dark .dropzone.dragover { background: #1e1b4b !important; }
+
+  /* ============================================================
+     PRINT ENGINE
+     ============================================================ */
+  @media print {
+    @page { size: A4; margin: 0; }
+    html, body {
+      background: #fff !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+    .no-print { display: none !important; }
+
+    .main-shell, .canvas, .a4-scroll, .a4-wrapper {
+      display: block !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: #fff !important;
+      width: auto !important;
+      height: auto !important;
+      min-height: 0 !important;
+      overflow: visible !important;
+      transform: none !important;
+    }
+
+    .a4-page {
+      width: 210mm !important;
+      min-height: 297mm !important;
+      margin: 0 !important;
+      padding: 20mm 18mm !important;
+      box-shadow: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+      transform: none !important;
+      page-break-after: avoid;
+    }
+
+    .block-tools { display: none !important; }
+    .doc-body { outline: none !important; }
+    .doc-body:empty::before { content: "" !important; }
+    .logo-placeholder { display: none !important; }
+
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+
+  /* RTL adjustments */
+  html[dir="rtl"] .doc-meta-grid { direction: rtl; }
+  html[dir="rtl"] .doc-body { text-align: right; }
+  html[dir="rtl"] .tpl-administrative .doc-body { text-align: justify; }
+  html[dir="rtl"] .tpl-notice .doc-body { text-align: justify; }
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     APP HEADER
+     ============================================================ -->
+<header class="app-header no-print">
+  <div class="mx-auto flex max-w-[1600px] items-center justify-between gap-3 px-4 py-2.5 sm:px-5">
+
+    <!-- Brand -->
+    <div class="flex items-center gap-2.5">
+      <div class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 via-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/30">
+        <i class="fa-solid fa-file-lines text-sm"></i>
+      </div>
+      <div class="leading-tight">
+        <h1 class="text-[15px] font-extrabold tracking-tight text-slate-900 dark:text-white">
+          Saiv<span class="text-indigo-600 dark:text-indigo-400">DOC</span>
+        </h1>
+        <p class="hidden text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 sm:block" data-i18n="tagline">
+          Document &amp; Letterhead Creator
+        </p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-1.5">
+
+      <!-- Language -->
+      <div class="relative">
+        <select id="langSelect" class="inp !w-auto !py-1.5 !ps-8 !pe-7 !text-xs !font-bold cursor-pointer">
+          <option value="en">EN</option>
+          <option value="fr">FR</option>
+          <option value="ar">AR</option>
+        </select>
+        <i class="fa-solid fa-globe pointer-events-none absolute top-1/2 -translate-y-1/2 text-[11px] text-slate-400" style="inset-inline-start:.6rem"></i>
+      </div>
+
+      <!-- Theme -->
+      <button id="themeBtn" class="btn-icon" title="Toggle theme">
+        <i class="fa-solid fa-moon text-sm"></i>
+      </button>
+
+      <!-- Reset -->
+      <button id="resetBtn" class="btn-icon" title="Reset document">
+        <i class="fa-solid fa-rotate-left text-sm"></i>
+      </button>
+
+      <!-- Print -->
+      <button id="printBtn" class="btn btn-primary !px-3.5 !py-2">
+        <i class="fa-solid fa-print"></i>
+        <span class="hidden sm:inline" data-i18n="print">Print / PDF</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     RICH TEXT TOOLBAR
+     ============================================================ -->
+<div class="toolbar no-print">
+  <div class="mx-auto flex max-w-[1600px] items-center gap-1 overflow-x-auto px-3 py-2 sm:px-5">
+    <!-- Font family -->
+    <select id="docFontSelect" class="inp !w-auto !py-1.5 !text-xs !font-semibold cursor-pointer" title="Document font">
+      <option value="Inter">Inter</option>
+      <option value="Roboto">Roboto</option>
+      <option value="Lora">Lora (Serif)</option>
+      <option value="Playfair Display">Playfair Display</option>
+      <option value="Cairo">Cairo (Arabic)</option>
+      <option value="Tajawal">Tajawal (Arabic)</option>
+      <option value="Amiri">Amiri (Arabic Serif)</option>
+    </select>
+
+    <span class="tool-divider"></span>
+
+    <!-- Headings -->
+    <button class="tool-btn" data-cmd="formatBlock" data-val="h1" title="Heading 1"><i class="fa-solid fa-h1"></i></button>
+    <button class="tool-btn" data-cmd="formatBlock" data-val="h2" title="Heading 2"><i class="fa-solid fa-h2"></i></button>
+    <button class="tool-btn" data-cmd="formatBlock" data-val="h3" title="Heading 3"><i class="fa-solid fa-h3"></i></button>
+    <button class="tool-btn" data-cmd="formatBlock" data-val="p" title="Paragraph"><i class="fa-solid fa-paragraph"></i></button>
+
+    <span class="tool-divider"></span>
+
+    <!-- Bold / Italic / Underline -->
+    <button class="tool-btn" data-cmd="bold" title="Bold"><i class="fa-solid fa-bold"></i></button>
+    <button class="tool-btn" data-cmd="italic" title="Italic"><i class="fa-solid fa-italic"></i></button>
+    <button class="tool-btn" data-cmd="underline" title="Underline"><i class="fa-solid fa-underline"></i></button>
+
+    <span class="tool-divider"></span>
+
+    <!-- Lists -->
+    <button class="tool-btn" data-cmd="insertUnorderedList" title="Bullet list"><i class="fa-solid fa-list-ul"></i></button>
+    <button class="tool-btn" data-cmd="insertOrderedList" title="Numbered list"><i class="fa-solid fa-list-ol"></i></button>
+
+    <span class="tool-divider"></span>
+
+    <!-- Alignment -->
+    <button class="tool-btn" data-cmd="justifyLeft" title="Align left"><i class="fa-solid fa-align-left"></i></button>
+    <button class="tool-btn" data-cmd="justifyCenter" title="Align center"><i class="fa-solid fa-align-center"></i></button>
+    <button class="tool-btn" data-cmd="justifyRight" title="Align right"><i class="fa-solid fa-align-right"></i></button>
+    <button class="tool-btn" data-cmd="justifyFull" title="Justify"><i class="fa-solid fa-align-justify"></i></button>
+
+    <span class="tool-divider"></span>
+
+    <!-- Undo / Redo -->
+    <button class="tool-btn" data-cmd="undo" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="tool-btn" data-cmd="redo" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
+
+    <span class="tool-divider"></span>
+
+    <!-- Clear format -->
+    <button class="tool-btn" data-cmd="removeFormat" title="Clear formatting"><i class="fa-solid fa-eraser"></i></button>
+
+    <!-- Zoom controls -->
+    <div class="ms-auto flex items-center gap-1">
+      <button id="zoomOut" class="tool-btn" title="Zoom out"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+      <span id="zoomLabel" class="min-w-[42px] text-center text-[11px] font-bold text-slate-500 dark:text-slate-400">100%</span>
+      <button id="zoomIn" class="tool-btn" title="Zoom in"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+      <button id="zoomFit" class="tool-btn" title="Fit to width"><i class="fa-solid fa-expand"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MAIN
+     ============================================================ -->
+<div class="main-shell mx-auto flex max-w-[1600px] flex-col lg:flex-row">
+
+  <!-- ======================= SIDEBAR ======================= -->
+  <aside class="sidebar no-print">
+
+    <!-- Tabs -->
+    <div class="sticky top-0 z-10 border-b border-slate-100 bg-white/95 px-3 pt-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
+      <div class="tabs" id="tabBar">
+        <button type="button" data-tab="content" class="is-active"><i class="fa-solid fa-pen-to-square"></i><span data-i18n="tab.content">Content</span></button>
+        <button type="button" data-tab="design"><i class="fa-solid fa-palette"></i><span data-i18n="tab.design">Design</span></button>
+        <button type="button" data-tab="logo"><i class="fa-solid fa-image"></i><span data-i18n="tab.logo">Logo</span></button>
+        <button type="button" data-tab="footer"><i class="fa-solid fa-qrcode"></i><span data-i18n="tab.footer">QR &amp; Footer</span></button>
+        <button type="button" data-tab="settings"><i class="fa-solid fa-sliders"></i><span data-i18n="tab.settings">Layout</span></button>
+      </div>
+      <div class="h-3"></div>
+    </div>
+
+    <!-- ==================== TAB: CONTENT ==================== -->
+    <div class="tab-panel" data-panel="content">
+
+      <div class="section">
+        <div class="section-title"><span class="ico"><i class="fa-solid fa-building"></i></span><span data-i18n="sec.company">Company Information</span></div>
+        <div class="space-y-3">
+          <div>
+            <label class="lbl" data-i18n="field.companyName">Company Name</label>
+            <input id="f-company-name" type="text" class="inp" />
+          </div>
+          <div>
+            <label class="lbl" data-i18n="field.tagline">Tagline / Slogan</label>
+            <input id="f-company-tagline" type="text" class="inp" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="lbl" data-i18n="field.rc">Reg. / RC</label>
+              <input id="f-company-rc" type="text" class="inp" />
+            </div>
+            <div>
+              <label class="lbl" data-i18n="field.nif">Tax ID / NIF</label>
+              <input id="f-company-nif" type="text" class="inp" />
+            </div>
+          </div>
+          <div>
+            <label class="lbl" data-i18n="field.address">Address</label>
+            <input id="f-company-address" type="text" class="inp" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="lbl" data-i18n="field.phone">Phone</label>
+              <input id="f-company-phone" type="text" class="inp" />
+            </div>
+            <div>
+              <label class="lbl" data-i18n="field.email">Email</label>
+              <input id="f-company-email" type="text" class="inp" />
+            </div>
+          </div>
+          <div>
+            <label class="lbl" data-i18n="field.website">Website</label>
+            <input id="f-company-website" type="text" class="inp" />
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><span class="ico"><i class="fa-solid fa-calendar-day"></i></span><span data-i18n="sec.letterMeta">Date / Reference / Subject</span></div>
+        <div class="space-y-3">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="lbl" data-i18n="field.date">Date</label>
+              <input id="f-meta-date" type="text" class="inp" />
+            </div>
+            <div>
+              <label class="lbl" data-i18n="field.ref">Reference</label>
+              <input id="f-meta-ref" type="text" class="inp" />
+            </div>
+          </div>
+          <div>
+            <label class="lbl" data-i18n="field.subject">Subject</label>
+            <input id="f-meta-subject" type="text" class="inp" />
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><span class="ico"><i class="fa-solid fa-file-signature"></i></span><span data-i18n="sec.signature">Signature Block</span></div>
+        <div class="space-y-3">
+          <div>
+            <label class="lbl" data-i18n="field.sigName">Signatory Name</label>
+            <input id="f-sig-name" type="text" class="inp" />
+          </div>
+          <div>
+            <label class="lbl" data-i18n="field.sigTitle">Title / Position</label>
+            <input id="f-sig-title" type="text" class="inp" />
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="rounded-xl border border-indigo-200 bg-indigo-50/70 p-3 text-xs font-medium text-indigo-800 dark:border-indigo-900 dark:bg-indigo-950/50 dark:text-indigo-200">
+          <i class="fa-solid fa-lightbulb mr-1.5"></i>
+          <span data-i18n="hint.body">Click directly on the document body in the preview to type your letter. Use the toolbar above to format headings, lists and alignment.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB: DESIGN ==================== -->
+    <div class="tab-panel hidden" data-panel="design">
+
+      <div class="section">
+        <div class="section-title"><span class="ico"><i class="fa-solid fa-layer-group"></i></span><span data-i18n="sec.template">Template</span></div>
+        <div class="grid grid-cols-2 gap-2.5" id="templateGrid">
+          <button type="button" class="tpl-card" data-tpl="administrative">
+            <div class="tpl-thumb tpl-thumb-admin"><span></span></div>
+            <div class="tpl-name" data-i18n="tpl.admin">Administrative</div>
+          </button>
+          <button type="button" class="tpl-card" data-tpl="modern">
+            <div class="tpl-thumb tpl-thumb-modern"><span></span></div>
+            <div class="tpl-name" data-i18n="tpl.modern">Modern Startup</div>
+          </button>
+          <button type="button" class="tpl-card" data-tpl="minimal">
+            <div class="tpl-thumb tpl-thumb-minimal"><span></span></div>
+            <div class="tpl-name" data-i18n="tpl.minimal">Minimalist Executive</div>
+          </button>
+          <button type="button" class="tpl-card" data-tpl="notice">
+            <div class="tpl-thumb tpl-thumb-notice"><span></span></div>
+            <div class="tpl-name" data-i18n="tpl.notice">Official Notice</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><span class="ico"><i class="fa-solid fa-fill-drip"></i></span><span data-i18n="sec.colors">Colors &amp; Spacing</span></div>
+        <div class="space-y-4">
+          <div>
+            <label class="lbl" data-i18n="field.accent">Accent Color</label>
+            <div class="flex items-center gap-2.5">
+              <input id="f-accent" type="color" class="color-input" value="#1e3a8a" />
+              <input id="f-accent-hex" type="text" class="inp font-mono text-xs font-bold uppercase" maxlength="7" />
+              <div class="flex flex-wrap gap-1.5" id="accentSwatches"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-baseline justify-between">
+              <label class="lbl" data-i18n="field.padding">Page Padding</label>
+              <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400"><span id="paddingValue">22</span> mm</span>
+            </div>
+            <input id="f-padding" type="range" min="10" max="32" step="1" value="22" />
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><span class="ico"><i class="fa-solid fa-font"></i></span><span data-i18n="sec.typography">Typography</span></div>
+        <div class="space-y-3">
+          <div>
+            <label class="lbl" data-i18n="field.docFont">Document Font</label>
+            <select id="f-doc-font" class="inp">
+              <option value="Inter">Inter — Modern Sans</option>
+              <option value="Roboto">Roboto — Clean Sans</option>
+              <option value="Lora">Lora — Elegant Serif</option>
+              <option value="Playfair Display">Playfair Display — Formal Serif</option>
+              <option value="Cairo">Cairo — Arabic Modern</option>
+              <option value="Tajawal">Tajawal — Arabic Clean</option>
+              <option value="Amiri">Amiri — Arabic Traditional</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB: LOGO ==================== -->
+    <div class="tab-panel hidden" data-panel="logo">
+
+      <div class="section">
+        <div class="section-title"><span class="ico"><i class="fa-solid fa-cloud-arrow-up"></i></span><span data-i18n="sec.logoUpload">Logo Upload</span></div>
+
+        <div id="dropZone" class="dropzone relative flex cursor-pointer flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50/70 px-4 py-6 text-center transition-all dark:border-slate-700 dark:bg-slate-900/50">
+          <input type="file" id="logoInput" accept="image/png,image/jpeg,image/jpg,image/svg+xml,image/webp,image/gif" class="hidden" />
+          <div id="logoEmpty">
+            <i class="fa-solid fa-cloud-arrow-up text-2xl text-slate-400"></i>
+            <p class="mt-1.5 text-xs font-bold text-slate-600 dark:text-slate-300" data-i18n="drop.hint">Drop image or click to upload</p>
+            <p class="mt-0.5 text-[10px] text-slate-400">PNG · JPG · SVG · WEBP · max 3 MB</p>
+          </div>
+          <div id="logoFilled" class="w-full items-center gap-3" style="display:none">
+            <img id="logoThumb" class="h-11 w-11 flex-none rounded-lg border border-slate-200 bg-white object-contain p-1 dark:border-slate-700 dark:bg-slate-800" alt="Logo" />
+            <div class="min-w-0 flex-1 text-left">
+              <p id="logoName" class="truncate text-xs font-bold text-slate-700 dark:text-slate-200">logo.png</p>
+              <p class="text-[10px] text-slate-400" data-i18n="drop.replace">Click to replace</p>
+            </div>
+            <button type="button" id="logoRemove" class="grid h-8 w-8 flex-none place-items-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:border-rose-300 hover:bg-rose-50 hover:text-rose-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:border-rose-800 dark:hover:bg-rose-950/40 dark:hover:text-rose-400">
+              <i class="fa-solid fa-trash-can text-[11px]"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><span class="ico"><i class="fa-solid fa-sliders"></i></span><span data-i18n="sec.logoStyle">Logo Style</span></div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="lbl" data-i18n="field.aspect">Aspect Ratio</label>
+            <div class="seg" data-group="logoAspect">
+              <button type="button" data-value="square"><i class="fa-solid fa-square"></i> <span data-i18n="aspect.square">Square 1:1</span></button>
+              <button type="button" data-value="wide"><i class="fa-solid fa-rectangle-ad"></i> <span data-i18n="aspect.wide">Wide 2:1</span></button>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-baseline justify-between">
+              <label class="lbl" data-i18n="field.logoSize">Logo Size</label>
+              <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400"><span id="logoSizeValue">110</span> px</span>
+            </div>
+            <input id="f-logo-size" type="range" min="50" max="220" step="2" value="110" />
+          </div>
+
+          <div>
+            <label class="lbl" data-i18n="field.align">Alignment</label>
+            <div class="seg" data-group="logoAlign">
+              <button type="button" data-value="left"><i class="fa-solid fa-align-left"></i></button>
+              <button type="button" data-value="center"><i class="fa-solid fa-align-center"></i></button>
+              <button type="button" data-value="right"><i class="fa-solid fa-align-right"></i></button>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-baseline justify-between">
+              <label class="lbl" data-i18n="field.radius">Border Radius</label>
+              <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400"><span id="logoRadiusValue">6</span> px</span>
+            </div>
+            <input id="f-logo-radius" type="range" min="0" max="40" step="1" value="6" />
+          </div>
+
+          <div>
+            <div class="flex items-baseline justify-between">
+              <label class="lbl" data-i18n="field.shadow">Drop Shadow</label>
+              <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400"><span id="logoShadowValue">0</span></span>
+            </div>
+            <input id="f-logo-shadow" type="range" min="0" max="20" step="1" value="0" />
+          </div>
+
+          <label class="flex cursor-pointer items-center gap-2.5 rounded-lg border border-slate-200 bg-slate-50/60 p-2.5 dark:border-slate-800 dark:bg-slate-900/40">
+            <input type="checkbox" id="f-logo-grayscale" class="h-4 w-4 cursor-pointer accent-indigo-600" />
+            <span class="text-xs font-semibold text-slate-700 dark:text-slate-300" data-i18n="field.grayscale">Monochrome (for B&amp;W printing)</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB: FOOTER ==================== -->
+    <div class="tab-panel hidden" data-panel="footer">
+
+      <div class="section">
+        <div class="section-title"><span class="ico"><i class="fa-solid fa-qrcode"></i></span><span data-i18n="sec.qr">Footer QR Code</span></div>
+
+        <label class="mb-4 flex cursor-pointer items-center justify-between rounded-lg border border-slate-200 bg-slate-50/60 p-2.5 dark:border-slate-800 dark:bg-slate-900/40">
+          <span class="text-xs font-bold text-slate-700 dark:text-slate-300" data-i18n="field.showQr">Show QR code in footer</span>
+          <span class="switch">
+            <input type="checkbox" id="f-qr-enabled" checked />
+            <span class="slider"></span>
+          </span>
+        </label>
+
+        <div id="qrOptions" class="space-y-3.5">
+          <div>
+            <label class="lbl" data-i18n="field.qrData">QR Content (URL or text)</label>
+            <input id="f-qr-data" type="text" class="inp" placeholder="https://saivcore.com" />
+          </div>
+          <div>
+            <div class="flex items-baseline justify-between">
+              <label class="lbl" data-i18n="field.qrSize">QR Size</label>
+              <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400"><span id="qrSizeValue">80</span> px</span>
+            </div>
+            <input id="f-qr-size" type="range" min="48" max="140" step="2" value="80" />
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><span class="ico"><i class="fa-solid fa-shoe-prints"></i></span><span data-i18n="sec.footerText">Footer Text</span></div>
+        <div class="space-y-3">
+          <div>
+            <label class="lbl" data-i18n="field.footerText">Footer / Legal Notice</label>
+            <textarea id="f-footer-text" class="inp" rows="3"></textarea>
+          </div>
+          <label class="flex cursor-pointer items-center gap-2.5 rounded-lg border border-slate-200 bg-slate-50/60 p-2.5 dark:border-slate-800 dark:bg-slate-900/40">
+            <input type="checkbox" id="f-show-page" class="h-4 w-4 cursor-pointer accent-indigo-600" />
+            <span class="text-xs font-semibold text-slate-700 dark:text-slate-300" data-i18n="field.showPage">Show page number</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB: SETTINGS ==================== -->
+    <div class="tab-panel hidden" data-panel="settings">
+
+      <div class="section">
+        <div class="section-title"><span class="ico"><i class="fa-solid fa-eye"></i></span><span data-i18n="sec.blocks">Page Blocks</span></div>
+        <p class="mb-3 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400" data-i18n="hint.blocks">
+          Toggle visibility or drag the handle on the preview to reorder blocks.
+        </p>
+        <div class="space-y-2" id="blockToggles"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><span class="ico"><i class="fa-solid fa-circle-info"></i></span><span data-i18n="sec.about">About SaivDOC</span></div>
+        <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-3 text-[11px] leading-relaxed text-slate-600 dark:border-slate-800 dark:bg-slate-900/40 dark:text-slate-400">
+          <p><strong class="text-slate-800 dark:text-slate-200">SaivDOC</strong> <span data-i18n="about.p1">is a free, private, browser-based letterhead creator.</span></p>
+          <p class="mt-1.5" data-i18n="about.p2">All processing happens locally. Nothing is uploaded to any server.</p>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ======================= CANVAS ======================= -->
+  <main class="canvas">
+    <div class="a4-scroll">
+      <div class="a4-wrapper" id="a4Wrapper">
+        <div class="a4-page tpl-administrative" id="a4Page">
+
+          <!-- ---------- LOGO ---------- -->
+          <section class="doc-block" data-block="logo">
+            <div class="block-tools">
+              <button type="button" class="drag-handle" title="Drag to reorder"><i class="fa-solid fa-grip-vertical"></i></button>
+              <button type="button" class="block-hide" title="Hide block"><i class="fa-solid fa-eye-slash"></i></button>
+            </div>
+            <div class="logo-wrap align-left" id="logoWrap">
+              <div class="logo-frame" id="logoFrame" style="width:110px;height:110px;border-radius:6px">
+                <img id="docLogo" alt="" style="display:none" />
+              </div>
+            </div>
+          </section>
+
+          <!-- ---------- HEADER ---------- -->
+          <section class="doc-block" data-block="header">
+            <div class="block-tools">
+              <button type="button" class="drag-handle" title="Drag to reorder"><i class="fa-solid fa-grip-vertical"></i></button>
+              <button type="button" class="block-hide" title="Hide block"><i class="fa-solid fa-eye-slash"></i></button>
+            </div>
+            <h1 class="doc-company-name" data-bind="company.name"></h1>
+            <div class="doc-company-tagline" data-bind="company.tagline"></div>
+            <div class="doc-meta-grid">
+              <div class="row"><span class="k">RC:</span><span data-bind="company.rc"></span></div>
+              <div class="row"><span class="k">NIF:</span><span data-bind="company.nif"></span></div>
+              <div class="row"><span class="k"><i class="fa-solid fa-location-dot"></i></span><span data-bind="company.address"></span></div>
+              <div class="row"><span class="k"><i class="fa-solid fa-phone"></i></span><span data-bind="company.phone"></span></div>
+              <div class="row"><span class="k"><i class="fa-solid fa-envelope"></i></span><span data-bind="company.email"></span></div>
+              <div class="row"><span class="k"><i class="fa-solid fa-globe"></i></span><span data-bind="company.website"></span></div>
+            </div>
+          </section>
+
+          <!-- ---------- META ---------- -->
+          <section class="doc-block" data-block="meta">
+            <div class="block-tools">
+              <button type="button" class="drag-handle" title="Drag to reorder"><i class="fa-solid fa-grip-vertical"></i></button>
+              <button type="button" class="block-hide" title="Hide block"><i class="fa-solid fa-eye-slash"></i></button>
+            </div>
+            <div class="doc-meta-row">
+              <div><strong>Ref:</strong> <span data-bind="meta.ref"></span></div>
+              <div><strong>Date:</strong> <span data-bind="meta.date"></span></div>
+            </div>
+            <div class="doc-subject">
+              <span class="lbl-subject">Subject:</span><span class="val-subject" data-bind="meta.subject"></span>
+            </div>
+          </section>
+
+          <!-- ---------- BODY ---------- -->
+          <section class="doc-block" data-block="body">
+            <div class="block-tools">
+              <button type="button" class="drag-handle" title="Drag to reorder"><i class="fa-solid fa-grip-vertical"></i></button>
+              <button type="button" class="block-hide" title="Hide block"><i class="fa-solid fa-eye-slash"></i></button>
+            </div>
+            <div class="doc-body" id="docBody" contenteditable="true" spellcheck="false" data-placeholder="Start typing your letter here…"></div>
+          </section>
+
+          <!-- ---------- SIGNATURE ---------- -->
+          <section class="doc-block" data-block="signature">
+            <div class="block-tools">
+              <button type="button" class="drag-handle" title="Drag to reorder"><i class="fa-solid fa-grip-vertical"></i></button>
+              <button type="button" class="block-hide" title="Hide block"><i class="fa-solid fa-eye-slash"></i></button>
+            </div>
+            <div class="doc-signature">
+              <div class="sig-box">
+                <div class="sig-line"></div>
+                <div class="sig-name" data-bind="sig.name"></div>
+                <div class="sig-title" data-bind="sig.title"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ---------- FOOTER ---------- -->
+          <section class="doc-block" data-block="footer">
+            <div class="block-tools">
+              <button type="button" class="drag-handle" title="Drag to reorder"><i class="fa-solid fa-grip-vertical"></i></button>
+              <button type="button" class="block-hide" title="Hide block"><i class="fa-solid fa-eye-slash"></i></button>
+            </div>
+            <div class="doc-footer">
+              <div class="doc-footer-text" data-bind="footer.text"></div>
+              <div class="footer-qr-wrap" id="qrWrap">
+                <div id="qrContainer"></div>
+                <div class="qr-caption">Scan me</div>
+              </div>
+            </div>
+            <div class="page-number" id="pageNumber">Page 1 / 1</div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<!-- ============================================================
+     APP FOOTER
+     ============================================================ -->
+<footer class="no-print border-t border-slate-200 bg-white/70 py-5 backdrop-blur dark:border-slate-800 dark:bg-slate-950/70">
+  <div class="mx-auto max-w-[1600px] px-4 text-center sm:px-5">
+    <p class="text-[11px] font-semibold tracking-wide text-slate-500 dark:text-slate-400">
+      SaivDOC — Powered by <span class="font-extrabold text-indigo-600 dark:text-indigo-400">SaivCORE</span>
+      <span class="mx-1.5 text-slate-300 dark:text-slate-600">|</span>
+      Made with <i class="fa-solid fa-heart mx-0.5 text-rose-500"></i> in Algeria <span class="ml-0.5">🇩🇿</span>
+    </p>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div id="toast" role="status" aria-live="polite">
+  <i class="fa-solid fa-circle-check"></i>
+  <span id="toastText">Done</span>
+</div>
+
+<style>
+  /* Template card styles (kept here for clarity, may be moved to main CSS) */
+  .tpl-card {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    padding: .5rem;
+    border-radius: .7rem;
+    border: 1.5px solid #e2e8f0;
+    background: #fff;
+    cursor: pointer;
+    transition: all .15s ease;
+    text-align: center;
+  }
+  .tpl-card:hover { border-color: #c7d2fe; background: #f8faff; }
+  html.dark .tpl-card { background: #0f172a; border-color: #1e293b; }
+  html.dark .tpl-card:hover { border-color: #4f46e5; background: #111c33; }
+  .tpl-card.is-active { border-color: #6366f1; background: #eef2ff; box-shadow: 0 0 0 3px rgba(99,102,241,.12); }
+  html.dark .tpl-card.is-active { background: #1e1b4b; border-color: #6366f1; }
+
+  .tpl-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 210 / 297;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: .35rem;
+    overflow: hidden;
+  }
+  .tpl-thumb::before,
+  .tpl-thumb::after,
+  .tpl-thumb span {
+    content: "";
+    position: absolute;
+    background: #cbd5e1;
+    border-radius: 1px;
+  }
+  .tpl-thumb-admin::before {
+    inset: 6px; background: transparent;
+    border: 1.2px solid #1e3a8a;
+    border-radius: 1px;
+  }
+  .tpl-thumb-admin span {
+    top: 14px; left: 14px; right: 14px; height: 5px;
+    background: #1e3a8a;
+  }
+  .tpl-thumb-admin::after {
+    top: 24px; left: 14px; right: 14px; height: 2px;
+    background: #94a3b8;
+  }
+  .tpl-thumb-modern::before {
+    top: 0; bottom: 0; left: 0; width: 8px;
+    background: #4f46e5;
+    inset: 0 auto 0 0; height: 100%;
+    border-radius: 0;
+  }
+  .tpl-thumb-modern span {
+    top: 12px; left: 16px; right: 14px; height: 6px;
+    background: #0f172a;
+  }
+  .tpl-thumb-modern::after {
+    top: 24px; left: 16px; width: 40%; height: 3px;
+    background: #4f46e5;
+  }
+  .tpl-thumb-minimal::before {
+    top: 16px; left: 16px; right: 16px; height: 4px;
+    background: #0f172a;
+  }
+  .tpl-thumb-minimal::after {
+    top: 26px; left: 16px; width: 30%; height: 2px;
+    background: #94a3b8;
+  }
+  .tpl-thumb-minimal span {
+    bottom: 14px; left: 16px; right: 16px; height: 1.5px;
+    background: #cbd5e1;
+  }
+  .tpl-thumb-notice::before {
+    inset: 5px; background: transparent;
+    border: 1px solid #7c3aed;
+  }
+  .tpl-thumb-notice::after {
+    inset: 9px; background: transparent;
+    border: 1.5px double #7c3aed;
+  }
+  .tpl-thumb-notice span {
+    top: 20px; left: 50%; transform: translateX(-50%);
+    width: 50%; height: 4px;
+    background: #7c3aed;
+  }
+  .tpl-name {
+    font-size: .6875rem;
+    font-weight: 700;
+    color: #475569;
+    letter-spacing: .01em;
+  }
+  html.dark .tpl-name { color: #cbd5e1; }
+  .tpl-card.is-active .tpl-name { color: #4338ca; }
+  html.dark .tpl-card.is-active .tpl-name { color: #a5b4fc; }
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+  const $  = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.prototype.slice.call(r.querySelectorAll(s));
+
+  function debounce(fn, ms) {
+    let t;
+    return function () {
+      const args = arguments, ctx = this;
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(ctx, args), ms);
+    };
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function getPath(obj, path) {
+    return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj);
+  }
+  function setPath(obj, path, val) {
+    const parts = path.split('.');
+    const last = parts.pop();
+    const target = parts.reduce((o, k) => (o[k] = o[k] || {}), obj);
+    target[last] = val;
+  }
+
+  function normalizeHex(v) {
+    let s = String(v || '').trim();
+    if (!s) return null;
+    if (s[0] !== '#') s = '#' + s;
+    if (/^#([0-9a-fA-F]{3})$/.test(s)) s = '#' + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+    return /^#([0-9a-fA-F]{6})$/.test(s) ? s.toLowerCase() : null;
+  }
+
+  function contrastText(hex) {
+    let h = String(hex || '').replace('#', '');
+    if (h.length === 3) h = h.split('').map(c => c + c).join('');
+    const r = parseInt(h.slice(0, 2), 16) || 0;
+    const g = parseInt(h.slice(2, 4), 16) || 0;
+    const b = parseInt(h.slice(4, 6), 16) || 0;
+    const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return lum > 0.62 ? '#111827' : '#ffffff';
+  }
+
+  let toastTimer = null;
+  function toast(msg, type) {
+    const el = $('#toast');
+    const txt = $('#toastText');
+    const icon = el.querySelector('i');
+    txt.textContent = msg;
+    el.classList.remove('error', 'success');
+    if (type === 'error') {
+      el.classList.add('error');
+      icon.className = 'fa-solid fa-circle-exclamation';
+    } else {
+      el.classList.add('success');
+      icon.className = 'fa-solid fa-circle-check';
+    }
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+  }
+
+  /* ============================================================
+     I18N
+     ============================================================ */
+  const I18N = {
+    en: {
+      tagline: 'Document & Letterhead Creator',
+      print: 'Print / PDF',
+      'tab.content': 'Content',
+      'tab.design': 'Design',
+      'tab.logo': 'Logo',
+      'tab.footer': 'QR & Footer',
+      'tab.settings': 'Layout',
+      'sec.company': 'Company Information',
+      'sec.letterMeta': 'Date / Reference / Subject',
+      'sec.signature': 'Signature Block',
+      'sec.template': 'Template',
+      'sec.colors': 'Colors & Spacing',
+      'sec.typography': 'Typography',
+      'sec.logoUpload': 'Logo Upload',
+      'sec.logoStyle': 'Logo Style',
+      'sec.qr': 'Footer QR Code',
+      'sec.footerText': 'Footer Text',
+      'sec.blocks': 'Page Blocks',
+      'sec.about': 'About SaivDOC',
+      'field.companyName': 'Company Name',
+      'field.tagline': 'Tagline / Slogan',
+      'field.rc': 'Reg. / RC',
+      'field.nif': 'Tax ID / NIF',
+      'field.address': 'Address',
+      'field.phone': 'Phone',
+      'field.email': 'Email',
+      'field.website': 'Website',
+      'field.date': 'Date',
+      'field.ref': 'Reference',
+      'field.subject': 'Subject',
+      'field.sigName': 'Signatory Name',
+      'field.sigTitle': 'Title / Position',
+      'field.accent': 'Accent Color',
+      'field.padding': 'Page Padding',
+      'field.docFont': 'Document Font',
+      'field.aspect': 'Aspect Ratio',
+      'field.logoSize': 'Logo Size',
+      'field.align': 'Alignment',
+      'field.radius': 'Border Radius',
+      'field.shadow': 'Drop Shadow',
+      'field.grayscale': 'Monochrome (for B&W printing)',
+      'field.qrData': 'QR Content (URL or text)',
+      'field.qrSize': 'QR Size',
+      'field.showQr': 'Show QR code in footer',
+      'field.footerText': 'Footer / Legal Notice',
+      'field.showPage': 'Show page number',
+      'aspect.square': 'Square 1:1',
+      'aspect.wide': 'Wide 2:1',
+      'tpl.admin': 'Administrative',
+      'tpl.modern': 'Modern Startup',
+      'tpl.minimal': 'Minimalist',
+      'tpl.notice': 'Official Notice',
+      'drop.hint': 'Drop image or click to upload',
+      'drop.replace': 'Click to replace',
+      'hint.body': 'Click directly on the document body in the preview to type your letter. Use the toolbar above to format headings, lists and alignment.',
+      'hint.blocks': 'Toggle visibility or drag the handle on the preview to reorder blocks.',
+      'about.p1': 'is a free, private, browser-based letterhead creator.',
+      'about.p2': 'All processing happens locally. Nothing is uploaded to any server.',
+      'block.logo': 'Logo',
+      'block.header': 'Company Header',
+      'block.meta': 'Date / Ref / Subject',
+      'block.body': 'Main Body',
+      'block.signature': 'Signature',
+      'block.footer': 'Footer & QR',
+      'toast.printReady': 'Ready to print. Choose "Save as PDF" for the best result.',
+      'toast.reset': 'Document reset to defaults.',
+      'toast.logoAdded': 'Logo added.',
+      'toast.logoRemoved': 'Logo removed.',
+      'toast.logoTooBig': 'Image is too large (max 3 MB).',
+      'toast.logoInvalid': 'Please choose a valid image file.',
+      'toast.saved': 'Saved locally.',
+    },
+    fr: {
+      tagline: 'Créateur de documents & en-têtes',
+      print: 'Imprimer / PDF',
+      'tab.content': 'Contenu',
+      'tab.design': 'Design',
+      'tab.logo': 'Logo',
+      'tab.footer': 'QR & Pied',
+      'tab.settings': 'Mise en page',
+      'sec.company': 'Informations société',
+      'sec.letterMeta': 'Date / Référence / Objet',
+      'sec.signature': 'Bloc signature',
+      'sec.template': 'Modèle',
+      'sec.colors': 'Couleurs & Espacement',
+      'sec.typography': 'Typographie',
+      'sec.logoUpload': 'Téléverser un logo',
+      'sec.logoStyle': 'Style du logo',
+      'sec.qr': 'QR code de pied de page',
+      'sec.footerText': 'Texte de pied de page',
+      'sec.blocks': 'Blocs de page',
+      'sec.about': 'À propos de SaivDOC',
+      'field.companyName': 'Nom de la société',
+      'field.tagline': 'Slogan',
+      'field.rc': 'RC',
+      'field.nif': 'NIF',
+      'field.address': 'Adresse',
+      'field.phone': 'Téléphone',
+      'field.email': 'E-mail',
+      'field.website': 'Site web',
+      'field.date': 'Date',
+      'field.ref': 'Référence',
+      'field.subject': 'Objet',
+      'field.sigName': 'Nom du signataire',
+      'field.sigTitle': 'Fonction',
+      'field.accent': 'Couleur d\'accent',
+      'field.padding': 'Marge de page',
+      'field.docFont': 'Police du document',
+      'field.aspect': 'Ratio d\'aspect',
+      'field.logoSize': 'Taille du logo',
+      'field.align': 'Alignement',
+      'field.radius': 'Arrondi',
+      'field.shadow': 'Ombre portée',
+      'field.grayscale': 'Monochrome (impression N&B)',
+      'field.qrData': 'Contenu du QR',
+      'field.qrSize': 'Taille du QR',
+      'field.showQr': 'Afficher le QR dans le pied de page',
+      'field.footerText': 'Mention légale',
+      'field.showPage': 'Afficher le numéro de page',
+      'aspect.square': 'Carré 1:1',
+      'aspect.wide': 'Large 2:1',
+      'tpl.admin': 'Administratif',
+      'tpl.modern': 'Startup moderne',
+      'tpl.minimal': 'Minimaliste',
+      'tpl.notice': 'Avis officiel',
+      'drop.hint': 'Déposez une image ou cliquez',
+      'drop.replace': 'Cliquez pour remplacer',
+      'hint.body': 'Cliquez directement sur le corps du document dans l\'aperçu pour saisir votre lettre.',
+      'hint.blocks': 'Activez/désactivez ou glissez la poignée pour réordonner les blocs.',
+      'about.p1': 'est un créateur d\'en-têtes gratuit et privé, dans le navigateur.',
+      'about.p2': 'Tout est traité localement. Aucune donnée n\'est envoyée.',
+      'block.logo': 'Logo',
+      'block.header': 'En-tête société',
+      'block.meta': 'Date / Réf / Objet',
+      'block.body': 'Corps principal',
+      'block.signature': 'Signature',
+      'block.footer': 'Pied de page & QR',
+      'toast.printReady': 'Prêt à imprimer. Choisissez « Enregistrer en PDF ».',
+      'toast.reset': 'Document réinitialisé.',
+      'toast.logoAdded': 'Logo ajouté.',
+      'toast.logoRemoved': 'Logo supprimé.',
+      'toast.logoTooBig': 'Image trop volumineuse (max 3 Mo).',
+      'toast.logoInvalid': 'Veuillez choisir une image valide.',
+      'toast.saved': 'Enregistré localement.',
+    },
+    ar: {
+      tagline: 'منشئ المستندات والترويسات',
+      print: 'طباعة / PDF',
+      'tab.content': 'المحتوى',
+      'tab.design': 'التصميم',
+      'tab.logo': 'الشعار',
+      'tab.footer': 'QR والتذييل',
+      'tab.settings': 'التخطيط',
+      'sec.company': 'معلومات الشركة',
+      'sec.letterMeta': 'التاريخ / المرجع / الموضوع',
+      'sec.signature': 'بلوك التوقيع',
+      'sec.template': 'القالب',
+      'sec.colors': 'الألوان والتباعد',
+      'sec.typography': 'الخطوط',
+      'sec.logoUpload': 'رفع الشعار',
+      'sec.logoStyle': 'نمط الشعار',
+      'sec.qr': 'رمز QR في التذييل',
+      'sec.footerText': 'نص التذييل',
+      'sec.blocks': 'كتل الصفحة',
+      'sec.about': 'حول SaivDOC',
+      'field.companyName': 'اسم الشركة',
+      'field.tagline': 'الشعار / الوصف',
+      'field.rc': 'السجل التجاري',
+      'field.nif': 'الرقم الجبائي',
+      'field.address': 'العنوان',
+      'field.phone': 'الهاتف',
+      'field.email': 'البريد الإلكتروني',
+      'field.website': 'الموقع الإلكتروني',
+      'field.date': 'التاريخ',
+      'field.ref': 'المرجع',
+      'field.subject': 'الموضوع',
+      'field.sigName': 'اسم الموقّع',
+      'field.sigTitle': 'المنصب',
+      'field.accent': 'اللون المميز',
+      'field.padding': 'هامش الصفحة',
+      'field.docFont': 'خط المستند',
+      'field.aspect': 'نسبة الأبعاد',
+      'field.logoSize': 'حجم الشعار',
+      'field.align': 'المحاذاة',
+      'field.radius': 'استدارة الحواف',
+      'field.shadow': 'الظل',
+      'field.grayscale': 'أبيض وأسود (للطباعة)',
+      'field.qrData': 'محتوى QR',
+      'field.qrSize': 'حجم QR',
+      'field.showQr': 'إظهار رمز QR في التذييل',
+      'field.footerText': 'النص القانوني',
+      'field.showPage': 'إظهار رقم الصفحة',
+      'aspect.square': 'مربع 1:1',
+      'aspect.wide': 'عريض 2:1',
+      'tpl.admin': 'إداري',
+      'tpl.modern': 'عصري',
+      'tpl.minimal': 'بسيط',
+      'tpl.notice': 'إشعار رسمي',
+      'drop.hint': 'أسقط صورة أو انقر للرفع',
+      'drop.replace': 'انقر للاستبدال',
+      'hint.body': 'انقر مباشرة على متن المستند في المعاينة للكتابة. استخدم شريط الأدوات أعلاه للتنسيق.',
+      'hint.blocks': 'بدّل الظهور أو اسحب المقبض لإعادة الترتيب.',
+      'about.p1': 'منشئ ترويسات مجاني وخاص يعمل في المتصفح.',
+      'about.p2': 'تتم المعالجة محليًا بالكامل. لا يتم إرسال أي بيانات.',
+      'block.logo': 'الشعار',
+      'block.header': 'ترويسة الشركة',
+      'block.meta': 'التاريخ / المرجع / الموضوع',
+      'block.body': 'المتن',
+      'block.signature': 'التوقيع',
+      'block.footer': 'التذييل و QR',
+      'toast.printReady': 'جاهز للطباعة. اختر «حفظ كـ PDF».',
+      'toast.reset': 'تمت إعادة التعيين.',
+      'toast.logoAdded': 'تمت إضافة الشعار.',
+      'toast.logoRemoved': 'تم حذف الشعار.',
+      'toast.logoTooBig': 'الصورة كبيرة جدًا (3 ميغا كحد أقصى).',
+      'toast.logoInvalid': 'الرجاء اختيار صورة صالحة.',
+      'toast.saved': 'تم الحفظ محليًا.',
+    },
+  };
+
+  function t(key) {
+    const lang = state.lang || 'en';
+    return (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key;
+  }
+
+  /* ============================================================
+     STATE
+     ============================================================ */
+  const DEFAULT_STATE = {
+    lang: 'en',
+    theme: 'light',
+    template: 'administrative',
+    accent: '#1e3a8a',
+    docFont: 'Inter',
+    padding: 22,
+
+    company: {
+      name: 'SAIVCORE TECHNOLOGIES',
+      tagline: 'Engineering · Innovation · Trust',
+      rc: 'RC 16/00-1234567 B 24',
+      nif: 'NIF 000216123456789',
+      address: '12 Rue des Oliviers, Alger 16000, Algérie',
+      phone: '+213 (0) 555 123 456',
+      email: 'contact@saivcore.com',
+      website: 'www.saivcore.com',
+    },
+    meta: {
+      date: new Date().toLocaleDateString('en-GB'),
+      ref: 'REF/2024/0042',
+      subject: 'Objet de la présente lettre',
+    },
+    bodyHtml:
+      '<p>Dear Sir or Madam,</p>' +
+      '<p>We are pleased to confirm our continued cooperation and to present to you, through this letter, the essential elements of our proposal.</p>' +
+      '<p>Please find below the main points to be considered:</p>' +
+      '<ul>' +
+      '<li>Terms of the offer and applicable deadlines;</li>' +
+      '<li>Technical and financial details;</li>' +
+      '<li>Points of contact for follow-up.</li>' +
+      '</ul>' +
+      '<p>We remain at your entire disposal for any further information.</p>' +
+      '<p>Yours faithfully,</p>',
+    sig: {
+      name: 'Yacine Benali',
+      title: 'Chief Executive Officer',
+    },
+    footer: {
+      text: 'SAIVCORE TECHNOLOGIES — SPA au capital de 10 000 000 DZD — RC 16/00-1234567 B 24 — NIF 000216123456789',
+      showPage: true,
+      showQr: true,
+      qrData: 'https://saivcore.com',
+      qrSize: 80,
+    },
+    logo: {
+      src: null,
+      name: '',
+      aspect: 'square',
+      size: 110,
+      align: 'left',
+      radius: 6,
+      shadow: 0,
+      grayscale: false,
+    },
+    blocks: {
+      order: ['logo', 'header', 'meta', 'body', 'signature', 'footer'],
+      visible: {
+        logo: true,
+        header: true,
+        meta: true,
+        body: true,
+        signature: true,
+        footer: true,
+      },
+    },
+  };
+
+  let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  let zoomLevel = 1;
+
+  /* ============================================================
+     DOM REFS
+     ============================================================ */
+  const a4Page     = $('#a4Page');
+  const a4Wrapper  = $('#a4Wrapper');
+  const docBody    = $('#docBody');
+  const logoWrap   = $('#logoWrap');
+  const logoFrame  = $('#logoFrame');
+  const docLogo    = $('#docLogo');
+  const qrWrap     = $('#qrWrap');
+  const qrContainer= $('#qrContainer');
+  const pageNumber = $('#pageNumber');
+
+  /* ============================================================
+     RENDER
+     ============================================================ */
+  let qrInstance = null;
+
+  function renderAll() {
+    // Document root dir/lang
+    document.documentElement.setAttribute('lang', state.lang);
+    document.documentElement.setAttribute('dir', state.lang === 'ar' ? 'rtl' : 'ltr');
+
+    // Template
+    a4Page.className = 'a4-page tpl-' + state.template;
+
+    // CSS vars
+    a4Page.style.setProperty('--accent', state.accent);
+    a4Page.style.fontFamily = "'" + state.docFont + "', 'Inter', 'Cairo', sans-serif";
+    a4Page.style.padding = state.padding + 'mm';
+
+    // Text bindings
+    $$('[data-bind]').forEach(el => {
+      const val = getPath(state, el.dataset.bind);
+      el.textContent = val == null ? '' : String(val);
+    });
+
+    // HTML bindings (skip if currently focused)
+    if (document.activeElement !== docBody && !docBody.contains(document.activeElement)) {
+      docBody.innerHTML = state.bodyHtml;
+    }
+
+    // Block visibility + order
+    state.blocks.order.forEach(key => {
+      const el = a4Page.querySelector('[data-block="' + key + '"]');
+      if (!el) return;
+      el.style.display = state.blocks.visible[key] ? '' : 'none';
+    });
+
+    // Logo
+    renderLogo();
+
+    // QR
+    renderQR();
+
+    // Page number
+    renderPageNumber();
+
+    // Footer text empty fallback
+    const footerTextEl = a4Page.querySelector('[data-bind="footer.text"]');
+    if (footerTextEl && !state.footer.text) {
+      footerTextEl.textContent = state.company.name + ' — ' + state.company.website;
+    }
+  }
+
+  function renderLogo() {
+    const logo = state.logo;
+    logoWrap.className = 'logo-wrap align-' + logo.align;
+
+    if (!logo.src) {
+      logoFrame.style.display = 'none';
+      if (!logoWrap.querySelector('.logo-placeholder')) {
+        const ph = document.createElement('div');
+        ph.className = 'logo-placeholder no-print';
+        ph.innerHTML = '<div style="text-align:center"><i class="fa-solid fa-image" style="font-size:18px"></i><div style="margin-top:4px;font-size:9pt">Your logo</div></div>';
+        logoWrap.appendChild(ph);
+      }
+      // Hide whole block if no logo (only in screen, keep placeholder visible)
+      const logoBlock = a4Page.querySelector('[data-block="logo"]');
+      if (logoBlock && state.blocks.visible.logo) logoBlock.style.display = '';
+      return;
+    }
+
+    const ph = logoWrap.querySelector('.logo-placeholder');
+    if (ph) ph.remove();
+
+    logoFrame.style.display = 'grid';
+    docLogo.style.display = 'block';
+    docLogo.src = logo.src;
+
+    // Aspect ratio
+    const w = logo.size;
+    const h = logo.aspect === 'wide' ? Math.round(w / 2) : w;
+    logoFrame.style.width = w + 'px';
+    logoFrame.style.height = h + 'px';
+    logoFrame.style.borderRadius = logo.radius + 'px';
+
+    // Shadow
+    if (logo.shadow > 0) {
+      const blur = Math.round(logo.shadow * 1.5);
+      const alpha = Math.min(0.5, logo.shadow * 0.04);
+      logoFrame.style.boxShadow = '0 ' + Math.round(logo.shadow / 2) + 'px ' + blur + 'px rgba(15,23,42,' + alpha + ')';
+    } else {
+      logoFrame.style.boxShadow = 'none';
+    }
+
+    // Grayscale
+    docLogo.style.filter = logo.grayscale ? 'grayscale(100%) contrast(1.05)' : 'none';
+  }
+
+  function renderQR() {
+    if (!state.footer.showQr) {
+      qrWrap.style.display = 'none';
+      return;
+    }
+    qrWrap.style.display = 'flex';
+
+    const data = (state.footer.qrData || '').trim() || 'https://saivcore.com';
+    const size = state.footer.qrSize;
+
+    // Recreate on each call to keep it simple and correct
+    qrContainer.innerHTML = '';
+
+    if (typeof QRCodeStyling === 'undefined') return;
+
+    try {
+      qrInstance = new QRCodeStyling({
+        width: size,
+        height: size,
+        type: 'svg',
+        data: data,
+        margin: 0,
+        qrOptions: { errorCorrectionLevel: 'M' },
+        dotsOptions: { color: '#111827', type: 'square' },
+        cornersSquareOptions: { color: '#111827', type: 'square' },
+        cornersDotOptions: { color: '#111827', type: 'square' },
+        backgroundOptions: { color: '#ffffff' },
+      });
+      qrInstance.append(qrContainer);
+
+      // Fix svg sizing to exactly `size`px
+      const svg = qrContainer.querySelector('svg');
+      if (svg) {
+        svg.setAttribute('width', size);
+        svg.setAttribute('height', size);
+        svg.style.width = size + 'px';
+        svg.style.height = size + 'px';
+      }
+    } catch (err) {
+      console.warn('QR generation failed', err);
+    }
+  }
+
+  function renderPageNumber() {
+    if (state.footer.showPage) {
+      pageNumber.style.display = '';
+      pageNumber.textContent = state.lang === 'ar' ? 'صفحة 1 / 1' :
+                              state.lang === 'fr' ? 'Page 1 / 1' : 'Page 1 / 1';
+      pageNumber.classList.toggle('rtl', state.lang === 'ar');
+    } else {
+      pageNumber.style.display = 'none';
+    }
+  }
+
+  /* ============================================================
+     I18N APPLY
+     ============================================================ */
+  function applyI18n() {
+    $$('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      const val = t(key);
+      if (val) el.textContent = val;
+    });
+
+    // Update doc body placeholder
+    if (docBody) {
+      const ph =
+        state.lang === 'ar' ? 'ابدأ الكتابة هنا…' :
+        state.lang === 'fr' ? 'Commencez à écrire votre lettre ici…' :
+                              'Start typing your letter here…';
+      docBody.setAttribute('data-placeholder', ph);
+    }
+
+    // Update QR caption
+    const cap = a4Page.querySelector('.qr-caption');
+    if (cap) {
+      cap.textContent =
+        state.lang === 'ar' ? 'امسحني' :
+        state.lang === 'fr' ? 'Scannez-moi' :
+                              'Scan me';
+    }
+  }
+
+  /* ============================================================
+     BINDINGS — GENERAL
+     ============================================================ */
+  function bindText(sel, path, immediate) {
+    const el = $(sel);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      setPath(state, path, el.value);
+      if (immediate) renderAll();
+      else scheduleRender();
+      saveState();
+    });
+  }
+
+  function bindRange(sel, path, displaySel, transform) {
+    const el = $(sel);
+    const disp = displaySel ? $(displaySel) : null;
+    if (!el) return;
+    el.addEventListener('input', () => {
+      const v = Number(el.value);
+      setPath(state, path, v);
+      if (disp) disp.textContent = transform ? transform(v) : v;
+      renderAll();
+      saveState();
+    });
+  }
+
+  function bindCheck(sel, path, onChange) {
+    const el = $(sel);
+    if (!el) return;
+    el.addEventListener('change', () => {
+      setPath(state, path, el.checked);
+      if (onChange) onChange(el.checked);
+      renderAll();
+      saveState();
+    });
+  }
+
+  function bindColorPair(colorSel, hexSel, path) {
+    const cEl = $(colorSel);
+    const hEl = $(hexSel);
+    if (cEl) {
+      cEl.addEventListener('input', () => {
+        const v = cEl.value.toLowerCase();
+        setPath(state, path, v);
+        if (hEl) hEl.value = v.toUpperCase();
+        renderAll();
+        saveState();
+      });
+    }
+    if (hEl) {
+      hEl.addEventListener('input', () => {
+        const norm = normalizeHex(hEl.value);
+        if (norm) {
+          setPath(state, path, norm);
+          if (cEl) cEl.value = norm;
+          renderAll();
+          saveState();
+        }
+      });
+      hEl.addEventListener('blur', () => {
+        hEl.value = String(getPath(state, path) || '').toUpperCase();
+      });
+    }
+  }
+
+  const scheduleRender = debounce(renderAll, 100);
+
+  /* ============================================================
+     SAVE / LOAD
+     ============================================================ */
+  const STORAGE_KEY = 'saivdoc-state-v1';
+  const saveState = debounce(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) { /* ignore */ }
+  }, 400);
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      // Deep merge to be resilient
+      state = deepMerge(JSON.parse(JSON.stringify(DEFAULT_STATE)), saved);
+    } catch (e) { /* ignore */ }
+  }
+
+  function deepMerge(target, src) {
+    if (Array.isArray(src)) return src.slice();
+    if (typeof src !== 'object' || src === null) return src;
+    const out = Object.assign({}, target);
+    Object.keys(src).forEach(k => {
+      if (src[k] && typeof src[k] === 'object' && !Array.isArray(src[k]) && target[k] && typeof target[k] === 'object') {
+        out[k] = deepMerge(target[k], src[k]);
+      } else {
+        out[k] = src[k];
+      }
+    });
+    return out;
+  }
+
+  /* ============================================================
+     INIT: TABS
+     ============================================================ */
+  function initTabs() {
+    const tabBar = $('#tabBar');
+    tabBar.addEventListener('click', e => {
+      const btn = e.target.closest('button[data-tab]');
+      if (!btn) return;
+      const tab = btn.dataset.tab;
+      $$('#tabBar button').forEach(b => b.classList.toggle('is-active', b === btn));
+      $$('.tab-panel').forEach(p => {
+        p.classList.toggle('hidden', p.dataset.panel !== tab);
+      });
+    });
+  }
+
+  /* ============================================================
+     INIT: SEGMENTS
+     ============================================================ */
+  function syncSegments() {
+    $$('.seg[data-group]').forEach(group => {
+      const key = group.dataset.group;
+      let current;
+      if (key === 'logoAspect') current = state.logo.aspect;
+      if (key === 'logoAlign') current = state.logo.align;
+      $$('button[data-value]', group).forEach(b => {
+        b.classList.toggle('is-active', b.dataset.value === current);
+      });
+    });
+  }
+
+  function initSegments() {
+    $$('.seg[data-group]').forEach(group => {
+      group.addEventListener('click', e => {
+        const btn = e.target.closest('button[data-value]');
+        if (!btn) return;
+        const key = group.dataset.group;
+        const val = btn.dataset.value;
+        if (key === 'logoAspect') state.logo.aspect = val;
+        if (key === 'logoAlign')  state.logo.align  = val;
+        syncSegments();
+        renderAll();
+        saveState();
+      });
+    });
+  }
+
+  /* ============================================================
+     INIT: TEMPLATES
+     ============================================================ */
+  function initTemplates() {
+    const grid = $('#templateGrid');
+    grid.addEventListener('click', e => {
+      const card = e.target.closest('.tpl-card');
+      if (!card) return;
+      state.template = card.dataset.tpl;
+      $$('.tpl-card').forEach(c => c.classList.toggle('is-active', c === card));
+      renderAll();
+      saveState();
+    });
+    $$('.tpl-card').forEach(c => c.classList.toggle('is-active', c.dataset.tpl === state.template));
+  }
+
+  /* ============================================================
+     INIT: ACCENT SWATCHES
+     ============================================================ */
+  const ACCENT_PRESETS = ['#1e3a8a', '#0f172a', '#4f46e5', '#7c3aed', '#059669', '#e11d48', '#f59e0b', '#0891b2'];
+  function initAccentSwatches() {
+    const wrap = $('#accentSwatches');
+    ACCENT_PRESETS.forEach(c => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'swatch';
+      b.style.width = '22px';
+      b.style.height = '22px';
+      b.style.borderRadius = '999px';
+      b.style.border = '2px solid #fff';
+      b.style.boxShadow = '0 0 0 1px #e2e8f0';
+      b.style.cursor = 'pointer';
+      b.style.background = c;
+      b.title = c;
+      b.addEventListener('click', () => {
+        state.accent = c;
+        $('#f-accent').value = c;
+        $('#f-accent-hex').value = c.toUpperCase();
+        renderAll();
+        saveState();
+      });
+      wrap.appendChild(b);
+    });
+  }
+
+  /* ============================================================
+     INIT: LOGO UPLOAD
+     ============================================================ */
+  function initLogoUpload() {
+    const dz = $('#dropZone');
+    const input = $('#logoInput');
+    const removeBtn = $('#logoRemove');
+
+    dz.addEventListener('click', e => {
+      if (e.target.closest('#logoRemove')) return;
+      input.click();
+    });
+
+    dz.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      dz.classList.add('dragover');
+    });
+    dz.addEventListener('dragleave', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      dz.classList.remove('dragover');
+    });
+    dz.addEventListener('drop', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      dz.classList.remove('dragover');
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleLogoFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    input.addEventListener('change', () => {
+      if (input.files && input.files[0]) handleLogoFile(input.files[0]);
+    });
+
+    function handleLogoFile(file) {
+      if (!file.type || file.type.indexOf('image/') !== 0) {
+        toast(t('toast.logoInvalid'), 'error');
+        return;
+      }
+      if (file.size > 3 * 1024 * 1024) {
+        toast(t('toast.logoTooBig'), 'error');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        state.logo.src = reader.result;
+        state.logo.name = file.name;
+        state.blocks.visible.logo = true;
+        syncBlockToggles();
+        updateLogoUI();
+        renderAll();
+        saveState();
+        toast(t('toast.logoAdded'));
+      };
+      reader.onerror = () => toast('Could not read that image.', 'error');
+      reader.readAsDataURL(file);
+    }
+
+    removeBtn.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      state.logo.src = null;
+      state.logo.name = '';
+      input.value = '';
+      updateLogoUI();
+      renderAll();
+      saveState();
+      toast(t('toast.logoRemoved'));
+    });
+
+    function updateLogoUI() {
+      const has = !!state.logo.src;
+      $('#logoEmpty').style.display = has ? 'none' : 'block';
+      $('#logoFilled').style.display = has ? 'flex' : 'none';
+      if (has) {
+        $('#logoThumb').src = state.logo.src;
+        $('#logoName').textContent = state.logo.name || 'logo';
+      }
+    }
+
+    // Expose for external refresh
+    window.__updateLogoUI = updateLogoUI;
+  }
+
+  /* ============================================================
+     INIT: BLOCK TOGGLES
+     ============================================================ */
+  const BLOCK_LABELS = {
+    logo: 'block.logo',
+    header: 'block.header',
+    meta: 'block.meta',
+    body: 'block.body',
+    signature: 'block.signature',
+    footer: 'block.footer',
+  };
+
+  function syncBlockToggles() {
+    $$('#blockToggles .block-toggle input').forEach(inp => {
+      inp.checked = !!state.blocks.visible[inp.dataset.block];
+    });
+  }
+
+  function initBlockToggles() {
+    const wrap = $('#blockToggles');
+    wrap.innerHTML = '';
+    state.blocks.order.forEach(key => {
+      const row = document.createElement('label');
+      row.className = 'block-toggle flex cursor-pointer items-center justify-between gap-3 rounded-lg border border-slate-200 bg-slate-50/60 px-3 py-2.5 dark:border-slate-800 dark:bg-slate-900/40';
+      row.innerHTML =
+        '<span class="text-xs font-bold text-slate-700 dark:text-slate-300" data-i18n="' + BLOCK_LABELS[key] + '">' + t(BLOCK_LABELS[key]) + '</span>' +
+        '<span class="switch"><input type="checkbox" data-block="' + key + '" ' + (state.blocks.visible[key] ? 'checked' : '') + ' /><span class="slider"></span></span>';
+      const inp = row.querySelector('input');
+      inp.addEventListener('change', () => {
+        state.blocks.visible[key] = inp.checked;
+        renderAll();
+        saveState();
+      });
+      wrap.appendChild(row);
+    });
+  }
+
+  /* ============================================================
+     INIT: RICH TEXT TOOLBAR
+     ============================================================ */
+  function initToolbar() {
+    $$('.tool-btn').forEach(btn => {
+      // Keep focus in contenteditable when clicking toolbar
+      btn.addEventListener('mousedown', e => e.preventDefault());
+      btn.addEventListener('click', () => {
+        const cmd = btn.dataset.cmd;
+        const val = btn.dataset.val || null;
+        if (!cmd) return;
+
+        // Focus the body if not focused
+        if (document.activeElement !== docBody && !docBody.contains(document.activeElement)) {
+          docBody.focus();
+        }
+
+        try {
+          if (cmd === 'formatBlock') {
+            document.execCommand('formatBlock', false, val);
+          } else {
+            document.execCommand(cmd, false, val);
+          }
+        } catch (e) { /* ignore */ }
+
+        syncBodyState();
+        updateToolbarState();
+      });
+    });
+
+    // Keep toolbar state in sync with selection
+    docBody.addEventListener('keyup', updateToolbarState);
+    docBody.addEventListener('mouseup', updateToolbarState);
+    docBody.addEventListener('focus', updateToolbarState);
+
+    function updateToolbarState() {
+      const cmds = ['bold', 'italic', 'underline', 'insertUnorderedList', 'insertOrderedList',
+                    'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'];
+      cmds.forEach(c => {
+        let active = false;
+        try { active = document.queryCommandState(c); } catch (e) {}
+        const btn = document.querySelector('.tool-btn[data-cmd="' + c + '"]');
+        if (btn) btn.classList.toggle('is-active', active);
+      });
+
+      // Block format
+      let block = '';
+      try { block = (document.queryCommandValue('formatBlock') || '').toLowerCase(); } catch (e) {}
+      ['h1','h2','h3','p'].forEach(b => {
+        const btn = document.querySelector('.tool-btn[data-cmd="formatBlock"][data-val="' + b + '"]');
+        if (btn) btn.classList.toggle('is-active', block === b);
+      });
+    }
+  }
+
+  function syncBodyState() {
+    state.bodyHtml = docBody.innerHTML;
+    saveState();
+  }
+
+  /* ============================================================
+     INIT: ZOOM
+     ============================================================ */
+  function initZoom() {
+    const apply = () => {
+      a4Wrapper.style.transform = 'scale(' + zoomLevel + ')';
+      $('#zoomLabel').textContent = Math.round(zoomLevel * 100) + '%';
+      // Adjust scroll container height to fit scaled content
+      const pageH = a4Page.offsetHeight || 1123;
+      a4Wrapper.style.height = (pageH * zoomLevel) + 'px';
+      a4Wrapper.style.width = (a4Page.offsetWidth || 794) + 'px';
+    };
+
+    $('#zoomIn').addEventListener('click', () => {
+      zoomLevel = Math.min(1.5, +(zoomLevel + 0.1).toFixed(2));
+      apply();
+    });
+    $('#zoomOut').addEventListener('click', () => {
+      zoomLevel = Math.max(0.3, +(zoomLevel - 0.1).toFixed(2));
+      apply();
+    });
+    $('#zoomFit').addEventListener('click', () => {
+      fitZoom();
+    });
+
+    window.addEventListener('resize', debounce(fitZoom, 200));
+
+    function fitZoom() {
+      const canvas = document.querySelector('.canvas');
+      if (!canvas) return;
+      const avail = canvas.clientWidth - 40;
+      const pageW = 794; // 210mm at 96dpi approx
+      zoomLevel = Math.max(0.3, Math.min(1, avail / pageW));
+      apply();
+    }
+
+    // Initial fit
+    setTimeout(fitZoom, 60);
+    window.__fitZoom = fitZoom;
+    window.__applyZoom = apply;
+  }
+
+  /* ============================================================
+     INIT: SORTABLE
+     ============================================================ */
+  function initSortable() {
+    if (typeof Sortable === 'undefined') return;
+
+    Sortable.create(a4Page, {
+      animation: 180,
+      handle: '.drag-handle',
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+      dragClass: 'sortable-drag',
+      filter: '.block-tools button:not(.drag-handle)',
+      preventOnFilter: false,
+      onEnd: () => {
+        // Read new order from DOM
+        const newOrder = $$('.doc-block', a4Page).map(el => el.dataset.block).filter(Boolean);
+        // Keep any missing blocks at the end
+        state.blocks.order.forEach(k => {
+          if (newOrder.indexOf(k) === -1) newOrder.push(k);
+        });
+        state.blocks.order = newOrder;
+        saveState();
+      },
+    });
+
+    // Block hide buttons
+    a4Page.addEventListener('click', e => {
+      const btn = e.target.closest('.block-hide');
+      if (!btn) return;
+      const block = btn.closest('.doc-block');
+      if (!block) return;
+      const key = block.dataset.block;
+      state.blocks.visible[key] = false;
+      syncBlockToggles();
+      renderAll();
+      saveState();
+    });
+  }
+
+  /* ============================================================
+     INIT: DOC BODY (contenteditable)
+     ============================================================ */
+  function initBody() {
+    // Prevent drag inside contenteditable from being captured by Sortable
+    docBody.addEventListener('mousedown', e => e.stopPropagation());
+
+    docBody.addEventListener('input', debounce(syncBodyState, 300));
+    docBody.addEventListener('blur', syncBodyState);
+
+    // Paste as plain text to avoid messy HTML
+    docBody.addEventListener('paste', e => {
+      e.preventDefault();
+      const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+      document.execCommand('insertText', false, text);
+    });
+  }
+
+  /* ============================================================
+     INIT: THEME
+     ============================================================ */
+  function initTheme() {
+    const apply = () => {
+      document.documentElement.classList.toggle('dark', state.theme === 'dark');
+      document.documentElement.classList.toggle('light', state.theme !== 'dark');
+      const icon = $('#themeBtn').querySelector('i');
+      icon.className = state.theme === 'dark' ? 'fa-solid fa-sun text-sm' : 'fa-solid fa-moon text-sm';
+    };
+    $('#themeBtn').addEventListener('click', () => {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
+      apply();
+      saveState();
+    });
+    apply();
+  }
+
+  /* ============================================================
+     INIT: LANGUAGE
+     ============================================================ */
+  function initLanguage() {
+    $('#langSelect').addEventListener('change', e => {
+      state.lang = e.target.value;
+      applyI18n();
+      renderAll();
+      saveState();
+    });
+    $('#langSelect').value = state.lang;
+  }
+
+  /* ============================================================
+     INIT: PRINT
+     ============================================================ */
+  function initPrint() {
+    $('#printBtn').addEventListener('click', () => {
+      // Blur any focused editable to remove focus rings
+      if (document.activeElement && document.activeElement.blur) {
+        document.activeElement.blur();
+      }
+      // Small delay so blur takes effect
+      setTimeout(() => {
+        toast(t('toast.printReady'));
+        setTimeout(() => window.print(), 300);
+      }, 60);
+    });
+  }
+
+  /* ============================================================
+     INIT: RESET
+     ============================================================ */
+  function initReset() {
+    $('#resetBtn').addEventListener('click', () => {
+      if (!confirm(t('toast.reset') + ' Continue?')) return;
+      state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+      // Re-apply everything
+      $('#langSelect').value = state.lang;
+      applyI18n();
+      syncAllInputs();
+      renderAll();
+      initBlockToggles();
+      syncSegments();
+      syncTemplates();
+      saveState();
+      toast(t('toast.reset'));
+    });
+  }
+
+  function syncTemplates() {
+    $$('.tpl-card').forEach(c => c.classList.toggle('is-active', c.dataset.tpl === state.template));
+  }
+
+  /* ============================================================
+     INIT: SYNC INPUTS FROM STATE
+     ============================================================ */
+  function syncAllInputs() {
+    const map = {
+      '#f-company-name': 'company.name',
+      '#f-company-tagline': 'company.tagline',
+      '#f-company-rc': 'company.rc',
+      '#f-company-nif': 'company.nif',
+      '#f-company-address': 'company.address',
+      '#f-company-phone': 'company.phone',
+      '#f-company-email': 'company.email',
+      '#f-company-website': 'company.website',
+      '#f-meta-date': 'meta.date',
+      '#f-meta-ref': 'meta.ref',
+      '#f-meta-subject': 'meta.subject',
+      '#f-sig-name': 'sig.name',
+      '#f-sig-title': 'sig.title',
+      '#f-qr-data': 'footer.qrData',
+    };
+    Object.keys(map).forEach(sel => {
+      const el = $(sel);
+      if (!el) return;
+      const val = getPath(state, map[sel]);
+      el.value = val == null ? '' : val;
+    });
+
+    $('#f-footer-text').value = state.footer.text || '';
+    $('#f-accent').value = state.accent;
+    $('#f-accent-hex').value = String(state.accent).toUpperCase();
+    $('#f-doc-font').value = state.docFont;
+    $('#f-padding').value = state.padding;
+    $('#paddingValue').textContent = state.padding;
+
+    $('#f-logo-size').value = state.logo.size;
+    $('#logoSizeValue').textContent = state.logo.size;
+    $('#f-logo-radius').value = state.logo.radius;
+    $('#logoRadiusValue').textContent = state.logo.radius;
+    $('#f-logo-shadow').value = state.logo.shadow;
+    $('#logoShadowValue').textContent = state.logo.shadow;
+    $('#f-logo-grayscale').checked = state.logo.grayscale;
+
+    $('#f-qr-enabled').checked = state.footer.showQr;
+    $('#f-qr-size').value = state.footer.qrSize;
+    $('#qrSizeValue').textContent = state.footer.qrSize;
+    $('#f-show-page').checked = state.footer.showPage;
+
+    // Segments
+    syncSegments();
+
+    // Logo UI
+    if (window.__updateLogoUI) window.__updateLogoUI();
+
+    // QR options visibility
+    $('#qrOptions').style.opacity = state.footer.showQr ? '1' : '.5';
+    $('#qrOptions').style.pointerEvents = state.footer.showQr ? 'auto' : 'none';
+  }
+
+  /* ============================================================
+     INIT: WIRE EVERYTHING
+     ============================================================ */
+  function init() {
+    loadState();
+
+    // Tabs
+    initTabs();
+
+    // Templates
+    initTemplates();
+
+    // Segments
+    initSegments();
+
+    // Accent swatches
+    initAccentSwatches();
+
+    // Logo upload
+    initLogoUpload();
+
+    // Block toggles
+    initBlockToggles();
+
+    // Sortable
+    initSortable();
+
+    // Rich text toolbar
+    initToolbar();
+
+    // Body
+    initBody();
+
+    // Zoom
+    initZoom();
+
+    // Theme
+    initTheme();
+
+    // Language
+    initLanguage();
+
+    // Print
+    initPrint();
+
+    // Reset
+    initReset();
+
+    // Bind text inputs
+    bindText('#f-company-name', 'company.name');
+    bindText('#f-company-tagline', 'company.tagline');
+    bindText('#f-company-rc', 'company.rc');
+    bindText('#f-company-nif', 'company.nif');
+    bindText('#f-company-address', 'company.address');
+    bindText('#f-company-phone', 'company.phone');
+    bindText('#f-company-email', 'company.email');
+    bindText('#f-company-website', 'company.website');
+
+    bindText('#f-meta-date', 'meta.date');
+    bindText('#f-meta-ref', 'meta.ref');
+    bindText('#f-meta-subject', 'meta.subject');
+
+    bindText('#f-sig-name', 'sig.name');
+    bindText('#f-sig-title', 'sig.title');
+
+    bindText('#f-footer-text', 'footer.text');
+
+    // QR data (debounced, because it regenerates the QR)
+    const qrInput = $('#f-qr-data');
+    qrInput.addEventListener('input', debounce(() => {
+      state.footer.qrData = qrInput.value;
+      renderQR();
+      saveState();
+    }, 350));
+
+    // Ranges
+    bindRange('#f-padding', 'padding', '#paddingValue');
+    bindRange('#f-logo-size', 'logo.size', '#logoSizeValue');
+    bindRange('#f-logo-radius', 'logo.radius', '#logoRadiusValue');
+    bindRange('#f-logo-shadow', 'logo.shadow', '#logoShadowValue');
+
+    // QR size (rebuilds QR)
+    const qrSizeInput = $('#f-qr-size');
+    qrSizeInput.addEventListener('input', () => {
+      state.footer.qrSize = Number(qrSizeInput.value);
+      $('#qrSizeValue').textContent = state.footer.qrSize;
+      renderQR();
+      saveState();
+    });
+
+    // Colors
+    bindColorPair('#f-accent', '#f-accent-hex', 'accent');
+
+    // Doc font
+    $('#f-doc-font').addEventListener('change', e => {
+      state.docFont = e.target.value;
+      renderAll();
+      saveState();
+    });
+
+    // Logo grayscale
+    $('#f-logo-grayscale').addEventListener('change', e => {
+      state.logo.grayscale = e.target.checked;
+      renderLogo();
+      saveState();
+    });
+
+    // QR enable
+    $('#f-qr-enabled').addEventListener('change', e => {
+      state.footer.showQr = e.target.checked;
+      $('#qrOptions').style.opacity = state.footer.showQr ? '1' : '.5';
+      $('#qrOptions').style.pointerEvents = state.footer.showQr ? 'auto' : 'none';
+      renderQR();
+      saveState();
+    });
+
+    // Show page number
+    $('#f-show-page').addEventListener('change', e => {
+      state.footer.showPage = e.target.checked;
+      renderPageNumber();
+      saveState();
+    });
+
+    // Initial sync
+    syncAllInputs();
+    applyI18n();
+    renderAll();
+
+    // Block toggles reflect state
+    syncBlockToggles();
+
+    // Try to fit zoom on first paint
+    setTimeout(() => { if (window.__fitZoom) window.__fitZoom(); }, 100);
+
+    // Save current body HTML once
+    state.bodyHtml = docBody.innerHTML;
+    saveState();
+  }
+
+  /* ============================================================
+     BOOT
+     ============================================================ */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+
+</body>
+</html>
