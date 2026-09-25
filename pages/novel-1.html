@@ -1,1211 +1,1283 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>بتر اللسان - سيف الإسلام زحاف</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
-    <style>
-        /* ============================================================
-           SAME STYLE AS index.html
-           ============================================================ */
-        :root {
-            --bg-body: #f0f4f8;
-            --bg-card: rgba(255, 255, 255, 0.65);
-            --bg-header: rgba(255, 255, 255, 0.60);
-            --bg-nav: rgba(255, 255, 255, 0.40);
-            --text-primary: #1a2a3a;
-            --text-secondary: #3a5a6a;
-            --text-muted: #7a8a9a;
-            --accent: #2b6c8c;
-            --accent-light: #4a9fc7;
-            --accent-focus: #1a8fbf;
-            --accent-gradient: linear-gradient(135deg, #2b6c8c, #4a9fc7);
-            --shadow: 0 2px 20px rgba(43, 108, 140, 0.06);
-            --shadow-hover: 0 6px 30px rgba(43, 108, 140, 0.10);
-            --border: 1px solid rgba(43, 108, 140, 0.06);
-            --radius: 14px;
-            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        body.dark {
-            --bg-body: #121a24;
-            --bg-card: rgba(255, 255, 255, 0.04);
-            --bg-header: rgba(255, 255, 255, 0.03);
-            --bg-nav: rgba(255, 255, 255, 0.03);
-            --text-primary: #e8eef2;
-            --text-secondary: #b0c8d8;
-            --text-muted: #708090;
-            --accent: #4a9fc7;
-            --accent-light: #6bc2e8;
-            --accent-focus: #6bc2e8;
-            --accent-gradient: linear-gradient(135deg, #4a9fc7, #6bc2e8);
-            --shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-            --shadow-hover: 0 6px 30px rgba(0, 0, 0, 0.5);
-            --border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background: var(--bg-body);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 14px 16px 12px;
-            transition: background 0.5s ease, color 0.5s ease;
-            line-height: 1.7;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-        }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeSlide {
-            0% {
-                opacity: 0;
-                transform: translateY(16px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-6px);
-            }
-        }
-
-        .animate-in {
-            animation: fadeSlide 0.5s ease both;
-        }
-        .animate-in-1 {
-            animation-delay: 0.05s;
-        }
-        .animate-in-2 {
-            animation-delay: 0.10s;
-        }
-        .animate-in-3 {
-            animation-delay: 0.15s;
-        }
-        .animate-in-4 {
-            animation-delay: 0.20s;
-        }
-
-        /* ===== HEADER ===== */
-        .header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 18px;
-            background: var(--bg-header);
-            border-radius: var(--radius);
-            border: var(--border);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            margin-bottom: 16px;
-            box-shadow: var(--shadow);
-            transition: all var(--transition);
-            animation: fadeSlide 0.5s ease;
-        }
-
-        .header:hover {
-            box-shadow: var(--shadow-hover);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1rem;
-            font-weight: 900;
-        }
-
-        .logo .flag {
-            font-size: 1.1rem;
-        }
-
-        .logo .name {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            flex-wrap: wrap;
-        }
-
-        .lang-btn {
-            background: transparent;
-            border: none;
-            padding: 3px 12px;
-            border-radius: 20px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            transition: all var(--transition);
-        }
-
-        .lang-btn:hover {
-            color: var(--text-primary);
-            background: rgba(43, 108, 140, 0.04);
-        }
-
-        body.dark .lang-btn:hover {
-            background: rgba(74, 159, 199, 0.06);
-        }
-
-        .lang-btn.active {
-            color: #fff;
-            background: var(--accent-gradient);
-            box-shadow: 0 2px 12px rgba(43, 108, 140, 0.15);
-        }
-
-        body.dark .lang-btn.active {
-            box-shadow: 0 2px 12px rgba(74, 159, 199, 0.15);
-        }
-
-        .theme-btn {
-            background: transparent;
-            border: none;
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all var(--transition);
-        }
-
-        .theme-btn:hover {
-            color: var(--accent);
-            transform: rotate(20deg);
-        }
-
-        /* ===== NAV ===== */
-        .nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3px;
-            margin-bottom: 16px;
-            padding: 4px 6px;
-            background: var(--bg-nav);
-            border-radius: var(--radius);
-            border: var(--border);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            justify-content: center;
-            transition: all var(--transition);
-            animation: fadeSlide 0.5s ease 0.05s both;
-        }
-
-        .nav a {
-            padding: 6px 18px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            transition: all var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            position: relative;
-        }
-
-        .nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 2px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: var(--accent-gradient);
-            border-radius: 2px;
-            transition: width var(--transition);
-        }
-
-        .nav a:hover::after {
-            width: 60%;
-        }
-
-        .nav a i {
-            font-size: 0.7rem;
-            opacity: 0.4;
-            transition: opacity var(--transition);
-        }
-
-        .nav a:hover {
-            color: var(--text-primary);
-            background: rgba(43, 108, 140, 0.04);
-        }
-
-        body.dark .nav a:hover {
-            background: rgba(74, 159, 199, 0.04);
-        }
-
-        .nav a.active {
-            color: #fff;
-            background: var(--accent-gradient);
-            box-shadow: 0 2px 16px rgba(43, 108, 140, 0.15);
-        }
-
-        body.dark .nav a.active {
-            box-shadow: 0 2px 16px rgba(74, 159, 199, 0.15);
-        }
-
-        .nav a.active::after {
-            width: 0;
-        }
-
-        .nav a.active i {
-            opacity: 1;
-        }
-
-        /* ===== LANG SECTIONS ===== */
-        .lang-section {
-            display: none;
-            animation: fadeSlide 0.5s ease;
-        }
-
-        .lang-section.active {
-            display: block;
-        }
-
-        .lang-section[dir="ltr"] {
-            direction: ltr;
-            text-align: left;
-        }
-
-        .lang-section[dir="ltr"] .btn-back i {
-            transform: rotate(180deg);
-        }
-
-        .lang-section[dir="ltr"] .btn-back:hover i {
-            transform: rotate(180deg) translateX(4px);
-        }
-
-        /* ===== COVER SECTION ===== */
-        .cover-section {
-            display: grid;
-            grid-template-columns: 220px 1fr;
-            gap: 28px;
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 24px 28px;
-            border: var(--border);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            box-shadow: var(--shadow);
-            margin-bottom: 14px;
-            transition: all var(--transition);
-            align-items: start;
-        }
-
-        .cover-section:hover {
-            box-shadow: var(--shadow-hover);
-        }
-
-        .cover-section .cover-img {
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow-hover);
-            transition: all var(--transition);
-            animation: float 4s ease-in-out infinite;
-        }
-
-        .cover-section .cover-img:hover {
-            transform: scale(1.02);
-        }
-
-        .cover-section .cover-img img {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 12px;
-        }
-
-        .cover-section .cover-img .placeholder {
-            width: 100%;
-            aspect-ratio: 2/3;
-            background: var(--accent-gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.5rem;
-            color: rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-        }
-
-        .cover-section .info .tag {
-            font-size: 0.55rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: var(--accent);
-            display: inline-block;
-            margin-bottom: 2px;
-        }
-
-        .cover-section .info h1 {
-            font-size: 1.6rem;
-            font-weight: 900;
-            margin-bottom: 2px;
-        }
-
-        .cover-section .info .author {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .cover-section .info .author i {
-            color: var(--accent);
-            margin-left: 4px;
-        }
-
-        .cover-section .info .status-badge {
-            display: inline-block;
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: var(--accent);
-            background: rgba(43, 108, 140, 0.06);
-            padding: 3px 16px;
-            border-radius: 20px;
-            border: var(--border);
-            margin-bottom: 10px;
-        }
-
-        body.dark .cover-section .info .status-badge {
-            background: rgba(74, 159, 199, 0.06);
-        }
-
-        .cover-section .info .meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px 20px;
-            margin-bottom: 12px;
-        }
-
-        .cover-section .info .meta span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .cover-section .info .meta span i {
-            color: var(--accent);
-            font-size: 0.7rem;
-        }
-
-        .cover-section .info .desc {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.8;
-        }
-
-        .cover-section .info .desc strong {
-            color: var(--text-primary);
-        }
-
-        /* ===== CHAPTER ===== */
-        .chapter-section {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 24px 28px;
-            border: var(--border);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            box-shadow: var(--shadow);
-            margin-bottom: 14px;
-            transition: all var(--transition);
-        }
-
-        .chapter-section:hover {
-            box-shadow: var(--shadow-hover);
-        }
-
-        .chapter-section .chapter-title {
-            font-size: 1.1rem;
-            font-weight: 800;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 10px;
-            border-bottom: var(--border);
-        }
-
-        .chapter-section .chapter-title i {
-            color: var(--accent);
-        }
-
-        .chapter-section .chapter-content {
-            color: var(--text-secondary);
-            font-size: 0.92rem;
-            line-height: 2;
-            text-align: justify;
-        }
-
-        .chapter-section .chapter-content p {
-            margin-bottom: 12px;
-            text-indent: 30px;
-        }
-
-        .chapter-section .chapter-content p:first-of-type {
-            text-indent: 0;
-        }
-
-        /* ===== ACTION BAR ===== */
-        .action-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding-top: 16px;
-            border-top: var(--border);
-            margin-top: 4px;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 24px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #fff;
-            background: var(--accent-gradient);
-            border: none;
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            transition: all var(--transition);
-            box-shadow: 0 2px 16px rgba(43, 108, 140, 0.15);
-        }
-
-        body.dark .btn-primary {
-            box-shadow: 0 2px 16px rgba(74, 159, 199, 0.15);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 30px rgba(43, 108, 140, 0.25);
-        }
-
-        body.dark .btn-primary:hover {
-            box-shadow: 0 6px 30px rgba(74, 159, 199, 0.25);
-        }
-
-        .btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 24px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            background: var(--bg-card);
-            border: var(--border);
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            transition: all var(--transition);
-        }
-
-        .btn-secondary:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--accent);
-        }
-
-        .btn-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            transition: all var(--transition);
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            margin-bottom: 10px;
-        }
-
-        .btn-back:hover {
-            color: var(--accent);
-            gap: 10px;
-        }
-
-        .btn-back i {
-            font-size: 0.65rem;
-            transition: transform var(--transition);
-        }
-
-        .btn-back:hover i {
-            transform: translateX(-4px);
-        }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            text-align: center;
-            padding: 14px 0 4px;
-            margin-top: 18px;
-            border-top: var(--border);
-            color: var(--text-muted);
-            font-size: 0.65rem;
-            transition: all var(--transition);
-        }
-
-        .footer .links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 4px;
-        }
-
-        .footer .links a {
-            font-size: 0.65rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            color: var(--text-muted);
-            transition: color var(--transition);
-        }
-
-        .footer .links a:hover {
-            color: var(--accent);
-        }
-
-        .footer .heart {
-            color: #d21034;
-            display: inline-block;
-            animation: pulseHeart 1.8s ease-in-out infinite;
-        }
-
-        @keyframes pulseHeart {
-            0%,
-            100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.15);
-            }
-        }
-
-        .footer .flag {
-            display: inline-block;
-            margin: 0 2px;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            body {
-                padding: 10px 12px 10px;
-            }
-
-            .header {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-                gap: 6px;
-                padding: 10px 14px;
-            }
-
-            .logo {
-                justify-content: center;
-                font-size: 0.9rem;
-            }
-
-            .header-actions {
-                justify-content: center;
-            }
-
-            .lang-btn {
-                font-size: 0.6rem;
-                padding: 3px 10px;
-            }
-
-            .theme-btn {
-                font-size: 0.7rem;
-                padding: 3px 8px;
-            }
-
-            .nav {
-                justify-content: center;
-                padding: 4px;
-                gap: 2px;
-            }
-
-            .nav a {
-                font-size: 0.65rem;
-                padding: 4px 12px;
-                gap: 4px;
-            }
-
-            .nav a i {
-                font-size: 0.6rem;
-            }
-
-            .cover-section {
-                grid-template-columns: 1fr;
-                gap: 16px;
-                padding: 18px 16px;
-            }
-
-            .cover-section .cover-img {
-                max-width: 200px;
-                margin: 0 auto;
-            }
-
-            .cover-section .info h1 {
-                font-size: 1.3rem;
-            }
-
-            .chapter-section {
-                padding: 18px 16px;
-            }
-
-            .chapter-section .chapter-content {
-                font-size: 0.85rem;
-            }
-
-            .action-bar {
-                justify-content: center;
-            }
-
-            .footer .links {
-                gap: 6px;
-            }
-
-            .footer .links a {
-                font-size: 0.55rem;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .nav a {
-                font-size: 0.55rem;
-                padding: 3px 8px;
-            }
-
-            .cover-section {
-                padding: 14px 12px;
-            }
-
-            .cover-section .info h1 {
-                font-size: 1.1rem;
-            }
-
-            .cover-section .info .desc {
-                font-size: 0.8rem;
-            }
-
-            .chapter-section {
-                padding: 14px 12px;
-            }
-
-            .chapter-section .chapter-content {
-                font-size: 0.78rem;
-            }
-
-            .btn-primary,
-            .btn-secondary {
-                font-size: 0.7rem;
-                padding: 8px 16px;
-            }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#ffffff" />
+
+<title>بتر اللسان | سيف الإسلام زحاف</title>
+<meta name="description" content="بتر اللسان — رواية لسيف الإسلام زحاف." />
+<meta name="author" content="Saif El Islem Zahaf" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23111'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='Arial' font-weight='600'%3ESZ%3C/text%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+  /* =========================================================
+     DESIGN SYSTEM — Minimalist · Modern · Light/Dark · RTL/LTR
+     ========================================================= */
+  :root {
+    --bg: #ffffff;
+    --bg-soft: #fafafa;
+    --surface: #ffffff;
+    --border: #e5e5e5;
+    --border-strong: #d4d4d4;
+    --text: #111111;
+    --text-2: #404040;
+    --muted: #737373;
+    --green: #16a34a;
+    --wattpad: #ff500a;
+  }
+
+  html.dark {
+    --bg: #0a0a0a;
+    --bg-soft: #0f0f0f;
+    --surface: #141414;
+    --border: #262626;
+    --border-strong: #333333;
+    --text: #fafafa;
+    --text-2: #d4d4d4;
+    --muted: #a3a3a3;
+    --green: #22c55e;
+    --wattpad: #ff6b35;
+  }
+
+  * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', 'Cairo', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.65;
+    font-size: 15px;
+    transition: background-color .25s ease, color .25s ease;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  html[dir="rtl"] body { font-family: 'Cairo', 'Inter', sans-serif; }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  button { font-family: inherit; }
+  ::selection { background: var(--text); color: var(--bg); }
+
+  /* ---------- NAVBAR ---------- */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s ease, background-color .25s ease;
+  }
+  .navbar.scrolled { border-bottom-color: var(--border); }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; color: var(--text); }
+  .brand-mark {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--text); color: var(--bg);
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 700;
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 2px; }
+  .nav-link {
+    padding: 8px 14px; font-size: 14px; color: var(--muted);
+    border-radius: 8px; transition: color .15s ease; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .nav-link:hover { color: var(--text); }
+  .nav-link.active { color: var(--text); font-weight: 600; }
+  .nav-link .ext { font-size: 10px; opacity: .6; }
+
+  .nav-actions { display: flex; align-items: center; gap: 8px; }
+
+  .icon-btn {
+    width: 36px; height: 36px; border-radius: 8px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--text-2); cursor: pointer;
+    display: grid; place-items: center; font-size: 13px;
+    transition: all .15s ease;
+  }
+  .icon-btn:hover { border-color: var(--border-strong); color: var(--text); }
+
+  .lang-wrap { position: relative; }
+  .lang-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 0 12px; height: 36px; border-radius: 8px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--text-2); cursor: pointer; font-size: 12.5px;
+    font-weight: 600; transition: all .15s ease;
+  }
+  .lang-btn:hover { border-color: var(--border-strong); color: var(--text); }
+
+  .lang-menu {
+    position: absolute; top: calc(100% + 6px); inset-inline-end: 0;
+    min-width: 140px; padding: 4px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; box-shadow: 0 10px 30px -12px rgba(0,0,0,.15);
+    opacity: 0; visibility: hidden; transform: translateY(-4px);
+    transition: all .15s ease; z-index: 10;
+  }
+  html.dark .lang-menu { box-shadow: 0 10px 30px -12px rgba(0,0,0,.7); }
+  .lang-wrap.open .lang-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+
+  .lang-option {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: 8px 12px; border: none; background: transparent;
+    color: var(--text-2); font-size: 13px; cursor: pointer;
+    border-radius: 6px; font-family: inherit; text-align: inherit;
+    transition: background .12s ease;
+  }
+  .lang-option:hover { background: var(--bg-soft); color: var(--text); }
+  .lang-option.active { color: var(--text); font-weight: 600; }
+
+  .menu-toggle { display: none; }
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .menu-toggle { display: grid; }
+  }
+
+  /* ---------- DRAWER ---------- */
+  .drawer-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.4);
+    opacity: 0; visibility: hidden; transition: all .25s ease; z-index: 150;
+  }
+  .drawer-overlay.open { opacity: 1; visibility: visible; }
+
+  .drawer {
+    position: fixed; top: 0; inset-inline-end: 0; bottom: 0;
+    width: min(320px, 85vw); background: var(--bg);
+    border-inline-start: 1px solid var(--border);
+    transform: translateX(100%); transition: transform .3s ease;
+    z-index: 160; display: flex; flex-direction: column;
+    padding: 20px; overflow-y: auto;
+  }
+  html[dir="rtl"] .drawer { transform: translateX(-100%); }
+  .drawer.open { transform: translateX(0) !important; }
+  .drawer-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .drawer-links { display: flex; flex-direction: column; gap: 2px; }
+  .drawer-link {
+    padding: 12px 14px; border-radius: 8px; color: var(--text-2);
+    font-size: 14px; font-weight: 500; transition: all .15s ease;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .drawer-link i { width: 16px; font-size: 13px; opacity: .7; }
+  .drawer-link:hover, .drawer-link.active { background: var(--bg-soft); color: var(--text); }
+
+  /* ---------- LAYOUT ---------- */
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; width: 100%; }
+  main { flex: 1; }
+
+  /* ---------- LANGUAGE SECTIONS ---------- */
+  .lang-section { display: none; padding-bottom: 60px; }
+  .lang-section.active { display: block; animation: fadeUp .3s ease both; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* ---------- BACK ---------- */
+  .back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13.5px; font-weight: 500;
+    color: var(--muted);
+    padding: 8px 12px;
+    margin: 40px 0 28px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: all .15s ease;
+  }
+  .back-link:hover { border-color: var(--border-strong); color: var(--text); }
+  .back-link i { font-size: 11px; }
+  html[dir="rtl"] .back-link i { transform: scaleX(-1); }
+
+  /* ---------- NOVEL HEADER ---------- */
+  .novel-header {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  @media (max-width: 700px) {
+    .novel-header { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  .novel-cover {
+    position: relative;
+    aspect-ratio: 2/3;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+  }
+  .novel-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .novel-cover-fallback {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--muted); font-size: 48px;
+  }
+  @media (max-width: 700px) {
+    .novel-cover { max-width: 200px; margin: 0 auto; }
+  }
+
+  .novel-info { display: flex; flex-direction: column; gap: 16px; justify-content: center; }
+
+  .novel-eyebrow {
+    font-size: 12px; font-weight: 500; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .12em;
+  }
+
+  .novel-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: -.02em;
+    line-height: 1.15;
+    margin: 0;
+    color: var(--text);
+  }
+
+  .novel-author {
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .novel-author i { font-size: 12px; }
+
+  .novel-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .novel-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 11px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text-2);
+    font-weight: 500;
+    background: var(--bg-soft);
+  }
+  .novel-meta span i { font-size: 11px; color: var(--muted); }
+
+  .novel-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-2);
+    margin-top: 2px;
+  }
+  .novel-status .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+  }
+
+  .novel-synopsis {
+    font-size: 14.5px;
+    line-height: 1.8;
+    color: var(--text-2);
+    margin: 0;
+  }
+  .novel-synopsis strong {
+    display: block;
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+  /* ---------- CHAPTER ---------- */
+  .chapter { margin-bottom: 40px; }
+
+  .chapter-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    margin: 0 0 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+  }
+  .chapter-title i { font-size: 15px; color: var(--muted); }
+
+  .chapter-content {
+    font-size: 16px;
+    line-height: 2;
+    color: var(--text-2);
+    max-width: 720px;
+  }
+  .chapter-content p {
+    margin: 0 0 20px;
+    text-align: justify;
+  }
+  .chapter-content p:last-child { margin-bottom: 0; }
+
+  /* ---------- ACTIONS ---------- */
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all .15s ease;
+    font-family: inherit;
+    line-height: 1;
+  }
+
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+  }
+  .btn-primary:hover { opacity: .88; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+  .btn-outline:hover { border-color: var(--text); }
+
+  /* ---------- WATTPAD DROPDOWN ---------- */
+  .wattpad-wrap {
+    position: relative;
+    display: inline-block;
+  }
+
+  .btn-wattpad {
+    background: var(--wattpad);
+    color: #ffffff;
+    font-weight: 600;
+    position: relative;
+  }
+  .btn-wattpad:hover { opacity: .9; }
+  .btn-wattpad i.fa-wattpad { font-size: 15px; }
+
+  .wattpad-chevron {
+    font-size: 10px !important;
+    margin-inline-start: 4px;
+    transition: transform .25s ease;
+    opacity: .85;
+  }
+  .wattpad-wrap.open .wattpad-chevron {
+    transform: rotate(180deg);
+  }
+
+  .wattpad-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    inset-inline-start: 0;
+    min-width: 240px;
+    padding: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px -12px rgba(0,0,0,.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity .2s ease, transform .25s cubic-bezier(.34, 1.3, .64, 1), visibility 0s .25s;
+    z-index: 20;
+  }
+  html.dark .wattpad-menu {
+    box-shadow: 0 10px 30px -12px rgba(0,0,0,.7);
+  }
+  .wattpad-wrap.open .wattpad-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity .2s ease, transform .25s cubic-bezier(.34, 1.3, .64, 1), visibility 0s;
+  }
+
+  .wattpad-menu-head {
+    padding: 8px 12px 6px;
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .wattpad-menu-head i {
+    color: var(--wattpad);
+    font-size: 11px;
+  }
+
+  .wattpad-option {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--text-2);
+    transition: background .12s ease, color .12s ease;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .wattpad-option:hover {
+    background: var(--bg-soft);
+    color: var(--text);
+  }
+
+  .wattpad-flag {
+    font-size: 16px;
+    flex: none;
+    line-height: 1;
+    filter: saturate(1.1);
+  }
+
+  .wattpad-lang {
+    flex: 1;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .wattpad-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: var(--muted);
+    padding: 2px 7px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    flex: none;
+  }
+
+  .wattpad-option:hover .wattpad-tag {
+    border-color: var(--wattpad);
+    color: var(--wattpad);
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 0 30px;
+    margin-top: auto;
+  }
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 16px; text-align: center;
+  }
+  .footer-text {
+    font-size: 13.5px; color: var(--muted);
+    display: flex; flex-wrap: wrap; align-items: center;
+    justify-content: center; gap: 6px;
+  }
+  .footer-heart { color: #dc2626; }
+  .footer-links {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 6px 18px; font-size: 13px; color: var(--muted);
+  }
+  .footer-links a { transition: color .15s ease; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-copy { font-size: 12.5px; color: var(--muted); }
+
+  .no-scroll { overflow: hidden; }
+
+  @media (max-width: 500px) {
+    .wattpad-wrap { width: 100%; }
+    .btn-wattpad { width: 100%; justify-content: center; }
+    .wattpad-menu { inset-inline-start: 0; inset-inline-end: 0; min-width: auto; }
+    .actions .btn { flex: 1 1 auto; justify-content: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+</style>
 </head>
+
 <body>
 
-    <div class="container">
+<!-- =========================================================
+     NAVBAR
+     ========================================================= -->
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark">SZ</span>
+      <span class="brand-name" data-i18n="brand">سيف الإسلام زحاف</span>
+    </a>
 
-        <!-- ===== HEADER ===== -->
-        <header class="header">
-            <div class="logo">
-                <span class="flag">🇩🇿</span>
-                <span class="name">سيف الإسلام زحاف</span>
-            </div>
-            <div class="header-actions">
-                <button class="lang-btn active" data-lang="ar">عربي</button>
-                <button class="lang-btn" data-lang="en">EN</button>
-                <button class="lang-btn" data-lang="fr">FR</button>
-                <button class="theme-btn" id="themeBtn"><i class="fas fa-moon"></i></button>
-            </div>
-        </header>
+    <nav class="nav-links">
+      <a href="../index.html" class="nav-link" data-i18n="nav_home">الرئيسية</a>
+      <a href="../novels.html" class="nav-link active" data-i18n="nav_novels">الروايات</a>
+      <a href="../contact.html" class="nav-link" data-i18n="nav_contact">التواصل</a>
+      <a href="https://SaivCORE.github.io" target="_blank" rel="noopener noreferrer" class="nav-link">
+        <span>SaivCORE</span>
+        <i class="fa-solid fa-arrow-up-right-from-square ext"></i>
+      </a>
+    </nav>
 
-        <!-- ===== NAV ===== -->
-        <nav class="nav">
-            <a href="../index.html"><i class="fas fa-home"></i> <span data-i18n="home">الرئيسية</span></a>
-            <a href="../novels.html"><i class="fas fa-book"></i> <span data-i18n="novels">الروايات</span></a>
-            <a href="../contact.html"><i class="fas fa-envelope"></i> <span data-i18n="contact">التواصل</span></a>
-            <a href="https://SaivCORE.github.io" target="_blank"><i class="fas fa-building"></i> SaivCORE</a>
-            <a href="https://SaivCORE.github.io/saivtube" target="_blank"><i class="fas fa-video"></i> SaivTUBE</a>
-        </nav>
-
-        <!-- ============================================================
-        ARABIC
-        ============================================================ -->
-        <div class="lang-section active" id="lang-ar" dir="rtl">
-
-            <!-- ===== BACK BUTTON ===== -->
-            <a href="../novels.html" class="btn-back animate-in animate-in-1">
-                <i class="fas fa-arrow-right"></i> <span data-i18n="back">العودة إلى قائمة الروايات</span>
-            </a>
-
-            <!-- ===== COVER + INFO ===== -->
-            <div class="cover-section animate-in animate-in-1">
-                <div class="cover-img">
-                    <img src="../images/cover-1.jpg" alt="غلاف رواية بتر اللسان" onerror="this.style.display='none'" />
-                    <div class="placeholder" style="display:none;"><i class="fas fa-book"></i></div>
-                </div>
-                <div class="info">
-                    <span class="tag">✦ رواية</span>
-                    <h1>بتر اللسان</h1>
-                    <div class="author"><i class="fas fa-user-pen"></i> سيف الإسلام زحاف</div>
-                    <div class="status-badge"><i class="fas fa-check-circle"></i> جاهزة للقراءة</div>
-                    <div class="meta">
-                        <span><i class="fas fa-tag"></i> رواية جزائرية</span>
-                        <span><i class="fas fa-list"></i> 45 فصلاً</span>
-                        <span><i class="fas fa-calendar"></i> 2025</span>
-                    </div>
-                    <div class="desc">
-                        <strong>ملخص الرواية:</strong>
-                        <p style="margin-top:4px;">
-                            تدور أحداث "بتر اللسان" في جزائر النهضة، حيث يخوض المهندس ياسين رحلة
-                            استثنائية لتحقيق السيادة التقنية والاقتصادية لوطنه. تبدأ القصة في ورشة صغيرة
-                            بحي الياسمين بوهران، حيث يطور ياسين تقنيات متطورة تتحدى لوبيات الاستيراد
-                            الفاسدة. تتصاعد الأحداث في رحلة ملحمية تمتد من أزقة وهران إلى أعماق الصحراء
-                            ودهاليز القصر الرئاسي، في صراع بين العلم والفساد، بين السيادة والتبعية.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== CHAPTER 1 ===== -->
-            <div class="chapter-section animate-in animate-in-2">
-                <div class="chapter-title">
-                    <i class="fas fa-book-open"></i> الفصل الأول
-                </div>
-                <div class="chapter-content">
-
-                    <p>
-                        كانت الساعة تشير إلى الثالثة صباحاً بتوقيت وهران. في "حي الياسمين"، وبالتحديد في ورشة ضيقة تفوح منها رائحة الزيوت المعدنية الممزوجة برطوبة "الباهية" القادمة من جهة البحر، كان ياسين واقفاً أمام آلة الصباعة الثلاثية الأبعاد (D Metal 3 Printer). كان صوت المحركات الخطية يصدر طنيناً رئيساً يشبه تسبيحاً إلكترونياً وسط السكون، بينما كان "شعاع الليزر" يضرب مسحوق معدن "التيتانيوم" بدقة ميكرومترية، محولاً الغبار إلى صلب.
-                    </p>
-
-                    <p>
-                        بالنسبة لياسين، لم يكن هذا مجرد تصنيع؛ كان "استخلافاً" علمياً يكسر قيود التبعية. مسح عرق جبهته وتأمل القطعة التي تتشكل ببطء؛ صمام محرك توربيني كان يُستورد بالعملة الصعبة، والآن يُصاغ بعقل جزائري في قبو متواضع.
-                    </p>
-
-                    <p>
-                        توقف ياسين قليلاً، واستحضر في ذهنه أصلاً شرعياً لطالما آمن به: "إنَّ القوة ليست في السلاح وحده، بل في كمال العلم والقدرة" ... كانت هذه القاعدة هي وقوده النفسي؛ فالقدرة التي يطلبها المنهج ليست شعارات تُرفع، بل تمكين في الأرض يبدأ من إتقان الذرة والمعدن.
-                    </p>
-
-                    <p>
-                        فجأة، اهتز هاتفه القديم برسالة من مجموعة "تليغرام" قديمة كان ينتمي إليها قبل "توبته" وانتقاله للمنهج السلفي. كان العنوان: "نداء النفير لحماية المسار الديمقراطي". وتحتها اقتباس يحرض على الخروج والمواجهة السياسية الحزبية.
-                    </p>
-
-                    <p>
-                        ابتسم ياسين بسخرية مريرة؛ تذكر كيف كان في حراك 2019 يصرخ في شوارع "واجهة البحر" بنفس تلك الشعارات، ظاناً أن تغيير الوجوه سيغير الواقع قبل أن يدرك أن العلة في "البناء الفكري" لا في "الكراسي". أغمض عينيه، فهاجمته ذكرى قديمة من صباه:
-                    </p>
-
-                    <p>
-                        ياسين طفل في العاشرة، جالس في "زاوية" بحي "الدرب". الرائحة خليط من البخور والرطوبة الجانبية. رأى "الشيخ" يضع يده على رأس مريض ويدعي منحه "البركة" للشفاء، بينما المريض يزداد شحوباً. سأل ياسين والده برباءة: "يا أبي، لماذا لا نذهب به إلى الطبيب في المستشفى الجامعي؟". كانت صفحة والده قاسية: "اسكت، هذه أسرار لا يدركها عقالك الصغير".
-                    </p>
-
-                    <p>
-                        في تلك اللحظة، ولد في قلب ياسين كره عميق للخرافة التي تُعيب العقل باسم الدين، وللعنف الذي يُمارس باسم التربية.
-                    </p>
-
-                    <p>
-                        عاد ياسين للواقع على صوت الآلة وهي تعلن انتهاء العملية. فتح الغطاء الزجاجي، وبردت القطعة ببطء. تذكر كلام الإمام محمد البشير الإبراهيمي الذي قرأه بالأمس حول حقيقة المنهج الذي يسلكه الآن: "إن السلفية الحقة هي التي تخرج الأمة من ظلمات الأوهام إلى أنوار الحقائق، ومن قيود التقليد إلى فضاء الاجتهاد المستمد من الكتاب والسنة ..."
-                    </p>
-
-                    <p>
-                        أمسك ياسين بالقطعة المعدنية الصلبة، وهمس لنفسه: "هذا هو الطريق.. العلم هو السلطان، والشرع هو الميزان". لم يكن يعلم أن هذه القطعة ستكون هي الفتيل الذي سيشتعل حرباً باردة مع لوبيات الاستيراد في وهران، الذين لن يسمحوا لشاب "سلفي" بكسر احتكارهم للسوق تحت مسمى "الإبداع التقني".
-                    </p>
-
-                </div>
-            </div>
-
-            <!-- ===== ACTION BAR ===== -->
-            <div class="action-bar animate-in animate-in-3">
-                <a href="../assets/pdf/batar-al-lisan-chapters-1-5.pdf" class="btn-primary" target="_blank">
-                    <i class="fas fa-download"></i> <span data-i18n="download">تحميل 5 فصول</span>
-                </a>
-                <a href="https://forms.google.com/your-form-link" target="_blank" class="btn-secondary">
-                    <i class="fas fa-envelope"></i> <span data-i18n="request">طلب الرواية كاملة</span>
-                </a>
-            </div>
-
+    <div class="nav-actions">
+      <div class="lang-wrap" id="langWrap">
+        <button class="lang-btn" id="langBtn">
+          <i class="fa-solid fa-globe" style="font-size:11px"></i>
+          <span id="langLabel">AR</span>
+        </button>
+        <div class="lang-menu">
+          <button class="lang-option active" data-lang="ar">العربية <span style="color:var(--muted);font-size:11px;font-weight:700">AR</span></button>
+          <button class="lang-option" data-lang="en">English <span style="color:var(--muted);font-size:11px;font-weight:700">EN</span></button>
+          <button class="lang-option" data-lang="fr">Français <span style="color:var(--muted);font-size:11px;font-weight:700">FR</span></button>
+          <button class="lang-option" data-lang="es">Español <span style="color:var(--muted);font-size:11px;font-weight:700">ES</span></button>
         </div>
-        <!-- ===== نهاية العربي ===== -->
+      </div>
 
+      <button class="icon-btn" id="themeBtn" aria-label="Theme">
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+      </button>
 
-        <!-- ============================================================
-        ENGLISH
-        ============================================================ -->
-        <div class="lang-section" id="lang-en" dir="ltr">
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
 
-            <a href="../novels.html" class="btn-back animate-in animate-in-1">
-                <i class="fas fa-arrow-left"></i> <span data-i18n="back">Back to Novels List</span>
-            </a>
+<!-- =========================================================
+     MOBILE DRAWER
+     ========================================================= -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer" aria-label="Mobile navigation">
+  <div class="drawer-head">
+    <div class="brand">
+      <span class="brand-mark">SZ</span>
+      <span class="brand-name" data-i18n="brand">سيف الإسلام زحاف</span>
+    </div>
+    <button class="icon-btn" id="drawerClose" aria-label="Close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  <nav class="drawer-links">
+    <a href="../index.html" class="drawer-link">
+      <i class="fa-solid fa-house"></i>
+      <span data-i18n="nav_home">الرئيسية</span>
+    </a>
+    <a href="../novels.html" class="drawer-link active">
+      <i class="fa-solid fa-book"></i>
+      <span data-i18n="nav_novels">الروايات</span>
+    </a>
+    <a href="../contact.html" class="drawer-link">
+      <i class="fa-solid fa-envelope"></i>
+      <span data-i18n="nav_contact">التواصل</span>
+    </a>
+    <a href="https://SaivCORE.github.io" target="_blank" rel="noopener noreferrer" class="drawer-link">
+      <i class="fa-solid fa-building"></i>
+      <span>SaivCORE</span>
+    </a>
+  </nav>
+</aside>
 
-            <div class="cover-section animate-in animate-in-1">
-                <div class="cover-img">
-                    <img src="../images/cover-1.jpg" alt="Batar Al-Lisan cover" onerror="this.style.display='none'" />
-                    <div class="placeholder" style="display:none;"><i class="fas fa-book"></i></div>
-                </div>
-                <div class="info">
-                    <span class="tag">✦ Novel</span>
-                    <h1>Batar Al-Lisan</h1>
-                    <div class="author"><i class="fas fa-user-pen"></i> Saif El Islem Zahaf</div>
-                    <div class="status-badge"><i class="fas fa-check-circle"></i> Ready to read</div>
-                    <div class="meta">
-                        <span><i class="fas fa-tag"></i> Algerian Novel</span>
-                        <span><i class="fas fa-list"></i> 45 Chapters</span>
-                        <span><i class="fas fa-calendar"></i> 2025</span>
-                    </div>
-                    <div class="desc">
-                        <strong>Synopsis:</strong>
-                        <p style="margin-top:4px;">
-                            "Batar Al-Lisan" (Cutting the Tongue) takes place in a renaissance Algeria,
-                            where engineer Yassin embarks on an extraordinary journey to achieve technological
-                            and economic sovereignty for his homeland. The story begins in a small workshop
-                            in the Yasmin neighborhood of Oran, where Yassin develops advanced technologies
-                            that challenge corrupt import lobbies. The events escalate into an epic journey
-                            from the alleys of Oran to the depths of the desert and the corridors of the
-                            presidential palace, in a struggle between science and corruption, sovereignty
-                            and dependency.
-                        </p>
-                    </div>
-                </div>
-            </div>
+<!-- =========================================================
+     MAIN
+     ========================================================= -->
+<main>
+  <div class="wrap">
 
-            <div class="chapter-section animate-in animate-in-2">
-                <div class="chapter-title">
-                    <i class="fas fa-book-open"></i> Chapter 1
-                </div>
-                <div class="chapter-content">
+    <!-- =================== ARABIC =================== -->
+    <section class="lang-section active" data-lang="ar">
+      <a href="../novels.html" class="back-link">
+        <i class="fa-solid fa-arrow-right"></i>
+        <span data-i18n="back">العودة إلى الروايات</span>
+      </a>
 
-                    <p>
-                        The clock was striking three in the morning Oran time. In the "Yasmin neighborhood," specifically in a narrow workshop filled with the scent of mineral oils mixed with the humidity of the "Bahia" coming from the sea, Yassin stood before a 3D metal printer (D Metal 3 Printer). The sound of the linear motors produced a humming noise, like an electronic chant amidst the silence, while the "laser beam" struck titanium metal powder with micrometer precision, turning dust into solid metal.
-                    </p>
-
-                    <p>
-                        For Yassin, this was not just manufacturing; it was a scientific "succession" breaking the chains of dependency. He wiped the sweat from his forehead and contemplated the piece slowly taking shape—a turbine engine valve that used to be imported with hard currency, now being crafted by an Algerian mind in a modest basement.
-                    </p>
-
-                    <p>
-                        Yassin paused for a moment, recalling a legal principle he had always believed in: "Strength is not in weapons alone, but in the perfection of knowledge and capability"... This principle was his psychological fuel; the capability demanded by the methodology is not raised slogans, but empowerment on earth that begins with mastery of the atom and metal.
-                    </p>
-
-                    <p>
-                        Suddenly, his old phone vibrated with a message from an old Telegram group he used to belong to before his "repentance" and transition to the Salafi methodology. The title read: "The Call to Mobilize to Protect the Democratic Path." Beneath it was a quote inciting rebellion and political confrontation.
-                    </p>
-
-                    <p>
-                        Yassin smiled bitterly, remembering how he used to shout the same slogans in the streets of "Wajhat al-Bahr" during the 2019 Hirak, thinking that changing faces would change reality, before realizing that the problem lies in the "intellectual structure," not in the "chairs." He closed his eyes, and an old childhood memory attacked him:
-                    </p>
-
-                    <p>
-                        Yassin, a ten-year-old child, sitting in a "Zawiya" in the "Darb" neighborhood. The smell was a mix of incense and side humidity. He saw the "Sheikh" placing his hand on a patient's head, claiming to grant him "blessing" for healing, while the patient grew paler. Yassin asked his father innocently: "Dad, why don't we take him to the doctor at the university hospital?" His father's response was harsh: "Be quiet, these are secrets beyond your little mind."
-                    </p>
-
-                    <p>
-                        At that moment, a deep hatred for superstition that defames the mind in the name of religion was born in Yassin's heart, and for violence practiced in the name of education.
-                    </p>
-
-                    <p>
-                        Yassin returned to reality at the sound of the machine announcing the end of the process. He opened the glass cover, and the piece cooled slowly. He remembered the words of Imam Muhammad al-Bashir al-Ibrahimi, which he had read yesterday about the true nature of the path he now follows: "True Salafism is what leads the nation from the darkness of illusions to the lights of truths, and from the chains of imitation to the space of ijtihad derived from the Book and the Sunnah..."
-                    </p>
-
-                    <p>
-                        Yassin held the solid metal piece and whispered to himself: "This is the path.. knowledge is the authority, and the law is the measure." He did not know that this piece would be the fuse that ignites a cold war with the import lobbies in Oran, who would not allow a "Salafi" young man to break their market monopoly under the guise of "technical innovation."
-                    </p>
-
-                </div>
-            </div>
-
-            <div class="action-bar animate-in animate-in-3">
-                <a href="../assets/pdf/batar-al-lisan-chapters-1-5.pdf" class="btn-primary" target="_blank">
-                    <i class="fas fa-download"></i> <span data-i18n="download">Download 5 Chapters</span>
-                </a>
-                <a href="https://forms.google.com/your-form-link" target="_blank" class="btn-secondary">
-                    <i class="fas fa-envelope"></i> <span data-i18n="request">Request Full Novel</span>
-                </a>
-            </div>
-
+      <div class="novel-header">
+        <div class="novel-cover">
+          <div class="novel-cover-fallback"><i class="fa-solid fa-book"></i></div>
+          <img src="../images/cover-1.jpg" alt="غلاف رواية بتر اللسان" onerror="this.remove()" />
         </div>
-        <!-- ===== نهاية الإنجليزي ===== -->
 
-
-        <!-- ============================================================
-        FRENCH
-        ============================================================ -->
-        <div class="lang-section" id="lang-fr" dir="ltr">
-
-            <a href="../novels.html" class="btn-back animate-in animate-in-1">
-                <i class="fas fa-arrow-left"></i> <span data-i18n="back">Retour à la liste</span>
-            </a>
-
-            <div class="cover-section animate-in animate-in-1">
-                <div class="cover-img">
-                    <img src="../images/cover-1.jpg" alt="Couverture Batar Al-Lisan" onerror="this.style.display='none'" />
-                    <div class="placeholder" style="display:none;"><i class="fas fa-book"></i></div>
-                </div>
-                <div class="info">
-                    <span class="tag">✦ Roman</span>
-                    <h1>Batar Al-Lisan</h1>
-                    <div class="author"><i class="fas fa-user-pen"></i> Saif El Islem Zahaf</div>
-                    <div class="status-badge"><i class="fas fa-check-circle"></i> Prêt à lire</div>
-                    <div class="meta">
-                        <span><i class="fas fa-tag"></i> Roman algérien</span>
-                        <span><i class="fas fa-list"></i> 45 Chapitres</span>
-                        <span><i class="fas fa-calendar"></i> 2025</span>
-                    </div>
-                    <div class="desc">
-                        <strong>Résumé:</strong>
-                        <p style="margin-top:4px;">
-                            "Batar Al-Lisan" (Couper la langue) se déroule dans une Algérie en pleine renaissance,
-                            où l'ingénieur Yassin entreprend un voyage extraordinaire pour atteindre la souveraineté
-                            technologique et économique de son pays. L'histoire commence dans un petit atelier
-                            du quartier Yasmin à Oran, où Yassin développe des technologies avancées qui défient
-                            les lobbies d'importation corrompus. Les événements s'intensifient dans un voyage épique
-                            des ruelles d'Oran aux profondeurs du désert et aux couloirs du palais présidentiel,
-                            dans une lutte entre la science et la corruption, la souveraineté et la dépendance.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="chapter-section animate-in animate-in-2">
-                <div class="chapter-title">
-                    <i class="fas fa-book-open"></i> Chapitre 1
-                </div>
-                <div class="chapter-content">
-
-                    <p>
-                        L'horloge indiquait trois heures du matin, heure d'Oran. Dans le quartier "Yasmin", plus précisément dans un atelier étroit imprégné de l'odeur des huiles minérales mêlée à l'humidité de la "Bahia" venant de la mer, Yassin se tenait devant une imprimante 3D métal (D Metal 3 Printer). Le bruit des moteurs linéaires produisait un bourdonnement, comme un chant électronique au milieu du silence, tandis que le "rayon laser" frappait la poudre de métal titane avec une précision micrométrique, transformant la poussière en métal solide.
-                    </p>
-
-                    <p>
-                        Pour Yassin, ce n'était pas simplement de la fabrication; c'était une "succession" scientifique brisant les chaînes de la dépendance. Il essuya la sueur de son front et contempla la pièce qui prenait lentement forme—une valve de moteur turbine qui était autrefois importée en devises fortes, maintenant façonnée par un esprit algérien dans un modeste sous-sol.
-                    </p>
-
-                    <p>
-                        Yassin fit une pause, rappelant un principe juridique auquel il avait toujours cru: "La force n'est pas dans les armes seules, mais dans la perfection de la connaissance et de la capacité"... Ce principe était son carburant psychologique; la capacité exigée par la méthodologie n'est pas des slogans levés, mais un pouvoir sur terre qui commence par la maîtrise de l'atome et du métal.
-                    </p>
-
-                    <p>
-                        Soudain, son vieux téléphone vibra avec un message d'un ancien groupe Telegram auquel il appartenait avant son "repentir" et son passage à la méthodologie salafiste. Le titre était: "L'appel à la mobilisation pour protéger la voie démocratique." En dessous, une citation incitant à la rébellion et à la confrontation politique.
-                    </p>
-
-                    <p>
-                        Yassin sourit amèrement, se rappelant comment il criait les mêmes slogans dans les rues de "Wajhat al-Bahr" pendant le Hirak de 2019, pensant que changer les visages changerait la réalité, avant de réaliser que le problème réside dans la "structure intellectuelle", pas dans les "chaises". Il ferma les yeux, et un vieux souvenir d'enfance l'assaillit:
-                    </p>
-
-                    <p>
-                        Yassin, un enfant de dix ans, assis dans une "Zawiya" dans le quartier "Darb". L'odeur était un mélange d'encens et d'humidité. Il vit le "Cheikh" poser sa main sur la tête d'un patient, prétendant lui donner la "bénédiction" pour guérir, tandis que le patient pâlissait. Yassin demanda à son père avec innocence: "Papa, pourquoi ne l'emmenons-nous pas chez le médecin à l'hôpital universitaire?" La réponse de son père fut dure: "Tais-toi, ce sont des secrets qui dépassent ton petit esprit."
-                    </p>
-
-                    <p>
-                        À ce moment, une profonde haine pour la superstition qui diffame l'esprit au nom de la religion, et pour la violence pratiquée au nom de l'éducation, naquit dans le cœur de Yassin.
-                    </p>
-
-                    <p>
-                        Yassin revint à la réalité au son de la machine annonçant la fin du processus. Il ouvrit le couvercle en verre, et la pièce refroidit lentement. Il se souvint des paroles de l'Imam Muhammad al-Bashir al-Ibrahimi, qu'il avait lues la veille, sur la véritable nature du chemin qu'il suit maintenant: "Le vrai salafisme est ce qui fait sortir la nation des ténèbres des illusions vers les lumières des vérités, et des chaînes de l'imitation vers l'espace de l'ijtihad dérivé du Livre et de la Sunna..."
-                    </p>
-
-                    <p>
-                        Yassin tint la pièce métallique solide et murmura pour lui-même: "C'est le chemin.. la connaissance est l'autorité, et la loi est la mesure." Il ne savait pas que cette pièce serait le détonateur d'une guerre froide avec les lobbies d'importation à Oran, qui ne permettraient pas à un jeune homme "salafiste" de briser leur monopole du marché sous couvert d'"innovation technique."
-                    </p>
-
-                </div>
-            </div>
-
-            <div class="action-bar animate-in animate-in-3">
-                <a href="../assets/pdf/batar-al-lisan-chapters-1-5.pdf" class="btn-primary" target="_blank">
-                    <i class="fas fa-download"></i> <span data-i18n="download">Télécharger 5 chapitres</span>
-                </a>
-                <a href="https://forms.google.com/your-form-link" target="_blank" class="btn-secondary">
-                    <i class="fas fa-envelope"></i> <span data-i18n="request">Demander le roman complet</span>
-                </a>
-            </div>
-
+        <div class="novel-info">
+          <div class="novel-eyebrow">✦ رواية · الجزء الأول</div>
+          <h1 class="novel-title">بتر اللسان</h1>
+          <div class="novel-author">
+            <i class="fa-solid fa-user-pen"></i>
+            <span>سيف الإسلام زحاف</span>
+          </div>
+          <div class="novel-status"><span class="dot"></span> جاهزة للقراءة</div>
+          <div class="novel-meta">
+            <span><i class="fa-solid fa-tag"></i> رواية جزائرية</span>
+            <span><i class="fa-solid fa-list"></i> 45 فصلاً</span>
+            <span><i class="fa-solid fa-calendar"></i> 2025</span>
+          </div>
+          <p class="novel-synopsis">
+            <strong>ملخص الرواية</strong>
+            تدور أحداث "بتر اللسان" في جزائر النهضة، حيث يخوض المهندس ياسين رحلة استثنائية لتحقيق السيادة التقنية والاقتصادية لوطنه. تبدأ القصة في ورشة صغيرة بحي الياسمين بوهران، حيث يطور ياسين تقنيات متطورة تتحدى لوبيات الاستيراد الفاسدة.
+          </p>
         </div>
-        <!-- ===== نهاية الفرنسي ===== -->
+      </div>
 
+      <article class="chapter">
+        <h2 class="chapter-title">
+          <i class="fa-solid fa-book-open"></i>
+          الفصل الأول
+        </h2>
+        <div class="chapter-content">
+          <p>كانت الساعة تشير إلى الثالثة صباحاً بتوقيت وهران. في "حي الياسمين"، وبالتحديد في ورشة ضيقة تفوح منها رائحة الزيوت المعدنية الممزوجة برطوبة "الباهية" القادمة من جهة البحر، كان ياسين واقفاً أمام آلة الطباعة الثلاثية الأبعاد. كان صوت المحركات الخطية يصدر طنيناً يشبه تسبيحاً إلكترونياً وسط السكون، بينما كان "شعاع الليزر" يضرب مسحوق معدن "التيتانيوم" بدقة ميكرومترية، محولاً الغبار إلى صلب.</p>
+          <p>بالنسبة لياسين، لم يكن هذا مجرد تصنيع؛ كان "استخلافاً" علمياً يكسر قيود التبعية. مسح عرق جبهته وتأمل القطعة التي تتشكل ببطء؛ صمام محرك توربيني كان يُستورد بالعملة الصعبة، والآن يُصاغ بعقل جزائري في قبو متواضع.</p>
+          <p>توقف ياسين قليلاً، واستحضر في ذهنه أصلاً شرعياً لطالما آمن به: "إنَّ القوة ليست في السلاح وحده، بل في كمال العلم والقدرة". كانت هذه القاعدة هي وقوده النفسي؛ فالقدرة التي يطلبها المنهج ليست شعارات تُرفع، بل تمكين في الأرض يبدأ من إتقان الذرة والمعدن.</p>
+          <p>فجأة، اهتز هاتفه القديم برسالة من مجموعة "تليغرام" قديمة كان ينتمي إليها قبل "توبته" وانتقاله للمنهج السلفي. كان العنوان: "نداء النفير لحماية المسار الديمقراطي".</p>
+          <p>ابتسم ياسين بسخرية مريرة؛ تذكر كيف كان في حراك 2019 يصرخ في شوارع "واجهة البحر" بنفس تلك الشعارات، ظاناً أن تغيير الوجوه سيغير الواقع قبل أن يدرك أن العلة في "البناء الفكري" لا في "الكراسي".</p>
+          <p>في تلك اللحظة، ولد في قلب ياسين كره عميق للخرافة التي تُعيب العقل باسم الدين، وللعنف الذي يُمارس باسم التربية.</p>
+          <p>أمسك ياسين بالقطعة المعدنية الصلبة، وهمس لنفسه: "هذا هو الطريق.. العلم هو السلطان، والشرع هو الميزان". لم يكن يعلم أن هذه القطعة ستكون هي الفتيل الذي سيشتعل حرباً باردة مع لوبيات الاستيراد في وهران.</p>
+        </div>
+      </article>
 
-        <!-- ===== FOOTER ===== -->
-        <footer class="footer">
-            <div class="links">
-                <a href="../index.html"><i class="fas fa-home"></i> <span data-i18n="footer-home">الرئيسية</span></a>
-                <a href="../novels.html"><i class="fas fa-book"></i> <span data-i18n="footer-novels">الروايات</span></a>
-                <a href="../contact.html"><i class="fas fa-envelope"></i> <span data-i18n="footer-contact">التواصل</span></a>
-                <a href="https://SaivCORE.github.io" target="_blank"><i class="fas fa-building"></i> SaivCORE</a>
+      <div class="actions">
+        <!-- ═══════ Wattpad Dropdown ═══════ -->
+        <div class="wattpad-wrap" data-wattpad>
+          <button type="button" class="btn btn-wattpad wattpad-toggle">
+            <i class="fa-brands fa-wattpad"></i>
+            <span data-i18n="wattpad">اقرأها على واتباد</span>
+            <i class="fa-solid fa-chevron-down wattpad-chevron"></i>
+          </button>
+          <div class="wattpad-menu">
+            <div class="wattpad-menu-head">
+              <i class="fa-brands fa-wattpad"></i>
+              <span data-i18n="wattpad_choose">اختر اللغة</span>
             </div>
-            <p>
-                <i class="fas fa-code"></i>
-                <span data-i18n="footer-made">صُنع بـ</span>
-                <i class="fas fa-heart heart"></i>
-                <span data-i18n="footer-by">بواسطة</span>
-                <strong>سيف الإسلام زحاف</strong>
-                <span class="flag">🇩🇿</span>
-                · 2025
-            </p>
-        </footer>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-AR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇸🇦</span>
+              <span class="wattpad-lang">العربية</span>
+              <span class="wattpad-tag">AR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-EN-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇬🇧</span>
+              <span class="wattpad-lang">English</span>
+              <span class="wattpad-tag">EN</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-FR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇫🇷</span>
+              <span class="wattpad-lang">Français</span>
+              <span class="wattpad-tag">FR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-ES-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇪🇸</span>
+              <span class="wattpad-lang">Español</span>
+              <span class="wattpad-tag">ES</span>
+            </a>
+          </div>
+        </div>
 
+        <!-- ═══════ Request Full Novel ═══════ -->
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline request-btn">
+          <i class="fa-solid fa-envelope-open-text"></i>
+          <span data-i18n="request">طلب الرواية كاملة</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- =================== ENGLISH =================== -->
+    <section class="lang-section" data-lang="en">
+      <a href="../novels.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="back">Back to Novels</span>
+      </a>
+
+      <div class="novel-header">
+        <div class="novel-cover">
+          <div class="novel-cover-fallback"><i class="fa-solid fa-book"></i></div>
+          <img src="../images/cover-1.jpg" alt="Batar Al-Lisan cover" onerror="this.remove()" />
+        </div>
+
+        <div class="novel-info">
+          <div class="novel-eyebrow">✦ Novel · Volume One</div>
+          <h1 class="novel-title">Batar Al-Lisan</h1>
+          <div class="novel-author">
+            <i class="fa-solid fa-user-pen"></i>
+            <span>Saif El Islem Zahaf</span>
+          </div>
+          <div class="novel-status"><span class="dot"></span> Ready to read</div>
+          <div class="novel-meta">
+            <span><i class="fa-solid fa-tag"></i> Algerian Novel</span>
+            <span><i class="fa-solid fa-list"></i> 45 Chapters</span>
+            <span><i class="fa-solid fa-calendar"></i> 2025</span>
+          </div>
+          <p class="novel-synopsis">
+            <strong>Synopsis</strong>
+            "Batar Al-Lisan" (Cutting the Tongue) takes place in a renaissance Algeria, where engineer Yassin embarks on an extraordinary journey to achieve technological and economic sovereignty for his homeland. The story begins in a small workshop in the Yasmin neighborhood of Oran.
+          </p>
+        </div>
+      </div>
+
+      <article class="chapter">
+        <h2 class="chapter-title">
+          <i class="fa-solid fa-book-open"></i>
+          Chapter One
+        </h2>
+        <div class="chapter-content">
+          <p>The clock was striking three in the morning Oran time. In the "Yasmin neighborhood," specifically in a narrow workshop filled with the scent of mineral oils mixed with the humidity of the "Bahia" coming from the sea, Yassin stood before a 3D metal printer.</p>
+          <p>For Yassin, this was not just manufacturing; it was a scientific "succession" breaking the chains of dependency. He wiped the sweat from his forehead and contemplated the piece slowly taking shape—a turbine engine valve that used to be imported with hard currency.</p>
+          <p>Yassin paused for a moment, recalling a legal principle he had always believed in: "Strength is not in weapons alone, but in the perfection of knowledge and capability".</p>
+          <p>Suddenly, his old phone vibrated with a message from an old Telegram group he used to belong to before his "repentance" and transition to the Salafi methodology.</p>
+          <p>Yassin smiled bitterly, remembering how he used to shout the same slogans in the streets of "Wajhat al-Bahr" during the 2019 Hirak, thinking that changing faces would change reality.</p>
+          <p>At that moment, a deep hatred for superstition that defames the mind in the name of religion was born in Yassin's heart, and for violence practiced in the name of education.</p>
+          <p>Yassin held the solid metal piece and whispered to himself: "This is the path.. knowledge is the authority, and the law is the measure."</p>
+        </div>
+      </article>
+
+      <div class="actions">
+        <div class="wattpad-wrap" data-wattpad>
+          <button type="button" class="btn btn-wattpad wattpad-toggle">
+            <i class="fa-brands fa-wattpad"></i>
+            <span data-i18n="wattpad">Read on Wattpad</span>
+            <i class="fa-solid fa-chevron-down wattpad-chevron"></i>
+          </button>
+          <div class="wattpad-menu">
+            <div class="wattpad-menu-head">
+              <i class="fa-brands fa-wattpad"></i>
+              <span data-i18n="wattpad_choose">Choose language</span>
+            </div>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-AR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇸🇦</span>
+              <span class="wattpad-lang">العربية</span>
+              <span class="wattpad-tag">AR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-EN-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇬🇧</span>
+              <span class="wattpad-lang">English</span>
+              <span class="wattpad-tag">EN</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-FR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇫🇷</span>
+              <span class="wattpad-lang">Français</span>
+              <span class="wattpad-tag">FR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-ES-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇪🇸</span>
+              <span class="wattpad-lang">Español</span>
+              <span class="wattpad-tag">ES</span>
+            </a>
+          </div>
+        </div>
+
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline request-btn">
+          <i class="fa-solid fa-envelope-open-text"></i>
+          <span data-i18n="request">Request Full Novel</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- =================== FRENCH =================== -->
+    <section class="lang-section" data-lang="fr">
+      <a href="../novels.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="back">Retour aux romans</span>
+      </a>
+
+      <div class="novel-header">
+        <div class="novel-cover">
+          <div class="novel-cover-fallback"><i class="fa-solid fa-book"></i></div>
+          <img src="../images/cover-1.jpg" alt="Couverture Batar Al-Lisan" onerror="this.remove()" />
+        </div>
+
+        <div class="novel-info">
+          <div class="novel-eyebrow">✦ Roman · Tome 1</div>
+          <h1 class="novel-title">Batar Al-Lisan</h1>
+          <div class="novel-author">
+            <i class="fa-solid fa-user-pen"></i>
+            <span>Saif El Islem Zahaf</span>
+          </div>
+          <div class="novel-status"><span class="dot"></span> Prêt à lire</div>
+          <div class="novel-meta">
+            <span><i class="fa-solid fa-tag"></i> Roman algérien</span>
+            <span><i class="fa-solid fa-list"></i> 45 Chapitres</span>
+            <span><i class="fa-solid fa-calendar"></i> 2025</span>
+          </div>
+          <p class="novel-synopsis">
+            <strong>Résumé</strong>
+            "Batar Al-Lisan" (Couper la langue) se déroule dans une Algérie en pleine renaissance, où l'ingénieur Yassin entreprend un voyage extraordinaire pour atteindre la souveraineté technologique et économique de son pays.
+          </p>
+        </div>
+      </div>
+
+      <article class="chapter">
+        <h2 class="chapter-title">
+          <i class="fa-solid fa-book-open"></i>
+          Chapitre Un
+        </h2>
+        <div class="chapter-content">
+          <p>L'horloge indiquait trois heures du matin, heure d'Oran. Dans le quartier "Yasmin", plus précisément dans un atelier étroit imprégné de l'odeur des huiles minérales mêlée à l'humidité de la "Bahia" venant de la mer, Yassin se tenait devant une imprimante 3D métal.</p>
+          <p>Pour Yassin, ce n'était pas simplement de la fabrication; c'était une "succession" scientifique brisant les chaînes de la dépendance. Il essuya la sueur de son front et contempla la pièce qui prenait lentement forme.</p>
+          <p>Yassin fit une pause, rappelant un principe juridique auquel il avait toujours cru: "La force n'est pas dans les armes seules, mais dans la perfection de la connaissance et de la capacité".</p>
+          <p>Soudain, son vieux téléphone vibra avec un message d'un ancien groupe Telegram auquel il appartenait avant son "repentir" et son passage à la méthodologie salafiste.</p>
+          <p>Yassin sourit amèrement, se rappelant comment il criait les mêmes slogans dans les rues de "Wajhat al-Bahr" pendant le Hirak de 2019.</p>
+          <p>À ce moment, une profonde haine pour la superstition qui diffame l'esprit au nom de la religion, et pour la violence pratiquée au nom de l'éducation, naquit dans le cœur de Yassin.</p>
+          <p>Yassin tint la pièce métallique solide et murmura pour lui-même: "C'est le chemin.. la connaissance est l'autorité, et la loi est la mesure."</p>
+        </div>
+      </article>
+
+      <div class="actions">
+        <div class="wattpad-wrap" data-wattpad>
+          <button type="button" class="btn btn-wattpad wattpad-toggle">
+            <i class="fa-brands fa-wattpad"></i>
+            <span data-i18n="wattpad">Lire sur Wattpad</span>
+            <i class="fa-solid fa-chevron-down wattpad-chevron"></i>
+          </button>
+          <div class="wattpad-menu">
+            <div class="wattpad-menu-head">
+              <i class="fa-brands fa-wattpad"></i>
+              <span data-i18n="wattpad_choose">Choisir la langue</span>
+            </div>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-AR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇸🇦</span>
+              <span class="wattpad-lang">العربية</span>
+              <span class="wattpad-tag">AR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-EN-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇬🇧</span>
+              <span class="wattpad-lang">English</span>
+              <span class="wattpad-tag">EN</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-FR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇫🇷</span>
+              <span class="wattpad-lang">Français</span>
+              <span class="wattpad-tag">FR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-ES-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇪🇸</span>
+              <span class="wattpad-lang">Español</span>
+              <span class="wattpad-tag">ES</span>
+            </a>
+          </div>
+        </div>
+
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline request-btn">
+          <i class="fa-solid fa-envelope-open-text"></i>
+          <span data-i18n="request">Demander le roman complet</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- =================== SPANISH =================== -->
+    <section class="lang-section" data-lang="es">
+      <a href="../novels.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="back">Volver a las novelas</span>
+      </a>
+
+      <div class="novel-header">
+        <div class="novel-cover">
+          <div class="novel-cover-fallback"><i class="fa-solid fa-book"></i></div>
+          <img src="../images/cover-1.jpg" alt="Portada de Batar Al-Lisan" onerror="this.remove()" />
+        </div>
+
+        <div class="novel-info">
+          <div class="novel-eyebrow">✦ Novela · Tomo 1</div>
+          <h1 class="novel-title">Batar Al-Lisan</h1>
+          <div class="novel-author">
+            <i class="fa-solid fa-user-pen"></i>
+            <span>Saif El Islem Zahaf</span>
+          </div>
+          <div class="novel-status"><span class="dot"></span> Lista para leer</div>
+          <div class="novel-meta">
+            <span><i class="fa-solid fa-tag"></i> Novela argelina</span>
+            <span><i class="fa-solid fa-list"></i> 45 Capítulos</span>
+            <span><i class="fa-solid fa-calendar"></i> 2025</span>
+          </div>
+          <p class="novel-synopsis">
+            <strong>Sinopsis</strong>
+            "Batar Al-Lisan" (Cortar la lengua) se desarrolla en una Argelia en pleno renacimiento, donde el ingeniero Yassin emprende un viaje extraordinario para lograr la soberanía tecnológica y económica de su patria.
+          </p>
+        </div>
+      </div>
+
+      <article class="chapter">
+        <h2 class="chapter-title">
+          <i class="fa-solid fa-book-open"></i>
+          Capítulo Uno
+        </h2>
+        <div class="chapter-content">
+          <p>El reloj marcaba las tres de la madrugada, hora de Orán. En el "barrio Yasmin", concretamente en un taller estrecho impregnado del olor a aceites minerales mezclado con la humedad de la "Bahía" que llegaba del mar, Yassin estaba de pie frente a una impresora 3D de metal.</p>
+          <p>Para Yassin, esto no era solo fabricación; era una "sucesión" científica que rompía las cadenas de la dependencia. Se secó el sudor de la frente y contempló la pieza que tomaba forma lentamente.</p>
+          <p>Yassin hizo una pausa, recordando un principio legal en el que siempre había creído: "La fuerza no está solo en las armas, sino en la perfección del conocimiento y la capacidad".</p>
+          <p>De repente, su viejo teléfono vibró con un mensaje de un antiguo grupo de Telegram al que pertenecía antes de su "arrepentimiento" y su transición a la metodología salafista.</p>
+          <p>Yassin sonrió con amargura, recordando cómo gritaba las mismas consignas en las calles de "Wajhat al-Bahr" durante el Hirak de 2019.</p>
+          <p>En ese momento, nació en el corazón de Yassin un odio profundo hacia la superstición que difama la mente en nombre de la religión, y hacia la violencia practicada en nombre de la educación.</p>
+          <p>Yassin sostuvo la pieza metálica sólida y murmuró para sí mismo: "Este es el camino... el conocimiento es la autoridad, y la ley es la medida."</p>
+        </div>
+      </article>
+
+      <div class="actions">
+        <div class="wattpad-wrap" data-wattpad>
+          <button type="button" class="btn btn-wattpad wattpad-toggle">
+            <i class="fa-brands fa-wattpad"></i>
+            <span data-i18n="wattpad">Leer en Wattpad</span>
+            <i class="fa-solid fa-chevron-down wattpad-chevron"></i>
+          </button>
+          <div class="wattpad-menu">
+            <div class="wattpad-menu-head">
+              <i class="fa-brands fa-wattpad"></i>
+              <span data-i18n="wattpad_choose">Elegir idioma</span>
+            </div>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-AR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇸🇦</span>
+              <span class="wattpad-lang">العربية</span>
+              <span class="wattpad-tag">AR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-EN-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇬🇧</span>
+              <span class="wattpad-lang">English</span>
+              <span class="wattpad-tag">EN</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-FR-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇫🇷</span>
+              <span class="wattpad-lang">Français</span>
+              <span class="wattpad-tag">FR</span>
+            </a>
+            <a href="https://www.wattpad.com/story/YOUR-WATTPAD-ES-ID" target="_blank" rel="noopener noreferrer" class="wattpad-option">
+              <span class="wattpad-flag">🇪🇸</span>
+              <span class="wattpad-lang">Español</span>
+              <span class="wattpad-tag">ES</span>
+            </a>
+          </div>
+        </div>
+
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline request-btn">
+          <i class="fa-solid fa-envelope-open-text"></i>
+          <span data-i18n="request">Solicitar la novela completa</span>
+        </a>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-text">
+      <span data-i18n="footer_made">صُنع بـ</span>
+      <span class="footer-heart">♥</span>
+      <span data-i18n="footer_by">بواسطة سيف الإسلام زحاف</span>
+      <span>·</span>
+      <span>Made in Algeria 🇩🇿</span>
     </div>
 
-    <!-- ============================================================
-    JAVASCRIPT
-    ============================================================ -->
-    <script>
-        (function() {
+    <nav class="footer-links">
+      <a href="../index.html" data-i18n="nav_home">الرئيسية</a>
+      <a href="../novels.html" data-i18n="nav_novels">الروايات</a>
+      <a href="../contact.html" data-i18n="nav_contact">التواصل</a>
+    </nav>
 
-            const langBtns = document.querySelectorAll('.lang-btn');
-            const langSections = {
-                ar: document.getElementById('lang-ar'),
-                en: document.getElementById('lang-en'),
-                fr: document.getElementById('lang-fr')
-            };
-            const themeBtn = document.getElementById('themeBtn');
-            const body = document.body;
+    <div class="footer-copy">
+      © <span id="year"></span> Saif El Islem Zahaf — SaivCORE
+    </div>
+  </div>
+</footer>
 
-            const t = {
-                ar: {
-                    home: 'الرئيسية',
-                    novels: 'الروايات',
-                    contact: 'التواصل',
-                    'footer-home': 'الرئيسية',
-                    'footer-novels': 'الروايات',
-                    'footer-contact': 'التواصل',
-                    'footer-made': 'صُنع بـ',
-                    'footer-by': 'بواسطة',
-                    back: 'العودة إلى قائمة الروايات',
-                    download: 'تحميل 5 فصول',
-                    request: 'طلب الرواية كاملة'
-                },
-                en: {
-                    home: 'Home',
-                    novels: 'Novels',
-                    contact: 'Contact',
-                    'footer-home': 'Home',
-                    'footer-novels': 'Novels',
-                    'footer-contact': 'Contact',
-                    'footer-made': 'Made with',
-                    'footer-by': 'by',
-                    back: 'Back to Novels List',
-                    download: 'Download 5 Chapters',
-                    request: 'Request Full Novel'
-                },
-                fr: {
-                    home: 'Accueil',
-                    novels: 'Romans',
-                    contact: 'Contact',
-                    'footer-home': 'Accueil',
-                    'footer-novels': 'Romans',
-                    'footer-contact': 'Contact',
-                    'footer-made': 'Fait avec',
-                    'footer-by': 'par',
-                    back: 'Retour à la liste des romans',
-                    download: 'Télécharger 5 chapitres',
-                    request: 'Demander le roman complet'
-                }
-            };
+<script>
+(function () {
+  'use strict';
 
-            function applyTranslation(lang) {
-                const data = t[lang];
-                if (!data) return;
-                document.querySelectorAll('[data-i18n]').forEach(el => {
-                    const key = el.getAttribute('data-i18n');
-                    if (data[key]) el.textContent = data[key];
-                });
-            }
+  /* =========================================================
+     TRANSLATIONS
+     ========================================================= */
+  const I18N = {
+    ar: {
+      dir: 'rtl', htmlLang: 'ar', font: "'Cairo', 'Inter', sans-serif",
+      labels: {
+        lang: 'AR',
+        brand: 'سيف الإسلام زحاف',
+        nav_home: 'الرئيسية',
+        nav_novels: 'الروايات',
+        nav_contact: 'التواصل',
+        back: 'العودة إلى الروايات',
+        wattpad: 'اقرأها على واتباد',
+        wattpad_choose: 'اختر اللغة',
+        request: 'طلب الرواية كاملة',
+        footer_made: 'صُنع بـ',
+        footer_by: 'بواسطة سيف الإسلام زحاف',
+      }
+    },
+    en: {
+      dir: 'ltr', htmlLang: 'en', font: "'Inter', sans-serif",
+      labels: {
+        lang: 'EN',
+        brand: 'Saif El Islem Zahaf',
+        nav_home: 'Home',
+        nav_novels: 'Novels',
+        nav_contact: 'Contact',
+        back: 'Back to Novels',
+        wattpad: 'Read on Wattpad',
+        wattpad_choose: 'Choose language',
+        request: 'Request Full Novel',
+        footer_made: 'Made with',
+        footer_by: 'by Saif El Islem Zahaf',
+      }
+    },
+    fr: {
+      dir: 'ltr', htmlLang: 'fr', font: "'Inter', sans-serif",
+      labels: {
+        lang: 'FR',
+        brand: 'Saif El Islem Zahaf',
+        nav_home: 'Accueil',
+        nav_novels: 'Romans',
+        nav_contact: 'Contact',
+        back: 'Retour aux romans',
+        wattpad: 'Lire sur Wattpad',
+        wattpad_choose: 'Choisir la langue',
+        request: 'Demander le roman complet',
+        footer_made: 'Fait avec',
+        footer_by: 'par Saif El Islem Zahaf',
+      }
+    },
+    es: {
+      dir: 'ltr', htmlLang: 'es', font: "'Inter', sans-serif",
+      labels: {
+        lang: 'ES',
+        brand: 'Saif El Islem Zahaf',
+        nav_home: 'Inicio',
+        nav_novels: 'Novelas',
+        nav_contact: 'Contacto',
+        back: 'Volver a las novelas',
+        wattpad: 'Leer en Wattpad',
+        wattpad_choose: 'Elegir idioma',
+        request: 'Solicitar la novela completa',
+        footer_made: 'Hecho con',
+        footer_by: 'por Saif El Islem Zahaf',
+      }
+    },
+  };
 
-            function switchLanguage(lang) {
-                langBtns.forEach(btn => btn.classList.remove('active'));
-                langBtns.forEach(btn => {
-                    if (btn.dataset.lang === lang) btn.classList.add('active');
-                });
-                Object.keys(langSections).forEach(key => {
-                    langSections[key].classList.toggle('active', key === lang);
-                });
-                applyTranslation(lang);
-                localStorage.setItem('lang', lang);
-            }
+  /* =========================================================
+     STATE
+     ========================================================= */
+  const LANG_KEY = 'saivcore-lang';
+  const THEME_KEY = 'saivcore-theme';
 
-            langBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    switchLanguage(this.dataset.lang);
-                });
-            });
+  let currentLang  = localStorage.getItem(LANG_KEY)  || 'ar';
+  let currentTheme = localStorage.getItem(THEME_KEY) || 'light';
 
-            const savedLang = localStorage.getItem('lang');
-            if (savedLang && langSections[savedLang]) {
-                switchLanguage(savedLang);
-            } else {
-                applyTranslation('ar');
-            }
+  if (!I18N[currentLang]) currentLang = 'ar';
 
-            function toggleTheme() {
-                body.classList.toggle('dark');
-                const isDark = body.classList.contains('dark');
-                themeBtn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-                localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            }
+  const htmlEl        = document.documentElement;
+  const body          = document.body;
+  const navbar        = document.getElementById('navbar');
+  const themeBtn      = document.getElementById('themeBtn');
+  const themeIcon     = document.getElementById('themeIcon');
+  const langWrap      = document.getElementById('langWrap');
+  const langBtn       = document.getElementById('langBtn');
+  const langLabel     = document.getElementById('langLabel');
+  const menuToggle    = document.getElementById('menuToggle');
+  const drawer        = document.getElementById('drawer');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const drawerClose   = document.getElementById('drawerClose');
 
-            themeBtn.addEventListener('click', toggleTheme);
+  /* =========================================================
+     LANGUAGE
+     ========================================================= */
+  function applyLanguage(lang) {
+    const dict = I18N[lang];
+    if (!dict) return;
 
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                body.classList.add('dark');
-                themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
-            }
+    currentLang = lang;
+    localStorage.setItem(LANG_KEY, lang);
 
-            if (!localStorage.getItem('theme')) {
-                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    body.classList.add('dark');
-                    themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
-                }
-            }
+    htmlEl.setAttribute('lang', dict.htmlLang);
+    htmlEl.setAttribute('dir', dict.dir);
+    body.style.fontFamily = dict.font;
 
-        })();
-    </script>
+    document.querySelectorAll('[data-i18n]').forEach(function (node) {
+      const key = node.getAttribute('data-i18n');
+      const val = dict.labels[key];
+      if (val != null) node.textContent = val;
+    });
+
+    if (langLabel) langLabel.textContent = dict.labels.lang;
+    document.querySelectorAll('.lang-option').forEach(function (opt) {
+      opt.classList.toggle('active', opt.getAttribute('data-lang') === lang);
+    });
+
+    document.querySelectorAll('.lang-section').forEach(function (sec) {
+      sec.classList.toggle('active', sec.getAttribute('data-lang') === lang);
+    });
+
+    if (lang === 'ar')      document.title = 'بتر اللسان | سيف الإسلام زحاف';
+    else if (lang === 'fr') document.title = 'Batar Al-Lisan | Saif El Islem Zahaf';
+    else if (lang === 'es') document.title = 'Batar Al-Lisan | Saif El Islem Zahaf';
+    else                    document.title = 'Batar Al-Lisan | Saif El Islem Zahaf';
+
+    langWrap.classList.remove('open');
+  }
+
+  /* =========================================================
+     THEME
+     ========================================================= */
+  function applyTheme(theme) {
+    currentTheme = theme;
+    localStorage.setItem(THEME_KEY, theme);
+
+    if (theme === 'dark') {
+      htmlEl.classList.add('dark');
+      if (themeIcon) themeIcon.className = 'fa-solid fa-sun';
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', '#0a0a0a');
+    } else {
+      htmlEl.classList.remove('dark');
+      if (themeIcon) themeIcon.className = 'fa-solid fa-moon';
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', '#ffffff');
+    }
+  }
+
+  /* =========================================================
+     EVENTS
+     ========================================================= */
+  themeBtn.addEventListener('click', function () {
+    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+  });
+
+  langBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    langWrap.classList.toggle('open');
+  });
+
+  document.querySelectorAll('.lang-option').forEach(function (opt) {
+    opt.addEventListener('click', function () {
+      applyLanguage(opt.getAttribute('data-lang'));
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!langWrap.contains(e.target)) langWrap.classList.remove('open');
+  });
+
+  /* =========================================================
+     WATTPAD DROPDOWN
+     ========================================================= */
+  document.querySelectorAll('[data-wattpad]').forEach(function (wrap) {
+    const toggle = wrap.querySelector('.wattpad-toggle');
+
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      document.querySelectorAll('[data-wattpad].open').forEach(function (other) {
+        if (other !== wrap) other.classList.remove('open');
+      });
+      wrap.classList.toggle('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('[data-wattpad].open').forEach(function (wrap) {
+      if (!wrap.contains(e.target)) wrap.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('[data-wattpad].open').forEach(function (wrap) {
+        wrap.classList.remove('open');
+      });
+    }
+  });
+
+  /* =========================================================
+     MOBILE DRAWER
+     ========================================================= */
+  function openDrawer() {
+    drawer.classList.add('open');
+    drawerOverlay.classList.add('open');
+    body.classList.add('no-scroll');
+  }
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    drawerOverlay.classList.remove('open');
+    body.classList.remove('no-scroll');
+  }
+
+  menuToggle.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  drawerOverlay.addEventListener('click', closeDrawer);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      closeDrawer();
+      langWrap.classList.remove('open');
+    }
+  });
+
+  /* =========================================================
+     NAVBAR SCROLL
+     ========================================================= */
+  function onScroll() {
+    navbar.classList.toggle('scrolled', window.scrollY > 10);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* =========================================================
+     YEAR
+     ========================================================= */
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+
+  /* =========================================================
+     BOOT
+     ========================================================= */
+  applyTheme(currentTheme);
+  applyLanguage(currentLang);
+
+})();
+</script>
 
 </body>
 </html>
