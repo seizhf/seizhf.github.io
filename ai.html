@@ -1582,7 +1582,7 @@ pre code.hljs { padding: 0 !important; }
         <i class="fa-solid fa-microchip"></i>
         <strong style="color:var(--text-2)">Model:</strong>
         <code>gemini-3.8-flash</code>
-        <span style="display:block;margin-top:6px;font-size:11.5px;color:var(--muted-2)">Ultra-fast · Live streaming · Unlimited length</span>
+        <span style="display:block;margin-top:6px;font-size:11.5px;color:var(--muted-2)">Ultra-fast · Live streaming · Auto-retry on busy</span>
       </div>
 
       <div style="margin-top:18px">
@@ -1717,10 +1717,19 @@ pre code.hljs { padding: 0 !important; }
      ============================================================ */
   const STORAGE_KEY = 'saivai.gemini.v2';
   const API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/';
-  // The user requested "Gemini 3.8 Flash". We use the real model ID behind the scenes.
-  // gemini-flash-latest always points to the newest Flash model available.
+  // Single model — "Gemini 3.8 Flash". Behind the scenes we use the
+  // latest Flash endpoint. If Google is temporarily overloaded, we retry
+  // the SAME model with exponential backoff (no model switching).
   const MODEL_ID = 'gemini-flash-latest';
   const MODEL_DISPLAY = 'Gemini 3.8 Flash';
+
+  // Retry policy
+  const MAX_ATTEMPTS = 6;              // total tries
+  const BASE_DELAY_MS = 700;           // first backoff delay
+  const MAX_DELAY_MS = 6000;           // cap
+  const PER_ATTEMPT_TIMEOUT_MS = 120000; // 2 min per attempt
+
+  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
   /* ============================================================
      I18N
@@ -1779,6 +1788,7 @@ pre code.hljs { padding: 0 !important; }
         'msg.you': 'You',
         'msg.thinking': 'thinking…',
         'msg.streaming': 'streaming…',
+        'msg.retrying': 'retrying…',
         'msg.copy': 'Copy',
         'msg.copied': 'Copied',
         'empty.disc': 'No discussions yet.<br>Click <strong>New discussion</strong>.',
@@ -1795,6 +1805,7 @@ pre code.hljs { padding: 0 !important; }
         'toast.nothingToClear': 'Nothing to clear',
         'toast.keyTooShort': 'This key looks too short',
         'toast.noKeyToRemove': 'No key to remove',
+        'toast.retrying': 'Servers busy — retrying…',
         'error.noKey': 'No API key. Open Settings to add your Gemini key.',
         'error.keyInvalid': 'API key rejected. Update it in Settings.',
         'error.rate': 'Rate limit reached. Wait a few seconds.',
@@ -1878,6 +1889,7 @@ pre code.hljs { padding: 0 !important; }
         'msg.you': 'أنت',
         'msg.thinking': 'يفكر…',
         'msg.streaming': 'بث مباشر…',
+        'msg.retrying': 'إعادة المحاولة…',
         'msg.copy': 'نسخ',
         'msg.copied': 'تم النسخ',
         'empty.disc': 'لا توجد محادثات بعد.<br>اضغط <strong>محادثة جديدة</strong>.',
@@ -1894,6 +1906,7 @@ pre code.hljs { padding: 0 !important; }
         'toast.nothingToClear': 'لا يوجد شيء لمسحه',
         'toast.keyTooShort': 'المفتاح قصير جداً',
         'toast.noKeyToRemove': 'لا يوجد مفتاح لإزالته',
+        'toast.retrying': 'الخوادم مشغولة — جاري إعادة المحاولة…',
         'error.noKey': 'لا يوجد مفتاح API. افتح الإعدادات لإضافة مفتاح Gemini.',
         'error.keyInvalid': 'المفتاح مرفوض. حدّثه من الإعدادات.',
         'error.rate': 'تم الوصول لحد المعدل. انتظر بضع ثوانٍ.',
@@ -1976,6 +1989,7 @@ pre code.hljs { padding: 0 !important; }
         'msg.you': 'Vous',
         'msg.thinking': 'réfléchit…',
         'msg.streaming': 'streaming…',
+        'msg.retrying': 'nouvelle tentative…',
         'msg.copy': 'Copier',
         'msg.copied': 'Copié',
         'empty.disc': 'Aucune discussion.<br>Cliquez sur <strong>Nouvelle discussion</strong>.',
@@ -1992,6 +2006,7 @@ pre code.hljs { padding: 0 !important; }
         'toast.nothingToClear': 'Rien à effacer',
         'toast.keyTooShort': 'Cette clé est trop courte',
         'toast.noKeyToRemove': 'Aucune clé à retirer',
+        'toast.retrying': 'Serveurs occupés — nouvelle tentative…',
         'error.noKey': 'Pas de clé API. Ouvrez les paramètres pour ajouter votre clé Gemini.',
         'error.keyInvalid': 'Clé rejetée. Mettez-la à jour dans les paramètres.',
         'error.rate': 'Limite atteinte. Attendez quelques secondes.',
@@ -2655,14 +2670,13 @@ pre code.hljs { padding: 0 !important; }
   }
 
   /* ============================================================
-     GEMINI STREAMING API
+     GEMINI STREAMING API (with retry on same model)
      ============================================================ */
   function buildContents(messages, systemPrompt) {
     const contents = [];
     messages.forEach(function (m, i) {
       const role = m.role === 'assistant' ? 'model' : 'user';
       let text = m.content;
-      // Prepend system prompt to first user message (more reliable than systemInstruction)
       if (i === 0 && role === 'user') {
         text = systemPrompt + '\n\n---\n\n' + text;
       }
@@ -2671,14 +2685,31 @@ pre code.hljs { padding: 0 !important; }
     return contents;
   }
 
-  async function streamGemini(section, messages) {
+  /* Single fetch attempt. Returns { ok, res, apiMsg, status }. */
+  async function fetchOnce(body, signal) {
+    const url = API_BASE + MODEL_ID + ':streamGenerateContent?alt=sse';
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': state.apiKey,
+      },
+      body: JSON.stringify(body),
+      signal: signal,
+    });
+    return res;
+  }
+
+  /* Stream from Gemini with automatic retry on the SAME model.
+     Retries on: 429 (rate limit), 500/502/503/504 (server busy), network errors.
+     Gives up immediately on: 400 (bad request), 401/403 (bad key).
+     onRetry(attempt, maxAttempts, waitMs) is called before each retry. */
+  async function streamGemini(section, messages, onRetry) {
     if (!state.apiKey) throw new Error(t('error.noKey'));
 
     const systemPrompt = section === 'code' ? SYSTEM_CODE : SYSTEM_CHAT;
     const contents = buildContents(messages, systemPrompt);
     if (!contents.length) throw new Error(t('error.empty'));
-
-    const url = API_BASE + MODEL_ID + ':streamGenerateContent?alt=sse';
 
     const body = {
       contents: contents,
@@ -2686,45 +2717,82 @@ pre code.hljs { padding: 0 !important; }
         temperature: section === 'code' ? 0.4 : 0.75,
         topP: 0.95,
         topK: 40,
-        // NO maxOutputTokens — let the model decide when to stop
       },
     };
 
-    const controller = new AbortController();
-    const timer = setTimeout(function () { controller.abort(); }, 600000); // 10 min
+    let lastErr = null;
+    let lastStatus = 0;
 
-    let res;
-    try {
-      res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': state.apiKey,
-        },
-        body: JSON.stringify(body),
-        signal: controller.signal,
-      });
-    } catch (err) {
-      clearTimeout(timer);
-      if (err.name === 'AbortError') throw new Error(t('error.timeout'));
-      throw new Error(t('error.network') + ' ' + (err.message || ''));
-    }
-    clearTimeout(timer);
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      const controller = new AbortController();
+      const killTimer = setTimeout(function () { controller.abort(); }, PER_ATTEMPT_TIMEOUT_MS);
 
-    if (!res.ok) {
+      let res = null;
+      let networkError = null;
+
+      try {
+        res = await fetchOnce(body, controller.signal);
+      } catch (err) {
+        networkError = err;
+      } finally {
+        clearTimeout(killTimer);
+      }
+
+      // ---- Network failure → retry ----
+      if (!res) {
+        if (networkError && networkError.name === 'AbortError') {
+          lastErr = new Error(t('error.timeout'));
+        } else {
+          lastErr = new Error(t('error.network'));
+        }
+        lastStatus = 0;
+        if (attempt < MAX_ATTEMPTS) {
+          const wait = Math.min(MAX_DELAY_MS, BASE_DELAY_MS * Math.pow(1.7, attempt - 1) + Math.random() * 500);
+          if (onRetry) onRetry(attempt + 1, MAX_ATTEMPTS, wait);
+          await sleep(wait);
+          continue;
+        }
+        throw lastErr;
+      }
+
+      // ---- Success ----
+      if (res.ok) {
+        if (attempt > 1) {
+          console.info('[SaivAI] succeeded on attempt', attempt, '/', MAX_ATTEMPTS);
+        }
+        return res;
+      }
+
+      // ---- HTTP error → read message ----
       let apiMsg = '';
       try {
         const e = await res.json();
         if (e && e.error && e.error.message) apiMsg = e.error.message;
       } catch (e) {}
+
+      lastStatus = res.status;
+
+      // Fatal: bad request / bad key → no point in retrying
       if (res.status === 400) throw new Error(apiMsg || t('error.generic'));
       if (res.status === 401 || res.status === 403) throw new Error(apiMsg || t('error.keyInvalid'));
-      if (res.status === 429) throw new Error(apiMsg || t('error.rate'));
-      if (res.status >= 500) throw new Error(apiMsg || t('error.busy'));
+
+      // Retryable: 429 rate-limit, 5xx server errors
+      if (res.status === 429 || (res.status >= 500 && res.status < 600)) {
+        lastErr = new Error(apiMsg || (res.status === 429 ? t('error.rate') : t('error.busy')));
+        if (attempt < MAX_ATTEMPTS) {
+          const wait = Math.min(MAX_DELAY_MS, BASE_DELAY_MS * Math.pow(1.7, attempt - 1) + Math.random() * 500);
+          if (onRetry) onRetry(attempt + 1, MAX_ATTEMPTS, wait);
+          await sleep(wait);
+          continue;
+        }
+        throw lastErr;
+      }
+
+      // Other status → don't retry
       throw new Error(apiMsg || (t('error.generic') + ' HTTP ' + res.status));
     }
 
-    return res;
+    throw lastErr || new Error(t('error.busy'));
   }
 
   /* ============================================================
@@ -2777,9 +2845,13 @@ pre code.hljs { padding: 0 !important; }
 
     const meta = document.createElement('div');
     meta.className = 'msg-meta';
-    meta.innerHTML =
-      '<span class="msg-name">' + (section === 'code' ? 'SaivCODE' : 'SaivCHAT') + '</span>' +
-      '<span>' + t('msg.streaming') + '</span>';
+    const metaName = document.createElement('span');
+    metaName.className = 'msg-name';
+    metaName.textContent = section === 'code' ? 'SaivCODE' : 'SaivCHAT';
+    const metaStatus = document.createElement('span');
+    metaStatus.textContent = t('msg.streaming');
+    meta.appendChild(metaName);
+    meta.appendChild(metaStatus);
 
     const bubble = document.createElement('div');
     bubble.className = 'msg-bubble';
@@ -2804,7 +2876,6 @@ pre code.hljs { padding: 0 !important; }
       if (lastRenderedText === fullText) return;
       lastRenderedText = fullText;
       streamContent.innerHTML = renderMarkdown(fullText) + '<span class="streaming-cursor"></span>';
-      // Auto-scroll if user is near bottom
       const sc = cfg.scroll;
       const nearBottom = sc.scrollHeight - sc.scrollTop - sc.clientHeight < 180;
       if (nearBottom) {
@@ -2820,17 +2891,31 @@ pre code.hljs { padding: 0 !important; }
       requestAnimationFrame(flushRender);
     }
 
+    // Callback fired before each retry — updates the UI so user knows it's working
+    function onRetry(nextAttempt, maxAttempts, waitMs) {
+      const waitSec = Math.max(1, Math.round(waitMs / 1000));
+      metaStatus.textContent = t('msg.retrying') + ' (' + (nextAttempt - 1) + '/' + (maxAttempts - 1) + ') · ' + waitSec + 's';
+      if (nextAttempt === 2) {
+        // First retry only: notify via toast
+        showToast(t('toast.retrying'), 'info');
+      }
+      console.info('[SaivAI] retry', nextAttempt - 1, '/', maxAttempts - 1, 'in', waitMs, 'ms');
+    }
+
     try {
       const history = d.messages.slice(-20).map(function (m) {
         return { role: m.role, content: m.content };
       });
 
-      const res = await streamGemini(section, history);
+      const res = await streamGemini(section, history, onRetry);
+
+      // Back to normal status
+      metaStatus.textContent = t('msg.streaming');
+
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
 
-      // Read SSE chunks
       while (true) {
         const readRes = await reader.read();
         if (readRes.done) break;
@@ -2866,10 +2951,8 @@ pre code.hljs { padding: 0 !important; }
         }
       }
 
-      // Final flush
       flushRender();
 
-      // Remove cursor at end
       const streamEl = document.getElementById('stream-' + section);
       if (streamEl) streamEl.remove();
 
@@ -3114,14 +3197,12 @@ pre code.hljs { padding: 0 !important; }
     const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
     const mod = isMac ? e.metaKey : e.ctrlKey;
 
-    // Ctrl/Cmd + K → focus input
     if (mod && e.key.toLowerCase() === 'k') {
       e.preventDefault();
       const s = state.section;
       if (CHAT[s]) CHAT[s].input.focus();
     }
 
-    // Ctrl/Cmd + Shift + N → new discussion
     if (mod && e.shiftKey && e.key.toLowerCase() === 'n') {
       e.preventDefault();
       handleNew();
@@ -3149,7 +3230,6 @@ pre code.hljs { padding: 0 !important; }
     updateSend('chat');
     updateSend('code');
 
-    // If no API key, open guide modal
     if (!state.apiKey) {
       setTimeout(function () { openModal('modalGuide'); }, 700);
     }
@@ -3161,7 +3241,6 @@ pre code.hljs { padding: 0 !important; }
     boot();
   }
 
-  // Expose public API
   window.SaivAI = {
     state: state,
     switchSection: switchSection,
