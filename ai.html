@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#ffffff" />
-<title>SaivAI — Chat · Code · Image Studio</title>
+<meta name="theme-color" content="#0a0a0a" />
+<title>SaivAI — DeepSeek Studio</title>
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23111'/%3E%3Ctext x='50' y='68' font-size='46' text-anchor='middle' fill='white' font-family='Arial' font-weight='600'%3ESA%3C/text%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0a0a'/%3E%3Ctext x='50' y='68' font-size='46' text-anchor='middle' fill='%2322d3ee' font-family='Arial' font-weight='700'%3EDS%3C/text%3E%3C/svg%3E" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,1077 +15,451 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://js.puter.com/v2/"></script>
 
 <style>
-/* ============================================================
-   DESIGN SYSTEM — Minimalist · Clean · Light/Dark
-   ============================================================ */
 :root {
-  --bg: #ffffff;
-  --bg-soft: #fafafa;
-  --surface: #ffffff;
-  --border: #e5e5e5;
-  --border-strong: #d4d4d4;
-  --text: #111111;
-  --text-2: #404040;
-  --muted: #737373;
-  --muted-2: #a3a3a3;
-  --accent: #111111;
-  --accent-hover: #333333;
-  --success: #16a34a;
-  --warning: #d97706;
-  --error: #dc2626;
-  --error-soft: rgba(220, 38, 38, 0.06);
-  --code-bg: #fafafa;
-  --radius: 10px;
-  --sidebar-w: 280px;
+  --bg: #0a0a0a; --bg-soft: #0f0f0f; --surface: #141414; --surface-2: #1a1a1a;
+  --surface-3: #202020; --border: #262626; --border-strong: #333;
+  --text: #fafafa; --text-2: #d4d4d4; --muted: #a3a3a3; --muted-2: #666;
+  --accent: #fafafa; --accent-hover: #e5e5e5;
+  --success: #22c55e; --warning: #f59e0b; --error: #ef4444;
+  --error-soft: rgba(239,68,68,.08); --code-bg: #0f0f0f;
+  --radius: 10px; --sidebar-w: 280px;
 }
-
-html.dark {
-  --bg: #0a0a0a;
-  --bg-soft: #0f0f0f;
-  --surface: #141414;
-  --border: #262626;
-  --border-strong: #333333;
-  --text: #fafafa;
-  --text-2: #d4d4d4;
-  --muted: #a3a3a3;
-  --muted-2: #666666;
-  --accent: #fafafa;
-  --accent-hover: #e5e5e5;
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --error: #ef4444;
-  --error-soft: rgba(239, 68, 68, 0.08);
-  --code-bg: #0f0f0f;
+html.light {
+  --bg: #ffffff; --bg-soft: #fafafa; --surface: #ffffff; --surface-2: #f5f5f5;
+  --surface-3: #ececec; --border: #e5e5e5; --border-strong: #d4d4d4;
+  --text: #111; --text-2: #404040; --muted: #737373; --muted-2: #a3a3a3;
+  --accent: #111; --accent-hover: #333;
+  --success: #16a34a; --warning: #d97706; --error: #dc2626;
+  --error-soft: rgba(220,38,38,.06); --code-bg: #fafafa;
 }
-
 * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
 html, body { height: 100%; margin: 0; padding: 0; }
-
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', 'Cairo', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
-  overflow: hidden;
+  background: var(--bg); color: var(--text);
+  font-family: 'Inter', 'Cairo', system-ui, sans-serif;
+  font-size: 15px; line-height: 1.6; overflow: hidden;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   transition: background-color .25s ease, color .25s ease;
 }
 html[dir="rtl"] body { font-family: 'Cairo', 'Inter', sans-serif; }
-
 button, input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
 button { cursor: pointer; border: none; background: none; }
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
-
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted-2); }
 ::selection { background: var(--text); color: var(--bg); }
-
 .hidden { display: none !important; }
 
-/* ==================== APP ==================== */
 .app { display: flex; height: 100vh; height: 100dvh; width: 100vw; overflow: hidden; }
-
-.backdrop {
-  display: none; position: fixed; inset: 0;
-  background: rgba(0, 0, 0, .4);
-  z-index: 40; opacity: 0;
-  transition: opacity .2s ease;
-  pointer-events: none;
-}
+.backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 40; opacity: 0; transition: opacity .2s ease; pointer-events: none; }
 .backdrop.show { display: block; opacity: 1; pointer-events: auto; }
 
-/* ==================== SIDEBAR ==================== */
+/* SIDEBAR */
 .sidebar {
-  width: var(--sidebar-w);
-  flex: none;
-  background: var(--bg-soft);
-  border-inline-end: 1px solid var(--border);
-  display: flex; flex-direction: column;
-  overflow: hidden; z-index: 50;
+  width: var(--sidebar-w); flex: none; background: var(--bg-soft);
+  border-inline-end: 1px solid var(--border); display: flex;
+  flex-direction: column; overflow: hidden; z-index: 50;
   transition: transform .25s ease;
 }
-
 .sidebar-head {
-  padding: 18px 16px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center;
-  justify-content: space-between;
+  padding: 18px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
   gap: 10px; flex: none;
 }
-
 .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .brand-mark {
-  width: 32px; height: 32px;
-  border-radius: 8px;
-  background: var(--text);
-  color: var(--bg);
-  display: grid; place-items: center;
-  font-size: 12px; font-weight: 700;
-  letter-spacing: .02em; flex: none;
+  width: 32px; height: 32px; border-radius: 8px;
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  color: #0a0a0a; display: grid; place-items: center;
+  font-size: 13px; font-weight: 800; flex: none;
 }
 .brand-text { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
-.brand-name { font-size: 14px; font-weight: 600; letter-spacing: -.005em; }
-.brand-sub {
-  font-size: 9.5px; color: var(--muted);
-  font-weight: 500; letter-spacing: .06em;
-  text-transform: uppercase; margin-top: 2px;
-}
-
-.close-mobile {
-  display: none;
-  width: 30px; height: 30px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--muted);
-  align-items: center; justify-content: center;
-  font-size: 14px;
-  transition: all .15s;
-}
+.brand-name { font-size: 14px; font-weight: 700; }
+.brand-sub { font-size: 9.5px; color: var(--muted); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; margin-top: 2px; }
+.close-mobile { display: none; width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--muted); align-items: center; justify-content: center; font-size: 14px; transition: all .15s; }
 .close-mobile:hover { color: var(--text); border-color: var(--border-strong); }
 
-/* Sections */
-.sections {
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--border);
-  display: flex; flex-direction: column;
-  gap: 2px; flex: none;
-}
+.sections { padding: 8px 10px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 2px; flex: none; }
 .section-tab {
-  display: flex; align-items: center; gap: 11px;
-  padding: 9px 11px;
-  border-radius: 8px;
-  font-size: 13.5px;
-  font-weight: 500;
-  color: var(--muted);
-  transition: all .15s;
-  width: 100%; text-align: start;
-  border: 1px solid transparent;
+  display: flex; align-items: center; gap: 11px; padding: 9px 11px;
+  border-radius: 8px; font-size: 13.5px; font-weight: 500;
+  color: var(--muted); transition: all .15s; width: 100%;
+  text-align: start; border: 1px solid transparent;
 }
 .section-tab:hover { color: var(--text); background: var(--bg); }
-.section-tab.active {
-  background: var(--bg);
-  border-color: var(--border);
-  color: var(--text);
-  font-weight: 600;
-}
+.section-tab.active { background: var(--bg); border-color: var(--border); color: var(--text); font-weight: 600; }
 .section-tab .ico {
-  width: 26px; height: 26px;
-  border-radius: 7px;
-  display: grid; place-items: center;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  font-size: 12px; flex: none;
-  color: var(--text-2);
+  width: 26px; height: 26px; border-radius: 7px;
+  display: grid; place-items: center; background: var(--bg);
+  border: 1px solid var(--border); font-size: 12px;
+  flex: none; color: var(--text-2);
 }
-.section-tab.active .ico {
-  background: var(--text);
-  color: var(--bg);
-  border-color: var(--text);
-}
+.section-tab.active .ico { background: linear-gradient(135deg, #22d3ee, #a855f7); color: #0a0a0a; border-color: transparent; }
 .section-tab .badge {
-  margin-inline-start: auto;
-  font-size: 9px; font-weight: 600;
-  padding: 2px 6px; border-radius: 4px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--muted);
-  letter-spacing: .04em;
+  margin-inline-start: auto; font-size: 9px; font-weight: 700;
+  padding: 2px 6px; border-radius: 4px; background: var(--bg);
+  border: 1px solid var(--border); color: #22d3ee; letter-spacing: .04em;
 }
 
-/* Discussions */
-.disc-wrap {
-  flex: 1; min-height: 0;
-  display: flex; flex-direction: column;
-  overflow: hidden;
-}
+.disc-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
 .new-disc-btn {
-  margin: 12px 10px 6px;
-  padding: 9px 12px;
-  border-radius: 8px;
-  background: var(--text);
-  color: var(--bg);
-  font-size: 12.5px;
-  font-weight: 600;
-  display: flex; align-items: center; justify-content: center;
-  gap: 8px; transition: all .15s; flex: none;
+  margin: 12px 10px 6px; padding: 9px 12px; border-radius: 8px;
+  background: linear-gradient(135deg, #22d3ee, #a855f7); color: #0a0a0a;
+  font-size: 12.5px; font-weight: 700; display: flex;
+  align-items: center; justify-content: center; gap: 8px;
+  transition: all .15s; flex: none;
 }
-.new-disc-btn:hover { background: var(--accent-hover); }
+.new-disc-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px -8px rgba(34,211,238,.5); }
 .new-disc-btn i { font-size: 11px; }
-
 .disc-label {
-  font-size: 10.5px; font-weight: 600;
-  color: var(--muted-2);
-  text-transform: uppercase;
-  letter-spacing: .08em;
+  font-size: 10.5px; font-weight: 600; color: var(--muted-2);
+  text-transform: uppercase; letter-spacing: .08em;
   padding: 6px 18px 8px; flex: none;
 }
 .disc-list { flex: 1; min-height: 0; overflow-y: auto; padding: 0 8px 12px; }
 .disc-item {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 10px;
-  border-radius: 8px;
-  cursor: pointer; transition: background .12s;
-  position: relative;
-  border: 1px solid transparent;
-  margin-bottom: 2px;
+  display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+  border-radius: 8px; cursor: pointer; transition: background .12s;
+  position: relative; border: 1px solid transparent; margin-bottom: 2px;
 }
 .disc-item:hover { background: var(--bg); }
 .disc-item.active { background: var(--bg); border-color: var(--border); }
 .disc-item .disc-ico {
-  width: 22px; height: 22px;
-  border-radius: 6px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--muted);
-  display: grid; place-items: center;
-  font-size: 10px; flex: none;
+  width: 22px; height: 22px; border-radius: 6px; background: var(--bg);
+  border: 1px solid var(--border); color: var(--muted);
+  display: grid; place-items: center; font-size: 10px; flex: none;
 }
-.disc-item.active .disc-ico {
-  background: var(--text);
-  color: var(--bg);
-  border-color: var(--text);
-}
+.disc-item.active .disc-ico { background: linear-gradient(135deg, #22d3ee, #a855f7); color: #0a0a0a; border-color: transparent; }
 .disc-title {
-  flex: 1; min-width: 0;
-  font-size: 12.5px; font-weight: 500;
-  color: var(--muted);
-  white-space: nowrap; overflow: hidden;
+  flex: 1; min-width: 0; font-size: 12.5px; font-weight: 500;
+  color: var(--muted); white-space: nowrap; overflow: hidden;
   text-overflow: ellipsis; line-height: 1.4;
 }
 .disc-item.active .disc-title { color: var(--text); font-weight: 600; }
 .disc-del {
-  width: 22px; height: 22px;
-  border-radius: 5px;
-  color: var(--muted);
-  display: grid; place-items: center;
-  font-size: 10px; flex: none;
+  width: 22px; height: 22px; border-radius: 5px; color: var(--muted);
+  display: grid; place-items: center; font-size: 10px; flex: none;
   opacity: 0; transition: all .12s;
 }
 .disc-item:hover .disc-del { opacity: 1; }
 .disc-del:hover { color: var(--error); background: var(--error-soft); }
-
-.disc-empty {
-  padding: 24px 16px; text-align: center;
-  font-size: 12px; color: var(--muted-2);
-  line-height: 1.6;
-}
+.disc-empty { padding: 24px 16px; text-align: center; font-size: 12px; color: var(--muted-2); line-height: 1.6; }
 .disc-empty i { display: block; font-size: 22px; margin-bottom: 10px; opacity: .4; }
 
-/* Sidebar footer */
 .sidebar-foot {
-  flex: none; padding: 12px;
-  border-top: 1px solid var(--border);
+  flex: none; padding: 12px; border-top: 1px solid var(--border);
   display: flex; flex-direction: column; gap: 8px;
 }
+.free-badge {
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; padding: 8px 12px; border-radius: 8px;
+  background: linear-gradient(135deg, rgba(34,211,238,.12), rgba(168,85,247,.12));
+  border: 1px solid rgba(34,211,238,.3);
+  font-size: 11px; font-weight: 700; color: #22d3ee;
+}
+.free-badge i { font-size: 10px; }
 .settings-btn {
   padding: 9px 12px; border-radius: 8px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-2);
-  font-size: 12.5px; font-weight: 500;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text-2); font-size: 12.5px; font-weight: 500;
   display: flex; align-items: center; gap: 9px;
   transition: all .15s; width: 100%;
 }
 .settings-btn:hover { border-color: var(--border-strong); color: var(--text); background: var(--bg); }
 .settings-btn i { font-size: 12px; color: var(--muted); }
 .settings-btn:hover i { color: var(--text); }
-
-.key-status {
-  display: flex; align-items: center;
-  gap: 6px; padding: 5px 10px;
-  border-radius: 999px;
-  font-size: 10.5px; font-weight: 600;
-  justify-content: center;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--muted);
-}
-.key-status.ok { color: var(--success); border-color: rgba(22,163,74,.25); }
-.key-status.warn { color: var(--warning); border-color: rgba(217,119,6,.25); }
-.key-status i { font-size: 8px; }
-
-.credit {
-  font-size: 10px; color: var(--muted-2);
-  text-align: center; line-height: 1.5;
-  padding: 0 4px;
-}
+.credit { font-size: 10px; color: var(--muted-2); text-align: center; line-height: 1.5; padding: 0 4px; }
 .credit .heart { color: #dc2626; }
 .credit strong { color: var(--muted); font-weight: 600; }
 
-/* ==================== MAIN ==================== */
-.main {
-  flex: 1; min-width: 0;
-  display: flex; flex-direction: column;
-  background: var(--bg); overflow: hidden;
-}
-
+/* MAIN */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--bg); overflow: hidden; }
 .mobile-header {
-  display: none; flex: none;
-  align-items: center; justify-content: space-between;
-  gap: 10px; padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-soft);
-  min-height: 56px;
+  display: none; flex: none; align-items: center;
+  justify-content: space-between; gap: 10px; padding: 12px 16px;
+  border-bottom: 1px solid var(--border); background: var(--bg-soft); min-height: 56px;
 }
 .hamburger, .new-mobile {
-  width: 34px; height: 34px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-2);
-  display: grid; place-items: center;
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text-2); display: grid; place-items: center;
   font-size: 13px; transition: all .15s;
 }
 .hamburger:hover, .new-mobile:hover { border-color: var(--border-strong); color: var(--text); }
-.new-mobile { background: var(--text); color: var(--bg); border-color: var(--text); }
-.mobile-brand { font-size: 14px; font-weight: 600; letter-spacing: -.005em; }
+.new-mobile { background: linear-gradient(135deg, #22d3ee, #a855f7); color: #0a0a0a; border-color: transparent; }
+.mobile-brand { font-size: 14px; font-weight: 700; }
 
-.view {
-  display: none; flex: 1; min-height: 0;
-  flex-direction: column; overflow: hidden;
-}
+.view { display: none; flex: 1; min-height: 0; flex-direction: column; overflow: hidden; }
 .view.active { display: flex; }
-
 .view-head {
-  flex: none;
-  display: flex; align-items: center;
-  justify-content: space-between;
-  gap: 12px; padding: 18px 24px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
-  min-height: 68px;
+  flex: none; display: flex; align-items: center;
+  justify-content: space-between; gap: 12px;
+  padding: 18px 24px; border-bottom: 1px solid var(--border);
+  background: var(--bg); min-height: 68px;
 }
 .view-title {
-  font-size: 15.5px; font-weight: 600;
-  letter-spacing: -.01em; color: var(--text);
-  display: flex; align-items: center; gap: 10px;
-  margin: 0;
+  font-size: 15.5px; font-weight: 700; letter-spacing: -.01em;
+  color: var(--text); display: flex; align-items: center; gap: 10px; margin: 0;
 }
-.view-title i { color: var(--muted); font-size: 13px; }
+.view-title i { color: #22d3ee; font-size: 13px; }
 .view-subtitle { font-size: 12.5px; color: var(--muted); margin: 2px 0 0; font-weight: 400; }
 .view-actions { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
-
 .btn {
-  display: inline-flex; align-items: center;
-  gap: 7px; padding: 8px 13px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-2);
-  font-size: 13px; font-weight: 500;
-  white-space: nowrap; transition: all .15s;
-  line-height: 1; font-family: inherit;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 13px; border-radius: 8px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text-2); font-size: 13px; font-weight: 500;
+  white-space: nowrap; transition: all .15s; line-height: 1; font-family: inherit;
 }
 .btn:hover { border-color: var(--border-strong); color: var(--text); background: var(--bg-soft); }
 .btn:active { transform: translateY(1px); }
 .btn:disabled { opacity: .45; cursor: not-allowed; transform: none !important; }
 .btn.icon-only { width: 34px; height: 34px; padding: 0; justify-content: center; }
-.btn.primary {
-  background: var(--text); color: var(--bg);
-  border-color: var(--text); font-weight: 600;
-}
-.btn.primary:hover { background: var(--accent-hover); color: var(--bg); border-color: var(--accent-hover); }
 .btn.ghost { border-color: transparent; }
 .btn.ghost:hover { background: var(--bg-soft); }
 .btn i { font-size: 12px; }
-.btn.danger { color: var(--error); border-color: rgba(220,38,38,.3); }
-.btn.danger:hover { background: var(--error-soft); color: var(--error); border-color: var(--error); }
-.btn.btn-danger { background: var(--error); color: #fff; border-color: var(--error); font-weight: 600; }
-.btn.btn-danger:hover { background: #b91c1c; border-color: #b91c1c; color: #fff; }
-.btn.flex { flex: 1; }
 
-/* Lang dropdown */
 .lang-wrap { position: relative; }
 .lang-menu {
   position: absolute; top: calc(100% + 6px); inset-inline-end: 0;
-  min-width: 150px; padding: 4px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  box-shadow: 0 10px 30px -12px rgba(0,0,0,.15);
-  opacity: 0; visibility: hidden;
-  transform: translateY(-4px);
+  min-width: 150px; padding: 4px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 10px;
+  box-shadow: 0 10px 30px -12px rgba(0,0,0,.5);
+  opacity: 0; visibility: hidden; transform: translateY(-4px);
   transition: all .15s ease; z-index: 100;
 }
-html.dark .lang-menu { box-shadow: 0 10px 30px -12px rgba(0,0,0,.7); }
 .lang-wrap.open .lang-menu { opacity: 1; visibility: visible; transform: translateY(0); }
 .lang-option {
-  display: flex; align-items: center;
-  justify-content: space-between;
-  width: 100%; padding: 8px 12px;
-  border: none; background: transparent;
-  color: var(--text-2); font-size: 13px;
-  cursor: pointer; border-radius: 6px;
-  font-family: inherit; text-align: inherit;
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 8px 12px; border: none; background: transparent;
+  color: var(--text-2); font-size: 13px; cursor: pointer;
+  border-radius: 6px; font-family: inherit; text-align: inherit;
   transition: background .12s;
 }
 .lang-option:hover { background: var(--bg-soft); color: var(--text); }
-.lang-option.active { color: var(--text); font-weight: 600; }
-.lang-option .code {
-  font-size: 11px; font-weight: 700;
-  color: var(--muted);
-  font-family: 'JetBrains Mono', monospace;
-}
+.lang-option.active { color: #22d3ee; font-weight: 600; }
+.lang-option .code { font-size: 11px; font-weight: 700; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
 
-/* ==================== CHAT ==================== */
-.chat-scroll {
-  flex: 1; min-height: 0;
-  overflow-y: auto; overflow-x: hidden;
-  padding: 32px 24px 16px;
-  scroll-behavior: smooth;
-}
-.chat-inner {
-  max-width: 760px; margin: 0 auto;
-  display: flex; flex-direction: column; gap: 24px;
-}
-
+/* CHAT */
+.chat-scroll { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 32px 24px 16px; scroll-behavior: smooth; }
+.chat-inner { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
 .welcome { text-align: center; padding: 40px 20px 20px; }
 .welcome-icon {
-  width: 64px; height: 64px;
-  border-radius: 16px;
-  background: var(--text); color: var(--bg);
-  display: grid; place-items: center;
-  font-size: 24px;
-  margin: 0 auto 20px;
+  width: 64px; height: 64px; border-radius: 16px;
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  color: #0a0a0a; display: grid; place-items: center;
+  font-size: 26px; margin: 0 auto 20px;
+  box-shadow: 0 20px 50px -20px rgba(34,211,238,.6);
 }
-.welcome h1 {
-  font-size: 24px; font-weight: 700;
-  letter-spacing: -.02em;
-  margin: 0 0 10px; color: var(--text);
-}
-.welcome p {
-  font-size: 14.5px; color: var(--muted);
-  margin: 0 auto 28px;
-  max-width: 520px; line-height: 1.7;
-}
-.prompt-grid {
-  display: grid; grid-template-columns: 1fr;
-  gap: 10px; max-width: 620px;
-  margin: 0 auto;
-}
+.welcome h1 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; margin: 0 0 10px; color: var(--text); }
+.welcome p { font-size: 14.5px; color: var(--muted); margin: 0 auto 28px; max-width: 520px; line-height: 1.7; }
+.prompt-grid { display: grid; grid-template-columns: 1fr; gap: 10px; max-width: 620px; margin: 0 auto; }
 @media (min-width: 560px) { .prompt-grid { grid-template-columns: 1fr 1fr; } }
 .prompt-card {
-  text-align: start; padding: 14px 16px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
-  transition: all .15s;
-  display: flex; flex-direction: column; gap: 4px;
-  font-family: inherit;
+  text-align: start; padding: 14px 16px; border: 1px solid var(--border);
+  border-radius: 10px; background: var(--surface); transition: all .15s;
+  display: flex; flex-direction: column; gap: 4px; font-family: inherit;
 }
-.prompt-card:hover { border-color: var(--border-strong); background: var(--bg-soft); }
-.prompt-card .pc-icon { font-size: 14px; color: var(--muted); margin-bottom: 4px; }
-.prompt-card .pc-title {
-  font-size: 13.5px; font-weight: 600;
-  color: var(--text); margin: 0; line-height: 1.4;
-}
-.prompt-card .pc-sub {
-  font-size: 12px; color: var(--muted);
-  margin: 0; line-height: 1.5;
-}
+.prompt-card:hover { border-color: #22d3ee; background: var(--bg-soft); }
+.prompt-card .pc-icon { font-size: 14px; color: #22d3ee; margin-bottom: 4px; }
+.prompt-card .pc-title { font-size: 13.5px; font-weight: 600; color: var(--text); margin: 0; line-height: 1.4; }
+.prompt-card .pc-sub { font-size: 12px; color: var(--muted); margin: 0; line-height: 1.5; }
 
-/* Messages */
-.msg {
-  display: flex; gap: 12px;
-  align-items: flex-start;
-  animation: msgIn .25s ease both;
-}
-@keyframes msgIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: none; }
-}
+.msg { display: flex; gap: 12px; align-items: flex-start; animation: msgIn .25s ease both; }
+@keyframes msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .msg.user { flex-direction: row-reverse; }
 html[dir="rtl"] .msg.user { flex-direction: row; }
 html[dir="rtl"] .msg.ai { flex-direction: row-reverse; }
-
 .msg-avatar {
-  width: 32px; height: 32px;
-  border-radius: 8px; flex: none;
-  display: grid; place-items: center;
-  font-size: 12px; font-weight: 600;
+  width: 32px; height: 32px; border-radius: 8px; flex: none;
+  display: grid; place-items: center; font-size: 12px; font-weight: 600;
 }
-.msg.user .msg-avatar {
-  background: var(--bg-soft); color: var(--text-2);
-  border: 1px solid var(--border);
-}
-.msg.ai .msg-avatar { background: var(--text); color: var(--bg); }
-
+.msg.user .msg-avatar { background: var(--bg-soft); color: var(--text-2); border: 1px solid var(--border); }
+.msg.ai .msg-avatar { background: linear-gradient(135deg, #22d3ee, #a855f7); color: #0a0a0a; }
 .msg-body { flex: 1; min-width: 0; max-width: calc(100% - 44px); }
 .msg.user .msg-body { display: flex; flex-direction: column; align-items: flex-end; }
 html[dir="rtl"] .msg.user .msg-body { align-items: flex-start; }
-
-.msg-meta {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 11.5px; color: var(--muted);
-  margin-bottom: 6px; font-weight: 500;
-}
+.msg-meta { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
 .msg-name { font-weight: 600; color: var(--text-2); font-size: 12.5px; }
-
 .msg-bubble {
-  padding: 14px 18px;
-  border-radius: 12px;
-  font-size: 14.5px; line-height: 1.7;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
+  padding: 14px 18px; border-radius: 12px; font-size: 14.5px; line-height: 1.7;
+  word-wrap: break-word; overflow-wrap: break-word; max-width: 100%;
 }
-.msg.user .msg-bubble {
-  background: var(--text); color: var(--bg);
-  font-weight: 400; max-width: 85%;
-}
-.msg.ai .msg-bubble {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text-2); width: 100%;
-}
+.msg.user .msg-bubble { background: linear-gradient(135deg, #22d3ee, #a855f7); color: #0a0a0a; font-weight: 500; max-width: 85%; }
+.msg.ai .msg-bubble { background: var(--surface); border: 1px solid var(--border); color: var(--text-2); width: 100%; }
 .msg-bubble.rtl { direction: rtl; text-align: right; }
 
-/* Markdown */
 .msg-bubble h1, .msg-bubble h2, .msg-bubble h3, .msg-bubble h4 {
-  color: var(--text); font-weight: 600;
-  margin: 18px 0 8px; line-height: 1.3;
-  letter-spacing: -.01em;
+  color: var(--text); font-weight: 600; margin: 18px 0 8px; line-height: 1.3;
 }
-.msg.user .msg-bubble h1, .msg.user .msg-bubble h2,
-.msg.user .msg-bubble h3, .msg.user .msg-bubble h4 { color: var(--bg); }
-.msg-bubble h1 { font-size: 19px; }
-.msg-bubble h2 { font-size: 16.5px; }
-.msg-bubble h3 { font-size: 15px; }
-.msg-bubble h4 { font-size: 14px; }
-.msg-bubble h1:first-child, .msg-bubble h2:first-child,
-.msg-bubble h3:first-child, .msg-bubble h4:first-child { margin-top: 0; }
-.msg-bubble p { margin: 0 0 12px; }
-.msg-bubble p:last-child { margin-bottom: 0; }
+.msg.user .msg-bubble h1, .msg.user .msg-bubble h2, .msg.user .msg-bubble h3, .msg.user .msg-bubble h4 { color: #0a0a0a; }
+.msg-bubble h1 { font-size: 19px; } .msg-bubble h2 { font-size: 16.5px; } .msg-bubble h3 { font-size: 15px; } .msg-bubble h4 { font-size: 14px; }
+.msg-bubble h1:first-child, .msg-bubble h2:first-child, .msg-bubble h3:first-child, .msg-bubble h4:first-child { margin-top: 0; }
+.msg-bubble p { margin: 0 0 12px; } .msg-bubble p:last-child { margin-bottom: 0; }
 .msg-bubble ul, .msg-bubble ol { margin: 8px 0 12px; padding-inline-start: 24px; }
 .msg-bubble li { margin-bottom: 5px; }
 .msg-bubble strong { color: var(--text); font-weight: 600; }
-.msg.user .msg-bubble strong { color: var(--bg); }
+.msg.user .msg-bubble strong { color: #0a0a0a; }
 .msg-bubble em { font-style: italic; }
-.msg-bubble a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--border-strong); }
-.msg-bubble a:hover { text-decoration-color: var(--text); }
-.msg.user .msg-bubble a { color: var(--bg); text-decoration-color: rgba(255,255,255,.4); }
+.msg-bubble a { color: #22d3ee; text-decoration: underline; text-underline-offset: 3px; }
 .msg-bubble hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
-.msg-bubble blockquote {
-  border-inline-start: 2px solid var(--border-strong);
-  padding: 4px 0 4px 14px;
-  margin: 12px 0; color: var(--muted);
-}
+.msg-bubble blockquote { border-inline-start: 2px solid #22d3ee; padding: 4px 0 4px 14px; margin: 12px 0; color: var(--muted); }
 .msg-bubble code:not(pre code) {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12.5px; padding: 2px 6px;
-  border-radius: 4px;
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  font-weight: 500;
+  font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+  padding: 2px 6px; border-radius: 4px; background: var(--bg-soft);
+  border: 1px solid var(--border); font-weight: 500; color: #22d3ee;
 }
-.msg.user .msg-bubble code:not(pre code) {
-  background: rgba(255,255,255,.15);
-  border-color: rgba(255,255,255,.2);
-  color: var(--bg);
-}
-.msg-bubble table {
-  width: 100%; border-collapse: collapse;
-  margin: 12px 0; font-size: 13px;
-  border: 1px solid var(--border);
-  border-radius: 6px; overflow: hidden;
-}
-.msg-bubble th, .msg-bubble td {
-  padding: 9px 12px; text-align: start;
-  border-bottom: 1px solid var(--border);
-}
-.msg-bubble th {
-  background: var(--bg-soft);
-  font-weight: 600; color: var(--text);
-  font-size: 12.5px;
-}
+.msg.user .msg-bubble code:not(pre code) { background: rgba(0,0,0,.15); border-color: rgba(0,0,0,.2); color: #0a0a0a; }
+.msg-bubble table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.msg-bubble th, .msg-bubble td { padding: 9px 12px; text-align: start; border-bottom: 1px solid var(--border); }
+.msg-bubble th { background: var(--bg-soft); font-weight: 600; color: var(--text); font-size: 12.5px; }
 .msg-bubble tr:last-child td { border-bottom: none; }
 
-/* Code blocks */
-.code-block {
-  position: relative; margin: 14px 0;
-  border-radius: 8px; overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--code-bg);
-}
-.code-header {
-  display: flex; align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  background: var(--bg-soft);
-  border-bottom: 1px solid var(--border);
-  font-size: 11.5px;
-}
-.code-lang {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 500; color: var(--muted);
-  text-transform: lowercase; font-size: 11px;
-  letter-spacing: .02em;
-}
+.code-block { position: relative; margin: 14px 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); background: var(--code-bg); }
+.code-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--bg-soft); border-bottom: 1px solid var(--border); font-size: 11.5px; }
+.code-lang { font-family: 'JetBrains Mono', monospace; font-weight: 500; color: var(--muted); text-transform: lowercase; font-size: 11px; }
 .copy-btn {
-  display: inline-flex; align-items: center;
-  gap: 5px; padding: 3px 9px;
-  border-radius: 5px;
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  font-size: 11px; font-weight: 500;
+  display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px;
+  border-radius: 5px; background: transparent; border: 1px solid var(--border);
+  color: var(--muted); font-size: 11px; font-weight: 500;
   transition: all .15s; font-family: inherit;
 }
-.copy-btn:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface); }
+.copy-btn:hover { color: #22d3ee; border-color: #22d3ee; background: rgba(34,211,238,.1); }
 .copy-btn.copied { color: var(--success); border-color: var(--success); }
 .copy-btn i { font-size: 10px; }
-.code-block pre {
-  margin: 0; padding: 14px 16px;
-  overflow-x: auto;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12.5px; line-height: 1.65;
-  background: var(--code-bg);
-}
-.code-block pre code {
-  font-family: inherit;
-  background: transparent; padding: 0;
-  border: none; color: inherit; font-size: inherit;
-}
+.code-block pre { margin: 0; padding: 14px 16px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; background: var(--code-bg); }
+.code-block pre code { font-family: inherit; background: transparent; padding: 0; border: none; color: inherit; font-size: inherit; }
 
-/* Typing */
+.streaming-cursor { display: inline-block; width: 2px; height: 1.1em; background: #22d3ee; margin-inline-start: 2px; vertical-align: text-bottom; animation: blink 1s step-end infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
 .typing { display: inline-flex; gap: 4px; padding: 2px 0; align-items: center; }
-.typing span {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--muted-2);
-  animation: typingBounce 1.2s ease-in-out infinite;
-}
-.typing span:nth-child(2) { animation-delay: .15s; }
+.typing span { width: 6px; height: 6px; border-radius: 50%; background: #22d3ee; animation: typingBounce 1.2s ease-in-out infinite; }
+.typing span:nth-child(2) { animation-delay: .15s; background: #a855f7; }
 .typing span:nth-child(3) { animation-delay: .3s; }
-@keyframes typingBounce {
-  0%, 60%, 100% { transform: translateY(0); opacity: .5; }
-  30% { transform: translateY(-5px); opacity: 1; }
-}
+@keyframes typingBounce { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-5px); opacity: 1; } }
 
-/* Input */
-.input-area {
-  flex: none; padding: 16px 24px 20px;
-  border-top: 1px solid var(--border);
-  background: var(--bg);
-}
+.input-area { flex: none; padding: 16px 24px 20px; border-top: 1px solid var(--border); background: var(--bg); }
 .input-inner {
-  max-width: 760px; margin: 0 auto;
-  display: flex; align-items: flex-end;
-  gap: 8px; background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 6px 6px 6px 16px;
-  transition: border-color .15s;
+  max-width: 760px; margin: 0 auto; display: flex; align-items: flex-end;
+  gap: 8px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 6px 6px 6px 16px; transition: border-color .15s;
 }
-.input-inner:focus-within { border-color: var(--text); }
+.input-inner:focus-within { border-color: #22d3ee; box-shadow: 0 0 0 3px rgba(34,211,238,.12); }
 .input-inner textarea {
-  flex: 1; min-height: 24px;
-  max-height: 180px;
-  border: none; outline: none;
-  background: transparent; resize: none;
-  font-size: 14.5px; line-height: 1.5;
-  padding: 8px 0; color: var(--text);
-  font-family: inherit;
+  flex: 1; min-height: 24px; max-height: 180px; border: none; outline: none;
+  background: transparent; resize: none; font-size: 14.5px; line-height: 1.5;
+  padding: 8px 0; color: var(--text); font-family: inherit;
 }
 .input-inner textarea::placeholder { color: var(--muted); }
-
 .send-btn {
-  width: 38px; height: 38px;
-  border-radius: 8px;
-  background: var(--text); color: var(--bg);
-  display: grid; place-items: center;
-  transition: all .15s; flex: none; font-size: 14px;
+  width: 38px; height: 38px; border-radius: 8px;
+  background: linear-gradient(135deg, #22d3ee, #a855f7); color: #0a0a0a;
+  display: grid; place-items: center; transition: all .15s; flex: none; font-size: 14px;
 }
-.send-btn:hover:not(:disabled) { background: var(--accent-hover); }
+.send-btn:hover:not(:disabled) { transform: scale(1.05); box-shadow: 0 6px 18px -4px rgba(34,211,238,.6); }
 .send-btn:active:not(:disabled) { transform: scale(.96); }
 .send-btn:disabled { opacity: .3; cursor: not-allowed; transform: none; }
-
 .input-hint {
-  max-width: 760px; margin: 10px auto 0;
-  font-size: 11.5px; color: var(--muted-2);
-  text-align: center;
-  display: flex; align-items: center;
-  justify-content: center; gap: 6px;
-  flex-wrap: wrap;
+  max-width: 760px; margin: 10px auto 0; font-size: 11.5px;
+  color: var(--muted-2); text-align: center;
+  display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap;
 }
-.input-hint kbd {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px; padding: 1px 5px;
-  border-radius: 3px;
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  color: var(--muted);
-}
+.input-hint kbd { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; padding: 1px 5px; border-radius: 3px; background: var(--bg-soft); border: 1px solid var(--border); color: var(--muted); }
 
-/* ==================== SAIVPIC ==================== */
-.pic-area {
-  flex: 1; min-height: 0; overflow-y: auto;
-  padding: 32px 24px 24px;
-}
-.pic-inner { max-width: 900px; margin: 0 auto; }
-.pic-form {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px; margin-bottom: 20px;
-}
-.pic-row { margin-bottom: 18px; }
-.pic-row:last-child { margin-bottom: 0; }
-.form-label {
-  display: block; font-size: 12.5px;
-  font-weight: 600; color: var(--text-2);
-  margin-bottom: 8px; letter-spacing: -.005em;
-}
-.form-label .req { color: var(--error); margin-inline-start: 2px; }
-
+/* MEDIA */
+.media-area { flex: 1; min-height: 0; overflow-y: auto; padding: 32px 24px 24px; }
+.media-inner { max-width: 900px; margin: 0 auto; }
+.media-form { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.media-row { margin-bottom: 18px; } .media-row:last-child { margin-bottom: 0; }
+.form-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--text-2); margin-bottom: 8px; }
 .form-input, .form-select {
-  width: 100%; padding: 11px 14px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg-soft);
-  color: var(--text); font-size: 13.5px;
-  outline: none; transition: all .15s;
-  font-family: inherit;
+  width: 100%; padding: 11px 14px; border: 1px solid var(--border);
+  border-radius: 8px; background: var(--bg-soft); color: var(--text);
+  font-size: 13.5px; outline: none; transition: all .15s; font-family: inherit;
 }
-.form-input:focus, .form-select:focus {
-  border-color: var(--text); background: var(--surface);
-}
+.form-input:focus, .form-select:focus { border-color: #22d3ee; background: var(--surface); box-shadow: 0 0 0 3px rgba(34,211,238,.1); }
 .form-input::placeholder { color: var(--muted); }
 textarea.form-input { resize: vertical; min-height: 90px; line-height: 1.6; }
 .form-select {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23737373'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
-  padding-inline-end: 38px;
-  cursor: pointer;
+  background-repeat: no-repeat; background-position: right 12px center;
+  background-size: 16px; padding-inline-end: 38px; cursor: pointer;
 }
 html[dir="rtl"] .form-select { background-position: left 12px center; }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
 .generate-btn {
-  width: 100%; padding: 13px 20px;
-  border-radius: 8px;
-  background: var(--text); color: var(--bg);
-  border: none; font-size: 14px; font-weight: 600;
-  display: inline-flex; align-items: center;
-  justify-content: center; gap: 10px;
-  margin-top: 8px; transition: all .15s;
-  font-family: inherit;
+  width: 100%; padding: 13px 20px; border-radius: 8px;
+  background: linear-gradient(135deg, #22d3ee, #a855f7); color: #0a0a0a;
+  border: none; font-size: 14px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 10px; margin-top: 8px; transition: all .15s; font-family: inherit;
 }
-.generate-btn:hover:not(:disabled) { background: var(--accent-hover); }
-.generate-btn:active:not(:disabled) { transform: translateY(1px); }
+.generate-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px -10px rgba(34,211,238,.6); }
+.generate-btn:active:not(:disabled) { transform: translateY(0); }
 .generate-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 .generate-btn i { font-size: 14px; }
 
-.pic-preview {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px; min-height: 400px;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
+.media-preview {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px; min-height: 400px;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; position: relative; overflow: hidden;
 }
-.pic-empty { text-align: center; color: var(--muted); padding: 40px 20px; }
-.pic-empty-icon {
-  width: 64px; height: 64px;
-  border-radius: 16px;
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  display: grid; place-items: center;
-  font-size: 24px; margin: 0 auto 18px;
-  color: var(--muted);
+.media-empty { text-align: center; color: var(--muted); padding: 40px 20px; }
+.media-empty-icon {
+  width: 64px; height: 64px; border-radius: 16px;
+  background: var(--bg-soft); border: 1px solid var(--border);
+  display: grid; place-items: center; font-size: 24px;
+  margin: 0 auto 18px; color: #22d3ee;
 }
-.pic-empty h3 {
-  font-size: 15px; font-weight: 600;
-  color: var(--text-2); margin: 0 0 6px;
-}
-.pic-empty p {
-  font-size: 13px; margin: 0;
-  max-width: 320px; margin-inline: auto;
-  line-height: 1.6;
-}
-.pic-loading { text-align: center; padding: 60px 20px; }
-.pic-spinner {
-  width: 44px; height: 44px;
-  border: 3px solid var(--border);
-  border-top-color: var(--text);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 20px;
+.media-empty h3 { font-size: 15px; font-weight: 600; color: var(--text-2); margin: 0 0 6px; }
+.media-empty p { font-size: 13px; margin: 0; max-width: 320px; margin-inline: auto; line-height: 1.6; }
+.media-loading { text-align: center; padding: 60px 20px; }
+.media-spinner {
+  width: 44px; height: 44px; border: 3px solid var(--border);
+  border-top-color: #22d3ee; border-radius: 50%;
+  animation: spin 1s linear infinite; margin: 0 auto 20px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-.pic-loading-text {
-  font-size: 14px; font-weight: 600;
-  color: var(--text-2); margin: 0 0 4px;
-}
-.pic-loading-sub { font-size: 12.5px; color: var(--muted); margin: 0; }
-.pic-result {
-  width: 100%; display: flex;
-  flex-direction: column;
-  align-items: center; gap: 18px;
-}
-.pic-result-img {
-  max-width: 100%; max-height: 65vh;
-  border-radius: 8px; display: block;
-  border: 1px solid var(--border);
-  animation: imgIn .3s ease;
-}
+.media-loading-text { font-size: 14px; font-weight: 600; color: var(--text-2); margin: 0 0 4px; }
+.media-loading-sub { font-size: 12.5px; color: var(--muted); margin: 0; }
+.media-result { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.media-result-img { max-width: 100%; max-height: 65vh; border-radius: 8px; display: block; border: 1px solid var(--border); animation: imgIn .3s ease; }
+.media-result-video { max-width: 100%; max-height: 65vh; border-radius: 8px; display: block; border: 1px solid var(--border); animation: imgIn .3s ease; background: #000; }
 @keyframes imgIn { from { opacity: 0; } to { opacity: 1; } }
-.pic-actions {
-  display: flex; flex-wrap: wrap;
-  gap: 8px; justify-content: center;
-}
-.pic-meta {
-  font-size: 12px; color: var(--muted);
-  text-align: center; max-width: 100%;
-  word-break: break-word; padding: 0 10px;
-}
-.pic-error {
-  text-align: center; padding: 40px 20px;
-  color: var(--error);
-}
-.pic-error i {
-  font-size: 36px; margin-bottom: 12px;
-  display: block; opacity: .7;
-}
-.pic-error p { margin: 0; font-size: 13.5px; font-weight: 500; }
+.media-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.media-meta { font-size: 12px; color: var(--muted); text-align: center; max-width: 100%; word-break: break-word; padding: 0 10px; }
+.media-error { text-align: center; padding: 40px 20px; color: var(--error); }
+.media-error i { font-size: 36px; margin-bottom: 12px; display: block; opacity: .7; }
+.media-error p { margin: 0; font-size: 13.5px; font-weight: 500; }
 
-/* ==================== MODAL ==================== */
-.modal {
-  position: fixed; inset: 0; z-index: 500;
-  background: rgba(0, 0, 0, .5);
-  display: grid; place-items: center;
-  padding: 20px; opacity: 0; visibility: hidden;
-  transition: opacity .2s, visibility 0s .2s;
-}
-.modal.open {
-  opacity: 1; visibility: visible;
-  transition: opacity .2s, visibility 0s;
-}
-.modal-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  width: 100%; max-width: 560px;
-  max-height: 88vh;
-  display: flex; flex-direction: column;
-  overflow: hidden;
-  transform: translateY(8px) scale(.98);
-  transition: transform .22s ease;
-  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .3);
-}
-.modal.open .modal-box { transform: translateY(0) scale(1); }
-.modal-head {
-  flex: none; padding: 18px 22px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center;
-  justify-content: space-between; gap: 12px;
-}
-.modal-title {
-  font-size: 15.5px; font-weight: 600;
-  color: var(--text);
-  display: flex; align-items: center;
-  gap: 10px; margin: 0;
-  letter-spacing: -.01em;
-}
-.modal-title i { color: var(--muted); font-size: 14px; }
-.modal-close {
-  width: 30px; height: 30px;
-  border-radius: 6px;
-  display: grid; place-items: center;
-  color: var(--muted); font-size: 13px;
-  transition: all .15s;
-}
-.modal-close:hover { color: var(--text); background: var(--bg-soft); }
-.modal-body {
-  flex: 1; min-height: 0;
-  padding: 20px 22px 24px;
-  overflow-y: auto;
-}
-
-.field-label {
-  display: block; font-size: 12.5px;
-  font-weight: 600; color: var(--text-2);
-  margin-bottom: 8px;
-}
-.field-hint {
-  font-size: 12.5px; color: var(--muted);
-  margin: 0 0 14px; line-height: 1.6;
-}
-.field-input {
-  width: 100%; padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg-soft);
-  color: var(--text); font-size: 13.5px;
-  outline: none; transition: all .15s;
-  font-family: 'JetBrains Mono', monospace;
-}
-.field-input:focus { border-color: var(--text); background: var(--surface); }
-.field-input::placeholder { color: var(--muted); font-family: 'Inter', sans-serif; }
-.field-actions { display: flex; gap: 10px; margin-top: 18px; }
-
-.link-btn {
-  display: inline-flex; align-items: center;
-  gap: 6px; color: var(--text);
-  font-size: 12.5px; font-weight: 500;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: var(--border-strong);
-}
-.link-btn:hover { text-decoration-color: var(--text); }
-
-.info-box {
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg-soft);
-  font-size: 12.5px; color: var(--muted);
-  line-height: 1.65; margin-top: 16px;
-}
-.info-box i { color: var(--muted); margin-inline-end: 6px; }
-.info-box code {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11.5px; padding: 1px 5px;
-  border-radius: 4px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text-2);
-}
-
-.settings-section {
-  padding: 16px 18px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--bg-soft);
-  margin-bottom: 14px;
-}
-.settings-section:last-child { margin-bottom: 0; }
-.settings-section h4 {
-  font-size: 12px; font-weight: 600;
-  color: var(--text-2); margin: 0 0 10px;
-  letter-spacing: -.005em;
-}
-.settings-section p {
-  font-size: 12.5px; color: var(--muted);
-  margin: 0 0 12px; line-height: 1.55;
-}
-.settings-action {
-  display: flex; align-items: center;
-  gap: 10px; padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text-2); font-size: 13px;
-  font-weight: 500; transition: all .15s;
-  width: 100%; text-align: start;
-  margin-bottom: 6px; font-family: inherit;
-}
-.settings-action:last-child { margin-bottom: 0; }
-.settings-action:hover { border-color: var(--border-strong); color: var(--text); }
-.settings-action i { font-size: 12px; color: var(--muted); width: 16px; text-align: center; }
-.settings-action:hover i { color: var(--text); }
-.settings-action.danger:hover { color: var(--error); border-color: var(--error); }
-.settings-action.danger:hover i { color: var(--error); }
-.settings-action .count {
-  margin-inline-start: auto;
-  font-size: 11px; font-weight: 600;
-  padding: 2px 7px; border-radius: 4px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--muted);
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.confirm-text {
-  font-size: 14px; color: var(--text-2);
-  line-height: 1.65; margin: 0 0 20px;
-}
-.confirm-text strong { color: var(--text); font-weight: 600; }
-.confirm-actions {
-  display: flex; gap: 10px;
-  justify-content: flex-end;
-}
-.confirm-actions .btn { min-width: 90px; justify-content: center; }
-
-/* Model info card (single model display) */
-.model-info-card {
-  display: flex; align-items: center;
-  gap: 12px; padding: 14px 16px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
-}
-.model-info-card .model-ico {
-  width: 40px; height: 40px;
-  border-radius: 10px;
-  background: var(--text); color: var(--bg);
-  display: grid; place-items: center;
-  font-size: 16px; flex: none;
-}
-.model-info-card .model-info { flex: 1; min-width: 0; }
-.model-info-card .model-name {
-  font-size: 13.5px; font-weight: 700;
-  color: var(--text); margin: 0 0 2px;
-  font-family: 'JetBrains Mono', monospace;
-}
-.model-info-card .model-desc {
-  font-size: 12px; color: var(--muted);
-  margin: 0; line-height: 1.4;
-}
-.model-info-card .model-badge {
-  font-size: 10px; font-weight: 700;
-  padding: 3px 8px; border-radius: 5px;
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  color: var(--muted);
-  letter-spacing: .04em;
-  flex: none;
-}
-
-/* ==================== TOAST ==================== */
+/* TOAST */
 .toast {
   position: fixed; bottom: 24px; left: 50%;
-  transform: translate(-50%, 200%);
-  z-index: 600;
-  display: inline-flex; align-items: center;
-  gap: 9px; padding: 11px 18px;
-  border-radius: 8px;
-  background: var(--text); color: var(--bg);
-  font-size: 13px; font-weight: 500;
-  box-shadow: 0 12px 30px -8px rgba(0, 0, 0, .25);
-  transition: transform .35s cubic-bezier(.22, 1, .36, 1);
-  opacity: 0; pointer-events: none;
-  max-width: calc(100vw - 32px);
+  transform: translate(-50%, 200%); z-index: 600;
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 11px 18px; border-radius: 8px;
+  background: var(--surface); color: var(--text);
+  font-size: 13px; font-weight: 500; border: 1px solid var(--border);
+  box-shadow: 0 12px 30px -8px rgba(0,0,0,.25);
+  transition: transform .35s cubic-bezier(.22,1,.36,1);
+  opacity: 0; pointer-events: none; max-width: calc(100vw - 32px);
 }
 .toast.show { transform: translate(-50%, 0); opacity: 1; }
 .toast i { font-size: 13px; }
 .toast.success i { color: var(--success); }
 .toast.error i { color: var(--error); }
-.toast.info i { color: var(--warning); }
+.toast.info i { color: #22d3ee; }
 
-/* ==================== RESPONSIVE ==================== */
 @media (max-width: 820px) {
-  .sidebar {
-    position: fixed;
-    inset-inline-start: 0; top: 0; bottom: 0;
-    transform: translateX(-100%);
-    box-shadow: 8px 0 40px rgba(0, 0, 0, .2);
-  }
-  html[dir="rtl"] .sidebar {
-    transform: translateX(100%);
-    inset-inline-start: auto; inset-inline-end: 0;
-  }
+  .sidebar { position: fixed; inset-inline-start: 0; top: 0; bottom: 0; transform: translateX(-100%); box-shadow: 8px 0 40px rgba(0,0,0,.2); }
+  html[dir="rtl"] .sidebar { transform: translateX(100%); inset-inline-start: auto; inset-inline-end: 0; }
   .sidebar.open { transform: translateX(0) !important; }
   .close-mobile { display: flex; }
   .mobile-header { display: flex; }
@@ -1104,18 +478,15 @@ html[dir="rtl"] .form-select { background-position: left 12px center; }
   .input-inner textarea { font-size: 14px; }
   .send-btn { width: 34px; height: 34px; }
   .input-hint { display: none; }
-  .pic-area { padding: 20px 16px; }
-  .pic-form { padding: 18px; }
-  .pic-preview { min-height: 300px; padding: 16px; }
-  .form-grid { grid-template-columns: 1fr; }
-  .modal-box { max-width: 100%; }
+  .media-area { padding: 20px 16px; }
+  .media-form { padding: 18px; }
+  .media-preview { min-height: 300px; padding: 16px; }
   .btn .label { display: none; }
   .btn.icon-only { width: 32px; height: 32px; }
+  .credit { font-size: 9px; }
 }
-
-/* Highlight.js */
-.hljs { background: transparent !important; padding: 0 !important; color: #383a42; }
-html.dark .hljs { color: #abb2bf; }
+.hljs { background: transparent !important; padding: 0 !important; color: #abb2bf; }
+html.light .hljs { color: #383a42; }
 pre code.hljs { padding: 0 !important; }
 </style>
 </head>
@@ -1125,14 +496,13 @@ pre code.hljs { padding: 0 !important; }
 <div class="app">
   <div class="backdrop" id="backdrop"></div>
 
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-head">
       <div class="brand">
-        <div class="brand-mark">SA</div>
+        <div class="brand-mark">DS</div>
         <div class="brand-text">
           <div class="brand-name">SaivAI</div>
-          <div class="brand-sub" data-i18n="brand.sub">Chat · Code · Image</div>
+          <div class="brand-sub" data-i18n="brand.sub">DeepSeek Studio</div>
         </div>
       </div>
       <button class="close-mobile" id="btnCloseSidebar" aria-label="Close">
@@ -1144,17 +514,22 @@ pre code.hljs { padding: 0 !important; }
       <button class="section-tab active" data-section="chat" type="button">
         <span class="ico"><i class="fa-solid fa-comments"></i></span>
         <span>SaivCHAT</span>
-        <span class="badge">AI</span>
+        <span class="badge">FREE</span>
       </button>
       <button class="section-tab" data-section="code" type="button">
         <span class="ico"><i class="fa-solid fa-code"></i></span>
         <span>SaivCODE</span>
-        <span class="badge">AI</span>
+        <span class="badge">FREE</span>
       </button>
-      <button class="section-tab" data-section="pic" type="button">
+      <button class="section-tab" data-section="image" type="button">
         <span class="ico"><i class="fa-solid fa-image"></i></span>
-        <span>SaivPIC</span>
-        <span class="badge">AI</span>
+        <span>SaivIMAGE</span>
+        <span class="badge">FREE</span>
+      </button>
+      <button class="section-tab" data-section="video" type="button">
+        <span class="ico"><i class="fa-solid fa-video"></i></span>
+        <span>SaivVIDEO</span>
+        <span class="badge">FREE</span>
       </button>
     </div>
 
@@ -1168,22 +543,17 @@ pre code.hljs { padding: 0 !important; }
     </div>
 
     <div class="sidebar-foot">
-      <div class="key-status warn" id="keyStatus">
-        <i class="fa-solid fa-circle"></i>
-        <span data-i18n="key.no">No API Key</span>
+      <div class="free-badge">
+        <i class="fa-solid fa-bolt"></i>
+        <span data-i18n="free.badge">Unlimited · No API Key</span>
       </div>
-      <button class="settings-btn" id="btnSettings" type="button">
-        <i class="fa-solid fa-gear"></i>
-        <span data-i18n="btn.settings">Settings</span>
-      </button>
       <div class="credit">
-        <strong>SaivAI</strong> · SaivCORE<br>
+        <strong>SaivAI</strong> · Puter.js + DeepSeek<br>
         <span data-i18n="credit.made">Made with</span> <span class="heart">❤</span> <span data-i18n="credit.in">in Algeria</span> 🇩🇿
       </div>
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="main">
     <div class="mobile-header">
       <button class="hamburger" id="btnMenu" type="button" aria-label="Menu">
@@ -1200,7 +570,7 @@ pre code.hljs { padding: 0 !important; }
       <div class="view-head">
         <div>
           <h1 class="view-title"><i class="fa-solid fa-comments"></i><span>SaivCHAT</span></h1>
-          <p class="view-subtitle" data-i18n="chat.subtitle">General assistant — any topic</p>
+          <p class="view-subtitle" data-i18n="chat.subtitle">General assistant — DeepSeek V4 Flash</p>
         </div>
         <div class="view-actions">
           <div class="lang-wrap" id="langWrap">
@@ -1208,15 +578,15 @@ pre code.hljs { padding: 0 !important; }
               <i class="fa-solid fa-globe"></i>
             </button>
             <div class="lang-menu">
-              <button class="lang-option active" data-lang="ar" type="button">العربية <span class="code">AR</span></button>
-              <button class="lang-option" data-lang="en" type="button">English <span class="code">EN</span></button>
+              <button class="lang-option active" data-lang="en" type="button">English <span class="code">EN</span></button>
+              <button class="lang-option" data-lang="ar" type="button">العربية <span class="code">AR</span></button>
               <button class="lang-option" data-lang="fr" type="button">Français <span class="code">FR</span></button>
             </div>
           </div>
-          <button class="btn icon-only" id="btnTheme" type="button" title="Theme" aria-label="Theme">
-            <i class="fa-solid fa-moon" id="themeIcon"></i>
+          <button class="btn icon-only" id="btnTheme" type="button" title="Theme">
+            <i class="fa-solid fa-sun" id="themeIcon"></i>
           </button>
-          <button class="btn ghost" id="btnClearChatView" type="button" title="Clear discussion">
+          <button class="btn ghost" id="btnClearChatView" type="button">
             <i class="fa-solid fa-broom"></i><span class="label" data-i18n="btn.clear">Clear</span>
           </button>
         </div>
@@ -1230,7 +600,7 @@ pre code.hljs { padding: 0 !important; }
           </button>
         </div>
         <div class="input-hint">
-          <span data-i18n="hint.powered">Powered by Gemini</span>
+          <span data-i18n="hint.powered">Powered by DeepSeek V4 Flash · Free</span>
           <span style="opacity:.5">·</span>
           <kbd>Enter</kbd><span data-i18n="hint.send">send</span>
           <span style="opacity:.5">·</span>
@@ -1244,10 +614,10 @@ pre code.hljs { padding: 0 !important; }
       <div class="view-head">
         <div>
           <h1 class="view-title"><i class="fa-solid fa-code"></i><span>SaivCODE</span></h1>
-          <p class="view-subtitle" data-i18n="code.subtitle">Coding assistant — code only</p>
+          <p class="view-subtitle" data-i18n="code.subtitle">Coding assistant — DeepSeek V4 Pro</p>
         </div>
         <div class="view-actions">
-          <button class="btn ghost" id="btnClearCodeView" type="button" title="Clear discussion">
+          <button class="btn ghost" id="btnClearCodeView" type="button">
             <i class="fa-solid fa-broom"></i><span class="label" data-i18n="btn.clear">Clear</span>
           </button>
         </div>
@@ -1261,7 +631,7 @@ pre code.hljs { padding: 0 !important; }
           </button>
         </div>
         <div class="input-hint">
-          <span data-i18n="hint.powered">Powered by Gemini</span>
+          <span data-i18n="hint.powered.code">Powered by DeepSeek V4 Pro · 93.5 LiveCodeBench</span>
           <span style="opacity:.5">·</span>
           <kbd>Enter</kbd><span data-i18n="hint.send">send</span>
           <span style="opacity:.5">·</span>
@@ -1270,59 +640,108 @@ pre code.hljs { padding: 0 !important; }
       </div>
     </section>
 
-    <!-- SAIVPIC -->
-    <section class="view" id="view-pic">
+    <!-- SAIVIMAGE -->
+    <section class="view" id="view-image">
       <div class="view-head">
         <div>
-          <h1 class="view-title"><i class="fa-solid fa-image"></i><span>SaivPIC</span></h1>
-          <p class="view-subtitle" data-i18n="pic.subtitle">AI Image Generator</p>
+          <h1 class="view-title"><i class="fa-solid fa-image"></i><span>SaivIMAGE</span></h1>
+          <p class="view-subtitle" data-i18n="image.subtitle">AI Image Generator — FLUX · Imagen · GPT Image</p>
         </div>
         <div class="view-actions">
-          <button class="btn ghost" id="btnRandomSeed" type="button" title="Randomize seed">
-            <i class="fa-solid fa-shuffle"></i><span class="label" data-i18n="btn.random">Random Seed</span>
+          <button class="btn ghost" id="btnRandomSeedImg" type="button" title="Randomize">
+            <i class="fa-solid fa-shuffle"></i><span class="label" data-i18n="btn.random">Random</span>
           </button>
         </div>
       </div>
-      <div class="pic-area">
-        <div class="pic-inner">
-          <div class="pic-form">
-            <div class="pic-row">
-              <label class="form-label" for="picPrompt"><span data-i18n="pic.prompt">Prompt</span> <span class="req">*</span></label>
-              <textarea id="picPrompt" class="form-input" data-i18n-ph="pic.prompt.ph" placeholder="Describe your image…" rows="3"></textarea>
+      <div class="media-area">
+        <div class="media-inner">
+          <div class="media-form">
+            <div class="media-row">
+              <label class="form-label" for="imgPrompt"><span data-i18n="image.prompt">Prompt</span> <span class="req">*</span></label>
+              <textarea id="imgPrompt" class="form-input" data-i18n-ph="image.prompt.ph" placeholder="Describe your image…" rows="3"></textarea>
             </div>
-            <div class="form-grid">
-              <div class="pic-row">
-                <label class="form-label" for="picStyle" data-i18n="pic.style">Style</label>
-                <select id="picStyle" class="form-select">
-                  <option value="" data-i18n="pic.style.none">— None (raw prompt) —</option>
-                  <option value="photorealistic, ultra realistic, 8k, highly detailed, sharp focus, professional photography" data-i18n="pic.style.photo">Photorealistic</option>
-                  <option value="cyberpunk, neon lights, futuristic, sci-fi, dystopian, dark atmosphere" data-i18n="pic.style.cyber">Cyberpunk</option>
-                  <option value="3d render, octane, cinema 4d, cinematic lighting, highly detailed" data-i18n="pic.style.3d">3D Render</option>
-                  <option value="anime style, studio ghibli, vibrant colors, detailed, beautiful art" data-i18n="pic.style.anime">Anime</option>
-                  <option value="flat vector logo, minimal, clean design, simple shapes, professional branding" data-i18n="pic.style.logo">Vector Logo</option>
-                  <option value="oil painting, classic art style, brush strokes, artistic" data-i18n="pic.style.oil">Oil Painting</option>
-                  <option value="pixel art, retro 8-bit, video game style" data-i18n="pic.style.pixel">Pixel Art</option>
+            <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div class="media-row">
+                <label class="form-label" for="imgModel" data-i18n="image.model">Model</label>
+                <select id="imgModel" class="form-select">
+                  <option value="black-forest-labs/flux.2-pro">FLUX.2 Pro (Best quality)</option>
+                  <option value="gpt-image-1">GPT Image (OpenAI)</option>
+                  <option value="google/imagen-4">Imagen 4 (Google)</option>
+                  <option value="nano-banana-pro">Nano Banana Pro</option>
                 </select>
               </div>
-              <div class="pic-row">
-                <label class="form-label" for="picAspect" data-i18n="pic.aspect">Aspect Ratio</label>
-                <select id="picAspect" class="form-select">
-                  <option value="1024|1024" data-i18n="pic.aspect.square">1:1 — Square (1024×1024)</option>
-                  <option value="1280|720" data-i18n="pic.aspect.landscape">16:9 — Landscape (1280×720)</option>
-                  <option value="720|1280" data-i18n="pic.aspect.portrait">9:16 — Portrait (720×1280)</option>
+              <div class="media-row">
+                <label class="form-label" for="imgSize" data-i18n="image.size">Size</label>
+                <select id="imgSize" class="form-select">
+                  <option value="1024x1024">1024 × 1024 (Square)</option>
+                  <option value="1024x1536">1024 × 1536 (Portrait)</option>
+                  <option value="1536x1024">1536 × 1024 (Landscape)</option>
                 </select>
               </div>
             </div>
-            <button class="generate-btn" id="btnGenerate" type="button">
-              <i class="fa-solid fa-image"></i>
-              <span data-i18n="btn.generate">Generate Image</span>
+            <button class="generate-btn" id="btnGenerateImg" type="button">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span data-i18n="btn.generate.image">Generate Image</span>
             </button>
           </div>
-          <div class="pic-preview" id="picPreview">
-            <div class="pic-empty" id="picEmpty">
-              <div class="pic-empty-icon"><i class="fa-regular fa-image"></i></div>
-              <h3 data-i18n="pic.empty.title">No image yet</h3>
-              <p data-i18n="pic.empty.sub">Enter a prompt above and click Generate Image.</p>
+          <div class="media-preview" id="imgPreview">
+            <div class="media-empty" id="imgEmpty">
+              <div class="media-empty-icon"><i class="fa-regular fa-image"></i></div>
+              <h3 data-i18n="image.empty.title">No image yet</h3>
+              <p data-i18n="image.empty.sub">Enter a prompt above and click Generate Image.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SAIVVIDEO -->
+    <section class="view" id="view-video">
+      <div class="view-head">
+        <div>
+          <h1 class="view-title"><i class="fa-solid fa-video"></i><span>SaivVIDEO</span></h1>
+          <p class="view-subtitle" data-i18n="video.subtitle">AI Video Generator — Veo · Wan · Seedance</p>
+        </div>
+        <div class="view-actions">
+          <button class="btn ghost" id="btnRandomSeedVid" type="button" title="Randomize">
+            <i class="fa-solid fa-shuffle"></i><span class="label" data-i18n="btn.random">Random</span>
+          </button>
+        </div>
+      </div>
+      <div class="media-area">
+        <div class="media-inner">
+          <div class="media-form">
+            <div class="media-row">
+              <label class="form-label" for="vidPrompt"><span data-i18n="video.prompt">Prompt</span> <span class="req">*</span></label>
+              <textarea id="vidPrompt" class="form-input" data-i18n-ph="video.prompt.ph" placeholder="Describe your video…" rows="3"></textarea>
+            </div>
+            <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div class="media-row">
+                <label class="form-label" for="vidModel" data-i18n="video.model">Model</label>
+                <select id="vidModel" class="form-select">
+                  <option value="google/veo-3.1-fast">Veo 3.1 Fast (Google)</option>
+                  <option value="google/veo-3.1">Veo 3.1 (Best)</option>
+                  <option value="wan/wan2.2-t2v">Wan 2.2 T2V</option>
+                </select>
+              </div>
+              <div class="media-row">
+                <label class="form-label" for="vidSize" data-i18n="video.size">Resolution</label>
+                <select id="vidSize" class="form-select">
+                  <option value="1280x720">1280 × 720 (720p)</option>
+                  <option value="832x480">832 × 480 (480p)</option>
+                </select>
+              </div>
+            </div>
+            <button class="generate-btn" id="btnGenerateVid" type="button">
+              <i class="fa-solid fa-video"></i>
+              <span data-i18n="btn.generate.video">Generate Video</span>
+            </button>
+          </div>
+          <div class="media-preview" id="vidPreview">
+            <div class="media-empty" id="vidEmpty">
+              <div class="media-empty-icon"><i class="fa-regular fa-file-video"></i></div>
+              <h3 data-i18n="video.empty.title">No video yet</h3>
+              <p data-i18n="video.empty.sub">Videos take 1–5 minutes. Enter a prompt above to start.</p>
             </div>
           </div>
         </div>
@@ -1331,118 +750,6 @@ pre code.hljs { padding: 0 !important; }
   </main>
 </div>
 
-<!-- SETTINGS MODAL -->
-<div class="modal" id="modalSettings" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <div class="modal-head">
-      <h3 class="modal-title"><i class="fa-solid fa-gear"></i><span data-i18n="settings.title">Settings</span></h3>
-      <button class="modal-close" data-close="modalSettings" type="button" aria-label="Close">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="settings-section">
-        <h4 data-i18n="settings.key">Gemini API Key</h4>
-        <p data-i18n="settings.key.desc">Connect your Google Gemini API key. Get one free from Google AI Studio.</p>
-        <button class="settings-action" id="btnManageKey" type="button">
-          <i class="fa-solid fa-key"></i>
-          <span id="keyBtnLabel" data-i18n="settings.key.add">Add API Key</span>
-        </button>
-      </div>
-
-      <div class="settings-section">
-        <h4 data-i18n="settings.model">AI Model</h4>
-        <p data-i18n="settings.model.desc">This app is powered by Google's latest Flash model.</p>
-        <div class="model-info-card">
-          <div class="model-ico"><i class="fa-solid fa-bolt"></i></div>
-          <div class="model-info">
-            <p class="model-name">gemini-3.8-flash</p>
-            <p class="model-desc" data-i18n="settings.model.sub">Latest Flash · Ultra fast</p>
-          </div>
-          <span class="model-badge">PRO</span>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <h4 data-i18n="settings.data">Data Management</h4>
-        <p data-i18n="settings.data.desc">Everything is saved locally in your browser.</p>
-        <button class="settings-action" id="btnExportData" type="button">
-          <i class="fa-solid fa-download"></i>
-          <span data-i18n="settings.export">Export all data (JSON)</span>
-        </button>
-        <button class="settings-action danger" id="btnClearAllChats" type="button">
-          <i class="fa-solid fa-trash-can"></i>
-          <span data-i18n="settings.clear.chats">Delete all SaivCHAT</span>
-          <span class="count" id="countChats">0</span>
-        </button>
-        <button class="settings-action danger" id="btnClearAllCodes" type="button">
-          <i class="fa-solid fa-trash-can"></i>
-          <span data-i18n="settings.clear.codes">Delete all SaivCODE</span>
-          <span class="count" id="countCodes">0</span>
-        </button>
-        <button class="settings-action danger" id="btnClearEverything" type="button">
-          <i class="fa-solid fa-triangle-exclamation"></i>
-          <span data-i18n="settings.clear.all">Delete ALL data</span>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- API KEY MODAL -->
-<div class="modal" id="modalApiKey" role="dialog" aria-modal="true">
-  <div class="modal-box" style="max-width:500px">
-    <div class="modal-head">
-      <h3 class="modal-title"><i class="fa-solid fa-key"></i><span data-i18n="api.title">Google Gemini API Key</span></h3>
-      <button class="modal-close" data-close="modalApiKey" type="button" aria-label="Close">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
-    <div class="modal-body">
-      <p class="field-hint" data-i18n="api.desc">Your key is stored only in your browser. It never leaves your device except to talk directly to Google's servers.</p>
-
-      <label class="field-label" for="apiKeyInput" data-i18n="api.label">API Key</label>
-      <input id="apiKeyInput" type="password" class="field-input" placeholder="AQ.Ab8R… or AIzaSy…" autocomplete="off" spellcheck="false" />
-
-      <div class="info-box">
-        <i class="fa-solid fa-circle-info"></i>
-        <span data-i18n="api.getkey">Get a free key from</span> <a class="link-btn" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px"></i></a>
-      </div>
-
-      <div class="field-actions">
-        <button class="btn flex" id="btnApiKeyRemove" type="button">
-          <i class="fa-solid fa-trash-can"></i>
-          <span data-i18n="api.remove">Remove</span>
-        </button>
-        <button class="btn primary flex" id="btnApiKeySave" type="button">
-          <i class="fa-solid fa-check"></i>
-          <span data-i18n="api.save">Save Key</span>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- CONFIRM MODAL -->
-<div class="modal" id="modalConfirm" role="dialog" aria-modal="true">
-  <div class="modal-box" style="max-width:440px">
-    <div class="modal-head">
-      <h3 class="modal-title"><i class="fa-solid fa-triangle-exclamation"></i><span id="confirmTitle" data-i18n="confirm.title">Confirm</span></h3>
-      <button class="modal-close" data-close="modalConfirm" type="button" aria-label="Close">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
-    <div class="modal-body">
-      <p class="confirm-text" id="confirmText">Are you sure?</p>
-      <div class="confirm-actions">
-        <button class="btn" id="confirmCancel" type="button" data-i18n="confirm.cancel">Cancel</button>
-        <button class="btn btn-danger" id="confirmOk" type="button" data-i18n="confirm.ok">Delete</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- TOAST -->
 <div class="toast" id="toast">
   <i class="fa-solid fa-circle-check" id="toastIcon"></i>
   <span id="toastMsg">Ready</span>
@@ -1453,240 +760,57 @@ pre code.hljs { padding: 0 !important; }
   'use strict';
 
   /* ==================== CONSTANTS ==================== */
-  const STORAGE_KEY = 'saivai.v6';
-  const API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/';
-  const MODEL_ID = 'gemini-3.8-flash';   // Only model used
-  const IMAGE_ENDPOINT = 'https://image.pollinations.ai/prompt/';
-  const REQUEST_TIMEOUT = 45000;
+  const STORAGE_KEY = 'saivai.ds.v1';
+  const CHAT_MODEL = 'deepseek/deepseek-v4.1-flash';
+  const CODE_MODEL = 'deepseek/deepseek-v4-pro';
 
   /* ==================== I18N ==================== */
   const I18N = {
-    ar: {
-      dir: 'rtl', lang: 'ar', font: "'Cairo', 'Inter', sans-serif",
-      labels: {
-        'brand.sub': 'محادثة · كود · صور',
-        'btn.new': 'محادثة جديدة',
-        'btn.settings': 'الإعدادات',
-        'btn.clear': 'مسح',
-        'btn.random': 'بذرة عشوائية',
-        'btn.generate': 'إنشاء صورة',
-        'label.conversations': 'المحادثات',
-        'label.sessions': 'جلسات الكود',
-        'key.no': 'لا يوجد مفتاح',
-        'key.ok': 'المفتاح متصل',
-        'key.manage': 'إدارة المفتاح',
-        'key.add': 'إضافة مفتاح',
-        'chat.subtitle': 'مساعد عام — أي موضوع',
-        'code.subtitle': 'مساعد برمجي — كود فقط',
-        'pic.subtitle': 'مولد صور بالذكاء الاصطناعي',
-        'input.chat': 'اكتب رسالتك… (Shift+Enter = سطر جديد)',
-        'input.code': 'اكتب سؤال برمجي…',
-        'hint.powered': 'مدعوم بـ Gemini',
-        'hint.send': 'إرسال',
-        'hint.newline': 'سطر جديد',
-        'pic.prompt': 'الوصف',
-        'pic.prompt.ph': 'اكتب وصف الصورة… مثال: صحراء جزائرية عند الغروب، إضاءة سينمائية',
-        'pic.style': 'النمط',
-        'pic.style.none': '— بدون (الوصف فقط) —',
-        'pic.style.photo': 'واقعي فوتوغرافي',
-        'pic.style.cyber': 'سايبربانك',
-        'pic.style.3d': 'ثلاثي الأبعاد',
-        'pic.style.anime': 'أنمي',
-        'pic.style.logo': 'شعار فيكتور',
-        'pic.style.oil': 'لوحة زيتية',
-        'pic.style.pixel': 'بكسل آرت',
-        'pic.aspect': 'أبعاد الصورة',
-        'pic.aspect.square': '1:1 — مربع (1024×1024)',
-        'pic.aspect.landscape': '16:9 — أفقي (1280×720)',
-        'pic.aspect.portrait': '9:16 — عمودي (720×1280)',
-        'pic.empty.title': 'لا توجد صورة بعد',
-        'pic.empty.sub': 'اكتب وصفاً في الأعلى واضغط إنشاء صورة.',
-        'settings.title': 'الإعدادات',
-        'settings.key': 'مفتاح Gemini API',
-        'settings.key.desc': 'اربط مفتاح Google Gemini API. احصل على مفتاح مجاني من Google AI Studio.',
-        'settings.key.add': 'إضافة مفتاح',
-        'settings.model': 'نموذج الذكاء الاصطناعي',
-        'settings.model.desc': 'هذا التطبيق مدعوم بأحدث نموذج Flash من Google.',
-        'settings.model.sub': 'أحدث Flash · فائق السرعة',
-        'settings.data': 'إدارة البيانات',
-        'settings.data.desc': 'كل شيء محفوظ محلياً في متصفحك.',
-        'settings.export': 'تصدير كل البيانات (JSON)',
-        'settings.clear.chats': 'حذف كل SaivCHAT',
-        'settings.clear.codes': 'حذف كل SaivCODE',
-        'settings.clear.all': 'حذف كل البيانات',
-        'api.title': 'مفتاح Google Gemini API',
-        'api.desc': 'المفتاح محفوظ فقط في متصفحك. لا يغادر جهازك إلا للاتصال بخوادم Google مباشرة.',
-        'api.label': 'المفتاح',
-        'api.getkey': 'احصل على مفتاح مجاني من',
-        'api.remove': 'إزالة',
-        'api.save': 'حفظ المفتاح',
-        'confirm.title': 'تأكيد',
-        'confirm.cancel': 'إلغاء',
-        'confirm.ok': 'حذف',
-        'welcome.chat.title': 'مرحباً في SaivCHAT',
-        'welcome.chat.desc': 'اسأل عن أي موضوع — علم، تاريخ، فلسفة، نصائح، ثقافة. يعمل بالدارجة، العربية، الإنجليزية والفرنسية.',
-        'welcome.code.title': 'مرحباً في SaivCODE',
-        'welcome.code.desc': 'اسأل أي سؤال برمجي واحصل على كود كامل مع شرح. يعمل بالدارجة، العربية، الإنجليزية والفرنسية.',
-        'msg.you': 'أنت',
-        'msg.thinking': 'يفكر…',
-        'msg.copy': 'نسخ',
-        'msg.copied': 'تم النسخ',
-        'empty.disc': 'لا توجد محادثات بعد.<br>اضغط <strong>محادثة جديدة</strong>.',
-        'toast.copied': 'تم النسخ',
-        'toast.deleted': 'تم الحذف',
-        'toast.cleared': 'تم المسح',
-        'toast.newdisc': 'بدأت محادثة جديدة',
-        'toast.keySaved': 'تم حفظ المفتاح',
-        'toast.keyRemoved': 'تم إزالة المفتاح',
-        'toast.keyFirst': 'أضف مفتاح API أولاً',
-        'toast.requestFail': 'فشل الطلب',
-        'toast.imageOk': 'تم إنشاء الصورة',
-        'toast.imageFail': 'فشل إنشاء الصورة',
-        'toast.exported': 'تم التصدير',
-        'toast.allDeleted': 'تم حذف كل البيانات',
-        'toast.chatsDeleted': 'تم حذف كل SaivCHAT',
-        'toast.codesDeleted': 'تم حذف كل SaivCODE',
-        'toast.promptRequired': 'اكتب وصفاً أولاً',
-        'toast.keyTooShort': 'المفتاح قصير جداً',
-        'toast.seed': 'بذرة',
-        'toast.noKeyToRemove': 'لا يوجد مفتاح لإزالته',
-        'toast.nothingToClear': 'لا يوجد شيء لمسحه',
-        'toast.noChats': 'لا توجد محادثات SaivCHAT',
-        'toast.noCodes': 'لا توجد جلسات SaivCODE',
-        'error.noKey': 'لا يوجد مفتاح API. افتح الإعدادات لإضافة مفتاح Gemini.',
-        'error.keyInvalid': 'صيغة المفتاح غير صحيحة. حدّثه من الإعدادات.',
-        'error.keyRejected': 'المفتاح مرفوض. حدّثه من الإعدادات.',
-        'error.rate': 'تم الوصول لحد المعدل. انتظر بضع ثوانٍ.',
-        'error.busy': 'الخوادم مشغولة. حاول بعد قليل.',
-        'error.timeout': 'انتهت المهلة. حاول مرة أخرى.',
-        'error.network': 'خطأ في الشبكة.',
-        'error.empty': 'لا يوجد رد. حاول إعادة صياغة السؤال.',
-        'error.blocked': 'تم حظر الرد.',
-        'error.badReq': 'طلب غير صالح. تحقق من المفتاح.',
-        'error.generic': 'حدث خطأ ما.'
-      },
-      prompts: {
-        chat: [
-          { i: 'fa-lightbulb', t: 'علاش السماء زرقاء؟', s: 'اشرحلي بطريقة بسيطة' },
-          { i: 'fa-book', t: 'قل لي قصة قصيرة', s: 'قصة إبداعية من 3 فقرات' },
-          { i: 'fa-heart', t: 'نصائح للتحدث أمام الجمهور', s: 'كيفاش نتحكم في التوتر' },
-          { i: 'fa-plane', t: 'أجمل الأماكن في الجزائر', s: 'أفضل 5 أماكن للزيارة' },
-          { i: 'fa-utensils', t: 'وصفة كسكس سريعة', s: 'طريقة سهلة في 20 دقيقة' },
-          { i: 'fa-brain', t: 'اشرح الوعي', s: 'بكلمات بسيطة ومختصرة' }
-        ],
-        code: [
-          { i: 'fa-code', t: 'Fibonacci بالجافاسكريبت', s: 'دالة سريعة مع memoization' },
-          { i: 'fa-python', b: true, t: 'تنظيف بيانات بـ Python', s: 'نظف ملف CSV وأزل التكرارات' },
-          { i: 'fa-react', b: true, t: 'React counter hook', s: 'ابنِ useCounter مخصص' },
-          { i: 'fa-database', t: 'SQL أفضل 5 مشترين', s: 'استعلام أفضل 5 عملاء بالإيرادات' },
-          { i: 'fa-mobile-screen', t: 'بطاقة CSS متجاوبة', s: 'بطاقة حديثة مع وضع داكن' },
-          { i: 'fa-bug', t: 'صلح لي الكود', s: 'اشرحلي كيفاش نلقى الخطأ بسرعة' }
-        ]
-      }
-    },
     en: {
       dir: 'ltr', lang: 'en', font: "'Inter', sans-serif",
       labels: {
-        'brand.sub': 'Chat · Code · Image',
-        'btn.new': 'New discussion',
-        'btn.settings': 'Settings',
-        'btn.clear': 'Clear',
-        'btn.random': 'Random Seed',
-        'btn.generate': 'Generate Image',
-        'label.conversations': 'Conversations',
-        'label.sessions': 'Code sessions',
-        'key.no': 'No API Key',
-        'key.ok': 'Key Connected',
-        'key.manage': 'Manage API Key',
-        'key.add': 'Add API Key',
-        'chat.subtitle': 'General assistant — any topic',
-        'code.subtitle': 'Coding assistant — code only',
-        'pic.subtitle': 'AI Image Generator',
+        'brand.sub': 'DeepSeek Studio',
+        'btn.new': 'New discussion', 'btn.clear': 'Clear', 'btn.random': 'Random',
+        'btn.generate.image': 'Generate Image', 'btn.generate.video': 'Generate Video',
+        'label.conversations': 'Conversations', 'label.sessions': 'Code sessions',
+        'free.badge': 'Unlimited · No API Key',
+        'chat.subtitle': 'General assistant — DeepSeek V4 Flash',
+        'code.subtitle': 'Coding assistant — DeepSeek V4 Pro',
+        'image.subtitle': 'AI Image Generator — FLUX · Imagen · GPT Image',
+        'video.subtitle': 'AI Video Generator — Veo · Wan · Seedance',
         'input.chat': 'Type your message… (Shift+Enter for new line)',
         'input.code': 'Ask a coding question…',
-        'hint.powered': 'Powered by Gemini',
-        'hint.send': 'send',
-        'hint.newline': 'new line',
-        'pic.prompt': 'Prompt',
-        'pic.prompt.ph': 'Describe your image… e.g. an Algerian desert at sunset, cinematic lighting',
-        'pic.style': 'Style',
-        'pic.style.none': '— None (raw prompt) —',
-        'pic.style.photo': 'Photorealistic',
-        'pic.style.cyber': 'Cyberpunk',
-        'pic.style.3d': '3D Render',
-        'pic.style.anime': 'Anime',
-        'pic.style.logo': 'Vector Logo',
-        'pic.style.oil': 'Oil Painting',
-        'pic.style.pixel': 'Pixel Art',
-        'pic.aspect': 'Aspect Ratio',
-        'pic.aspect.square': '1:1 — Square (1024×1024)',
-        'pic.aspect.landscape': '16:9 — Landscape (1280×720)',
-        'pic.aspect.portrait': '9:16 — Portrait (720×1280)',
-        'pic.empty.title': 'No image yet',
-        'pic.empty.sub': 'Enter a prompt above and click Generate Image.',
-        'settings.title': 'Settings',
-        'settings.key': 'Gemini API Key',
-        'settings.key.desc': 'Connect your Google Gemini API key. Get one free from Google AI Studio.',
-        'settings.key.add': 'Add API Key',
-        'settings.model': 'AI Model',
-        'settings.model.desc': 'This app is powered by Google\'s latest Flash model.',
-        'settings.model.sub': 'Latest Flash · Ultra fast',
-        'settings.data': 'Data Management',
-        'settings.data.desc': 'Everything is saved locally in your browser.',
-        'settings.export': 'Export all data (JSON)',
-        'settings.clear.chats': 'Delete all SaivCHAT',
-        'settings.clear.codes': 'Delete all SaivCODE',
-        'settings.clear.all': 'Delete ALL data',
-        'api.title': 'Google Gemini API Key',
-        'api.desc': 'Your key is stored only in your browser. It never leaves your device except to talk directly to Google\'s servers.',
-        'api.label': 'API Key',
-        'api.getkey': 'Get a free key from',
-        'api.remove': 'Remove',
-        'api.save': 'Save Key',
-        'confirm.title': 'Confirm',
-        'confirm.cancel': 'Cancel',
-        'confirm.ok': 'Delete',
+        'hint.powered': 'Powered by DeepSeek V4 Flash · Free',
+        'hint.powered.code': 'Powered by DeepSeek V4 Pro · 93.5 LiveCodeBench',
+        'hint.send': 'send', 'hint.newline': 'new line',
+        'image.prompt': 'Prompt', 'image.prompt.ph': 'Describe your image… e.g. an Algerian desert at sunset, cinematic',
+        'image.model': 'Model', 'image.size': 'Size',
+        'image.empty.title': 'No image yet', 'image.empty.sub': 'Enter a prompt above and click Generate Image.',
+        'video.prompt': 'Prompt', 'video.prompt.ph': 'Describe your video… e.g. a cat running in a garden, cinematic',
+        'video.model': 'Model', 'video.size': 'Resolution',
+        'video.empty.title': 'No video yet', 'video.empty.sub': 'Videos take 1–5 minutes. Enter a prompt above to start.',
+        'confirm.cancel': 'Cancel', 'confirm.ok': 'Delete',
         'welcome.chat.title': 'Welcome to SaivCHAT',
-        'welcome.chat.desc': 'Ask anything — science, history, philosophy, life advice, culture. Works in Arabic, Darija, English and French.',
+        'welcome.chat.desc': 'Ask anything — science, history, philosophy, advice, culture. Reply in Arabic, Darija, English, or French.',
         'welcome.code.title': 'Welcome to SaivCODE',
-        'welcome.code.desc': 'Ask any coding question and get clean, complete code with explanations. Works in Arabic, Darija, English and French.',
-        'msg.you': 'You',
-        'msg.thinking': 'thinking…',
-        'msg.copy': 'Copy',
-        'msg.copied': 'Copied',
+        'welcome.code.desc': 'Ask any coding question and get clean, complete code with clear explanations. Powered by DeepSeek V4 Pro.',
+        'msg.you': 'You', 'msg.thinking': 'thinking…', 'msg.copy': 'Copy', 'msg.copied': 'Copied',
         'empty.disc': 'No discussions yet.<br>Click <strong>New discussion</strong>.',
-        'toast.copied': 'Copied',
-        'toast.deleted': 'Deleted',
-        'toast.cleared': 'Cleared',
+        'toast.copied': 'Copied', 'toast.deleted': 'Deleted', 'toast.cleared': 'Cleared',
         'toast.newdisc': 'New discussion started',
-        'toast.keySaved': 'API key saved',
-        'toast.keyRemoved': 'API key removed',
-        'toast.keyFirst': 'Add your API key first',
-        'toast.requestFail': 'Request failed',
-        'toast.imageOk': 'Image generated',
-        'toast.imageFail': 'Image generation failed',
-        'toast.exported': 'Exported',
-        'toast.allDeleted': 'All data deleted',
-        'toast.chatsDeleted': 'All SaivCHAT deleted',
-        'toast.codesDeleted': 'All SaivCODE deleted',
+        'toast.requestFail': 'Request failed', 'toast.imageOk': 'Image generated',
+        'toast.imageFail': 'Image generation failed', 'toast.videoOk': 'Video generated',
+        'toast.videoFail': 'Video generation failed',
         'toast.promptRequired': 'Please enter a prompt first',
-        'toast.keyTooShort': 'This key looks too short',
-        'toast.seed': 'Seed',
-        'toast.noKeyToRemove': 'No key to remove',
         'toast.nothingToClear': 'Nothing to clear',
-        'toast.noChats': 'No SaivCHAT to delete',
-        'toast.noCodes': 'No SaivCODE to delete',
-        'error.noKey': 'No API key. Open Settings to add your Google Gemini key.',
-        'error.keyInvalid': 'API key format invalid. Update it in Settings.',
-        'error.keyRejected': 'API key rejected. Update it in Settings.',
-        'error.rate': 'Rate limit reached. Wait a few seconds.',
-        'error.busy': 'Servers busy. Try again in a moment.',
-        'error.timeout': 'Request timed out. Try again.',
-        'error.network': 'Network error.',
+        'error.generic': 'Something went wrong.',
+        'error.network': 'Network error. Check your connection.',
         'error.empty': 'No response. Try rephrasing.',
-        'error.blocked': 'Response blocked.',
-        'error.badReq': 'Bad request. Check your API key.',
-        'error.generic': 'Something went wrong.'
+        'error.busy': 'Service busy. Try again in a moment.',
+        'error.timeout': 'Request timed out. Try again.',
+        'error.imageTimeout': 'Image generation timed out. Try a simpler prompt.',
+        'error.videoTimeout': 'Video generation timed out. Videos take 1–5 minutes.',
+        'task.running': 'Generating…', 'task.waiting': 'Waiting for server…',
       },
       prompts: {
         chat: [
@@ -1707,109 +831,116 @@ pre code.hljs { padding: 0 !important; }
         ]
       }
     },
+    ar: {
+      dir: 'rtl', lang: 'ar', font: "'Cairo', 'Inter', sans-serif",
+      labels: {
+        'brand.sub': 'استوديو DeepSeek',
+        'btn.new': 'محادثة جديدة', 'btn.clear': 'مسح', 'btn.random': 'عشوائي',
+        'btn.generate.image': 'إنشاء صورة', 'btn.generate.video': 'إنشاء فيديو',
+        'label.conversations': 'المحادثات', 'label.sessions': 'جلسات الكود',
+        'free.badge': 'غير محدود · بلا مفتاح',
+        'chat.subtitle': 'مساعد عام — DeepSeek V4 Flash',
+        'code.subtitle': 'مساعد برمجي — DeepSeek V4 Pro',
+        'image.subtitle': 'مولد صور — FLUX · Imagen · GPT Image',
+        'video.subtitle': 'مولد فيديو — Veo · Wan · Seedance',
+        'input.chat': 'اكتب رسالتك… (Shift+Enter = سطر جديد)',
+        'input.code': 'اكتب سؤال برمجي…',
+        'hint.powered': 'مدعوم بـ DeepSeek V4 Flash · مجاني',
+        'hint.powered.code': 'مدعوم بـ DeepSeek V4 Pro · 93.5 LiveCodeBench',
+        'hint.send': 'إرسال', 'hint.newline': 'سطر جديد',
+        'image.prompt': 'الوصف', 'image.prompt.ph': 'اكتب وصف الصورة… مثال: صحراء جزائرية عند الغروب، سينمائي',
+        'image.model': 'الموديل', 'image.size': 'الحجم',
+        'image.empty.title': 'لا توجد صورة بعد', 'image.empty.sub': 'اكتب وصفاً في الأعلى واضغط إنشاء صورة.',
+        'video.prompt': 'الوصف', 'video.prompt.ph': 'اكتب وصف الفيديو… مثال: قطة تجري في حديقة، سينمائي',
+        'video.model': 'الموديل', 'video.size': 'الدقة',
+        'video.empty.title': 'لا يوجد فيديو بعد', 'video.empty.sub': 'الفيديوهات تأخذ 1-5 دقائق. اكتب وصفاً في الأعلى للبدء.',
+        'confirm.cancel': 'إلغاء', 'confirm.ok': 'حذف',
+        'welcome.chat.title': 'مرحباً في SaivCHAT',
+        'welcome.chat.desc': 'اسأل عن أي موضوع — علم، تاريخ، فلسفة، نصائح، ثقافة. يجاوبك بالدارجة، العربية، الإنجليزية والفرنسية.',
+        'welcome.code.title': 'مرحباً في SaivCODE',
+        'welcome.code.desc': 'اسأل أي سؤال برمجي واحصل على كود كامل مع شرح واضح. مدعوم بـ DeepSeek V4 Pro.',
+        'msg.you': 'أنت', 'msg.thinking': 'يفكر…', 'msg.copy': 'نسخ', 'msg.copied': 'تم النسخ',
+        'empty.disc': 'لا توجد محادثات بعد.<br>اضغط <strong>محادثة جديدة</strong>.',
+        'toast.copied': 'تم النسخ', 'toast.deleted': 'تم الحذف', 'toast.cleared': 'تم المسح',
+        'toast.newdisc': 'بدأت محادثة جديدة',
+        'toast.requestFail': 'فشل الطلب', 'toast.imageOk': 'تم إنشاء الصورة',
+        'toast.imageFail': 'فشل إنشاء الصورة', 'toast.videoOk': 'تم إنشاء الفيديو',
+        'toast.videoFail': 'فشل إنشاء الفيديو',
+        'toast.promptRequired': 'اكتب وصفاً أولاً',
+        'toast.nothingToClear': 'لا يوجد شيء لمسحه',
+        'error.generic': 'حدث خطأ ما.',
+        'error.network': 'خطأ في الشبكة. تحقق من اتصالك.',
+        'error.empty': 'لا يوجد رد. حاول إعادة صياغة السؤال.',
+        'error.busy': 'الخدمة مشغولة. حاول بعد قليل.',
+        'error.timeout': 'انتهت المهلة. حاول مرة أخرى.',
+        'error.imageTimeout': 'انتهت مهلة توليد الصورة. جرب وصفاً أبسط.',
+        'error.videoTimeout': 'انتهت مهلة توليد الفيديو. الفيديوهات تأخذ 1-5 دقائق.',
+        'task.running': 'جاري التوليد…', 'task.waiting': 'في انتظار الخادم…',
+      },
+      prompts: {
+        chat: [
+          { i: 'fa-lightbulb', t: 'علاش السماء زرقاء؟', s: 'اشرحلي بطريقة بسيطة' },
+          { i: 'fa-book', t: 'قل لي قصة قصيرة', s: 'قصة إبداعية من 3 فقرات' },
+          { i: 'fa-heart', t: 'نصائح للتحدث أمام الجمهور', s: 'كيفاش نتحكم في التوتر' },
+          { i: 'fa-plane', t: 'أجمل الأماكن في الجزائر', s: 'أفضل 5 أماكن للزيارة' },
+          { i: 'fa-utensils', t: 'وصفة كسكس سريعة', s: 'طريقة سهلة في 20 دقيقة' },
+          { i: 'fa-brain', t: 'اشرح الوعي', s: 'بكلمات بسيطة ومختصرة' }
+        ],
+        code: [
+          { i: 'fa-code', t: 'Fibonacci بالجافاسكريبت', s: 'دالة سريعة مع memoization' },
+          { i: 'fa-python', b: true, t: 'تنظيف بيانات بـ Python', s: 'نظف ملف CSV وأزل التكرارات' },
+          { i: 'fa-react', b: true, t: 'React counter hook', s: 'ابنِ useCounter مخصص' },
+          { i: 'fa-database', t: 'SQL أفضل 5 مشترين', s: 'استعلام أفضل 5 عملاء بالإيرادات' },
+          { i: 'fa-mobile-screen', t: 'بطاقة CSS متجاوبة', s: 'بطاقة حديثة مع وضع داكن' },
+          { i: 'fa-bug', t: 'صلح لي الكود', s: 'اشرحلي كيفاش نلقى الخطأ بسرعة' }
+        ]
+      }
+    },
     fr: {
       dir: 'ltr', lang: 'fr', font: "'Inter', sans-serif",
       labels: {
-        'brand.sub': 'Chat · Code · Image',
-        'btn.new': 'Nouvelle discussion',
-        'btn.settings': 'Paramètres',
-        'btn.clear': 'Effacer',
-        'btn.random': 'Graine aléatoire',
-        'btn.generate': 'Générer l\'image',
-        'label.conversations': 'Conversations',
-        'label.sessions': 'Sessions de code',
-        'key.no': 'Pas de clé',
-        'key.ok': 'Clé connectée',
-        'key.manage': 'Gérer la clé',
-        'key.add': 'Ajouter une clé',
-        'chat.subtitle': 'Assistant général — tout sujet',
-        'code.subtitle': 'Assistant code — code uniquement',
-        'pic.subtitle': 'Générateur d\'images IA',
+        'brand.sub': 'DeepSeek Studio',
+        'btn.new': 'Nouvelle discussion', 'btn.clear': 'Effacer', 'btn.random': 'Aléatoire',
+        'btn.generate.image': 'Générer l\'image', 'btn.generate.video': 'Générer la vidéo',
+        'label.conversations': 'Conversations', 'label.sessions': 'Sessions de code',
+        'free.badge': 'Illimité · Sans clé',
+        'chat.subtitle': 'Assistant général — DeepSeek V4 Flash',
+        'code.subtitle': 'Assistant code — DeepSeek V4 Pro',
+        'image.subtitle': 'Générateur d\'images — FLUX · Imagen · GPT Image',
+        'video.subtitle': 'Générateur de vidéos — Veo · Wan · Seedance',
         'input.chat': 'Écrivez votre message… (Shift+Enter pour nouvelle ligne)',
         'input.code': 'Posez une question de code…',
-        'hint.powered': 'Propulsé par Gemini',
-        'hint.send': 'envoyer',
-        'hint.newline': 'nouvelle ligne',
-        'pic.prompt': 'Invite',
-        'pic.prompt.ph': 'Décrivez votre image… ex: un désert algérien au coucher du soleil, éclairage cinématographique',
-        'pic.style': 'Style',
-        'pic.style.none': '— Aucun (invite brute) —',
-        'pic.style.photo': 'Photoréaliste',
-        'pic.style.cyber': 'Cyberpunk',
-        'pic.style.3d': 'Rendu 3D',
-        'pic.style.anime': 'Anime',
-        'pic.style.logo': 'Logo vectoriel',
-        'pic.style.oil': 'Peinture à l\'huile',
-        'pic.style.pixel': 'Pixel Art',
-        'pic.aspect': 'Format',
-        'pic.aspect.square': '1:1 — Carré (1024×1024)',
-        'pic.aspect.landscape': '16:9 — Paysage (1280×720)',
-        'pic.aspect.portrait': '9:16 — Portrait (720×1280)',
-        'pic.empty.title': 'Aucune image',
-        'pic.empty.sub': 'Entrez une invite ci-dessus et cliquez sur Générer l\'image.',
-        'settings.title': 'Paramètres',
-        'settings.key': 'Clé API Gemini',
-        'settings.key.desc': 'Connectez votre clé API Google Gemini. Obtenez-en une gratuite sur Google AI Studio.',
-        'settings.key.add': 'Ajouter une clé',
-        'settings.model': 'Modèle IA',
-        'settings.model.desc': 'Cette application utilise le dernier modèle Flash de Google.',
-        'settings.model.sub': 'Dernier Flash · Ultra rapide',
-        'settings.data': 'Gestion des données',
-        'settings.data.desc': 'Tout est enregistré localement dans votre navigateur.',
-        'settings.export': 'Exporter toutes les données (JSON)',
-        'settings.clear.chats': 'Supprimer tous les SaivCHAT',
-        'settings.clear.codes': 'Supprimer tous les SaivCODE',
-        'settings.clear.all': 'Supprimer TOUTES les données',
-        'api.title': 'Clé API Google Gemini',
-        'api.desc': 'Votre clé est stockée uniquement dans votre navigateur. Elle ne quitte jamais votre appareil, sauf pour parler directement aux serveurs de Google.',
-        'api.label': 'Clé API',
-        'api.getkey': 'Obtenez une clé gratuite sur',
-        'api.remove': 'Retirer',
-        'api.save': 'Enregistrer la clé',
-        'confirm.title': 'Confirmer',
-        'confirm.cancel': 'Annuler',
-        'confirm.ok': 'Supprimer',
+        'hint.powered': 'Propulsé par DeepSeek V4 Flash · Gratuit',
+        'hint.powered.code': 'Propulsé par DeepSeek V4 Pro · 93.5 LiveCodeBench',
+        'hint.send': 'envoyer', 'hint.newline': 'nouvelle ligne',
+        'image.prompt': 'Invite', 'image.prompt.ph': 'Décrivez votre image… ex: un désert algérien au coucher du soleil, cinématique',
+        'image.model': 'Modèle', 'image.size': 'Taille',
+        'image.empty.title': 'Aucune image', 'image.empty.sub': 'Entrez une invite et cliquez sur Générer l\'image.',
+        'video.prompt': 'Invite', 'video.prompt.ph': 'Décrivez votre vidéo… ex: un chat qui court dans un jardin, cinématique',
+        'video.model': 'Modèle', 'video.size': 'Résolution',
+        'video.empty.title': 'Aucune vidéo', 'video.empty.sub': 'Les vidéos prennent 1 à 5 minutes. Entrez une invite pour commencer.',
+        'confirm.cancel': 'Annuler', 'confirm.ok': 'Supprimer',
         'welcome.chat.title': 'Bienvenue sur SaivCHAT',
-        'welcome.chat.desc': 'Posez n\'importe quelle question — science, histoire, philosophie, conseils, culture. Fonctionne en arabe, darija, anglais et français.',
+        'welcome.chat.desc': 'Posez n\'importe quelle question — science, histoire, philosophie, conseils, culture. Répond en arabe, darija, anglais ou français.',
         'welcome.code.title': 'Bienvenue sur SaivCODE',
-        'welcome.code.desc': 'Posez n\'importe quelle question de code et obtenez du code complet avec explications. Fonctionne en arabe, darija, anglais et français.',
-        'msg.you': 'Vous',
-        'msg.thinking': 'réfléchit…',
-        'msg.copy': 'Copier',
-        'msg.copied': 'Copié',
+        'welcome.code.desc': 'Posez n\'importe quelle question de code et obtenez du code complet avec explications. Propulsé par DeepSeek V4 Pro.',
+        'msg.you': 'Vous', 'msg.thinking': 'réfléchit…', 'msg.copy': 'Copier', 'msg.copied': 'Copié',
         'empty.disc': 'Aucune discussion.<br>Cliquez sur <strong>Nouvelle discussion</strong>.',
-        'toast.copied': 'Copié',
-        'toast.deleted': 'Supprimé',
-        'toast.cleared': 'Effacé',
+        'toast.copied': 'Copié', 'toast.deleted': 'Supprimé', 'toast.cleared': 'Effacé',
         'toast.newdisc': 'Nouvelle discussion démarrée',
-        'toast.keySaved': 'Clé enregistrée',
-        'toast.keyRemoved': 'Clé retirée',
-        'toast.keyFirst': 'Ajoutez d\'abord votre clé API',
-        'toast.requestFail': 'Échec de la requête',
-        'toast.imageOk': 'Image générée',
-        'toast.imageFail': 'Échec de la génération',
-        'toast.exported': 'Exporté',
-        'toast.allDeleted': 'Toutes les données supprimées',
-        'toast.chatsDeleted': 'Tous les SaivCHAT supprimés',
-        'toast.codesDeleted': 'Tous les SaivCODE supprimés',
+        'toast.requestFail': 'Échec de la requête', 'toast.imageOk': 'Image générée',
+        'toast.imageFail': 'Échec de la génération', 'toast.videoOk': 'Vidéo générée',
+        'toast.videoFail': 'Échec de la génération',
         'toast.promptRequired': 'Entrez d\'abord une invite',
-        'toast.keyTooShort': 'Cette clé est trop courte',
-        'toast.seed': 'Graine',
-        'toast.noKeyToRemove': 'Aucune clé à retirer',
         'toast.nothingToClear': 'Rien à effacer',
-        'toast.noChats': 'Aucun SaivCHAT à supprimer',
-        'toast.noCodes': 'Aucun SaivCODE à supprimer',
-        'error.noKey': 'Pas de clé API. Ouvrez les paramètres pour ajouter votre clé Gemini.',
-        'error.keyInvalid': 'Format de clé invalide. Mettez-la à jour dans les paramètres.',
-        'error.keyRejected': 'Clé rejetée. Mettez-la à jour dans les paramètres.',
-        'error.rate': 'Limite atteinte. Attendez quelques secondes.',
-        'error.busy': 'Serveurs occupés. Réessayez dans un instant.',
-        'error.timeout': 'Délai expiré. Réessayez.',
-        'error.network': 'Erreur réseau.',
+        'error.generic': 'Une erreur est survenue.',
+        'error.network': 'Erreur réseau. Vérifiez votre connexion.',
         'error.empty': 'Aucune réponse. Reformulez.',
-        'error.blocked': 'Réponse bloquée.',
-        'error.badReq': 'Requête invalide. Vérifiez votre clé.',
-        'error.generic': 'Une erreur est survenue.'
+        'error.busy': 'Service occupé. Réessayez dans un instant.',
+        'error.timeout': 'Délai expiré. Réessayez.',
+        'error.imageTimeout': 'Délai d\'image expiré. Essayez une invite plus simple.',
+        'error.videoTimeout': 'Délai vidéo expiré. Les vidéos prennent 1 à 5 minutes.',
+        'task.running': 'Génération…', 'task.waiting': 'En attente du serveur…',
       },
       prompts: {
         chat: [
@@ -1841,12 +972,10 @@ pre code.hljs { padding: 0 !important; }
     discussions: { chat: [], code: [] },
     data: {},
     active: { chat: null, code: null },
-    apiKey: '',
-    theme: 'light',
-    lang: 'ar',
+    theme: 'dark',
+    lang: 'en',
     sending: { chat: false, code: false },
-    currentSeed: Math.floor(Math.random() * 1000000),
-    picSettings: { style: '', aspect: '1024|1024' },
+    generating: { image: false, video: false },
     mdCache: new Map(),
   };
 
@@ -1860,26 +989,25 @@ pre code.hljs { padding: 0 !important; }
   const btnNewMobile = $('btnNewMobile'), btnNewDisc = $('btnNewDisc');
   const sectionsNav = $('sectionsNav'), discWrap = $('discWrap');
   const discList = $('discList'), discLabel = $('discLabel');
-  const btnSettings = $('btnSettings'), keyStatus = $('keyStatus');
   const btnTheme = $('btnTheme'), themeIcon = $('themeIcon');
 
-  const views = { chat: $('view-chat'), code: $('view-code'), pic: $('view-pic') };
+  const views = {
+    chat: $('view-chat'), code: $('view-code'),
+    image: $('view-image'), video: $('view-video'),
+  };
 
   const CHAT = {
     chat: { scroll: $('chatScrollChat'), inner: $('chatInnerChat'), input: $('inputChat'), send: $('sendChat'), clearBtn: $('btnClearChatView') },
     code: { scroll: $('chatScrollCode'), inner: $('chatInnerCode'), input: $('inputCode'), send: $('sendCode'), clearBtn: $('btnClearCodeView') },
   };
 
-  const picPrompt = $('picPrompt'), picStyle = $('picStyle'), picAspect = $('picAspect');
-  const btnGenerate = $('btnGenerate'), btnRandomSeed = $('btnRandomSeed'), picPreview = $('picPreview');
+  const imgPrompt = $('imgPrompt'), imgModel = $('imgModel'), imgSize = $('imgSize');
+  const btnGenerateImg = $('btnGenerateImg'), btnRandomSeedImg = $('btnRandomSeedImg'), imgPreview = $('imgPreview');
 
-  const modalSettings = $('modalSettings'), modalApiKey = $('modalApiKey'), modalConfirm = $('modalConfirm');
-  const apiKeyInput = $('apiKeyInput'), btnApiKeySave = $('btnApiKeySave'), btnApiKeyRemove = $('btnApiKeyRemove');
-  const btnManageKey = $('btnManageKey'), keyBtnLabel = $('keyBtnLabel');
-  const countChats = $('countChats'), countCodes = $('countCodes');
-  const confirmTitle = $('confirmTitle'), confirmText = $('confirmText'), confirmOk = $('confirmOk'), confirmCancel = $('confirmCancel');
+  const vidPrompt = $('vidPrompt'), vidModel = $('vidModel'), vidSize = $('vidSize');
+  const btnGenerateVid = $('btnGenerateVid'), btnRandomSeedVid = $('btnRandomSeedVid'), vidPreview = $('vidPreview');
+
   const toast = $('toast'), toastIcon = $('toastIcon'), toastMsg = $('toastMsg');
-
   const langWrap = $('langWrap'), langBtn = $('langBtn');
 
   /* ==================== HELPERS ==================== */
@@ -1887,7 +1015,6 @@ pre code.hljs { padding: 0 !important; }
     const dict = I18N[state.lang] || I18N.en;
     return dict.labels[key] || key;
   }
-
   function escapeHtml(s) { return String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
   function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
   function isArabic(text) { return !!text && /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/.test(text); }
@@ -1900,7 +1027,7 @@ pre code.hljs { padding: 0 !important; }
     toast.classList.add('show');
     toastIcon.className = type === 'error' ? 'fa-solid fa-circle-exclamation' : type === 'info' ? 'fa-solid fa-circle-info' : 'fa-solid fa-circle-check';
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
   }
 
   /* ==================== STORAGE ==================== */
@@ -1910,9 +1037,8 @@ pre code.hljs { padding: 0 !important; }
     saveTimer = setTimeout(() => {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          v: 6, section: state.section, discussions: state.discussions,
-          data: state.data, active: state.active, apiKey: state.apiKey,
-          theme: state.theme, lang: state.lang, picSettings: state.picSettings,
+          v: 1, section: state.section, discussions: state.discussions,
+          data: state.data, active: state.active, theme: state.theme, lang: state.lang,
         }));
       } catch (e) {}
     }, 200);
@@ -1920,11 +1046,11 @@ pre code.hljs { padding: 0 !important; }
 
   function load() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('saivai.v5') || localStorage.getItem('saivai.v4');
+      const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
       const o = JSON.parse(raw);
       if (!o || typeof o !== 'object') return;
-      if (['chat','code','pic'].indexOf(o.section) !== -1) state.section = o.section;
+      if (['chat','code','image','video'].indexOf(o.section) !== -1) state.section = o.section;
       if (o.discussions && typeof o.discussions === 'object') {
         state.discussions.chat = Array.isArray(o.discussions.chat) ? o.discussions.chat.filter(x => typeof x === 'string') : [];
         state.discussions.code = Array.isArray(o.discussions.code) ? o.discussions.code.filter(x => typeof x === 'string') : [];
@@ -1946,13 +1072,8 @@ pre code.hljs { padding: 0 !important; }
         if (o.active.chat && state.data[o.active.chat]) state.active.chat = o.active.chat;
         if (o.active.code && state.data[o.active.code]) state.active.code = o.active.code;
       }
-      if (typeof o.apiKey === 'string') state.apiKey = o.apiKey;
       if (o.theme === 'light' || o.theme === 'dark') state.theme = o.theme;
       if (o.lang && I18N[o.lang]) state.lang = o.lang;
-      if (o.picSettings && typeof o.picSettings === 'object') {
-        state.picSettings.style = typeof o.picSettings.style === 'string' ? o.picSettings.style : '';
-        state.picSettings.aspect = typeof o.picSettings.aspect === 'string' ? o.picSettings.aspect : '1024|1024';
-      }
     } catch (e) {}
   }
 
@@ -1965,10 +1086,7 @@ pre code.hljs { padding: 0 !important; }
     if (meta) meta.setAttribute('content', theme === 'dark' ? '#0a0a0a' : '#ffffff');
     save();
   }
-
-  btnTheme.addEventListener('click', () => {
-    applyTheme(state.theme === 'dark' ? 'light' : 'dark');
-  });
+  btnTheme.addEventListener('click', () => applyTheme(state.theme === 'dark' ? 'light' : 'dark'));
 
   /* ==================== LANGUAGE ==================== */
   function applyLanguage(lang) {
@@ -1994,7 +1112,7 @@ pre code.hljs { padding: 0 !important; }
       opt.classList.toggle('active', opt.getAttribute('data-lang') === lang);
     });
 
-    document.title = lang === 'ar' ? 'SaivAI — استوديو المحادثة والكود والصور' : 'SaivAI — Chat · Code · Image Studio';
+    document.title = lang === 'ar' ? 'SaivAI — استوديو DeepSeek' : 'SaivAI — DeepSeek Studio';
 
     langWrap.classList.remove('open');
     save();
@@ -2014,43 +1132,35 @@ pre code.hljs { padding: 0 !important; }
   });
 
   function updateDiscLabel() {
-    if (state.section === 'code') discLabel.textContent = t('label.sessions');
-    else discLabel.textContent = t('label.conversations');
+    discLabel.textContent = state.section === 'code' ? t('label.sessions') : t('label.conversations');
   }
 
   /* ==================== DISCUSSIONS ==================== */
   function createDiscussion(section) {
     const id = uid();
-    const d = {
-      id, section,
-      title: section === 'code' ? 'New code session' : 'New chat',
-      messages: [], createdAt: Date.now(), updatedAt: Date.now(),
-    };
+    const d = { id, section, title: section === 'code' ? 'New code session' : 'New chat',
+      messages: [], createdAt: Date.now(), updatedAt: Date.now() };
     state.data[id] = d;
     state.discussions[section].unshift(id);
     state.active[section] = id;
     save();
     return d;
   }
-
   function deleteDiscussion(section, id) {
     state.discussions[section] = state.discussions[section].filter(x => x !== id);
     delete state.data[id];
     if (state.active[section] === id) state.active[section] = state.discussions[section][0] || null;
     save();
   }
-
   function getActive(section) {
     const id = state.active[section];
     return id ? state.data[id] : null;
   }
-
   function ensureActive(section) {
     let d = getActive(section);
     if (!d) d = createDiscussion(section);
     return d;
   }
-
   function autoTitle(section, text) {
     const d = getActive(section);
     if (!d) return;
@@ -2063,13 +1173,12 @@ pre code.hljs { padding: 0 !important; }
 
   function renderDiscList() {
     const section = state.section;
-    if (section === 'pic') { discWrap.classList.add('hidden'); return; }
+    if (section === 'image' || section === 'video') { discWrap.classList.add('hidden'); return; }
     discWrap.classList.remove('hidden');
     updateDiscLabel();
 
     const ids = state.discussions[section] || [];
     discList.innerHTML = '';
-
     if (!ids.length) {
       const empty = document.createElement('div');
       empty.className = 'disc-empty';
@@ -2093,17 +1202,14 @@ pre code.hljs { padding: 0 !important; }
       const del = document.createElement('button');
       del.className = 'disc-del';
       del.type = 'button';
-      del.title = 'Delete';
       del.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
       del.addEventListener('click', (e) => {
         e.stopPropagation();
-        askConfirm('Delete discussion', 'Delete "<strong>' + escapeHtml(d.title || 'Untitled') + '</strong>"?', () => {
-          deleteDiscussion(section, id);
-          if (!state.active[section]) state.active[section] = (state.discussions[section] || [])[0] || null;
-          renderDiscList();
-          renderActive();
-          showToast(t('toast.deleted'), 'info');
-        });
+        deleteDiscussion(section, id);
+        if (!state.active[section]) state.active[section] = (state.discussions[section] || [])[0] || null;
+        renderDiscList();
+        renderActive();
+        showToast(t('toast.deleted'), 'info');
       });
       item.appendChild(ico);
       item.appendChild(title);
@@ -2132,7 +1238,8 @@ pre code.hljs { padding: 0 !important; }
     setTimeout(() => {
       if (section === 'chat') CHAT.chat.input.focus();
       else if (section === 'code') CHAT.code.input.focus();
-      else if (section === 'pic') picPrompt.focus();
+      else if (section === 'image') imgPrompt.focus();
+      else if (section === 'video') vidPrompt.focus();
     }, 60);
   }
 
@@ -2158,14 +1265,12 @@ pre code.hljs { padding: 0 !important; }
   }
 
   function enhanceCodeBlocks(container) {
-    const pres = container.querySelectorAll('pre');
-    pres.forEach((pre) => {
+    container.querySelectorAll('pre').forEach((pre) => {
       if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
       const codeEl = pre.querySelector('code');
       if (!codeEl) return;
       let lang = 'code';
-      const cls = codeEl.className || '';
-      const m = cls.match(/language-([a-zA-Z0-9+#-]+)/);
+      const m = (codeEl.className || '').match(/language-([a-zA-Z0-9+#-]+)/);
       if (m) lang = m[1];
       if (typeof hljs !== 'undefined') {
         try { if (!codeEl.dataset.highlighted) { hljs.highlightElement(codeEl); codeEl.dataset.highlighted = '1'; } } catch (e) {}
@@ -2209,14 +1314,15 @@ pre code.hljs { padding: 0 !important; }
     const ta = document.createElement('textarea');
     ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
     document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); if (onDone) onDone(); } catch (e) { showToast('Copy failed', 'error'); }
+    try { document.execCommand('copy'); if (onDone) onDone(); } catch (e) {}
     document.body.removeChild(ta);
   }
 
   /* ==================== RENDER ==================== */
   function scrollBottom(section) {
-    const sc = CHAT[section].scroll;
-    requestAnimationFrame(() => { sc.scrollTop = sc.scrollHeight; });
+    const cfg = CHAT[section];
+    if (!cfg) return;
+    requestAnimationFrame(() => { cfg.scroll.scrollTop = cfg.scroll.scrollHeight; });
   }
 
   function buildWelcome(section) {
@@ -2224,7 +1330,6 @@ pre code.hljs { padding: 0 !important; }
     const wrap = document.createElement('div');
     wrap.className = 'welcome';
     const dict = I18N[state.lang] || I18N.en;
-
     wrap.innerHTML =
       '<div class="welcome-icon">' + (isCode ? '<i class="fa-solid fa-code"></i>' : '<i class="fa-solid fa-comments"></i>') + '</div>' +
       '<h1>' + (isCode ? dict.labels['welcome.code.title'] : dict.labels['welcome.chat.title']) + '</h1>' +
@@ -2232,7 +1337,6 @@ pre code.hljs { padding: 0 !important; }
       '<div class="prompt-grid" id="pg-' + section + '"></div>';
 
     const prompts = isCode ? dict.prompts.code : dict.prompts.chat;
-
     setTimeout(() => {
       const grid = document.getElementById('pg-' + section);
       if (!grid) return;
@@ -2249,7 +1353,6 @@ pre code.hljs { padding: 0 !important; }
         grid.appendChild(card);
       });
     }, 0);
-
     return wrap;
   }
 
@@ -2266,14 +1369,11 @@ pre code.hljs { padding: 0 !important; }
     const rtl = isArabic(msg.content);
     const wrap = document.createElement('div');
     wrap.className = 'msg ' + (isUser ? 'user' : 'ai');
-
     const avatar = document.createElement('div');
     avatar.className = 'msg-avatar';
-    avatar.innerHTML = isUser ? '<i class="fa-solid fa-user"></i>' : (section === 'code' ? '<i class="fa-solid fa-code"></i>' : '<i class="fa-solid fa-comments"></i>');
-
+    avatar.innerHTML = isUser ? '<i class="fa-solid fa-user"></i>' : (section === 'code' ? '<i class="fa-solid fa-code"></i>' : '<i class="fa-solid fa-bolt"></i>');
     const body = document.createElement('div');
     body.className = 'msg-body';
-
     const meta = document.createElement('div');
     meta.className = 'msg-meta';
     const name = document.createElement('span');
@@ -2281,28 +1381,23 @@ pre code.hljs { padding: 0 !important; }
     name.textContent = isUser ? t('msg.you') : (section === 'code' ? 'SaivCODE' : 'SaivCHAT');
     const time = document.createElement('span');
     time.textContent = timeAgo(msg.ts);
-    meta.appendChild(name);
-    meta.appendChild(time);
-
+    meta.appendChild(name); meta.appendChild(time);
     const bubble = document.createElement('div');
     bubble.className = 'msg-bubble';
     if (rtl) bubble.classList.add('rtl');
-
     if (isUser) bubble.textContent = msg.content;
     else if (msg.isError) { bubble.innerHTML = renderMarkdown(msg.content); bubble.style.borderColor = 'var(--error)'; }
     else { bubble.innerHTML = renderMarkdown(msg.content); enhanceCodeBlocks(bubble); }
-
-    body.appendChild(meta);
-    body.appendChild(bubble);
-    wrap.appendChild(avatar);
-    wrap.appendChild(body);
+    body.appendChild(meta); body.appendChild(bubble);
+    wrap.appendChild(avatar); wrap.appendChild(body);
     return wrap;
   }
 
   function renderActive() {
     const section = state.section;
-    if (section === 'pic') return;
+    if (section === 'image' || section === 'video') return;
     const cfg = CHAT[section];
+    if (!cfg) return;
     const d = getActive(section);
     cfg.inner.innerHTML = '';
     if (!d || !d.messages.length) { cfg.inner.appendChild(buildWelcome(section)); return; }
@@ -2318,140 +1413,9 @@ pre code.hljs { padding: 0 !important; }
     scrollBottom(section);
   }
 
-  function appendTyping(section) {
-    const cfg = CHAT[section];
-    const wrap = document.createElement('div');
-    wrap.className = 'msg ai';
-    wrap.id = 'typing-' + section;
-    const avatar = document.createElement('div');
-    avatar.className = 'msg-avatar';
-    avatar.innerHTML = section === 'code' ? '<i class="fa-solid fa-code"></i>' : '<i class="fa-solid fa-comments"></i>';
-    const body = document.createElement('div');
-    body.className = 'msg-body';
-    const meta = document.createElement('div');
-    meta.className = 'msg-meta';
-    meta.innerHTML = '<span class="msg-name">' + (section === 'code' ? 'SaivCODE' : 'SaivCHAT') + '</span><span>' + t('msg.thinking') + '</span>';
-    const bubble = document.createElement('div');
-    bubble.className = 'msg-bubble';
-    bubble.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
-    body.appendChild(meta);
-    body.appendChild(bubble);
-    wrap.appendChild(avatar);
-    wrap.appendChild(body);
-    cfg.inner.appendChild(wrap);
-    scrollBottom(section);
-  }
-
-  function removeTyping(section) {
-    const el = document.getElementById('typing-' + section);
-    if (el && el.parentNode) el.parentNode.removeChild(el);
-  }
-
-  /* ==================== GEMINI API — v1beta, gemini-3.8-flash ==================== */
-  function buildContents(messages, systemPrompt) {
-    const clean = messages.filter(m => !m.isError);
-    while (clean.length && clean[0].role !== 'user') clean.shift();
-    if (!clean.length) return [];
-
-    const merged = clean.map((m, i) => {
-      if (i === 0 && m.role === 'user') {
-        return { role: 'user', content: systemPrompt + '\n\n---\n\n' + m.content };
-      }
-      return m;
-    });
-
-    const contents = [];
-    let lastRole = null;
-    for (let i = 0; i < merged.length; i++) {
-      const m = merged[i];
-      const role = m.role === 'assistant' ? 'model' : 'user';
-      if (role === lastRole && contents.length) {
-        contents[contents.length - 1].parts[0].text += '\n\n' + m.content;
-      } else {
-        contents.push({ role, parts: [{ text: m.content }] });
-        lastRole = role;
-      }
-    }
-    return contents;
-  }
-
-  function extractText(data) {
-    const cands = data.candidates || [];
-    if (!cands.length) {
-      const br = data.promptFeedback && data.promptFeedback.blockReason;
-      if (br) throw new Error(t('error.blocked') + ' (' + br + ')');
-      throw new Error(t('error.empty'));
-    }
-    const cand = cands[0];
-    const parts = (cand.content && cand.content.parts) || [];
-    const text = parts.map(p => p.text || '').join('').trim();
-    if (!text) {
-      if (cand.finishReason === 'SAFETY') throw new Error(t('error.blocked'));
-      if (cand.finishReason === 'MAX_TOKENS') throw new Error(t('error.empty'));
-      throw new Error(t('error.empty'));
-    }
-    return text;
-  }
-
-  async function callGemini(section, messages) {
-    if (!state.apiKey) throw new Error(t('error.noKey'));
-
-    const systemPrompt = section === 'code' ? SYSTEM_CODE : SYSTEM_CHAT;
-    const contents = buildContents(messages, systemPrompt);
-    if (!contents.length) throw new Error(t('error.empty'));
-
-    const url = API_BASE + MODEL_ID + ':generateContent';
-
-    const body = {
-      contents,
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 8192,
-      },
-    };
-
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
-
-    let res;
-    try {
-      res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-goog-api-key': state.apiKey,
-        },
-        body: JSON.stringify(body),
-        signal: controller.signal,
-      });
-    } catch (err) {
-      clearTimeout(timer);
-      if (err.name === 'AbortError') throw new Error(t('error.timeout'));
-      throw new Error(t('error.network') + ' ' + (err.message || ''));
-    }
-    clearTimeout(timer);
-
-    if (!res.ok) {
-      let apiMsg = '';
-      try { const e = await res.json(); if (e && e.error && e.error.message) apiMsg = e.error.message; } catch (e) {}
-
-      if (res.status === 400) throw new Error(apiMsg || t('error.badReq'));
-      if (res.status === 401 || res.status === 403) throw new Error(apiMsg || t('error.keyRejected'));
-      if (res.status === 404) throw new Error(apiMsg || 'Model not found. Update the app.');
-      if (res.status === 429) throw new Error(apiMsg || t('error.rate'));
-      if (res.status >= 500) throw new Error(apiMsg || t('error.busy'));
-      throw new Error(apiMsg || (t('error.generic') + ' HTTP ' + res.status));
-    }
-
-    const data = await res.json();
-    return extractText(data);
-  }
-
-  /* ==================== SEND ==================== */
+  /* ==================== PUTER.AI STREAMING CHAT ==================== */
   async function sendMessage(section) {
     if (state.sending[section]) return;
-    if (!state.apiKey) { showToast(t('toast.keyFirst'), 'error'); openModal('modalApiKey'); return; }
-
     const cfg = CHAT[section];
     const text = (cfg.input.value || '').trim();
     if (!text) return;
@@ -2464,7 +1428,6 @@ pre code.hljs { padding: 0 !important; }
     d.messages.push(userMsg);
     d.updatedAt = Date.now();
     autoTitle(section, text);
-
     appendMsg(section, userMsg);
     save();
     renderDiscList();
@@ -2472,19 +1435,80 @@ pre code.hljs { padding: 0 !important; }
     cfg.input.value = '';
     autoResize(cfg.input);
     updateSend(section);
-    appendTyping(section);
+
+    // Streaming bubble
+    const wrap = document.createElement('div');
+    wrap.className = 'msg ai';
+    wrap.id = 'stream-' + section;
+    const avatar = document.createElement('div');
+    avatar.className = 'msg-avatar';
+    avatar.innerHTML = section === 'code' ? '<i class="fa-solid fa-code"></i>' : '<i class="fa-solid fa-bolt"></i>';
+    const body = document.createElement('div');
+    body.className = 'msg-body';
+    const meta = document.createElement('div');
+    meta.className = 'msg-meta';
+    meta.innerHTML = '<span class="msg-name">' + (section === 'code' ? 'SaivCODE' : 'SaivCHAT') + '</span><span>streaming…</span>';
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    const streamContent = document.createElement('div');
+    streamContent.className = 'stream-content';
+    streamContent.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+    bubble.appendChild(streamContent);
+    body.appendChild(meta); body.appendChild(bubble);
+    wrap.appendChild(avatar); wrap.appendChild(body);
+    cfg.inner.appendChild(wrap);
+    scrollBottom(section);
+
+    let fullText = '';
 
     try {
-      const history = d.messages.slice(-12).map(m => ({ role: m.role, content: m.content }));
-      const reply = await callGemini(section, history);
-      removeTyping(section);
-      const aiMsg = { role: 'assistant', content: reply, ts: Date.now() };
+      if (typeof puter === 'undefined' || !puter.ai) {
+        throw new Error('Puter.js not loaded. Please refresh the page.');
+      }
+
+      // Build messages array for Puter.js
+      const systemPrompt = section === 'code' ? SYSTEM_CODE : SYSTEM_CHAT;
+      const messages = [
+        { role: 'system', content: systemPrompt },
+        ...d.messages.slice(-12).map(m => ({ role: m.role, content: m.content }))
+      ];
+
+      const modelId = section === 'code' ? CODE_MODEL : CHAT_MODEL;
+
+      const response = await puter.ai.chat(messages, {
+        model: modelId,
+        stream: true,
+      });
+
+      if (response && typeof response[Symbol.asyncIterator] === 'function') {
+        // Streaming
+        for await (const part of response) {
+          const chunk = (part && (part.text || part.content)) || '';
+          if (chunk) {
+            fullText += chunk;
+            streamContent.innerHTML = renderMarkdown(fullText) + '<span class="streaming-cursor"></span>';
+            scrollBottom(section);
+          }
+        }
+      } else {
+        // Non-streaming fallback
+        fullText = (response && response.message && response.message.content) || String(response || '');
+        streamContent.innerHTML = renderMarkdown(fullText);
+      }
+
+      const streamEl = document.getElementById('stream-' + section);
+      if (streamEl) streamEl.remove();
+
+      if (!fullText) throw new Error(t('error.empty'));
+
+      const aiMsg = { role: 'assistant', content: fullText, ts: Date.now() };
       d.messages.push(aiMsg);
       d.updatedAt = Date.now();
       appendMsg(section, aiMsg);
       save();
     } catch (err) {
-      removeTyping(section);
+      const streamEl = document.getElementById('stream-' + section);
+      if (streamEl) streamEl.remove();
       const message = (err && err.message) ? err.message : t('error.generic');
       const errMsg = { role: 'assistant', content: '⚠️ **Error:** ' + message, ts: Date.now(), isError: true };
       d.messages.push(errMsg);
@@ -2505,7 +1529,6 @@ pre code.hljs { padding: 0 !important; }
     ta.style.height = 'auto';
     ta.style.height = Math.min(ta.scrollHeight, 180) + 'px';
   }
-
   function updateSend(section) {
     const cfg = CHAT[section];
     const has = (cfg.input.value || '').trim().length > 0;
@@ -2525,17 +1548,15 @@ pre code.hljs { padding: 0 !important; }
     cfg.clearBtn.addEventListener('click', () => {
       const d = getActive(section);
       if (!d || !d.messages.length) { showToast(t('toast.nothingToClear'), 'info'); return; }
-      askConfirm(t('btn.clear'), t('toast.cleared') + '?', () => {
-        d.messages = []; d.updatedAt = Date.now();
-        save(); renderActive();
-        showToast(t('toast.cleared'), 'info');
-      });
+      d.messages = []; d.updatedAt = Date.now();
+      save(); renderActive();
+      showToast(t('toast.cleared'), 'info');
     });
   });
 
   /* ==================== NEW DISCUSSION ==================== */
   function handleNew() {
-    const section = state.section === 'pic' ? 'chat' : state.section;
+    const section = (state.section === 'image' || state.section === 'video') ? 'chat' : state.section;
     createDiscussion(section);
     renderDiscList();
     renderActive();
@@ -2555,233 +1576,152 @@ pre code.hljs { padding: 0 !important; }
   btnCloseSidebar.addEventListener('click', closeSidebarMobile);
   backdrop.addEventListener('click', closeSidebarMobile);
 
-  /* ==================== MODALS ==================== */
-  function openModal(id) { const m = $(id); if (m) m.classList.add('open'); }
-  function closeModal(id) { const m = $(id); if (m) m.classList.remove('open'); }
-
-  document.querySelectorAll('[data-close]').forEach(b => {
-    b.addEventListener('click', () => closeModal(b.getAttribute('data-close')));
-  });
-  document.querySelectorAll('.modal').forEach(modal => {
-    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.querySelectorAll('.modal.open').forEach(m => m.classList.remove('open'));
-      closeSidebarMobile();
-      langWrap.classList.remove('open');
-    }
+  /* ==================== IMAGE GENERATION ==================== */
+  btnRandomSeedImg.addEventListener('click', () => {
+    const seed = Math.floor(Math.random() * 1000000);
+    showToast('Seed: ' + seed, 'info');
   });
 
-  let confirmAction = null;
-  function askConfirm(title, text, onOk) {
-    confirmTitle.textContent = title;
-    confirmText.innerHTML = text;
-    confirmAction = onOk;
-    openModal('modalConfirm');
-  }
-  confirmOk.addEventListener('click', () => { const fn = confirmAction; confirmAction = null; closeModal('modalConfirm'); if (fn) fn(); });
-  confirmCancel.addEventListener('click', () => { confirmAction = null; closeModal('modalConfirm'); });
-
-  /* ==================== API KEY ==================== */
-  function updateKeyStatus() {
-    const has = !!(state.apiKey && state.apiKey.length > 15);
-    if (has) {
-      keyStatus.className = 'key-status ok';
-      keyStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i><span>' + t('key.ok') + '</span>';
-      keyBtnLabel.textContent = t('key.manage');
-    } else {
-      keyStatus.className = 'key-status warn';
-      keyStatus.innerHTML = '<i class="fa-solid fa-circle"></i><span>' + t('key.no') + '</span>';
-      keyBtnLabel.textContent = t('key.add');
-    }
-  }
-
-  btnSettings.addEventListener('click', () => {
-    updateKeyStatus();
-    countChats.textContent = String((state.discussions.chat || []).length);
-    countCodes.textContent = String((state.discussions.code || []).length);
-    openModal('modalSettings');
-  });
-
-  btnManageKey.addEventListener('click', () => {
-    closeModal('modalSettings');
-    setTimeout(() => {
-      apiKeyInput.value = state.apiKey || '';
-      openModal('modalApiKey');
-      setTimeout(() => apiKeyInput.focus(), 150);
-    }, 200);
-  });
-
-  btnApiKeySave.addEventListener('click', () => {
-    const key = (apiKeyInput.value || '').trim();
-    if (!key) { showToast(t('toast.keyFirst'), 'error'); return; }
-    if (key.length < 15) { showToast(t('toast.keyTooShort'), 'error'); return; }
-    state.apiKey = key;
-    save();
-    updateKeyStatus();
-    closeModal('modalApiKey');
-    showToast(t('toast.keySaved'), 'success');
-  });
-
-  btnApiKeyRemove.addEventListener('click', () => {
-    if (!state.apiKey) { showToast(t('toast.noKeyToRemove'), 'info'); return; }
-    askConfirm(t('api.remove'), t('api.remove') + '?', () => {
-      state.apiKey = ''; apiKeyInput.value = '';
-      save(); updateKeyStatus(); closeModal('modalApiKey');
-      showToast(t('toast.keyRemoved'), 'info');
-    });
-  });
-
-  apiKeyInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') { e.preventDefault(); btnApiKeySave.click(); }
-  });
-
-  /* ==================== DATA MANAGEMENT ==================== */
-  $('btnExportData').addEventListener('click', () => {
-    const out = { exportedAt: new Date().toISOString(), section: state.section, discussions: state.discussions, data: state.data, model: MODEL_ID };
-    const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'saivai-export-' + Date.now() + '.json';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
-    showToast(t('toast.exported'), 'success');
-  });
-
-  $('btnClearAllChats').addEventListener('click', () => {
-    const n = (state.discussions.chat || []).length;
-    if (!n) { showToast(t('toast.noChats'), 'info'); return; }
-    askConfirm(t('settings.clear.chats'), 'Delete <strong>' + n + ' SaivCHAT</strong>?', () => {
-      (state.discussions.chat || []).forEach(id => { delete state.data[id]; });
-      state.discussions.chat = []; state.active.chat = null;
-      save();
-      if (state.section === 'chat') { renderDiscList(); renderActive(); }
-      countChats.textContent = '0';
-      showToast(t('toast.chatsDeleted'), 'info');
-    });
-  });
-
-  $('btnClearAllCodes').addEventListener('click', () => {
-    const n = (state.discussions.code || []).length;
-    if (!n) { showToast(t('toast.noCodes'), 'info'); return; }
-    askConfirm(t('settings.clear.codes'), 'Delete <strong>' + n + ' SaivCODE</strong>?', () => {
-      (state.discussions.code || []).forEach(id => { delete state.data[id]; });
-      state.discussions.code = []; state.active.code = null;
-      save();
-      if (state.section === 'code') { renderDiscList(); renderActive(); }
-      countCodes.textContent = '0';
-      showToast(t('toast.codesDeleted'), 'info');
-    });
-  });
-
-  $('btnClearEverything').addEventListener('click', () => {
-    askConfirm(t('settings.clear.all'), 'Delete <strong>EVERYTHING</strong>?', () => {
-      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-      state.discussions = { chat: [], code: [] };
-      state.data = {}; state.active = { chat: null, code: null };
-      state.apiKey = '';
-      state.picSettings = { style: '', aspect: '1024|1024' };
-      state.section = 'chat';
-      picStyle.value = ''; picAspect.value = '1024|1024';
-      picPreview.innerHTML = '<div class="pic-empty" id="picEmpty"><div class="pic-empty-icon"><i class="fa-regular fa-image"></i></div><h3>' + t('pic.empty.title') + '</h3><p>' + t('pic.empty.sub') + '</p></div>';
-      updateKeyStatus();
-      switchSection('chat');
-      save(); closeModal('modalSettings');
-      showToast(t('toast.allDeleted'), 'info');
-    });
-  });
-
-  /* ==================== SAIVPIC ==================== */
-  function loadPicSettings() {
-    if (picStyle && state.picSettings.style) picStyle.value = state.picSettings.style;
-    if (picAspect && state.picSettings.aspect) picAspect.value = state.picSettings.aspect;
-  }
-  function savePicSettings() {
-    state.picSettings.style = picStyle.value;
-    state.picSettings.aspect = picAspect.value;
-    save();
-  }
-  picStyle.addEventListener('change', savePicSettings);
-  picAspect.addEventListener('change', savePicSettings);
-
-  btnRandomSeed.addEventListener('click', () => {
-    state.currentSeed = Math.floor(Math.random() * 1000000);
-    showToast(t('toast.seed') + ': ' + state.currentSeed, 'info');
-  });
-
-  function setPicPreview(html) { picPreview.innerHTML = html; }
+  function setPreview(el, html) { el.innerHTML = html; }
 
   async function generateImage() {
-    const rawPrompt = (picPrompt.value || '').trim();
-    if (!rawPrompt) { showToast(t('toast.promptRequired'), 'error'); picPrompt.focus(); return; }
+    if (state.generating.image) return;
+    const prompt = (imgPrompt.value || '').trim();
+    if (!prompt) { showToast(t('toast.promptRequired'), 'error'); imgPrompt.focus(); return; }
 
-    const styleSuffix = picStyle.value || '';
-    const fullPrompt = styleSuffix ? (rawPrompt + ', ' + styleSuffix) : rawPrompt;
+    state.generating.image = true;
+    btnGenerateImg.disabled = true;
 
-    const parts = (picAspect.value || '1024|1024').split('|');
-    const width = parseInt(parts[0], 10) || 1024;
-    const height = parseInt(parts[1], 10) || 1024;
+    const modelId = imgModel.value;
+    const size = imgSize.value;
 
-    const seed = state.currentSeed || Math.floor(Math.random() * 1000000);
-    state.currentSeed = Math.floor(Math.random() * 1000000);
+    setPreview(imgPreview, '<div class="media-loading"><div class="media-spinner"></div><p class="media-loading-text">' + t('task.running') + '</p><p class="media-loading-sub">' + t('task.waiting') + '</p></div>');
 
-    const url = IMAGE_ENDPOINT + encodeURIComponent(fullPrompt) + '?width=' + width + '&height=' + height + '&seed=' + seed + '&nologo=true&model=flux';
+    try {
+      if (typeof puter === 'undefined' || !puter.ai) {
+        throw new Error('Puter.js not loaded. Please refresh the page.');
+      }
 
-    btnGenerate.disabled = true;
-    setPicPreview('<div class="pic-loading"><div class="pic-spinner"></div><p class="pic-loading-text">' + t('btn.generate') + '…</p><p class="pic-loading-sub">5–20 s</p></div>');
+      const img = await puter.ai.txt2img(prompt, {
+        model: modelId,
+        width: parseInt(size.split('x')[0], 10) || 1024,
+        height: parseInt(size.split('x')[1], 10) || 1024,
+      });
 
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
+      // img is an HTMLImageElement
+      const src = img && (img.src || (img.getAttribute && img.getAttribute('src')));
+      if (!src) throw new Error('No image returned');
 
-    img.onload = () => {
-      const metaText = escapeHtml(fullPrompt) + ' — ' + width + '×' + height + ' · ' + seed;
-      setPicPreview(
-        '<div class="pic-result">' +
-          '<img class="pic-result-img" src="' + url + '" alt="' + escapeHtml(rawPrompt) + '">' +
-          '<div class="pic-actions">' +
-            '<button class="btn primary" id="btnDownloadImg" type="button"><i class="fa-solid fa-download"></i><span>Download</span></button>' +
-            '<button class="btn" id="btnRegenSeed" type="button"><i class="fa-solid fa-shuffle"></i><span>' + t('btn.random') + '</span></button>' +
-            '<button class="btn" id="btnCopyPrompt" type="button"><i class="fa-regular fa-copy"></i><span>' + t('msg.copy') + '</span></button>' +
+      setPreview(imgPreview,
+        '<div class="media-result">' +
+          '<img class="media-result-img" src="' + src + '" alt="' + escapeHtml(prompt) + '">' +
+          '<div class="media-actions">' +
+            '<button class="btn" id="btnDownloadImg" type="button"><i class="fa-solid fa-download"></i><span>Download</span></button>' +
+            '<button class="btn" id="btnRegenImg" type="button"><i class="fa-solid fa-shuffle"></i><span>' + t('btn.random') + '</span></button>' +
           '</div>' +
-          '<div class="pic-meta">' + metaText + '</div>' +
+          '<div class="media-meta">' + escapeHtml(prompt) + ' — ' + modelId + '</div>' +
         '</div>'
       );
-      $('btnDownloadImg').addEventListener('click', () => downloadImage(url, rawPrompt));
-      $('btnRegenSeed').addEventListener('click', () => { state.currentSeed = Math.floor(Math.random() * 1000000); generateImage(); });
-      $('btnCopyPrompt').addEventListener('click', function () { copyText(fullPrompt, this); });
-      btnGenerate.disabled = false;
+
+      const dlBtn = $('btnDownloadImg');
+      if (dlBtn) dlBtn.addEventListener('click', () => downloadMedia(src, prompt, 'jpg'));
+      const rgBtn = $('btnRegenImg');
+      if (rgBtn) rgBtn.addEventListener('click', generateImage);
+
       showToast(t('toast.imageOk'), 'success');
-    };
-
-    img.onerror = () => {
-      setPicPreview(
-        '<div class="pic-error"><i class="fa-solid fa-triangle-exclamation"></i><p>' + t('toast.imageFail') + '</p><div style="margin-top:16px"><button class="btn" id="btnRetryImg" type="button"><i class="fa-solid fa-rotate-right"></i><span>Retry</span></button></div></div>'
+    } catch (err) {
+      setPreview(imgPreview,
+        '<div class="media-error">' +
+          '<i class="fa-solid fa-triangle-exclamation"></i>' +
+          '<p>' + escapeHtml(err.message || t('toast.imageFail')) + '</p>' +
+          '<div style="margin-top:16px"><button class="btn" id="btnRetryImg" type="button"><i class="fa-solid fa-rotate-right"></i><span>Retry</span></button></div>' +
+        '</div>'
       );
-      $('btnRetryImg').addEventListener('click', generateImage);
-      btnGenerate.disabled = false;
+      const rtBtn = $('btnRetryImg');
+      if (rtBtn) rtBtn.addEventListener('click', generateImage);
       showToast(t('toast.imageFail'), 'error');
-    };
-
-    img.src = url;
+    } finally {
+      state.generating.image = false;
+      btnGenerateImg.disabled = false;
+    }
   }
+  btnGenerateImg.addEventListener('click', generateImage);
 
-  btnGenerate.addEventListener('click', generateImage);
-  picPrompt.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); generateImage(); }
+  /* ==================== VIDEO GENERATION ==================== */
+  btnRandomSeedVid.addEventListener('click', () => {
+    const seed = Math.floor(Math.random() * 1000000);
+    showToast('Seed: ' + seed, 'info');
   });
 
-  async function downloadImage(url, prompt) {
+  async function generateVideo() {
+    if (state.generating.video) return;
+    const prompt = (vidPrompt.value || '').trim();
+    if (!prompt) { showToast(t('toast.promptRequired'), 'error'); vidPrompt.focus(); return; }
+
+    state.generating.video = true;
+    btnGenerateVid.disabled = true;
+
+    const modelId = vidModel.value;
+
+    setPreview(vidPreview, '<div class="media-loading"><div class="media-spinner"></div><p class="media-loading-text">' + t('task.running') + '</p><p class="media-loading-sub">Videos take 1–5 minutes</p></div>');
+
     try {
-      showToast('…', 'info');
+      if (typeof puter === 'undefined' || !puter.ai) {
+        throw new Error('Puter.js not loaded. Please refresh the page.');
+      }
+
+      const video = await puter.ai.txt2vid(prompt, { model: modelId });
+
+      // video is an HTMLVideoElement
+      const src = video && (video.src || (video.getAttribute && video.getAttribute('src')));
+      if (!src) throw new Error('No video returned');
+
+      setPreview(vidPreview,
+        '<div class="media-result">' +
+          '<video class="media-result-video" src="' + src + '" controls autoplay loop muted playsinline></video>' +
+          '<div class="media-actions">' +
+            '<button class="btn" id="btnDownloadVid" type="button"><i class="fa-solid fa-download"></i><span>Download</span></button>' +
+            '<button class="btn" id="btnRegenVid" type="button"><i class="fa-solid fa-shuffle"></i><span>' + t('btn.random') + '</span></button>' +
+          '</div>' +
+          '<div class="media-meta">' + escapeHtml(prompt) + ' — ' + modelId + '</div>' +
+        '</div>'
+      );
+
+      const dlBtn = $('btnDownloadVid');
+      if (dlBtn) dlBtn.addEventListener('click', () => downloadMedia(src, prompt, 'mp4'));
+      const rgBtn = $('btnRegenVid');
+      if (rgBtn) rgBtn.addEventListener('click', generateVideo);
+
+      showToast(t('toast.videoOk'), 'success');
+    } catch (err) {
+      setPreview(vidPreview,
+        '<div class="media-error">' +
+          '<i class="fa-solid fa-triangle-exclamation"></i>' +
+          '<p>' + escapeHtml(err.message || t('toast.videoFail')) + '</p>' +
+          '<div style="margin-top:16px"><button class="btn" id="btnRetryVid" type="button"><i class="fa-solid fa-rotate-right"></i><span>Retry</span></button></div>' +
+        '</div>'
+      );
+      const rtBtn = $('btnRetryVid');
+      if (rtBtn) rtBtn.addEventListener('click', generateVideo);
+      showToast(t('toast.videoFail'), 'error');
+    } finally {
+      state.generating.video = false;
+      btnGenerateVid.disabled = false;
+    }
+  }
+  btnGenerateVid.addEventListener('click', generateVideo);
+
+  /* ==================== DOWNLOAD ==================== */
+  async function downloadMedia(url, prompt, ext) {
+    try {
       const res = await fetch(url, { mode: 'cors' });
       if (!res.ok) throw new Error('fetch failed');
       const blob = await res.blob();
       const objUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      const slug = (prompt || 'saivai-image').toLowerCase().replace(/[^a-z0-9\u0600-\u06FF]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'saivai-image';
+      const slug = (prompt || 'saivai').toLowerCase().replace(/[^a-z0-9\u0600-\u06FF]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'saivai';
       a.href = objUrl;
-      a.download = slug + '-' + Date.now() + '.jpg';
+      a.download = slug + '-' + Date.now() + '.' + ext;
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(objUrl), 2000);
     } catch (e) {
@@ -2802,10 +1742,8 @@ pre code.hljs { padding: 0 !important; }
   /* ==================== BOOT ==================== */
   function boot() {
     load();
-    loadPicSettings();
     applyTheme(state.theme);
     applyLanguage(state.lang);
-    updateKeyStatus();
 
     if (!state.discussions.chat.length) createDiscussion('chat');
     if (!state.discussions.code.length) createDiscussion('code');
@@ -2823,7 +1761,7 @@ pre code.hljs { padding: 0 !important; }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
 
-  window.SaivAI = { state, switchSection, newDiscussion: handleNew, generateImage, save };
+  window.SaivAI = { state, switchSection, newDiscussion: handleNew, generateImage, generateVideo, save };
 })();
 </script>
 
