@@ -1,0 +1,1940 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="SaivSERVICES — Professional IT & Creative Solutions by SaivCORE. Hardware repair, software development, graphic design, academic formatting, IT consulting. Available in Algeria.">
+<meta name="theme-color" content="#ffffff">
+<title>SaivSERVICES — Professional IT & Creative Solutions | SaivCORE</title>
+
+<!-- ============ FONTS ============ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300..900&family=Inter:wght@300..900&display=swap" rel="stylesheet">
+
+<!-- ============ ICONS ============ -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<!-- ============ TAILWIND ============ -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- ============ FAVICON ============ -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23111111'/%3E%3Ctext x='50' y='68' font-family='Inter,sans-serif' font-size='46' font-weight='800' fill='%23ffffff' text-anchor='middle'%3ESZ%3C/text%3E%3C/svg%3E">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS — MONOCHROME MINIMALIST
+   ============================================================ */
+:root{
+  --bg:#ffffff;
+  --bg-soft:#fafafa;
+  --surface:#ffffff;
+  --border:#e5e5e5;
+  --border-strong:#d4d4d4;
+  --text:#111111;
+  --text-2:#404040;
+  --muted:#737373;
+  --hover:#f5f5f5;
+  --shadow:0 1px 2px rgba(0,0,0,.04);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.08);
+  --radius-sm:8px;
+  --radius:10px;
+  --radius-lg:12px;
+  --radius-xl:16px;
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --nav-bg:rgba(255,255,255,.82);
+  --dot-online:#22c55e;
+  --accent:#111111;
+  --transition:200ms cubic-bezier(.4,0,.2,1);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;
+  --bg-soft:#0f0f0f;
+  --surface:#141414;
+  --border:#262626;
+  --border-strong:#333333;
+  --text:#fafafa;
+  --text-2:#d4d4d4;
+  --muted:#a3a3a3;
+  --hover:#1a1a1a;
+  --shadow:0 1px 2px rgba(0,0,0,.4);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.55);
+  --nav-bg:rgba(10,10,10,.82);
+  --dot-online:#4ade80;
+  --accent:#fafafa;
+}
+html[lang="ar"]{ --font:'Cairo','Tajawal',system-ui,sans-serif; }
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  margin:0;padding:0;
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  transition:background var(--transition), color var(--transition);
+  overflow-x:hidden;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input{font-family:inherit}
+img{max-width:100%;display:block}
+::selection{background:var(--text);color:var(--bg)}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:8px;border:2px solid var(--bg);background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:var(--muted);background-clip:content-box;border:2px solid var(--bg)}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+#navbar{
+  position:sticky;top:0;z-index:60;
+  background:var(--nav-bg);
+  backdrop-filter:saturate(180%) blur(14px);
+  -webkit-backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--border);
+  transition:background var(--transition), border-color var(--transition);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;
+  padding:0 20px;
+  height:64px;
+  display:flex;align-items:center;gap:14px;
+}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:15px;letter-spacing:-.01em}
+.brand-mark{
+  width:38px;height:38px;border-radius:var(--radius);
+  background:var(--text);color:var(--bg);
+  display:grid;place-items:center;
+  font-weight:800;font-size:13.5px;letter-spacing:.02em;
+  flex:0 0 auto;
+  transition:background var(--transition), color var(--transition);
+}
+.brand-text{display:flex;flex-direction:column;line-height:1.1}
+.brand-text b{font-weight:800;font-size:14.5px;letter-spacing:-.01em}
+.brand-text small{font-size:9.5px;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+
+.nav-links{display:flex;align-items:center;gap:3px;margin-inline-start:16px}
+.nav-link{
+  padding:8px 13px;border-radius:var(--radius-sm);
+  font-size:13.5px;font-weight:600;color:var(--muted);
+  transition:color var(--transition), background var(--transition);
+  display:inline-flex;align-items:center;gap:7px;
+}
+.nav-link:hover{color:var(--text);background:var(--hover)}
+.nav-link.active{color:var(--text)}
+
+.nav-spacer{flex:1}
+.nav-actions{display:flex;align-items:center;gap:6px}
+
+/* Language switcher */
+.lang-wrap{position:relative}
+.lang-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 12px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);
+  font-size:12.5px;font-weight:700;color:var(--text);
+  background:var(--surface);
+  transition:background var(--transition), border-color var(--transition);
+}
+.lang-btn:hover{background:var(--hover);border-color:var(--border-strong)}
+.lang-btn i.fa-chevron-down{font-size:9px;color:var(--muted);transition:transform var(--transition)}
+.lang-wrap.open .lang-btn i.fa-chevron-down{transform:rotate(180deg)}
+.lang-menu{
+  position:absolute;top:calc(100% + 8px);inset-inline-end:0;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow-lg);
+  min-width:172px;padding:5px;
+  opacity:0;transform:translateY(-6px);pointer-events:none;
+  transition:opacity var(--transition), transform var(--transition);
+  z-index:70;
+}
+.lang-wrap.open .lang-menu{opacity:1;transform:translateY(0);pointer-events:auto}
+.lang-opt{
+  display:flex;align-items:center;gap:10px;width:100%;
+  padding:9px 11px;border-radius:var(--radius-sm);
+  font-size:13px;font-weight:600;color:var(--text);text-align:start;
+  transition:background var(--transition);
+}
+.lang-opt:hover{background:var(--hover)}
+.lang-opt.active{background:var(--hover)}
+.lang-opt .flag{font-size:15px}
+.lang-opt .check{margin-inline-start:auto;font-size:10px;color:var(--muted);opacity:0}
+.lang-opt.active .check{opacity:1}
+
+.icon-btn{
+  width:38px;height:38px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--surface);
+  display:grid;place-items:center;
+  color:var(--text);font-size:14px;
+  transition:background var(--transition), border-color var(--transition), color var(--transition);
+}
+.icon-btn:hover{background:var(--hover);border-color:var(--border-strong)}
+.icon-btn .fa-sun{display:none}
+[data-theme="dark"] .icon-btn .fa-sun{display:inline-block}
+[data-theme="dark"] .icon-btn .fa-moon{display:none}
+#menuBtn{display:none}
+
+/* ============================================================
+   MOBILE DRAWER
+   ============================================================ */
+#drawerBack{
+  position:fixed;inset:0;z-index:80;
+  background:rgba(0,0,0,.42);
+  opacity:0;pointer-events:none;
+  transition:opacity var(--transition);
+}
+#drawerBack.on{opacity:1;pointer-events:auto}
+#drawer{
+  position:fixed;top:0;bottom:0;inset-inline-end:0;
+  width:300px;max-width:86vw;z-index:90;
+  background:var(--surface);
+  border-inline-start:1px solid var(--border);
+  transform:translateX(100%);
+  transition:transform 300ms cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;
+  padding:18px;
+}
+html[dir="rtl"] #drawer{transform:translateX(-100%)}
+#drawer.on{transform:translateX(0)!important}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.drawer-links{display:flex;flex-direction:column;gap:4px;flex:1}
+.drawer-link{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:var(--radius);
+  font-size:14.5px;font-weight:600;color:var(--text);
+  transition:background var(--transition);
+}
+.drawer-link:hover{background:var(--hover)}
+.drawer-link i{width:18px;text-align:center;color:var(--muted);font-size:14px}
+.drawer-foot{padding-top:16px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);line-height:1.6}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero{
+  max-width:1200px;margin:0 auto;width:100%;
+  padding:72px 20px 46px;
+  text-align:center;
+}
+.status-pill{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:7px 15px;border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  font-size:11.5px;font-weight:700;
+  color:var(--text-2);
+  letter-spacing:.02em;
+  margin-bottom:24px;
+  transition:background var(--transition), border-color var(--transition);
+}
+.status-pill .dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--dot-online);
+  box-shadow:0 0 0 0 rgba(34,197,94,.5);
+  animation:pulse 2s infinite;
+  flex:0 0 auto;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}
+  70%{box-shadow:0 0 0 8px rgba(34,197,94,0)}
+  100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}
+}
+.hero-title{
+  margin:0 0 18px;
+  font-size:clamp(28px,5vw,48px);
+  font-weight:800;
+  letter-spacing:-.03em;
+  line-height:1.14;
+  color:var(--text);
+}
+.hero-title .line2{
+  display:block;
+  color:var(--muted);
+  font-weight:800;
+  font-size:clamp(20px,3.4vw,32px);
+  margin-top:8px;
+  letter-spacing:-.02em;
+}
+.hero-sub{
+  margin:0 auto 30px;
+  max-width:680px;
+  font-size:15.5px;
+  color:var(--muted);
+  line-height:1.75;
+}
+
+.hero-cta{
+  display:flex;justify-content:center;gap:12px;flex-wrap:wrap;
+  margin-bottom:32px;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:13px 26px;border-radius:var(--radius);
+  background:var(--text);color:var(--bg);
+  font-size:14px;font-weight:700;
+  transition:opacity var(--transition), transform var(--transition);
+  white-space:nowrap;
+}
+.btn-primary:hover{opacity:.88;transform:translateY(-1px)}
+.btn-primary i{font-size:13px}
+
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:13px 24px;border-radius:var(--radius);
+  background:var(--surface);color:var(--text);
+  border:1px solid var(--border);
+  font-size:14px;font-weight:700;
+  transition:background var(--transition), border-color var(--transition), transform var(--transition);
+  white-space:nowrap;
+}
+.btn-ghost:hover{background:var(--hover);border-color:var(--border-strong);transform:translateY(-1px)}
+
+/* Contact badges */
+.hero-badges{
+  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 16px;border-radius:var(--radius);
+  border:1px solid var(--border);
+  background:var(--surface);
+  font-size:13px;font-weight:600;color:var(--text-2);
+  transition:border-color var(--transition), background var(--transition), transform var(--transition);
+}
+.badge:hover{border-color:var(--border-strong);background:var(--hover);transform:translateY(-1px)}
+.badge i{
+  width:26px;height:26px;border-radius:7px;
+  background:var(--bg-soft);border:1px solid var(--border);
+  display:grid;place-items:center;
+  font-size:11.5px;color:var(--text);
+  flex:0 0 auto;
+}
+.badge b{font-weight:700;color:var(--text)}
+
+/* ============================================================
+   FILTERS
+   ============================================================ */
+#filterSection{
+  max-width:1200px;margin:0 auto;width:100%;
+  padding:0 20px 8px;
+}
+.search-wrap{
+  max-width:620px;margin:0 auto 22px;
+  position:relative;
+}
+.search-icon{
+  position:absolute;top:50%;inset-inline-start:18px;
+  transform:translateY(-50%);
+  color:var(--muted);font-size:14px;pointer-events:none;
+}
+#searchInput{
+  width:100%;
+  padding:16px 48px;
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  background:var(--surface);
+  color:var(--text);
+  font-size:14.5px;
+  font-weight:500;
+  outline:none;
+  transition:border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+#searchInput::placeholder{color:var(--muted);font-weight:500}
+#searchInput:focus{border-color:var(--text);box-shadow:0 0 0 4px rgba(0,0,0,.04)}
+[data-theme="dark"] #searchInput:focus{box-shadow:0 0 0 4px rgba(255,255,255,.05)}
+.search-clear{
+  position:absolute;top:50%;inset-inline-end:14px;
+  transform:translateY(-50%);
+  width:28px;height:28px;border-radius:50%;
+  background:var(--hover);color:var(--muted);
+  display:none;place-items:center;font-size:11px;
+  transition:background var(--transition), color var(--transition);
+}
+.search-clear:hover{background:var(--border);color:var(--text)}
+.search-clear.on{display:grid}
+
+.pills{
+  display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+  max-width:900px;margin:0 auto;
+}
+.pill{
+  padding:9px 18px;border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--muted);
+  font-size:12.5px;font-weight:700;
+  letter-spacing:.01em;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all var(--transition);
+  white-space:nowrap;
+}
+.pill:hover{color:var(--text);border-color:var(--text)}
+.pill.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.pill .count{
+  font-size:10.5px;font-weight:700;
+  background:var(--hover);color:var(--muted);
+  padding:1px 7px;border-radius:999px;
+}
+[data-theme="dark"] .pill .count{background:#1f1f1f}
+.pill.active .count{background:rgba(255,255,255,.16);color:var(--bg)}
+[data-theme="dark"] .pill.active .count{background:rgba(0,0,0,.16)}
+
+/* ============================================================
+   SERVICES GRID
+   ============================================================ */
+#servicesSection{
+  max-width:1200px;margin:0 auto;width:100%;
+  padding:26px 20px 60px;
+}
+.section-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  margin-bottom:22px;flex-wrap:wrap;
+}
+.section-title{
+  margin:0;font-size:15px;font-weight:800;letter-spacing:-.01em;
+  display:flex;align-items:center;gap:10px;
+}
+.section-title i{color:var(--muted);font-size:13px}
+.section-meta{font-size:12.5px;color:var(--muted);font-weight:600}
+
+#servicesGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
+  gap:18px;
+}
+
+.service-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:24px;
+  display:flex;flex-direction:column;gap:16px;
+  position:relative;
+  overflow:hidden;
+  transition:transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  opacity:0;transform:translateY(14px);
+}
+.service-card.revealed{opacity:1;transform:translateY(0)}
+.service-card:hover{
+  transform:translateY(-3px);
+  border-color:var(--border-strong);
+  box-shadow:var(--shadow-lg);
+}
+.service-card.hidden{display:none}
+
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.service-icon{
+  width:50px;height:50px;border-radius:var(--radius);
+  background:var(--bg-soft);
+  border:1px solid var(--border);
+  display:grid;place-items:center;
+  font-size:20px;color:var(--text);
+  transition:background var(--transition), color var(--transition), border-color var(--transition);
+  flex:0 0 auto;
+}
+.service-card:hover .service-icon{
+  background:var(--text);color:var(--bg);border-color:var(--text);
+}
+
+.cat-tag{
+  font-size:10px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:5px 11px;border-radius:999px;
+  border:1px solid var(--border);
+  color:var(--muted);
+  background:var(--bg-soft);
+  white-space:nowrap;
+}
+
+.service-title{
+  margin:0;
+  font-size:17px;font-weight:800;
+  letter-spacing:-.015em;line-height:1.35;
+  color:var(--text);
+}
+.service-title small{
+  display:block;
+  font-size:12.5px;
+  font-weight:600;
+  color:var(--muted);
+  margin-top:3px;
+  letter-spacing:0;
+}
+
+.feature-list{
+  list-style:none;margin:0;padding:0;
+  display:flex;flex-direction:column;gap:9px;
+  flex:1;
+}
+.feature-list li{
+  display:flex;gap:11px;align-items:flex-start;
+  font-size:13.5px;line-height:1.6;
+  color:var(--text-2);
+}
+.feature-list li i{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:6px;
+  flex:0 0 auto;
+}
+[data-theme="dark"] .feature-list li{color:var(--text-2)}
+
+.card-foot{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding-top:16px;
+  border-top:1px solid var(--border);
+  margin-top:auto;
+  flex-wrap:wrap;
+}
+
+.price-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:11.5px;font-weight:700;
+  color:var(--text-2);
+  padding:6px 12px;border-radius:999px;
+  background:var(--bg-soft);
+  border:1px solid var(--border);
+  white-space:nowrap;
+}
+.price-tag i{color:#16a34a;font-size:10.5px}
+[data-theme="dark"] .price-tag i{color:#4ade80}
+
+.order-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 16px;border-radius:var(--radius-sm);
+  background:var(--text);color:var(--bg);
+  font-size:12.5px;font-weight:700;
+  transition:opacity var(--transition), transform var(--transition);
+  white-space:nowrap;
+}
+.order-btn:hover{opacity:.85;transform:translateY(-1px)}
+.order-btn i{font-size:10.5px;transition:transform var(--transition)}
+html[dir="ltr"] .order-btn:hover i{transform:translateX(3px)}
+html[dir="rtl"] .order-btn:hover i{transform:translateX(-3px)}
+
+/* Empty state */
+#emptyState{
+  display:none;
+  flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  padding:70px 24px;
+  border:1px dashed var(--border);
+  border-radius:var(--radius-lg);
+  background:var(--bg-soft);
+  gap:12px;
+}
+#emptyState.on{display:flex}
+#emptyState .es-ico{
+  width:64px;height:64px;border-radius:50%;
+  background:var(--surface);border:1px solid var(--border);
+  display:grid;place-items:center;font-size:24px;color:var(--muted);
+}
+#emptyState h3{margin:0;font-size:16px;font-weight:800}
+#emptyState p{margin:0;font-size:13.5px;color:var(--muted);max-width:380px}
+
+/* ============================================================
+   CONTACT SECTION
+   ============================================================ */
+#contactSection{
+  max-width:1200px;margin:0 auto;width:100%;
+  padding:0 20px 70px;
+}
+.contact-box{
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  background:var(--surface);
+  padding:38px 32px;
+  display:grid;
+  grid-template-columns:1.15fr 1fr;
+  gap:32px;
+  align-items:start;
+  position:relative;
+  overflow:hidden;
+}
+.contact-head .status-pill{margin-bottom:16px}
+.contact-title{
+  margin:0 0 12px;
+  font-size:clamp(22px,3vw,28px);
+  font-weight:800;
+  letter-spacing:-.02em;
+  line-height:1.2;
+}
+.contact-sub{
+  margin:0 0 22px;
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.7;
+}
+.contact-methods{
+  display:flex;flex-direction:column;gap:10px;
+}
+.method{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;border-radius:var(--radius);
+  border:1px solid var(--border);
+  background:var(--bg-soft);
+  transition:border-color var(--transition), background var(--transition), transform var(--transition);
+}
+.method:hover{border-color:var(--border-strong);background:var(--hover);transform:translateX(3px)}
+html[dir="rtl"] .method:hover{transform:translateX(-3px)}
+.method .m-ico{
+  width:42px;height:42px;border-radius:var(--radius-sm);
+  background:var(--surface);border:1px solid var(--border);
+  display:grid;place-items:center;
+  font-size:16px;color:var(--text);
+  flex:0 0 auto;
+  transition:background var(--transition), color var(--transition), border-color var(--transition);
+}
+.method:hover .m-ico{background:var(--text);color:var(--bg);border-color:var(--text)}
+.method .m-txt{flex:1;min-width:0}
+.method .m-label{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.method .m-value{font-size:14px;font-weight:700;color:var(--text);word-break:break-all;line-height:1.4;margin-top:2px}
+.method .m-go{
+  font-size:12px;color:var(--muted);flex:0 0 auto;
+  transition:transform var(--transition);
+}
+.method:hover .m-go{transform:translateX(3px)}
+html[dir="rtl"] .method:hover .m-go{transform:translateX(-3px)}
+
+/* Social grid */
+.social-side h3{
+  margin:0 0 6px;font-size:14px;font-weight:800;letter-spacing:-.01em;
+  display:flex;align-items:center;gap:9px;
+}
+.social-side h3 i{color:var(--muted);font-size:12.5px}
+.social-sub{font-size:12.5px;color:var(--muted);margin:0 0 18px;line-height:1.6}
+.social-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:9px;
+}
+.social-card{
+  display:flex;align-items:center;gap:11px;
+  padding:12px 14px;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:var(--bg-soft);
+  font-size:12.5px;font-weight:700;
+  color:var(--text);
+  transition:border-color var(--transition), background var(--transition), transform var(--transition);
+}
+.social-card:hover{border-color:var(--border-strong);background:var(--hover);transform:translateY(-2px)}
+.social-card .s-ico{
+  width:32px;height:32px;border-radius:8px;
+  background:var(--surface);border:1px solid var(--border);
+  display:grid;place-items:center;
+  font-size:14px;color:var(--text);
+  flex:0 0 auto;
+  transition:background var(--transition), color var(--transition), border-color var(--transition);
+}
+.social-card:hover .s-ico{background:var(--text);color:var(--bg);border-color:var(--text)}
+.social-card .s-name{flex:1;min-width:0}
+.social-card .s-handle{display:block;font-size:10.5px;font-weight:600;color:var(--muted);margin-top:1px}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+#footer{
+  margin-top:auto;
+  border-top:1px solid var(--border);
+  background:var(--bg-soft);
+  transition:background var(--transition), border-color var(--transition);
+}
+.foot-inner{
+  max-width:1200px;margin:0 auto;
+  padding:34px 20px 26px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:18px;flex-wrap:wrap;
+}
+.foot-brand{display:flex;align-items:center;gap:11px}
+.foot-mark{
+  width:34px;height:34px;border-radius:var(--radius-sm);
+  background:var(--text);color:var(--bg);
+  display:grid;place-items:center;font-weight:800;font-size:12.5px;
+}
+.foot-brand b{font-size:13.5px;font-weight:800;display:block;line-height:1.2}
+.foot-brand small{font-size:11px;color:var(--muted);font-weight:600;display:block}
+.foot-links{display:flex;gap:6px;flex-wrap:wrap}
+.foot-link{
+  font-size:12.5px;font-weight:600;color:var(--muted);
+  padding:7px 11px;border-radius:var(--radius-sm);
+  transition:color var(--transition), background var(--transition);
+  display:inline-flex;align-items:center;gap:7px;
+}
+.foot-link:hover{color:var(--text);background:var(--hover)}
+.foot-bottom{
+  max-width:1200px;margin:0 auto;
+  padding:16px 20px 26px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;flex-wrap:wrap;
+  font-size:11.5px;color:var(--muted);
+}
+.foot-bottom .heart{color:#ef4444}
+.foot-bottom .dz{font-size:13px}
+
+/* ============================================================
+   BACK TO TOP
+   ============================================================ */
+#toTop{
+  position:fixed;bottom:22px;inset-inline-end:22px;z-index:55;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--text);color:var(--bg);
+  display:grid;place-items:center;
+  font-size:14px;
+  box-shadow:var(--shadow-lg);
+  opacity:0;transform:translateY(12px);pointer-events:none;
+  transition:opacity var(--transition), transform var(--transition);
+}
+#toTop.on{opacity:1;transform:translateY(0);pointer-events:auto}
+#toTop:hover{opacity:.85}
+
+/* Floating WhatsApp button */
+#waBtn{
+  position:fixed;bottom:22px;inset-inline-start:22px;z-index:55;
+  width:52px;height:52px;border-radius:50%;
+  background:#25d366;color:#fff;
+  display:grid;place-items:center;
+  font-size:22px;
+  box-shadow:0 12px 30px rgba(37,211,102,.35);
+  transition:transform var(--transition), box-shadow var(--transition);
+}
+#waBtn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 16px 36px rgba(37,211,102,.45)}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:960px){
+  .contact-box{grid-template-columns:1fr;padding:30px 24px;gap:26px}
+}
+@media (max-width:860px){
+  .nav-links{display:none}
+  #menuBtn{display:grid}
+  #hero{padding:52px 18px 32px}
+  .hero-sub{font-size:14.5px}
+  #servicesGrid{grid-template-columns:1fr;gap:15px}
+  .foot-inner{flex-direction:column;align-items:flex-start}
+  .foot-bottom{flex-direction:column;align-items:flex-start;text-align:start}
+  .social-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:480px){
+  .nav-inner{padding:0 14px;height:60px}
+  .brand-text small{display:none}
+  #hero{padding:44px 14px 26px}
+  .pills{gap:6px}
+  .pill{padding:8px 14px;font-size:11.5px}
+  .service-card{padding:20px}
+  .contact-box{padding:24px 18px}
+  .social-grid{grid-template-columns:1fr}
+  .hero-cta .btn-primary,.hero-cta .btn-ghost{width:100%;justify-content:center}
+  .hero-badges .badge{width:100%;justify-content:flex-start}
+  #waBtn{width:48px;height:48px;font-size:20px;bottom:18px;inset-inline-start:18px}
+  #toTop{width:42px;height:42px;bottom:18px;inset-inline-end:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<header id="navbar">
+  <div class="nav-inner">
+
+    <a href="https://seizhf.github.io" class="brand" aria-label="SaivSERVICES home">
+      <span class="brand-mark">SZ</span>
+      <span class="brand-text">
+        <b>SaivSERVICES</b>
+        <small data-i18n="brandSub">SaivCORE Portal</small>
+      </span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a class="nav-link" href="https://seizhf.github.io">
+        <i class="fa-solid fa-house"></i><span data-i18n="navHome">Home</span>
+      </a>
+      <a class="nav-link active" href="#services">
+        <i class="fa-solid fa-briefcase"></i><span data-i18n="navServices">Services</span>
+      </a>
+      <a class="nav-link" href="#contact">
+        <i class="fa-solid fa-envelope"></i><span data-i18n="navContact">Contact</span>
+      </a>
+      <a class="nav-link" href="https://saivcore.github.io">
+        <i class="fa-solid fa-cube"></i><span data-i18n="navCore">SaivCORE</span>
+      </a>
+    </nav>
+
+    <div class="nav-spacer"></div>
+
+    <div class="nav-actions">
+
+      <!-- Language -->
+      <div class="lang-wrap" id="langWrap">
+        <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">
+          <i class="fa-solid fa-globe"></i>
+          <span id="langLabel">EN</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="lang-menu" id="langMenu" role="menu">
+          <button class="lang-opt" data-lang="ar" role="menuitem">
+            <span class="flag">🇩🇿</span><span>العربية</span>
+            <i class="fa-solid fa-check check"></i>
+          </button>
+          <button class="lang-opt" data-lang="en" role="menuitem">
+            <span class="flag">🇬🇧</span><span>English</span>
+            <i class="fa-solid fa-check check"></i>
+          </button>
+          <button class="lang-opt" data-lang="fr" role="menuitem">
+            <span class="flag">🇫🇷</span><span>Français</span>
+            <i class="fa-solid fa-check check"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Theme -->
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">
+        <i class="fa-solid fa-moon"></i>
+        <i class="fa-solid fa-sun"></i>
+      </button>
+
+      <!-- Drawer -->
+      <button class="icon-btn" id="menuBtn" aria-label="Open menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section id="hero">
+
+  <div class="status-pill">
+    <span class="dot"></span>
+    <span data-i18n="heroStatus">Available for Clients & Projects</span>
+  </div>
+
+  <h1 class="hero-title">
+    <span data-i18n="heroTitle1">Professional IT &amp; Design Services</span>
+    <span class="line2" data-i18n="heroTitle2">High precision · Fair prices · Rapid delivery</span>
+  </h1>
+
+  <p class="hero-sub" data-i18n="heroSub">
+    From hardware repair and custom software development to graphic design, academic formatting and IT consulting — every service is delivered with care, complete technical support, and transparent pricing.
+  </p>
+
+  <div class="hero-cta">
+    <a class="btn-primary" href="https://saivcore.github.io/request.html">
+      <i class="fa-solid fa-paper-plane"></i>
+      <span data-i18n="ctaRequest">Request a Service</span>
+    </a>
+    <a class="btn-ghost" href="#services">
+      <i class="fa-solid fa-arrow-down"></i>
+      <span data-i18n="ctaBrowse">Browse Services</span>
+    </a>
+  </div>
+
+  <div class="hero-badges">
+    <a class="badge" href="tel:0793390349">
+      <i class="fa-solid fa-phone"></i>
+      <span data-i18n="badgeCall">Call / WhatsApp</span>
+      <b dir="ltr">0793390349</b>
+    </a>
+    <a class="badge" href="mailto:seizhf@gmail.com">
+      <i class="fa-solid fa-envelope"></i>
+      <span data-i18n="badgeEmail">Email</span>
+      <b dir="ltr">seizhf@gmail.com</b>
+    </a>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     FILTER
+     ============================================================ -->
+<section id="filterSection">
+
+  <div class="search-wrap">
+    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    <input
+      type="search"
+      id="searchInput"
+      data-i18n-placeholder="searchPlaceholder"
+      placeholder="Search services by name or description…"
+      autocomplete="off"
+      spellcheck="false"
+      aria-label="Search services">
+    <button class="search-clear" id="searchClear" aria-label="Clear search">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div class="pills" id="pills" role="tablist"></div>
+
+</section>
+
+<!-- ============================================================
+     SERVICES
+     ============================================================ -->
+<section id="servicesSection">
+
+  <div class="section-head">
+    <h2 class="section-title">
+      <i class="fa-solid fa-briefcase"></i>
+      <span data-i18n="sectionTitle">Service Catalogue</span>
+    </h2>
+    <span class="section-meta" id="resultCount"></span>
+  </div>
+
+  <div id="servicesGrid"></div>
+
+  <div id="emptyState">
+    <div class="es-ico"><i class="fa-solid fa-magnifying-glass"></i></div>
+    <h3 data-i18n="emptyTitle">No services found</h3>
+    <p data-i18n="emptySub">Try a different keyword or switch the category filter.</p>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     CONTACT
+     ============================================================ -->
+<section id="contactSection">
+  <div class="contact-box">
+
+    <div class="contact-head">
+      <div class="status-pill">
+        <span class="dot"></span>
+        <span data-i18n="contactStatus">Replies within 24 hours</span>
+      </div>
+
+      <h2 class="contact-title" data-i18n="contactTitle">Let’s work together</h2>
+      <p class="contact-sub" data-i18n="contactSub">
+        Reach out directly for a fast quote or to discuss your project. Every request is answered personally — no bots, no queues.
+      </p>
+
+      <div class="contact-methods">
+
+        <a class="method" href="tel:0793390349">
+          <span class="m-ico"><i class="fa-solid fa-phone"></i></span>
+          <span class="m-txt">
+            <span class="m-label" data-i18n="methodPhone">Phone</span>
+            <span class="m-value" dir="ltr">0793390349</span>
+          </span>
+          <i class="fa-solid fa-arrow-right m-go"></i>
+        </a>
+
+        <a class="method" href="https://wa.me/213793390349" target="_blank" rel="noopener">
+          <span class="m-ico"><i class="fa-brands fa-whatsapp"></i></span>
+          <span class="m-txt">
+            <span class="m-label" data-i18n="methodWhatsapp">WhatsApp</span>
+            <span class="m-value" dir="ltr">+213 793 390 349</span>
+          </span>
+          <i class="fa-solid fa-arrow-right m-go"></i>
+        </a>
+
+        <a class="method" href="mailto:seizhf@gmail.com">
+          <span class="m-ico"><i class="fa-solid fa-envelope"></i></span>
+          <span class="m-txt">
+            <span class="m-label" data-i18n="methodEmail1">Primary Email</span>
+            <span class="m-value" dir="ltr">seizhf@gmail.com</span>
+          </span>
+          <i class="fa-solid fa-arrow-right m-go"></i>
+        </a>
+
+        <a class="method" href="mailto:saivcoredz@gmail.com">
+          <span class="m-ico"><i class="fa-solid fa-at"></i></span>
+          <span class="m-txt">
+            <span class="m-label" data-i18n="methodEmail2">Business Email</span>
+            <span class="m-value" dir="ltr">saivcoredz@gmail.com</span>
+          </span>
+          <i class="fa-solid fa-arrow-right m-go"></i>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="social-side">
+      <h3><i class="fa-solid fa-share-nodes"></i><span data-i18n="socialTitle">Follow &amp; Connect</span></h3>
+      <p class="social-sub" data-i18n="socialSub">Find me on social media for updates, portfolio highlights and behind-the-scenes.</p>
+
+      <div class="social-grid">
+
+        <a class="social-card" href="https://facebook.com/seizhf" target="_blank" rel="noopener">
+          <span class="s-ico"><i class="fa-brands fa-facebook-f"></i></span>
+          <span class="s-name">Facebook<span class="s-handle" dir="ltr">@seizhf</span></span>
+        </a>
+
+        <a class="social-card" href="https://instagram.com/sei.zhf" target="_blank" rel="noopener">
+          <span class="s-ico"><i class="fa-brands fa-instagram"></i></span>
+          <span class="s-name">Instagram<span class="s-handle" dir="ltr">@sei.zhf</span></span>
+        </a>
+
+        <a class="social-card" href="https://threads.net/@sei.zhf" target="_blank" rel="noopener">
+          <span class="s-ico"><i class="fa-brands fa-threads"></i></span>
+          <span class="s-name">Threads<span class="s-handle" dir="ltr">@sei.zhf</span></span>
+        </a>
+
+        <a class="social-card" href="https://tiktok.com/@seizhf" target="_blank" rel="noopener">
+          <span class="s-ico"><i class="fa-brands fa-tiktok"></i></span>
+          <span class="s-name">TikTok<span class="s-handle" dir="ltr">@seizhf</span></span>
+        </a>
+
+        <a class="social-card" href="https://youtube.com/@seizhf" target="_blank" rel="noopener">
+          <span class="s-ico"><i class="fa-brands fa-youtube"></i></span>
+          <span class="s-name">YouTube<span class="s-handle" dir="ltr">@seizhf</span></span>
+        </a>
+
+        <a class="social-card" href="https://t.me/seizhf" target="_blank" rel="noopener">
+          <span class="s-ico"><i class="fa-brands fa-telegram"></i></span>
+          <span class="s-name">Telegram<span class="s-handle" dir="ltr">@seizhf</span></span>
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer id="footer">
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <span class="foot-mark">SZ</span>
+      <div>
+        <b>SaivSERVICES</b>
+        <small data-i18n="footTag">A SaivCORE Portal</small>
+      </div>
+    </div>
+
+    <nav class="foot-links" aria-label="Footer">
+      <a class="foot-link" href="https://seizhf.github.io">
+        <i class="fa-solid fa-house"></i><span data-i18n="navHome">Home</span>
+      </a>
+      <a class="foot-link" href="#services">
+        <i class="fa-solid fa-briefcase"></i><span data-i18n="navServices">Services</span>
+      </a>
+      <a class="foot-link" href="#contact">
+        <i class="fa-solid fa-envelope"></i><span data-i18n="navContact">Contact</span>
+      </a>
+      <a class="foot-link" href="https://saivcore.github.io">
+        <i class="fa-solid fa-cube"></i><span data-i18n="navCore">SaivCORE</span>
+      </a>
+    </nav>
+  </div>
+
+  <div class="foot-bottom">
+    <span>
+      <span data-i18n="madeWith">Made with</span>
+      <span class="heart">❤</span>
+      <span data-i18n="madeBy">by Saif El Islem Zahaf</span>
+      · <span data-i18n="madeIn">Made in Algeria</span>
+      <span class="dz">🇩🇿</span>
+    </span>
+    <span>© 2026 Saif El Islem Zahaf — SaivCORE</span>
+  </div>
+</footer>
+
+<!-- ============================================================
+     MOBILE DRAWER
+     ============================================================ -->
+<div id="drawerBack"></div>
+<aside id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <div class="brand">
+      <span class="brand-mark">SZ</span>
+      <span class="brand-text"><b>SaivSERVICES</b></span>
+    </div>
+    <button class="icon-btn" id="drawerClose" aria-label="Close menu">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <nav class="drawer-links">
+    <a class="drawer-link" href="https://seizhf.github.io">
+      <i class="fa-solid fa-house"></i><span data-i18n="navHome">Home</span>
+    </a>
+    <a class="drawer-link" href="#services">
+      <i class="fa-solid fa-briefcase"></i><span data-i18n="navServices">Services</span>
+    </a>
+    <a class="drawer-link" href="#contact">
+      <i class="fa-solid fa-envelope"></i><span data-i18n="navContact">Contact</span>
+    </a>
+    <a class="drawer-link" href="https://saivcore.github.io">
+      <i class="fa-solid fa-cube"></i><span data-i18n="navCore">SaivCORE</span>
+    </a>
+  </nav>
+
+  <a class="btn-primary" style="justify-content:center;margin-top:14px" href="https://saivcore.github.io/request.html">
+    <i class="fa-solid fa-paper-plane"></i>
+    <span data-i18n="ctaRequest">Request a Service</span>
+  </a>
+
+  <div class="drawer-foot" style="margin-top:18px">
+    <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
+      <span class="dot" style="width:7px;height:7px;border-radius:50%;background:var(--dot-online);display:inline-block"></span>
+      <span data-i18n="heroStatus">Available for Clients & Projects</span>
+    </div>
+    © 2026 SaivCORE
+  </div>
+</aside>
+
+<!-- ============================================================
+     FLOATING ACTIONS
+     ============================================================ -->
+<a id="waBtn" href="https://wa.me/213793390349" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<button id="toTop" aria-label="Back to top">
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<script>
+/* ==================================================================
+   SaivSERVICES — Professional IT & Creative Solutions
+   Powered by SaivCORE | Made with ❤️ in Algeria 🇩🇿
+   ================================================================== */
+(function(){
+'use strict';
+
+/* ============================================================
+   1. SERVICE REGISTRY
+   ============================================================ */
+const SERVICES = [
+  {
+    id:'maintenance',
+    icon:'fa-screwdriver-wrench',
+    category:'hardware',
+    keywords:'maintenance repair hardware laptop desktop network wifi windows linux format upgrade diagnostic صيانة تصليح شبكة حاسوب ويندوز لينكس فورمات ترقية',
+    price:true
+  },
+  {
+    id:'software',
+    icon:'fa-compact-disc',
+    category:'software',
+    keywords:'software install activation office adobe creative cloud autocad ide dev tools free provision تثبيت برامج تفعيل أوفيس أدوبي أوتوكاد مجاني',
+    price:true
+  },
+  {
+    id:'desktop',
+    icon:'fa-laptop-code',
+    category:'software',
+    keywords:'desktop application development csharp dotnet wpf winforms python web html management system automation database برمجة تطوير برامج سطح المكتب سي شارب بايثون قواعد بيانات',
+    price:true
+  },
+  {
+    id:'graphic',
+    icon:'fa-palette',
+    category:'design',
+    keywords:'graphic design branding logo business card visite flyer social media post billboard signboard brand guidelines تصميم جرافيك هوية بصرية شعار بطاقة زيارة فلاير لوحات إشهارية',
+    price:true
+  },
+  {
+    id:'academic',
+    icon:'fa-graduation-cap',
+    category:'academic',
+    keywords:'academic research formatting printing thesis dissertation university paper color black white digital delivery تنسيق طباعة بحوث مذكرات جامعية رسالة علمية',
+    price:true
+  },
+  {
+    id:'consulting',
+    icon:'fa-user-shield',
+    category:'consulting',
+    keywords:'it consulting technical support advice infrastructure cybersecurity basics device purchasing problem solving استشارات تقنية توجيه أمن سيبراني نصائح شراء أجهزة',
+    price:true
+  }
+];
+
+/* ============================================================
+   2. CATEGORY REGISTRY
+   ============================================================ */
+const CATEGORIES = [
+  { id:'all',        icon:'fa-border-all' },
+  { id:'hardware',   icon:'fa-screwdriver-wrench' },
+  { id:'software',   icon:'fa-code' },
+  { id:'design',     icon:'fa-palette' },
+  { id:'academic',   icon:'fa-graduation-cap' },
+  { id:'consulting', icon:'fa-user-shield' }
+];
+
+/* ============================================================
+   3. I18N DICTIONARY
+   ============================================================ */
+const I18N = {
+  en:{
+    pageTitle:'SaivSERVICES — Professional IT & Creative Solutions | SaivCORE',
+
+    brandSub:'SaivCORE Portal',
+    navHome:'Home',
+    navServices:'Services',
+    navContact:'Contact',
+    navCore:'SaivCORE',
+
+    heroStatus:'Available for Clients & Projects',
+    heroTitle1:'Professional IT & Design Services',
+    heroTitle2:'High precision · Fair prices · Rapid delivery',
+    heroSub:'From hardware repair and custom software development to graphic design, academic formatting and IT consulting — every service is delivered with care, complete technical support, and transparent pricing.',
+    ctaRequest:'Request a Service',
+    ctaBrowse:'Browse Services',
+    badgeCall:'Call / WhatsApp',
+    badgeEmail:'Email',
+
+    searchPlaceholder:'Search services by name or description…',
+
+    catAll:'All',
+    catHardware:'Hardware & Networks',
+    catSoftware:'Software Dev',
+    catDesign:'Graphic Design',
+    catAcademic:'Academic & Print',
+    catConsulting:'IT Consulting',
+
+    sectionTitle:'Service Catalogue',
+    resultCountOne:'1 service',
+    resultCountMany:'{n} services',
+
+    emptyTitle:'No services found',
+    emptySub:'Try a different keyword or switch the category filter.',
+
+    priceBadge:'Fair Pricing',
+    orderNow:'Order Now',
+
+    /* Service 1 — Maintenance */
+    sMaintenanceName:'Hardware & Software Maintenance',
+    sMaintenanceSub:'Computers, laptops & networks',
+    sMaintenance1:'Complete diagnostics and repair for desktops and laptops.',
+    sMaintenance2:'Operating system installation (Windows / Linux) and full network setup.',
+    sMaintenance3:'Hardware upgrading and thermal performance boosting.',
+
+    /* Service 2 — Software provisioning */
+    sSoftwareName:'Software Provisioning & Activation',
+    sSoftwareSub:'Professional tools installed for you',
+    sSoftware1:'Microsoft Office suite installation and activation.',
+    sSoftware2:'Adobe Creative Cloud tools, AutoCAD, and specialized IDEs / dev environments.',
+    sSoftware3:'Additional professional software delivered free of charge with every service.',
+
+    /* Service 3 — Desktop apps */
+    sDesktopName:'Desktop Application Development',
+    sDesktopSub:'Custom software built for you',
+    sDesktop1:'Tailored desktop software using C# .NET (WPF / WinForms) or Python.',
+    sDesktop2:'Management systems, automation scripts and database solutions.',
+    sDesktop3:'Modern web / HTML-based desktop applications with full technical support.',
+
+    /* Service 4 — Graphic design */
+    sGraphicName:'Graphic Design & Branding',
+    sGraphicSub:'Logos, cards, flyers & signage',
+    sGraphic1:'Logo design, business cards (Visite Cards) and brand identity kits.',
+    sGraphic2:'Promotional flyers, social media post templates and advertising signboards.',
+    sGraphic3:'Complete brand guidelines with colours, fonts and usage rules.',
+
+    /* Service 5 — Academic */
+    sAcademicName:'Academic Formatting & Printing',
+    sAcademicSub:'Theses, research & high-quality printing',
+    sAcademic1:'Professional academic formatting for university theses and research papers.',
+    sAcademic2:'High-quality colour or black-and-white printing.',
+    sAcademic3:'Fast digital delivery options for every completed document.',
+
+    /* Service 6 — Consulting */
+    sConsultingName:'IT Consulting & Technical Support',
+    sConsultingSub:'Guidance, security & problem solving',
+    sConsulting1:'Infrastructure advice and best-practice technology recommendations.',
+    sConsulting2:'Cybersecurity basics and safe-practice training for individuals and small teams.',
+    sConsulting3:'Device purchasing recommendations and personalised technical problem solving.',
+
+    /* Contact section */
+    contactStatus:'Replies within 24 hours',
+    contactTitle:'Let’s work together',
+    contactSub:'Reach out directly for a fast quote or to discuss your project. Every request is answered personally — no bots, no queues.',
+    methodPhone:'Phone',
+    methodWhatsapp:'WhatsApp',
+    methodEmail1:'Primary Email',
+    methodEmail2:'Business Email',
+    socialTitle:'Follow & Connect',
+    socialSub:'Find me on social media for updates, portfolio highlights and behind-the-scenes.',
+
+    /* Footer */
+    footTag:'A SaivCORE Portal',
+    madeWith:'Made with',
+    madeBy:'by Saif El Islem Zahaf',
+    madeIn:'Made in Algeria'
+  },
+
+  fr:{
+    pageTitle:'SaivSERVICES — Services informatiques & créatifs professionnels | SaivCORE',
+
+    brandSub:'Portail SaivCORE',
+    navHome:'Accueil',
+    navServices:'Services',
+    navContact:'Contact',
+    navCore:'SaivCORE',
+
+    heroStatus:'Disponible pour clients & projets',
+    heroTitle1:'Services informatiques & design professionnels',
+    heroTitle2:'Précision · Prix justes · Livraison rapide',
+    heroSub:'De la réparation matérielle et du développement logiciel sur mesure au design graphique, à la mise en forme académique et au conseil IT — chaque service est livré avec soin, accompagnement technique complet et tarification transparente.',
+    ctaRequest:'Demander un service',
+    ctaBrowse:'Voir les services',
+    badgeCall:'Appel / WhatsApp',
+    badgeEmail:'E-mail',
+
+    searchPlaceholder:'Rechercher un service par nom ou description…',
+
+    catAll:'Tous',
+    catHardware:'Matériel & Réseaux',
+    catSoftware:'Dév. logiciel',
+    catDesign:'Design graphique',
+    catAcademic:'Académique & Impression',
+    catConsulting:'Conseil IT',
+
+    sectionTitle:'Catalogue de services',
+    resultCountOne:'1 service',
+    resultCountMany:'{n} services',
+
+    emptyTitle:'Aucun service trouvé',
+    emptySub:'Essayez un autre mot-clé ou changez de catégorie.',
+
+    priceBadge:'Prix justes',
+    orderNow:'Commander',
+
+    sMaintenanceName:'Maintenance matérielle & logicielle',
+    sMaintenanceSub:'Ordinateurs, portables & réseaux',
+    sMaintenance1:'Diagnostic complet et réparation pour ordinateurs de bureau et portables.',
+    sMaintenance2:'Installation de système d’exploitation (Windows / Linux) et configuration réseau complète.',
+    sMaintenance3:'Mise à niveau matérielle et optimisation thermique des performances.',
+
+    sSoftwareName:'Fourniture & activation de logiciels',
+    sSoftwareSub:'Outils professionnels installés pour vous',
+    sSoftware1:'Installation et activation de la suite Microsoft Office.',
+    sSoftware2:'Outils Adobe Creative Cloud, AutoCAD et IDE / environnements de développement spécialisés.',
+    sSoftware3:'Logiciels professionnels supplémentaires fournis gratuitement avec chaque service.',
+
+    sDesktopName:'Développement d’applications de bureau',
+    sDesktopSub:'Logiciels sur mesure conçus pour vous',
+    sDesktop1:'Logiciels de bureau sur mesure en C# .NET (WPF / WinForms) ou Python.',
+    sDesktop2:'Systèmes de gestion, scripts d’automatisation et solutions de bases de données.',
+    sDesktop3:'Applications de bureau modernes basées web / HTML avec support technique complet.',
+
+    sGraphicName:'Design graphique & identité visuelle',
+    sGraphicSub:'Logos, cartes, flyers & signalétique',
+    sGraphic1:'Création de logos, cartes de visite et kits d’identité de marque.',
+    sGraphic2:'Flyers promotionnels, templates pour réseaux sociaux et panneaux publicitaires.',
+    sGraphic3:'Charte graphique complète avec couleurs, polices et règles d’usage.',
+
+    sAcademicName:'Mise en forme académique & impression',
+    sAcademicSub:'Mémoires, recherches & impression de qualité',
+    sAcademic1:'Mise en forme académique professionnelle pour mémoires et travaux de recherche universitaires.',
+    sAcademic2:'Impression haute qualité en couleur ou noir et blanc.',
+    sAcademic3:'Options de livraison numérique rapide pour chaque document finalisé.',
+
+    sConsultingName:'Conseil IT & support technique',
+    sConsultingSub:'Orientation, sécurité & résolution de problèmes',
+    sConsulting1:'Conseils d’infrastructure et recommandations technologiques adaptées.',
+    sConsulting2:'Bases de cybersécurité et bonnes pratiques pour particuliers et petites équipes.',
+    sConsulting3:'Recommandations d’achat d’appareils et résolution personnalisée de problèmes techniques.',
+
+    contactStatus:'Réponse sous 24 heures',
+    contactTitle:'Travaillons ensemble',
+    contactSub:'Contactez-moi directement pour un devis rapide ou pour discuter de votre projet. Chaque demande reçoit une réponse personnelle — pas de bots, pas de files d’attente.',
+    methodPhone:'Téléphone',
+    methodWhatsapp:'WhatsApp',
+    methodEmail1:'E-mail principal',
+    methodEmail2:'E-mail professionnel',
+    socialTitle:'Suivez & connectez',
+    socialSub:'Retrouvez-moi sur les réseaux sociaux pour les mises à jour et les coulisses.',
+
+    footTag:'Un portail SaivCORE',
+    madeWith:'Fait avec',
+    madeBy:'par Saif El Islem Zahaf',
+    madeIn:'Fabriqué en Algérie'
+  },
+
+  ar:{
+    pageTitle:'SaivSERVICES — خدمات تقنية وفنية احترافية | SaivCORE',
+
+    brandSub:'بوابة SaivCORE',
+    navHome:'الرئيسية',
+    navServices:'الخدمات',
+    navContact:'اتصل بي',
+    navCore:'SaivCORE',
+
+    heroStatus:'متاح للطلبات والمشاريع',
+    heroTitle1:'خدماتي التقنية والفنية الاحترافية',
+    heroTitle2:'دقة عالية · أسعار مناسبة · تسليم سريع',
+    heroSub:'من صيانة الحواسيب وتطوير البرامج المخصصة إلى التصميم الجرافيكي وتنسيق البحوث والاستشارات التقنية — كل خدمة تُقدَّم بعناية ودعم تقني كامل وتسعير شفاف.',
+    ctaRequest:'طلب خدمة',
+    ctaBrowse:'تصفح الخدمات',
+    badgeCall:'اتصال / واتساب',
+    badgeEmail:'البريد الإلكتروني',
+
+    searchPlaceholder:'ابحث عن خدمة بالاسم أو الوصف…',
+
+    catAll:'الكل',
+    catHardware:'صيانة وشدكات',
+    catSoftware:'برمجة وتطوير',
+    catDesign:'تصميم وجودة',
+    catAcademic:'أكاديمي وطباعة',
+    catConsulting:'استشارات',
+
+    sectionTitle:'دليل الخدمات',
+    resultCountOne:'خدمة واحدة',
+    resultCountMany:'{n} خدمات',
+
+    emptyTitle:'لا توجد خدمات مطابقة',
+    emptySub:'جرّب كلمة مفتاحية أخرى أو غيّر تصنيف الفلترة.',
+
+    priceBadge:'أسعار مناسبة',
+    orderNow:'طلب الخدمة الآن',
+
+    sMaintenanceName:'صيانة الحواسيب والشبكات',
+    sMaintenanceSub:'حواسيب مكتبية ومحمولة وشبكات',
+    sMaintenance1:'تشخيص وإصلاح شامل للحواسيب المكتبية والمحمولة.',
+    sMaintenance2:'تثبيت أنظمة التشغيل (ويندوز / لينكس) وإعداد الشبكات بالكامل.',
+    sMaintenance3:'ترقية العتاد وتحسين الأداء الحراري للأجهزة.',
+
+    sSoftwareName:'توفير وتثبيت البرامج المدفوعة',
+    sSoftwareSub:'أدوات احترافية مثبتة لك',
+    sSoftware1:'تثبيت وتفعيل حزمة Microsoft Office.',
+    sSoftware2:'أدوات Adobe Creative Cloud وAutoCAD وبيئات التطوير المتخصصة.',
+    sSoftware3:'برامج احترافية إضافية تُوفَّر مجاناً مع كل خدمة.',
+
+    sDesktopName:'تطوير برامج سطح المكتب',
+    sDesktopSub:'برامج مخصصة تُبنى حسب طلبك',
+    sDesktop1:'برامج سطح مكتب مخصصة باستخدام C# .NET (WPF / WinForms) أو Python.',
+    sDesktop2:'أنظمة إدارية وسكربتات أتمتة وحلول قواعد بيانات.',
+    sDesktop3:'تطبيقات سطح مكتب حديثة بتقنيات الويب / HTML مع دعم تقني كامل.',
+
+    sGraphicName:'التصميم الجرافيكي والهوية البصرية',
+    sGraphicSub:'شعارات، بطاقات، فلايرات ولوحات',
+    sGraphic1:'تصميم الشعارات وبطاقات الزيارة وأطقم الهوية البصرية.',
+    sGraphic2:'فلايرات دعائية وقوالب منشورات السوشيال ميديا واللوحات الإشهارية.',
+    sGraphic3:'دليل هوية كامل يتضمن الألوان والخطوط وقواعد الاستخدام.',
+
+    sAcademicName:'تنسيق وطباعة البحوث والمذكرات',
+    sAcademicSub:'مذكرات، بحوث وطباعة عالية الجودة',
+    sAcademic1:'تنسيق أكاديمي احترافي لمذكرات التخرج والبحوث الجامعية.',
+    sAcademic2:'طباعة عالية الجودة بالألوان أو بالأبيض والأسود.',
+    sAcademic3:'خيارات تسليم رقمي سريعة لكل مستند مُنجز.',
+
+    sConsultingName:'استشارات تقنية وتوجيه',
+    sConsultingSub:'إرشاد، أمن وحل مشكلات',
+    sConsulting1:'استشارات في البنية التحتية وتوصيات تقنية وفق أفضل الممارسات.',
+    sConsulting2:'أساسيات الأمن السيبراني وتدريب على الممارسات الآمنة للأفراد والفرق الصغيرة.',
+    sConsulting3:'توصيات شراء الأجهزة وحل المشكلات التقنية بشكل مخصص.',
+
+    contactStatus:'الرد خلال 24 ساعة',
+    contactTitle:'لنعمل معاً',
+    contactSub:'تواصل معي مباشرة للحصول على تسعير سريع أو لمناقشة مشروعك. كل طلب يُجاب عليه شخصياً — بلا روبوتات، بلا انتظار.',
+    methodPhone:'الهاتف',
+    methodWhatsapp:'واتساب',
+    methodEmail1:'البريد الأساسي',
+    methodEmail2:'البريد المهني',
+    socialTitle:'تابعني وتواصل',
+    socialSub:'تابعني على وسائل التواصل للاطلاع على التحديثات وأعمالي وكواليس العمل.',
+
+    footTag:'بوابة من SaivCORE',
+    madeWith:'صُنع بـ',
+    madeBy:'بواسطة سيف الإسلام زحاف',
+    madeIn:'صُنع في الجزائر'
+  }
+};
+
+/* ============================================================
+   4. STATE
+   ============================================================ */
+const STORAGE_LANG  = 'saivcore-lang';
+const STORAGE_THEME = 'saivcore-theme';
+
+const State = {
+  lang:'en',
+  theme:'light',
+  category:'all',
+  query:''
+};
+
+/* ============================================================
+   5. DOM REFS
+   ============================================================ */
+const $  = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.prototype.slice.call((r || document).querySelectorAll(s));
+
+const els = {
+  html:        document.documentElement,
+  body:        document.body,
+  langWrap:    $('#langWrap'),
+  langBtn:     $('#langBtn'),
+  langMenu:    $('#langMenu'),
+  langLabel:   $('#langLabel'),
+  themeBtn:    $('#themeBtn'),
+  menuBtn:     $('#menuBtn'),
+  drawer:      $('#drawer'),
+  drawerBack:  $('#drawerBack'),
+  drawerClose: $('#drawerClose'),
+  searchInput: $('#searchInput'),
+  searchClear: $('#searchClear'),
+  pills:       $('#pills'),
+  grid:        $('#servicesGrid'),
+  empty:       $('#emptyState'),
+  resultCount: $('#resultCount'),
+  toTop:       $('#toTop')
+};
+
+/* ============================================================
+   6. UTILITIES
+   ============================================================ */
+function t(key){
+  const dict = I18N[State.lang] || I18N.en;
+  return dict[key] !== undefined ? dict[key] : (I18N.en[key] || key);
+}
+
+function esc(v){
+  return String(v == null ? '' : v).replace(/[&<>"']/g, function(c){
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+  });
+}
+
+function safeGet(key){
+  try { return localStorage.getItem(key); } catch(e){ return null; }
+}
+function safeSet(key, value){
+  try { localStorage.setItem(key, value); } catch(e){}
+}
+
+/* Capitalise first letter safely */
+function cap(s){
+  s = String(s || '');
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+/* ============================================================
+   7. THEME ENGINE
+   ============================================================ */
+function applyTheme(theme){
+  State.theme = theme === 'dark' ? 'dark' : 'light';
+  els.html.setAttribute('data-theme', State.theme);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', State.theme === 'dark' ? '#0a0a0a' : '#ffffff');
+  safeSet(STORAGE_THEME, State.theme);
+}
+
+function initTheme(){
+  const saved = safeGet(STORAGE_THEME);
+  if (saved === 'dark' || saved === 'light'){
+    applyTheme(saved);
+    return;
+  }
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(prefersDark ? 'dark' : 'light');
+}
+
+function toggleTheme(){
+  applyTheme(State.theme === 'dark' ? 'light' : 'dark');
+}
+
+/* ============================================================
+   8. LANGUAGE ENGINE
+   ============================================================ */
+function applyLanguage(lang){
+  if (!I18N[lang]) lang = 'en';
+  State.lang = lang;
+
+  const isRTL = lang === 'ar';
+  els.html.setAttribute('lang', lang);
+  els.html.setAttribute('dir', isRTL ? 'rtl' : 'ltr');
+
+  document.title = t('pageTitle');
+
+  /* Static i18n nodes */
+  $$('[data-i18n]').forEach(function(el){
+    const key = el.getAttribute('data-i18n');
+    const val = t(key);
+    if (val !== undefined) el.textContent = val;
+  });
+  $$('[data-i18n-placeholder]').forEach(function(el){
+    const key = el.getAttribute('data-i18n-placeholder');
+    const val = t(key);
+    if (val !== undefined) el.setAttribute('placeholder', val);
+  });
+
+  /* Language menu active + label */
+  $$('.lang-opt').forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+  });
+  els.langLabel.textContent = lang.toUpperCase();
+
+  /* Re-render dynamic content */
+  renderPills();
+  renderServices();
+
+  safeSet(STORAGE_LANG, lang);
+}
+
+function initLanguage(){
+  const saved = safeGet(STORAGE_LANG);
+  if (saved && I18N[saved]){
+    applyLanguage(saved);
+    return;
+  }
+  const nav = (navigator.language || 'en').toLowerCase();
+  if (nav.indexOf('ar') === 0) applyLanguage('ar');
+  else if (nav.indexOf('fr') === 0) applyLanguage('fr');
+  else applyLanguage('en');
+}
+
+/* ============================================================
+   9. CATEGORY PILLS
+   ============================================================ */
+function categoryLabel(id){
+  if (id === 'all')        return t('catAll');
+  if (id === 'hardware')   return t('catHardware');
+  if (id === 'software')   return t('catSoftware');
+  if (id === 'design')     return t('catDesign');
+  if (id === 'academic')   return t('catAcademic');
+  if (id === 'consulting') return t('catConsulting');
+  return id;
+}
+
+function categoryCount(id){
+  if (id === 'all') return SERVICES.length;
+  return SERVICES.filter(function(x){ return x.category === id; }).length;
+}
+
+function renderPills(){
+  els.pills.innerHTML = CATEGORIES.map(function(cat){
+    const active = State.category === cat.id ? ' active' : '';
+    return '<button class="pill' + active + '" data-cat="' + cat.id + '" role="tab" aria-selected="' + (State.category === cat.id) + '">' +
+      '<i class="fa-solid ' + cat.icon + '"></i>' +
+      '<span>' + esc(categoryLabel(cat.id)) + '</span>' +
+      '<span class="count">' + categoryCount(cat.id) + '</span>' +
+    '</button>';
+  }).join('');
+
+  $$('.pill', els.pills).forEach(function(btn){
+    btn.addEventListener('click', function(){
+      State.category = btn.getAttribute('data-cat');
+      renderPills();
+      renderServices();
+    });
+  });
+}
+
+/* ============================================================
+   10. SERVICES GRID
+   ============================================================ */
+function svcName(id){ return t('s' + cap(id) + 'Name'); }
+function svcSub(id){ return t('s' + cap(id) + 'Sub'); }
+function svcFeatures(id){
+  return [
+    t('s' + cap(id) + '1'),
+    t('s' + cap(id) + '2'),
+    t('s' + cap(id) + '3')
+  ];
+}
+
+function categoryIcon(id){
+  const c = CATEGORIES.filter(function(x){ return x.id === id; })[0];
+  return c ? c.icon : 'fa-tag';
+}
+
+function matches(svc){
+  if (State.category !== 'all' && svc.category !== State.category) return false;
+  if (!State.query) return true;
+
+  const q = State.query.toLowerCase().trim();
+  if (!q) return true;
+
+  const haystack = [
+    svc.id,
+    svc.category,
+    svc.keywords,
+    svcName(svc.id),
+    svcSub(svc.id),
+    svcFeatures(svc.id).join(' ')
+  ].join(' ').toLowerCase();
+
+  const tokens = q.split(/\s+/).filter(Boolean);
+  return tokens.every(function(tok){ return haystack.indexOf(tok) !== -1; });
+}
+
+function cardHTML(svc){
+  const name    = esc(svcName(svc.id));
+  const sub     = esc(svcSub(svc.id));
+  const catLbl  = esc(categoryLabel(svc.category));
+  const catIcon = categoryIcon(svc.category);
+  const feats   = svcFeatures(svc.id).map(function(f){
+    return '<li><i class="fa-solid fa-check"></i><span>' + esc(f) + '</span></li>';
+  }).join('');
+  const price   = esc(t('priceBadge'));
+  const order   = esc(t('orderNow'));
+
+  return '' +
+    '<article class="service-card" data-id="' + esc(svc.id) + '" data-cat="' + esc(svc.category) + '">' +
+      '<div class="card-top">' +
+        '<div class="service-icon"><i class="fa-solid ' + esc(svc.icon) + '"></i></div>' +
+        '<span class="cat-tag"><i class="fa-solid ' + esc(catIcon) + '" style="margin-inline-end:5px;font-size:9px"></i>' + catLbl + '</span>' +
+      '</div>' +
+      '<div>' +
+        '<h3 class="service-title">' + name + '<small>' + sub + '</small></h3>' +
+      '</div>' +
+      '<ul class="feature-list">' + feats + '</ul>' +
+      '<div class="card-foot">' +
+        '<span class="price-tag"><i class="fa-solid fa-circle-check"></i>' + price + '</span>' +
+        '<a class="order-btn" href="https://saivcore.github.io/request.html">' +
+          '<span>' + order + '</span>' +
+          '<i class="fa-solid fa-arrow-right"></i>' +
+        '</a>' +
+      '</div>' +
+    '</article>';
+}
+
+function renderServices(){
+  const visible = SERVICES.filter(matches);
+  const grid = els.grid;
+  const frag = document.createDocumentFragment();
+
+  visible.forEach(function(svc){
+    const div = document.createElement('div');
+    div.innerHTML = cardHTML(svc);
+    const node = div.firstElementChild;
+    frag.appendChild(node);
+  });
+
+  grid.innerHTML = '';
+  grid.appendChild(frag);
+
+  els.empty.classList.toggle('on', visible.length === 0);
+
+  const n = visible.length;
+  if (n === 0){
+    els.resultCount.textContent = '';
+  } else if (n === 1){
+    els.resultCount.textContent = t('resultCountOne');
+  } else {
+    els.resultCount.textContent = t('resultCountMany').replace('{n}', String(n));
+  }
+
+  revealCards();
+  els.searchClear.classList.toggle('on', State.query.length > 0);
+}
+
+/* ============================================================
+   11. SCROLL REVEAL
+   ============================================================ */
+let observer = null;
+
+function revealCards(){
+  const cards = $$('.service-card', els.grid);
+
+  if (!('IntersectionObserver' in window)){
+    cards.forEach(function(c){ c.classList.add('revealed'); });
+    return;
+  }
+
+  if (observer) observer.disconnect();
+
+  observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry, i){
+      if (entry.isIntersecting){
+        const el = entry.target;
+        const delay = Math.min(i * 45, 300);
+        setTimeout(function(){ el.classList.add('revealed'); }, delay);
+        observer.unobserve(el);
+      }
+    });
+  }, {
+    root: null,
+    rootMargin: '0px 0px -40px 0px',
+    threshold: 0.08
+  });
+
+  cards.forEach(function(c){ observer.observe(c); });
+
+  /* Safety fallback */
+  setTimeout(function(){
+    cards.forEach(function(c){ c.classList.add('revealed'); });
+  }, 1200);
+}
+
+/* ============================================================
+   12. SEARCH
+   ============================================================ */
+let searchDebounce = null;
+
+function onSearchInput(e){
+  const val = e.target.value || '';
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(function(){
+    State.query = val;
+    renderServices();
+  }, 90);
+}
+
+function clearSearch(){
+  els.searchInput.value = '';
+  State.query = '';
+  renderServices();
+  els.searchInput.focus();
+}
+
+/* ============================================================
+   13. LANGUAGE MENU
+   ============================================================ */
+function openLangMenu(){
+  els.langWrap.classList.add('open');
+  els.langBtn.setAttribute('aria-expanded', 'true');
+}
+function closeLangMenu(){
+  els.langWrap.classList.remove('open');
+  els.langBtn.setAttribute('aria-expanded', 'false');
+}
+function toggleLangMenu(){
+  if (els.langWrap.classList.contains('open')) closeLangMenu();
+  else openLangMenu();
+}
+
+/* ============================================================
+   14. MOBILE DRAWER
+   ============================================================ */
+function openDrawer(){
+  els.drawer.classList.add('on');
+  els.drawerBack.classList.add('on');
+  els.drawer.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer(){
+  els.drawer.classList.remove('on');
+  els.drawerBack.classList.remove('on');
+  els.drawer.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+/* ============================================================
+   15. BACK TO TOP
+   ============================================================ */
+function onScroll(){
+  const y = window.scrollY || document.documentElement.scrollTop || 0;
+  els.toTop.classList.toggle('on', y > 480);
+}
+
+/* ============================================================
+   16. EVENT WIRING
+   ============================================================ */
+function wireEvents(){
+
+  /* Theme */
+  els.themeBtn.addEventListener('click', toggleTheme);
+
+  /* Language */
+  els.langBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    toggleLangMenu();
+  });
+  $$('.lang-opt').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      const lang = btn.getAttribute('data-lang');
+      applyLanguage(lang);
+      closeLangMenu();
+    });
+  });
+  document.addEventListener('click', function(e){
+    if (!els.langWrap.contains(e.target)) closeLangMenu();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape'){ closeLangMenu(); closeDrawer(); }
+  });
+
+  /* Drawer */
+  els.menuBtn.addEventListener('click', openDrawer);
+  els.drawerClose.addEventListener('click', closeDrawer);
+  els.drawerBack.addEventListener('click', closeDrawer);
+  $$('.drawer-link', els.drawer).forEach(function(a){
+    a.addEventListener('click', closeDrawer);
+  });
+
+  /* Search */
+  els.searchInput.addEventListener('input', onSearchInput);
+  els.searchClear.addEventListener('click', clearSearch);
+  els.searchInput.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') clearSearch();
+  });
+
+  /* Keyboard shortcut: "/" focuses search */
+  document.addEventListener('keydown', function(e){
+    const tag = (e.target && e.target.tagName) || '';
+    const typing = tag === 'INPUT' || tag === 'TEXTAREA' || (e.target && e.target.isContentEditable);
+    if (e.key === '/' && !typing){
+      e.preventDefault();
+      els.searchInput.focus();
+      els.searchInput.select();
+    }
+  });
+
+  /* Back to top */
+  window.addEventListener('scroll', onScroll, { passive:true });
+  els.toTop.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* Close drawer on desktop resize */
+  let resizeTimer = null;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function(){
+      if (window.innerWidth > 860) closeDrawer();
+    }, 120);
+  });
+
+  /* Smooth scroll for in-page anchors */
+  $$('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      const href = a.getAttribute('href');
+      if (!href || href === '#') return;
+      const target = document.querySelector(href);
+      if (target){
+        e.preventDefault();
+        const y = target.getBoundingClientRect().top + window.scrollY - 78;
+        window.scrollTo({ top: y, behavior:'smooth' });
+      }
+    });
+  });
+}
+
+/* ============================================================
+   17. INIT
+   ============================================================ */
+function init(){
+  initTheme();
+  initLanguage();   /* also renders pills + services */
+  wireEvents();
+  onScroll();
+}
+
+if (document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+
+</body>
+</html>
