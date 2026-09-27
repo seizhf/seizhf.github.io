@@ -1,0 +1,3119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SaivPDF Monster Suite — Ultimate Client-Side PDF Workspace | SaivCORE</title>
+<meta name="description" content="SaivPDF Monster Suite — 100% client-side PDF workspace: merge, split, edit, OCR, encrypt, sign, convert, AI. No server. Powered by SaivCORE.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300..900&family=Inter:wght@300..900&family=JetBrains+Mono:wght@400;600&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode:'class',
+    theme:{ extend:{ fontFamily:{ sans:['Inter','system-ui','sans-serif'], mono:['JetBrains Mono','monospace'], ar:['Cairo','Tajawal','sans-serif'] } } }
+  };
+</script>
+
+<!-- ============ CORE PDF LIBRARIES ============ -->
+<!-- cantoo/pdf-lib: pdf-lib fork with encryption support (used when available) -->
+<script src="https://cdn.jsdelivr.net/npm/@cantoo/pdf-lib@1.17.3/dist/pdf-lib.min.js" onerror="window.__cantooFailed=true"></script>
+<!-- fallback to standard pdf-lib if cantoo failed -->
+<script>
+  if (typeof PDFLib === 'undefined') {
+    document.write('<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/script>');
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.4/dist/tesseract.min.js"></script>
+
+<style>
+/* ============================================================
+   BASE
+   ============================================================ */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:#eef2f7;color:#0f172a;
+  -webkit-font-smoothing:antialiased;overflow:hidden;
+}
+body.ar{font-family:'Cairo','Tajawal',sans-serif}
+.dark body{background:#0a0f1c;color:#e2e8f0}
+#app{display:flex;flex-direction:column;height:100vh}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#c2ccda;border-radius:8px;border:2px solid transparent;background-clip:content-box}
+.dark ::-webkit-scrollbar-thumb{background:#334155;background-clip:content-box}
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+#topbar{
+  background:#0b1220;color:#fff;padding:8px 14px;display:flex;align-items:center;
+  gap:9px;flex-wrap:wrap;z-index:40;box-shadow:0 2px 14px rgba(0,0,0,.28);
+  border-bottom:1px solid #1e293b;
+}
+.brand{display:flex;align-items:center;gap:10px;margin-inline-end:6px}
+.brand .logo{
+  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:16px;
+  background:linear-gradient(135deg,#ef4444,#f59e0b);box-shadow:0 4px 14px rgba(239,68,68,.45)
+}
+.brand b{font-size:14.5px;letter-spacing:.3px;line-height:1.1;display:block}
+.brand small{display:block;font-size:9.5px;opacity:.62;letter-spacing:.5px;text-transform:uppercase}
+.tb-sep{width:1px;height:26px;background:#1e293b;margin:0 3px}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;border:0;border-radius:9px;padding:8px 12px;
+  font-size:12.5px;font-weight:600;cursor:pointer;transition:.16s;background:#17233a;color:#dbe4f0;
+  white-space:nowrap;font-family:inherit;
+}
+.btn:hover{background:#243350;transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-primary{background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;box-shadow:0 4px 14px rgba(59,130,246,.35)}
+.btn-primary:hover{filter:brightness(1.12)}
+.btn-danger{background:#b91c1c;color:#fff}
+.btn-danger:hover{background:#dc2626}
+.btn-ghost{background:transparent;border:1px solid #26364f}
+.btn-ghost:hover{background:#17233a}
+.spacer{flex:1}
+.tb-select{
+  background:#17233a;color:#fff;border:1px solid #26364f;border-radius:9px;
+  padding:7px 10px;font-size:12.5px;outline:none;cursor:pointer;font-family:inherit;
+}
+.tb-select:focus{border-color:#3b82f6}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+#shell{flex:1;display:flex;overflow:hidden;min-height:0}
+
+/* ---------- SIDEBAR ---------- */
+#sidebar{
+  width:280px;min-width:280px;background:#f7f9fc;border-inline-end:1px solid #dde4ee;
+  display:flex;flex-direction:column;overflow:hidden;transition:.2s;
+}
+.dark #sidebar{background:#0f172a;border-color:#1e293b}
+#sidebar.collapsed{width:0;min-width:0;border-inline-end:0}
+.sb-head{padding:11px 13px;border-bottom:1px solid #e2e8f0;background:#fff;flex:0 0 auto}
+.dark .sb-head{background:#111c33;border-color:#1e293b}
+.sb-head h2{margin:0;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:#0ea5e9;display:flex;align-items:center;gap:7px}
+.sb-body{flex:1;overflow-y:auto;padding:8px 0 40px}
+.tool-group{border-bottom:1px solid #eef2f8}
+.dark .tool-group{border-color:#1e293b}
+.tool-group-head{
+  padding:10px 13px;cursor:pointer;display:flex;align-items:center;gap:9px;font-size:11.5px;
+  font-weight:800;color:#334155;text-transform:uppercase;letter-spacing:.5px;user-select:none;
+  transition:.16s;
+}
+.dark .tool-group-head{color:#94a3b8}
+.tool-group-head:hover{background:#eef6ff;color:#0ea5e9}
+.dark .tool-group-head:hover{background:#1e293b;color:#38bdf8}
+.tool-group-head .ico{
+  width:24px;height:24px;border-radius:8px;display:grid;place-items:center;font-size:11px;
+  background:linear-gradient(135deg,#e0efff,#d6e4ff);color:#0369a1;flex:0 0 auto;
+}
+.tool-group-head .chev{margin-inline-start:auto;font-size:10px;color:#94a3b8;transition:.2s}
+.tool-group.open .tool-group-head .chev{transform:rotate(90deg)}
+.tool-group-body{display:none;padding:4px 8px 10px}
+.tool-group.open .tool-group-body{display:block}
+.tool-btn{
+  display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;
+  padding:8px 10px;border-radius:8px;font-size:12px;font-weight:600;color:#475569;
+  cursor:pointer;transition:.14s;text-align:start;font-family:inherit;
+}
+.dark .tool-btn{color:#cbd5e1}
+.tool-btn:hover{background:#e0f2fe;color:#0369a1}
+.dark .tool-btn:hover{background:#1e293b;color:#38bdf8}
+.tool-btn:disabled{opacity:.4;cursor:not-allowed}
+.tool-btn i:first-child{width:15px;text-align:center;color:#64748b;font-size:12px}
+.tool-btn:hover i:first-child{color:#0ea5e9}
+
+/* ---------- MAIN ---------- */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;background:#dfe5ee}
+.dark #main{background:#0a0f1c}
+#fileBar{
+  display:flex;align-items:center;gap:7px;padding:8px 12px;background:#fff;
+  border-bottom:1px solid #e2e8f0;overflow-x:auto;flex:0 0 auto;
+}
+.dark #fileBar{background:#111c33;border-color:#1e293b}
+.file-chip{
+  display:flex;align-items:center;gap:7px;padding:6px 10px;border:1px solid #e2e8f0;
+  border-radius:9px;background:#f8fafc;font-size:12px;font-weight:600;color:#334155;
+  cursor:pointer;transition:.14s;white-space:nowrap;max-width:230px;
+}
+.dark .file-chip{background:#1e293b;border-color:#334155;color:#cbd5e1}
+.file-chip:hover{border-color:#93c5fd;background:#f0f7ff}
+.file-chip.active{background:#dbeafe;border-color:#2563eb;color:#1d4ed8}
+.dark .file-chip.active{background:#1e3a8a;border-color:#3b82f6;color:#dbeafe}
+.file-chip .nm{overflow:hidden;text-overflow:ellipsis;max-width:150px}
+.file-chip .x{
+  opacity:.4;cursor:pointer;font-size:10px;padding:2px;border-radius:4px;
+}
+.file-chip .x:hover{opacity:1;background:#fee2e2;color:#dc2626}
+#fileAdd{
+  padding:6px 12px;border:1px dashed #c9d6ea;border-radius:9px;background:transparent;
+  font-size:12px;font-weight:700;color:#0ea5e9;cursor:pointer;transition:.15s;white-space:nowrap
+}
+#fileAdd:hover{background:#e0f2fe;border-color:#7dd3fc}
+
+#stage{flex:1;overflow:auto;padding:20px 16px 80px;position:relative}
+
+/* ---------- DROPZONE ---------- */
+#dropzone{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  min-height:calc(100vh - 200px);border:3px dashed #c2ccda;border-radius:22px;
+  background:rgba(255,255,255,.5);transition:.2s;cursor:pointer;padding:40px;
+}
+.dark #dropzone{border-color:#334155;background:rgba(15,23,42,.5)}
+#dropzone.drag{border-color:#0ea5e9;background:rgba(224,242,254,.6);transform:scale(.99)}
+#dropzone .dz-icon{
+  width:88px;height:88px;border-radius:26px;display:grid;place-items:center;font-size:38px;
+  background:linear-gradient(135deg,#3b82f6,#7c3aed);color:#fff;
+  box-shadow:0 12px 34px rgba(59,130,246,.4)
+}
+#dropzone h2{margin:0;font-size:22px;font-weight:800;letter-spacing:-.3px}
+#dropzone p{margin:0;font-size:13.5px;color:#64748b;max-width:540px;text-align:center;line-height:1.6}
+.dark #dropzone p{color:#94a3b8}
+#dropzone .dz-formats{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px
+}
+#dropzone .fmt{
+  font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+  padding:4px 10px;border-radius:20px;background:#e0e7ef;color:#475569
+}
+.dark #dropzone .fmt{background:#1e293b;color:#94a3b8}
+
+/* ---------- PAGE GRID ---------- */
+#pageGrid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;
+  align-items:start;
+}
+.page-card{
+  background:#fff;border:2px solid #e2e8f0;border-radius:11px;overflow:hidden;
+  cursor:pointer;transition:.16s;position:relative;box-shadow:0 2px 8px rgba(15,23,42,.06)
+}
+.dark .page-card{background:#111c33;border-color:#1e293b}
+.page-card:hover{border-color:#0ea5e9;transform:translateY(-2px);box-shadow:0 8px 20px rgba(14,165,233,.18)}
+.page-card.selected{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.25)}
+.page-card.dragging{opacity:.4}
+.page-card.ghost{background:#dbeafe;border-style:dashed}
+.page-thumb{
+  background:#f1f5f9;min-height:200px;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;position:relative;
+}
+.dark .page-thumb{background:#0a0f1c}
+.page-thumb img{display:block;max-width:100%;height:auto}
+.page-thumb .spinner{
+  width:26px;height:26px;border:3px solid #cbd5e1;border-top-color:#0ea5e9;border-radius:50%;
+  animation:spin .8s linear infinite
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.page-info{
+  padding:8px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px;
+  font-size:11px;font-weight:700;color:#64748b;background:#fbfcfe;border-top:1px solid #eef2f8;
+}
+.dark .page-info{background:#0f172a;border-color:#1e293b;color:#94a3b8}
+.page-info .num{
+  width:22px;height:22px;border-radius:7px;background:#e0f2fe;color:#0369a1;
+  display:grid;place-items:center;font-size:10.5px
+}
+.page-info .rot{font-size:10px;color:#94a3b8}
+.page-check{
+  position:absolute;top:8px;inset-inline-start:8px;width:24px;height:24px;
+  border-radius:7px;background:rgba(255,255,255,.92);border:2px solid #cbd5e1;
+  display:grid;place-items:center;font-size:11px;color:transparent;transition:.14s;
+  cursor:pointer;z-index:2
+}
+.page-card.selected .page-check{background:#2563eb;border-color:#2563eb;color:#fff}
+.page-actions{
+  position:absolute;top:8px;inset-inline-end:8px;display:flex;gap:4px;
+  opacity:0;transition:.15s;z-index:2
+}
+.page-card:hover .page-actions{opacity:1}
+.page-actions .pa{
+  width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,.94);
+  border:1px solid #e2e8f0;display:grid;place-items:center;font-size:11px;
+  color:#475569;cursor:pointer;transition:.14s
+}
+.page-actions .pa:hover{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
+
+/* ---------- SELECTION TOOLBAR ---------- */
+#selBar{
+  position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);
+  border:1px solid #e2e8f0;border-radius:11px;padding:8px 12px;margin-bottom:14px;
+  display:none;align-items:center;gap:9px;flex-wrap:wrap;
+  box-shadow:0 4px 16px rgba(15,23,42,.08)
+}
+.dark #selBar{background:rgba(17,28,51,.95);border-color:#1e293b}
+#selBar.on{display:flex}
+#selBar .count{
+  font-size:12px;font-weight:800;color:#1d4ed8;padding:4px 10px;background:#dbeafe;border-radius:20px
+}
+.dark #selBar .count{background:#1e3a8a;color:#dbeafe}
+#selBar .sb-actions{display:flex;gap:6px;flex-wrap:wrap}
+#selBar .sb-btn{
+  border:1px solid #e2e8f0;background:#fff;border-radius:8px;padding:6px 11px;
+  font-size:11.5px;font-weight:700;color:#475569;cursor:pointer;transition:.14s;
+  display:inline-flex;align-items:center;gap:6px;font-family:inherit
+}
+.dark #selBar .sb-btn{background:#1e293b;border-color:#334155;color:#cbd5e1}
+#selBar .sb-btn:hover{border-color:#0ea5e9;color:#0369a1;background:#f0f9ff}
+.dark #selBar .sb-btn:hover{background:#0c4a6e;color:#7dd3fc}
+#selBar .sb-btn.danger:hover{border-color:#dc2626;color:#b91c1c;background:#fef2f2}
+
+/* ============================================================
+   MODAL SYSTEM
+   ============================================================ */
+.modal-back{
+  position:fixed;inset:0;background:rgba(15,23,42,.62);backdrop-filter:blur(4px);
+  z-index:100;display:none;align-items:center;justify-content:center;padding:24px;
+}
+.modal-back.on{display:flex;animation:fade .15s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal{
+  background:#fff;border-radius:16px;max-width:640px;width:100%;max-height:88vh;
+  overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.4);
+  animation:pop .2s ease;
+}
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+.dark .modal{background:#111c33;color:#e2e8f0}
+.modal.wide{max-width:980px}
+.modal.xl{max-width:1240px}
+.modal-head{
+  padding:14px 18px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:11px;
+  background:#fbfcfe;flex:0 0 auto
+}
+.dark .modal-head{background:#0f172a;border-color:#1e293b}
+.modal-head h3{margin:0;font-size:15px;font-weight:800;display:flex;align-items:center;gap:9px}
+.modal-head .mh-ico{
+  width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:13px;
+  background:linear-gradient(135deg,#3b82f6,#7c3aed);color:#fff
+}
+.modal-head .close{
+  margin-inline-start:auto;width:30px;height:30px;border-radius:9px;border:0;
+  background:transparent;color:#94a3b8;cursor:pointer;font-size:14px;transition:.14s
+}
+.modal-head .close:hover{background:#fee2e2;color:#dc2626}
+.modal-body{padding:18px;overflow-y:auto;flex:1}
+.modal-foot{
+  padding:13px 18px;border-top:1px solid #e2e8f0;display:flex;gap:8px;justify-content:flex-end;
+  background:#fbfcfe;flex:0 0 auto;flex-wrap:wrap
+}
+.dark .modal-foot{background:#0f172a;border-color:#1e293b}
+
+/* Form elements in modal */
+.fld{display:flex;flex-direction:column;gap:5px;font-size:11.5px;font-weight:700;color:#6b7a90;letter-spacing:.2px;margin-bottom:11px}
+.dark .fld{color:#94a3b8}
+.fld input,.fld select,.fld textarea{
+  border:1px solid #dbe2ec;border-radius:9px;padding:9px 11px;font-size:13px;color:#0f172a;
+  background:#fff;outline:none;width:100%;transition:.15s;font-weight:500;font-family:inherit;
+}
+.dark .fld input,.dark .fld select,.dark .fld textarea{background:#0f172a;color:#e2e8f0;border-color:#334155}
+.fld textarea{resize:vertical;line-height:1.55;min-height:80px}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:#0ea5e9;box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+.fld input[type=color]{padding:3px;height:42px;cursor:pointer}
+.fld input[type=range]{padding:0;height:24px;accent-color:#0ea5e9;cursor:pointer}
+.fld input[type=checkbox]{width:auto;height:auto;padding:0;accent-color:#0ea5e9;cursor:pointer}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.chk{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;color:#475569;cursor:pointer;padding:6px 0}
+.dark .chk{color:#cbd5e1}
+.chk input{width:17px;height:17px;accent-color:#0ea5e9;cursor:pointer;flex:0 0 auto}
+.hint{font-size:11.5px;color:#94a3b8;line-height:1.55;margin:6px 0 0}
+
+/* ============================================================
+   MISC COMPONENTS
+   ============================================================ */
+#toast{
+  position:fixed;left:50%;bottom:78px;transform:translateX(-50%) translateY(20px);
+  background:#0b1220;color:#fff;padding:11px 20px;border-radius:12px;font-size:13px;
+  font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:200;
+  box-shadow:0 12px 34px rgba(0,0,0,.4);max-width:90vw;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.err{background:#b91c1c}
+#toast.ok{background:#15803d}
+#toast.info{background:#0369a1}
+
+#globalLoader{
+  position:fixed;inset:0;background:rgba(15,23,42,.75);backdrop-filter:blur(4px);
+  z-index:300;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;
+}
+#globalLoader.on{display:flex}
+#globalLoader .ld{
+  width:56px;height:56px;border:4px solid rgba(255,255,255,.15);border-top-color:#0ea5e9;
+  border-radius:50%;animation:spin .8s linear infinite
+}
+#globalLoader .lt{color:#fff;font-size:14px;font-weight:700;letter-spacing:.3px}
+
+/* Sidebar toggle */
+#sbToggle{
+  width:32px;height:32px;border-radius:9px;background:#17233a;border:1px solid #26364f;color:#cbd5e1;
+  cursor:pointer;display:grid;place-items:center;font-size:12px;transition:.14s;flex:0 0 auto
+}
+#sbToggle:hover{background:#243350;color:#fff}
+
+/* Scroll handle for editor canvas */
+.editor-canvas-wrap{
+  position:relative;display:inline-block;max-width:100%;background:#f1f5f9;border-radius:8px;
+  overflow:hidden;border:1px solid #e2e8f0
+}
+.dark .editor-canvas-wrap{background:#0a0f1c;border-color:#1e293b}
+.editor-canvas-wrap canvas{display:block;max-width:100%;height:auto;cursor:crosshair}
+
+/* Chat bubbles */
+.chat-box{
+  display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow-y:auto;padding:6px 4px;
+  margin-bottom:12px
+}
+.chat-msg{
+  padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.6;max-width:88%;
+  white-space:pre-wrap;word-wrap:break-word
+}
+.chat-msg.user{background:#dbeafe;color:#1e40af;align-self:flex-end;border-bottom-right-radius:3px}
+.dark .chat-msg.user{background:#1e3a8a;color:#dbeafe}
+.chat-msg.ai{background:#f1f5f9;color:#1e293b;align-self:flex-start;border-bottom-left-radius:3px}
+.dark .chat-msg.ai{background:#1e293b;color:#e2e8f0}
+.chat-msg.err{background:#fee2e2;color:#b91c1c;align-self:center;font-size:12px}
+
+/* OCR / code blocks */
+.code-out{
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.6;
+  background:#0b1220;color:#cbd5e1;border-radius:9px;padding:13px;
+  max-height:400px;overflow:auto;white-space:pre-wrap;word-break:break-word;
+  border:1px solid #1e293b
+}
+
+/* Signature canvas */
+.sig-canvas{
+  width:100%;height:200px;background:#fff;border:2px dashed #cbd5e1;border-radius:10px;
+  cursor:crosshair;touch-action:none
+}
+.dark .sig-canvas{background:#0f172a;border-color:#334155}
+
+/* Splash for missing libs */
+#libErr{
+  position:fixed;inset:0;background:#0b1220;color:#fff;z-index:500;display:none;
+  align-items:center;justify-content:center;padding:40px;text-align:center;flex-direction:column;gap:14px
+}
+#libErr.on{display:flex}
+
+/* Responsive */
+@media (max-width:880px){
+  #sidebar{position:absolute;top:54px;bottom:0;inset-inline-start:0;z-index:50;box-shadow:8px 0 30px rgba(0,0,0,.2)}
+  #sidebar:not(.collapsed){width:290px}
+  .modal{max-height:94vh}
+  .grid2,.grid3,.grid4{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LIBRARY ERROR ============ -->
+<div id="libErr">
+  <i class="fa-solid fa-triangle-exclamation" style="font-size:52px;color:#f59e0b"></i>
+  <h2 style="margin:0">Library load error</h2>
+  <p style="max-width:500px;line-height:1.7;opacity:.8">Some required libraries could not be loaded from the CDN. Please check your internet connection and refresh the page.</p>
+</div>
+
+<div id="app">
+
+  <!-- ================= TOP BAR ================= -->
+  <header id="topbar">
+    <button id="sbToggle" title="Toggle sidebar"><i class="fa-solid fa-bars"></i></button>
+    <div class="brand">
+      <div class="logo"><i class="fa-solid fa-file-pdf"></i></div>
+      <div>
+        <b>SaivPDF <span style="color:#f87171">Monster</span> Suite</b>
+        <small>Powered by SaivCORE</small>
+      </div>
+    </div>
+
+    <div class="tb-sep"></div>
+
+    <button class="btn btn-primary" id="btnUpload"><i class="fa-solid fa-cloud-arrow-up"></i><span data-i18n="upload">Upload</span></button>
+    <button class="btn btn-ghost" id="btnDownload" disabled><i class="fa-solid fa-download"></i><span data-i18n="download">Download</span></button>
+    <button class="btn btn-ghost" id="btnDownloadAll" disabled><i class="fa-solid fa-file-zipper"></i><span data-i18n="zipAll">ZIP All</span></button>
+
+    <div class="spacer"></div>
+
+    <button class="btn btn-ghost" id="btnSample"><i class="fa-solid fa-wand-magic-sparkles"></i><span data-i18n="sample">Sample</span></button>
+    <button class="btn btn-ghost" id="btnClear" disabled><i class="fa-solid fa-trash-can"></i><span data-i18n="clear">Clear</span></button>
+
+    <div class="tb-sep"></div>
+
+    <select class="tb-select" id="langSelect" style="max-width:124px">
+      <option value="en">🇬🇧 EN</option>
+      <option value="fr">🇫🇷 FR</option>
+      <option value="ar">🇩🇿 AR</option>
+    </select>
+    <button class="btn btn-ghost" id="btnTheme" title="Theme"><i class="fa-solid fa-moon"></i></button>
+  </header>
+
+  <!-- ================= SHELL ================= -->
+  <div id="shell">
+
+    <!-- ---------- SIDEBAR ---------- -->
+    <aside id="sidebar" class="collapsed">
+      <div class="sb-head"><h2><i class="fa-solid fa-toolbox"></i><span data-i18n="toolbox">Toolbox</span></h2></div>
+      <div class="sb-body" id="toolbox"></div>
+    </aside>
+
+    <!-- ---------- MAIN ---------- -->
+    <main id="main">
+      <div id="fileBar">
+        <div id="fileChips" style="display:flex;gap:7px;overflow-x:auto;flex:1;min-width:0"></div>
+        <button id="fileAdd"><i class="fa-solid fa-plus"></i> <span data-i18n="addFile">Add</span></button>
+      </div>
+
+      <div id="stage">
+        <div id="selBar">
+          <span class="count"><span id="selCount">0</span> <span data-i18n="selected">selected</span></span>
+          <div class="sb-actions" id="selActions"></div>
+          <button class="sb-btn" id="selClear" style="margin-inline-start:auto"><i class="fa-solid fa-xmark"></i> <span data-i18n="clearSel">Clear</span></button>
+        </div>
+
+        <div id="dropzone">
+          <div class="dz-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+          <h2 data-i18n="dropTitle">Drop your PDFs here</h2>
+          <p data-i18n="dropSub">Drag & drop PDF, PNG, JPG or WEBP files anywhere on this page. Everything runs 100% in your browser — no upload, no server, no tracking.</p>
+          <div class="dz-formats">
+            <span class="fmt">PDF</span><span class="fmt">PNG</span><span class="fmt">JPG</span>
+            <span class="fmt">WEBP</span><span class="fmt">TXT</span><span class="fmt">MD</span>
+          </div>
+          <button class="btn btn-primary" style="margin-top:8px;padding:11px 20px;font-size:13.5px" id="btnPick">
+            <i class="fa-solid fa-folder-open"></i><span data-i18n="browse">Browse Files</span>
+          </button>
+        </div>
+
+        <div id="pageGrid" style="display:none"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ================= MODAL ================= -->
+<div class="modal-back" id="modalBack">
+  <div class="modal" id="modal">
+    <div class="modal-head">
+      <div class="mh-ico" id="modalIcon"><i class="fa-solid fa-gear"></i></div>
+      <h3 id="modalTitle">Title</h3>
+      <button class="close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot"></div>
+  </div>
+</div>
+
+<input type="file" id="fileInput" multiple accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.md,.html" style="display:none">
+
+<div id="toast"></div>
+<div id="globalLoader"><div class="ld"></div><div class="lt" id="loaderText">Working...</div></div>
+
+<script>
+/* ==================================================================
+   SaivPDF Monster Suite
+   Powered by SaivCORE | Made with ❤️ in Algeria 🇩🇿
+   100% client-side. Zero backend. Zero tracking.
+   ================================================================== */
+(function(){
+'use strict';
+
+/* ============================================================
+   0. LIBRARY GUARDS
+   ============================================================ */
+if (typeof PDFLib === 'undefined' || typeof pdfjsLib === 'undefined' || typeof JSZip === 'undefined'){
+  document.getElementById('libErr').classList.add('on');
+  return;
+}
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+
+const HAS_ENCRYPT = !!(PDFLib && PDFLib.PDFDocument);
+/* cantoo exposes encrypted save if available */
+const CAN_ENCRYPT = typeof PDFLib !== 'undefined' && (function(){
+  try {
+    /* feature detect by attempting to create a doc with encryption options on save */
+    return true; /* we optimistically try; if it fails, we handle the error */
+  } catch(e){ return false; }
+})();
+
+/* ============================================================
+   1. I18N
+   ============================================================ */
+const I18N = {
+  en:{
+    upload:'Upload',download:'Download',zipAll:'ZIP All',sample:'Sample',clear:'Clear',addFile:'Add',
+    toolbox:'Toolbox',selected:'selected',clearSel:'Clear',dropTitle:'Drop your PDFs here',
+    dropSub:'Drag & drop PDF, PNG, JPG or WEBP files anywhere on this page. Everything runs 100% in your browser — no upload, no server, no tracking.',
+    browse:'Browse Files',
+    g_ai:'AI & Smart Suite', g_edit:'Edit & Annotate', g_security:'Security & Forensics',
+    g_layout:'Layout & Page Master', g_convert:'Convert & Extract',
+    t_chat:'Chat with PDF', t_summarize:'Summarize / Translate', t_ocr:'OCR — Scanned to Text',
+    t_text:'Add Text Overlay', t_draw:'Freehand Draw', t_highlight:'Highlight / Underline',
+    t_stamp:'Official Stamp', t_redact:'Redact / Blackout',
+    t_encrypt:'Password Protect', t_unlock:'Remove Password', t_sanitize:'Sanitize Metadata',
+    t_sign:'Digital Signature', t_flatten:'Flatten Forms',
+    t_merge:'Merge Files', t_split:'Split / Extract', t_reorder:'Reorder Pages',
+    t_rotate:'Rotate Pages', t_delete:'Delete Pages', t_nup:'N-Up Booklet',
+    t_resize:'Resize / Crop', t_pagenum:'Page Numbers', t_hf:'Header / Footer',
+    t_img2pdf:'Images → PDF', t_pdf2img:'PDF → Images', t_extractimg:'Extract Images',
+    t_toText:'PDF → TXT / MD / HTML', t_meta:'Edit Metadata', t_pdfa:'PDF/A Archival',
+    confirm:'Confirm', cancel:'Cancel', close:'Close', apply:'Apply', save:'Save', insert:'Insert',
+    processing:'Processing...', done:'Done', error:'Error', success:'Success',
+    noFile:'No file loaded', selectPages:'Select pages first', apiKey:'API Key', apiKeyPh:'Paste your Google AI Studio API key',
+    askPlaceholder:'Ask a question about this PDF...', send:'Send', thinking:'Thinking...',
+    summarizePrompt:'Provide a concise executive summary of this document.',
+    translateTo:'Translate to',
+    ocrProgress:'Recognizing text...', ocrDone:'OCR complete', ocrCopy:'Copy', ocrDownload:'Download TXT',
+    textContent:'Text content', fontSize:'Font size', color:'Color', x:'X position (%)', y:'Y position (%)',
+    page:'Page', allPages:'All pages', opacity:'Opacity', rotation:'Rotation',
+    stampText:'Stamp text', stampType:'Preset', redactColor:'Blackout color',
+    password:'Password', ownerPass:'Owner password (optional)', userPass:'User password',
+    unlockHint:'The password will be used to open the document in-browser. It never leaves your device.',
+    sanitizeHint:'This removes Author, Title, Subject, Keywords, Creator and Producer metadata.',
+    signHint:'Draw your signature in the box below.',
+    nupLayout:'Layout', rotate:'Rotate', deleteSel:'Delete', extract:'Extract to new file',
+    mergeHint:'All loaded files will be merged in the order shown below. Drag to reorder.',
+    splitFrom:'From page', splitTo:'To page', splitMode:'Split mode',
+    range:'Range', everyN:'Every N pages', splitEach:'Split each page to a separate file',
+    format:'Format', quality:'Quality (1-100)', scale:'Scale',
+    cropTop:'Top (pt)', cropBottom:'Bottom (pt)', cropLeft:'Left (pt)', cropRight:'Right (pt)',
+    sizePreset:'Size preset', applyTo:'Apply to', margin:'Margin (pt)', pagesPerSheet:'Pages per sheet',
+    startNum:'Start number', prefix:'Prefix', formatHint:'Use {n} for page number, {total} for total',
+    headerText:'Header text', footerText:'Footer text', align:'Alignment', left:'Left', center:'Center', right:'Right',
+    imgQuality:'JPEG quality', zipName:'Archive name',
+    result:'Result', copyToClipboard:'Copy', downloadFile:'Download',
+    metaAuthor:'Author', metaTitle:'Title', metaSubject:'Subject', metaKeywords:'Keywords', metaCreator:'Creator',
+    metaProducer:'Producer',
+    confirmClear:'Remove all loaded files?',
+    confirmDelete:'Delete selected pages?',
+    themeLight:'Light mode', themeDark:'Dark mode',
+    defaultPDFName:'document.pdf',
+    sampleName:'SaivSample.pdf',
+    generating:'Generating...',
+    pagesLoaded:'pages',
+    font:'Font', bold:'Bold', italic:'Italic',
+    strokeWidth:'Width', mode:'Mode', freeDraw:'Free draw', highlight:'Highlight', underline:'Underline', strike:'Strike',
+    highlightColor:'Highlight color',
+    imgEmbedded:'Extract embedded images (raster pages)',
+    allDone:'All done!', downloaded:'Downloaded',
+    langNote:'Choose the language of the document you want to translate to.',
+    enterQuestion:'Enter your question'
+  },
+  fr:{
+    upload:'Importer',download:'Télécharger',zipAll:'ZIP Tout',sample:'Démo',clear:'Vider',addFile:'Ajouter',
+    toolbox:'Boîte à outils',selected:'sélectionné(s)',clearSel:'Effacer',dropTitle:'Déposez vos PDF ici',
+    dropSub:'Glissez-déposez des fichiers PDF, PNG, JPG ou WEBP n’importe où sur cette page. Tout s’exécute dans votre navigateur — aucun serveur, aucun suivi.',
+    browse:'Parcourir les fichiers',
+    g_ai:'IA & Suite intelligente', g_edit:'Édition & Annotation', g_security:'Sécurité & Forensique',
+    g_layout:'Mise en page', g_convert:'Conversion & Extraction',
+    t_chat:'Discuter avec le PDF', t_summarize:'Résumer / Traduire', t_ocr:'OCR — Scan vers texte',
+    t_text:'Ajouter du texte', t_draw:'Dessin à main levée', t_highlight:'Surligner / Souligner',
+    t_stamp:'Tampon officiel', t_redact:'Caviarder / Noir',
+    t_encrypt:'Protéger par mot de passe', t_unlock:'Retirer le mot de passe', t_sanitize:'Nettoyer les métadonnées',
+    t_sign:'Signature numérique', t_flatten:'Aplatir les formulaires',
+    t_merge:'Fusionner', t_split:'Diviser / Extraire', t_reorder:'Réorganiser',
+    t_rotate:'Pivoter', t_delete:'Supprimer pages', t_nup:'N-Up Brochure',
+    t_resize:'Redimensionner / Rogner', t_pagenum:'Numéros de page', t_hf:'En-tête / Pied',
+    t_img2pdf:'Images → PDF', t_pdf2img:'PDF → Images', t_extractimg:'Extraire les images',
+    t_toText:'PDF → TXT / MD / HTML', t_meta:'Modifier les métadonnées', t_pdfa:'Archivage PDF/A',
+    confirm:'Confirmer', cancel:'Annuler', close:'Fermer', apply:'Appliquer', save:'Enregistrer', insert:'Insérer',
+    processing:'Traitement...', done:'Terminé', error:'Erreur', success:'Succès',
+    noFile:'Aucun fichier chargé', selectPages:'Sélectionnez des pages', apiKey:'Clé API',
+    apiKeyPh:'Collez votre clé API Google AI Studio', askPlaceholder:'Posez une question sur ce PDF...',
+    send:'Envoyer', thinking:'Réflexion...',
+    summarizePrompt:'Fournissez un résumé exécutif concis de ce document.',
+    translateTo:'Traduire en',
+    ocrProgress:'Reconnaissance du texte...', ocrDone:'OCR terminé', ocrCopy:'Copier', ocrDownload:'Télécharger TXT',
+    textContent:'Contenu texte', fontSize:'Taille', color:'Couleur', x:'Position X (%)', y:'Position Y (%)',
+    page:'Page', allPages:'Toutes les pages', opacity:'Opacité', rotation:'Rotation',
+    stampText:'Texte du tampon', stampType:'Préréglage', redactColor:'Couleur de caviardage',
+    password:'Mot de passe', ownerPass:'Mot de passe propriétaire (optionnel)', userPass:'Mot de passe utilisateur',
+    unlockHint:'Le mot de passe sera utilisé pour ouvrir le document dans le navigateur. Il ne quitte jamais votre appareil.',
+    sanitizeHint:'Ceci supprime les métadonnées Auteur, Titre, Sujet, Mots-clés, Créateur et Producteur.',
+    signHint:'Dessinez votre signature dans la case ci-dessous.',
+    nupLayout:'Disposition', rotate:'Pivoter', deleteSel:'Supprimer', extract:'Extraire',
+    mergeHint:'Tous les fichiers chargés seront fusionnés dans l’ordre ci-dessous. Glissez pour réorganiser.',
+    splitFrom:'De la page', splitTo:'À la page', splitMode:'Mode de division',
+    range:'Plage', everyN:'Toutes les N pages', splitEach:'Chaque page dans un fichier séparé',
+    format:'Format', quality:'Qualité (1-100)', scale:'Échelle',
+    cropTop:'Haut (pt)', cropBottom:'Bas (pt)', cropLeft:'Gauche (pt)', cropRight:'Droite (pt)',
+    sizePreset:'Format', applyTo:'Appliquer à', margin:'Marge (pt)', pagesPerSheet:'Pages par feuille',
+    startNum:'Début', prefix:'Préfixe', formatHint:'Utilisez {n} pour le numéro, {total} pour le total',
+    headerText:'Texte d’en-tête', footerText:'Texte de pied', align:'Alignement', left:'Gauche', center:'Centre', right:'Droite',
+    imgQuality:'Qualité JPEG', zipName:'Nom de l’archive',
+    result:'Résultat', copyToClipboard:'Copier', downloadFile:'Télécharger',
+    metaAuthor:'Auteur', metaTitle:'Titre', metaSubject:'Sujet', metaKeywords:'Mots-clés', metaCreator:'Créateur',
+    metaProducer:'Producteur',
+    confirmClear:'Retirer tous les fichiers chargés ?',
+    confirmDelete:'Supprimer les pages sélectionnées ?',
+    themeLight:'Mode clair', themeDark:'Mode sombre',
+    defaultPDFName:'document.pdf',
+    sampleName:'SaivEchantillon.pdf',
+    generating:'Génération...',
+    pagesLoaded:'pages',
+    font:'Police', bold:'Gras', italic:'Italique',
+    strokeWidth:'Épaisseur', mode:'Mode', freeDraw:'Main levée', highlight:'Surlignage', underline:'Souligné', strike:'Barré',
+    highlightColor:'Couleur',
+    imgEmbedded:'Extraire les images (rendu des pages)',
+    allDone:'Terminé !', downloaded:'Téléchargé',
+    langNote:'Choisissez la langue de traduction cible.',
+    enterQuestion:'Saisissez votre question'
+  },
+  ar:{
+    upload:'رفع',download:'تنزيل',zipAll:'ZIP الكل',sample:'نموذج',clear:'مسح',addFile:'إضافة',
+    toolbox:'صندوق الأدوات',selected:'محدد',clearSel:'مسح',dropTitle:'أفلت ملفات PDF هنا',
+    dropSub:'اسحب وأفلت ملفات PDF أو PNG أو JPG أو WEBP في أي مكان على هذه الصفحة. كل شيء يعمل في متصفحك — بدون سيرفر، بدون تتبع.',
+    browse:'تصفح الملفات',
+    g_ai:'الذكاء الاصطناعي', g_edit:'التحرير والتعليق', g_security:'الأمان والتحقيق',
+    g_layout:'التخطيط والصفحات', g_convert:'التحويل والاستخراج',
+    t_chat:'محادثة مع PDF', t_summarize:'تلخيص / ترجمة', t_ocr:'OCR — من صورة إلى نص',
+    t_text:'إضافة نص', t_draw:'رسم حر', t_highlight:'تظليل / تسطير',
+    t_stamp:'ختم رسمي', t_redact:'حجب / تعتيم',
+    t_encrypt:'حماية بكلمة مرور', t_unlock:'إزالة كلمة المرور', t_sanitize:'تنظيف البيانات الوصفية',
+    t_sign:'توقيع رقمي', t_flatten:'تسطيح النماذج',
+    t_merge:'دمج الملفات', t_split:'تقسيم / استخراج', t_reorder:'إعادة ترتيب',
+    t_rotate:'تدوير الصفحات', t_delete:'حذف الصفحات', t_nup:'كتيب N-Up',
+    t_resize:'تغيير الحجم / قص', t_pagenum:'أرقام الصفحات', t_hf:'ترويسة / تذييل',
+    t_img2pdf:'صور ← PDF', t_pdf2img:'PDF ← صور', t_extractimg:'استخراج الصور',
+    t_toText:'PDF ← TXT / MD / HTML', t_meta:'تعديل البيانات الوصفية', t_pdfa:'أرشفة PDF/A',
+    confirm:'تأكيد', cancel:'إلغاء', close:'إغلاق', apply:'تطبيق', save:'حفظ', insert:'إدراج',
+    processing:'جارٍ المعالجة...', done:'تم', error:'خطأ', success:'نجاح',
+    noFile:'لا يوجد ملف', selectPages:'اختر صفحات أولاً', apiKey:'مفتاح API', apiKeyPh:'الصق مفتاح Google AI Studio',
+    askPlaceholder:'اطرح سؤالاً حول هذا الـ PDF...', send:'إرسال', thinking:'جارٍ التفكير...',
+    summarizePrompt:'قدّم ملخصاً تنفيذياً موجزاً لهذه الوثيقة.',
+    translateTo:'ترجم إلى',
+    ocrProgress:'جارٍ التعرف على النص...', ocrDone:'اكتمل OCR', ocrCopy:'نسخ', ocrDownload:'تنزيل TXT',
+    textContent:'النص', fontSize:'حجم الخط', color:'اللون', x:'الموضع X (%)', y:'الموضع Y (%)',
+    page:'صفحة', allPages:'كل الصفحات', opacity:'الشفافية', rotation:'الدوران',
+    stampText:'نص الختم', stampType:'قالب', redactColor:'لون الحجب',
+    password:'كلمة المرور', ownerPass:'كلمة مرور المالك (اختياري)', userPass:'كلمة مرور المستخدم',
+    unlockHint:'ستُستخدم كلمة المرور لفتح الوثيقة في المتصفح. لا تغادر جهازك أبداً.',
+    sanitizeHint:'يزيل هذا المؤلف والعنوان والموضوع والكلمات المفتاحية والمنشئ والمنتج.',
+    signHint:'ارسم توقيعك في المربع أدناه.',
+    nupLayout:'التخطيط', rotate:'تدوير', deleteSel:'حذف', extract:'استخراج',
+    mergeHint:'سيتم دمج جميع الملفات المحمّلة بالترتيب أدناه. اسحب لإعادة الترتيب.',
+    splitFrom:'من صفحة', splitTo:'إلى صفحة', splitMode:'وضع التقسيم',
+    range:'نطاق', everyN:'كل N صفحات', splitEach:'كل صفحة في ملف منفصل',
+    format:'الصيغة', quality:'الجودة (1-100)', scale:'المقياس',
+    cropTop:'أعلى (pt)', cropBottom:'أسفل (pt)', cropLeft:'يسار (pt)', cropRight:'يمين (pt)',
+    sizePreset:'قياس', applyTo:'تطبيق على', margin:'هامش (pt)', pagesPerSheet:'صفحات لكل ورقة',
+    startNum:'بداية الترقيم', prefix:'بادئة', formatHint:'استخدم {n} للرقم و{total} للإجمالي',
+    headerText:'نص الترويسة', footerText:'نص التذييل', align:'المحاذاة', left:'يسار', center:'وسط', right:'يمين',
+    imgQuality:'جودة JPEG', zipName:'اسم الأرشيف',
+    result:'النتيجة', copyToClipboard:'نسخ', downloadFile:'تنزيل',
+    metaAuthor:'المؤلف', metaTitle:'العنوان', metaSubject:'الموضوع', metaKeywords:'الكلمات المفتاحية', metaCreator:'المنشئ',
+    metaProducer:'المنتج',
+    confirmClear:'إزالة جميع الملفات المحمّلة؟',
+    confirmDelete:'حذف الصفحات المحددة؟',
+    themeLight:'الوضع الفاتح', themeDark:'الوضع الداكن',
+    defaultPDFName:'مستند.pdf',
+    sampleName:'نموذج-سايف.pdf',
+    generating:'جارٍ الإنشاء...',
+    pagesLoaded:'صفحات',
+    font:'الخط', bold:'عريض', italic:'مائل',
+    strokeWidth:'السماكة', mode:'الوضع', freeDraw:'رسم حر', highlight:'تظليل', underline:'تسطير', strike:'شطب',
+    highlightColor:'اللون',
+    imgEmbedded:'استخراج الصور (رندر الصفحات)',
+    allDone:'تم كل شيء!', downloaded:'تم التنزيل',
+    langNote:'اختر لغة الترجمة الهدف.',
+    enterQuestion:'أدخل سؤالك'
+  }
+};
+
+let LANG = 'en';
+function T(k){ const d = I18N[LANG] || I18N.en; return d[k] !== undefined ? d[k] : (I18N.en[k] || k); }
+
+/* ============================================================
+   2. STATE
+   ============================================================ */
+const App = {
+  files: [],           /* [{id, name, bytes:Uint8Array, pageCount, thumbs:[], rotations:{}}] */
+  active: null,
+  selected: new Set(), /* page indexes (for active file) */
+  theme: 'light',
+  geminiKey: localStorage.getItem('saivpdf_gemini_key') || '',
+  history: []          /* optional undo stack — reserved */
+};
+
+const $  = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.prototype.slice.call((r || document).querySelectorAll(s));
+
+/* ============================================================
+   3. HELPERS
+   ============================================================ */
+function uid(){ return 'f_' + Math.random().toString(36).slice(2, 10); }
+function esc(v){
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+}
+function toast(msg, type){
+  const el = $('#toast');
+  el.className = 'show ' + (type || '');
+  el.textContent = msg;
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => el.className = '', 2600);
+}
+function loader(on, text){
+  $('#globalLoader').classList.toggle('on', !!on);
+  if (text) $('#loaderText').textContent = text;
+}
+function download(bytes, filename, mime){
+  const blob = bytes instanceof Blob ? bytes : new Blob([bytes], { type: mime || 'application/octet-stream' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+function activeFile(){ return App.files.find(f => f.id === App.active) || null; }
+function fmtBytes(n){
+  if (n < 1024) return n + ' B';
+  if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+  return (n / 1048576).toFixed(2) + ' MB';
+}
+function safeName(s){ return String(s || 'file').replace(/[\\/:*?"<>|]/g, '_').slice(0, 120); }
+
+/* ============================================================
+   4. LIBRARY LOADERS / DETECTION
+   ============================================================ */
+async function loadPdfLib(bytes){
+  return await PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true, updateMetadata: false });
+}
+async function loadPdfJs(bytes){
+  /* make a copy so pdf.js doesn't detach our buffer */
+  const copy = new Uint8Array(bytes);
+  const task = pdfjsLib.getDocument({ data: copy, useSystemFonts: true });
+  return await task.promise;
+}
+
+/* ============================================================
+   5. FILE HANDLING
+   ============================================================ */
+async function handleFiles(fileList){
+  const files = Array.from(fileList || []);
+  if (!files.length) return;
+  loader(true, T('processing'));
+  try {
+    for (const f of files){
+      try {
+        await addFile(f);
+      } catch (err){
+        console.error(err);
+        toast('⚠ ' + f.name + ': ' + (err.message || 'error'), 'err');
+      }
+    }
+    renderAll();
+  } finally {
+    loader(false);
+  }
+}
+
+async function addFile(file){
+  const name = file.name || 'file';
+  const ext = (name.split('.').pop() || '').toLowerCase();
+  const buf = new Uint8Array(await file.arrayBuffer());
+
+  let bytes, pageCount = 1, isPDF = false;
+
+  if (ext === 'pdf' || file.type === 'application/pdf'){
+    /* validate with pdf-lib */
+    let doc;
+    try {
+      doc = await loadPdfLib(buf);
+    } catch (e){
+      /* maybe encrypted — try pdf.js */
+      try {
+        const pjs = await loadPdfJs(buf);
+        doc = null;
+        pageCount = pjs.numPages;
+        bytes = buf;
+        isPDF = true;
+      } catch (e2){
+        throw new Error('Could not read PDF (password protected?)');
+      }
+    }
+    if (doc){
+      pageCount = doc.getPageCount();
+      bytes = buf;
+      isPDF = true;
+    }
+    const entry = {
+      id: uid(),
+      name,
+      bytes,
+      pageCount,
+      thumbs: new Array(pageCount).fill(null),
+      rotations: {},
+      isPDF
+    };
+    App.files.push(entry);
+    App.active = entry.id;
+    App.selected.clear();
+    if (!bytes) throw new Error('Empty PDF');
+  } else if (/^(png|jpe?g|webp)$/.test(ext) || /^image\//.test(file.type)){
+    /* convert single image to a one-page PDF */
+    const pdf = await PDFLib.PDFDocument.create();
+    const img = await embedImage(pdf, buf, ext);
+    const pw = 595.28, ph = 841.89; /* A4 pt */
+    const page = pdf.addPage([pw, ph]);
+    const margin = 36;
+    const maxW = pw - margin * 2, maxH = ph - margin * 2;
+    const scale = Math.min(maxW / img.width, maxH / img.height);
+    const w = img.width * scale, h = img.height * scale;
+    page.drawImage(img, { x: (pw - w) / 2, y: (ph - h) / 2, width: w, height: h });
+    const out = await pdf.save();
+    const entry = {
+      id: uid(),
+      name: name.replace(/\.(png|jpe?g|webp)$/i, '') + '.pdf',
+      bytes: new Uint8Array(out),
+      pageCount: 1,
+      thumbs: [null],
+      rotations: {},
+      isPDF: true
+    };
+    App.files.push(entry);
+    App.active = entry.id;
+    App.selected.clear();
+  } else if (ext === 'txt' || ext === 'md' || ext === 'html' || ext === 'htm'){
+    /* convert text to PDF */
+    const text = new TextDecoder().decode(buf);
+    const pdf = await PDFLib.PDFDocument.create();
+    const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
+    const pageW = 595.28, pageH = 841.89, margin = 50;
+    const fontSize = 11, lineH = 15;
+    const lines = [];
+    text.split(/\r?\n/).forEach(l => {
+      if (l.length <= 90) lines.push(l);
+      else {
+        let cur = '';
+        l.split(' ').forEach(word => {
+          if ((cur + ' ' + word).length > 90){ lines.push(cur); cur = word; }
+          else cur = cur ? cur + ' ' + word : word;
+        });
+        if (cur) lines.push(cur);
+      }
+    });
+    let page = pdf.addPage([pageW, pageH]);
+    let y = pageH - margin;
+    for (const line of lines){
+      if (y < margin){ page = pdf.addPage([pageW, pageH]); y = pageH - margin; }
+      page.drawText(line || ' ', { x: margin, y: y - fontSize, size: fontSize, font, color: PDFLib.rgb(0.1,0.1,0.1) });
+      y -= lineH;
+    }
+    const out = await pdf.save();
+    App.files.push({
+      id: uid(),
+      name: name.replace(/\.(txt|md|html?)$/i, '') + '.pdf',
+      bytes: new Uint8Array(out),
+      pageCount: pdf.getPageCount(),
+      thumbs: [],
+      rotations: {},
+      isPDF: true
+    });
+    App.active = App.files[App.files.length - 1].id;
+    App.selected.clear();
+  } else {
+    throw new Error('Unsupported file type');
+  }
+}
+
+async function embedImage(pdf, bytes, ext){
+  if (ext === 'png' || ext === 'webp'){
+    try { return await pdf.embedPng(bytes); } catch(e){}
+  }
+  try { return await pdf.embedJpg(bytes); } catch(e){}
+  /* fallback: convert via canvas */
+  const blob = new Blob([bytes]);
+  const url = URL.createObjectURL(blob);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const c = document.createElement('canvas');
+    c.width = img.naturalWidth; c.height = img.naturalHeight;
+    c.getContext('2d').drawImage(img, 0, 0);
+    const dataUrl = c.toDataURL('image/png');
+    const b64 = dataUrl.split(',')[1];
+    const bin = atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return await pdf.embedPng(arr);
+  } finally { URL.revokeObjectURL(url); }
+}
+
+/* ============================================================
+   6. THUMBNAILS
+   ============================================================ */
+async function renderThumb(file, pageIdx){
+  const thumbW = 200;
+  const pjs = await loadPdfJs(file.bytes);
+  const page = await pjs.getPage(pageIdx + 1);
+  const vp = page.getViewport({ scale: 1, rotation: (file.rotations[pageIdx] || 0) });
+  const scale = thumbW / vp.width;
+  const vp2 = page.getViewport({ scale, rotation: (file.rotations[pageIdx] || 0) });
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.floor(vp2.width));
+  canvas.height = Math.max(1, Math.floor(vp2.height));
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  await page.render({ canvasContext: ctx, viewport: vp2 }).promise;
+  return canvas.toDataURL('image/jpeg', 0.78);
+}
+
+async function renderThumbInline(card, file, pageIdx){
+  const fileIdAtStart = file.id;
+  try {
+    const url = await renderThumb(file, pageIdx);
+    if (!App.files.find(f => f.id === fileIdAtStart)) return;
+    file.thumbs[pageIdx] = url;
+    const img = card.querySelector('img');
+    const sp = card.querySelector('.spinner');
+    if (img){ img.src = url; img.style.display = 'block'; }
+    if (sp) sp.remove();
+  } catch (e){
+    const sp = card.querySelector('.spinner');
+    if (sp) sp.outerHTML = '<div style="padding:14px;font-size:11px;color:#dc2626"><i class="fa-solid fa-triangle-exclamation"></i></div>';
+  }
+}
+
+/* ============================================================
+   7. RENDER: FILE BAR + PAGE GRID
+   ============================================================ */
+function renderFileBar(){
+  const bar = $('#fileChips');
+  bar.innerHTML = App.files.map(f => `
+    <div class="file-chip ${f.id === App.active ? 'active' : ''}" data-id="${f.id}" title="${esc(f.name)}">
+      <i class="fa-solid fa-file-pdf" style="color:${f.id === App.active ? '#2563eb' : '#dc2626'};font-size:11px"></i>
+      <span class="nm">${esc(f.name)}</span>
+      <span style="font-size:10px;opacity:.7">${f.pageCount}p</span>
+      <span class="x" data-close="${f.id}"><i class="fa-solid fa-xmark"></i></span>
+    </div>`).join('');
+  const hasFiles = App.files.length > 0;
+  $('#btnClear').disabled = !hasFiles;
+  $('#btnDownloadAll').disabled = !hasFiles;
+  $('#btnDownload').disabled = !activeFile();
+}
+
+function renderPageGrid(){
+  const grid = $('#pageGrid');
+  const dz = $('#dropzone');
+  const file = activeFile();
+  if (!file){
+    grid.style.display = 'none';
+    dz.style.display = 'flex';
+    renderSelBar();
+    return;
+  }
+  dz.style.display = 'none';
+  grid.style.display = 'grid';
+
+  grid.innerHTML = Array.from({ length: file.pageCount }, (_, i) => {
+    const rot = file.rotations[i] || 0;
+    const thumb = file.thumbs[i];
+    const sel = App.selected.has(i);
+    return `
+      <div class="page-card ${sel ? 'selected' : ''}" data-page="${i}">
+        <div class="page-check"><i class="fa-solid fa-check"></i></div>
+        <div class="page-actions">
+          <div class="pa" data-act="rotate" data-page="${i}" title="Rotate 90°"><i class="fa-solid fa-rotate-right"></i></div>
+          <div class="pa" data-act="dupe" data-page="${i}" title="Duplicate"><i class="fa-solid fa-copy"></i></div>
+        </div>
+        <div class="page-thumb">
+          ${thumb ? `<img src="${thumb}" alt="">` : `<div class="spinner"></div><img style="display:none" alt="">`}
+        </div>
+        <div class="page-info">
+          <span class="num">${i + 1}</span>
+          ${rot ? `<span class="rot">${rot}°</span>` : `<span class="rot" style="opacity:.35">—</span>`}
+        </div>
+      </div>`;
+  }).join('');
+
+  /* Lazy render thumbs */
+  $$('.page-card', grid).forEach(card => {
+    const i = parseInt(card.getAttribute('data-page'), 10);
+    if (!file.thumbs[i]) renderThumbInline(card, file, i);
+  });
+
+  /* Sortable for reorder */
+  if (window.Sortable){
+    if (grid._sortable) grid._sortable.destroy();
+    grid._sortable = Sortable.create(grid, {
+      animation: 180,
+      ghostClass: 'ghost',
+      dragClass: 'dragging',
+      onEnd: async (evt) => {
+        if (evt.oldIndex === evt.newIndex) return;
+        await reorderPages(file, evt.oldIndex, evt.newIndex);
+      }
+    });
+  }
+  renderSelBar();
+}
+
+function renderSelBar(){
+  const bar = $('#selBar');
+  const file = activeFile();
+  const n = App.selected.size;
+  if (!file || n === 0){ bar.classList.remove('on'); return; }
+  bar.classList.add('on');
+  $('#selCount').textContent = n;
+
+  const acts = $('#selActions');
+  const all = n === file.pageCount;
+  acts.innerHTML = `
+    <button class="sb-btn" data-selact="rotate"><i class="fa-solid fa-rotate-right"></i> ${T('rotate')}</button>
+    <button class="sb-btn" data-selact="extract"><i class="fa-solid fa-file-export"></i> ${T('extract')}</button>
+    <button class="sb-btn" data-selact="selectAll"><i class="fa-solid ${all ? 'fa-square-minus' : 'fa-square-check'}"></i> ${all ? 'Deselect all' : 'Select all'}</button>
+    <button class="sb-btn danger" data-selact="delete"><i class="fa-solid fa-trash-can"></i> ${T('deleteSel')}</button>`;
+}
+
+function renderAll(){
+  renderFileBar();
+  renderPageGrid();
+}
+
+/* ============================================================
+   8. PAGE OPERATIONS
+   ============================================================ */
+async function reorderPages(file, from, to){
+  loader(true, T('processing'));
+  try {
+    const pdf = await loadPdfLib(file.bytes);
+    const indices = pdf.getPageIndices();
+    const [moved] = indices.splice(from, 1);
+    indices.splice(to, 0, moved);
+    const newPdf = await PDFLib.PDFDocument.create();
+    const pages = await newPdf.copyPages(pdf, indices);
+    pages.forEach(p => newPdf.addPage(p));
+    file.bytes = new Uint8Array(await newPdf.save());
+    /* rotate reorder thumbs array too */
+    const t = file.thumbs.splice(from, 1)[0];
+    file.thumbs.splice(to, 0, t);
+    /* remap rotations */
+    const rot = {};
+    indices.forEach((oldIdx, newIdx) => { if (file.rotations[oldIdx] != null) rot[newIdx] = file.rotations[oldIdx]; });
+    file.rotations = rot;
+    App.selected.clear();
+    renderAll();
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){
+    console.error(e); toast('⚠ ' + e.message, 'err');
+  } finally { loader(false); }
+}
+
+async function rotateSelected(angle){
+  const file = activeFile(); if (!file) return;
+  const pages = Array.from(App.selected);
+  if (!pages.length){ toast(T('selectPages'), 'info'); return; }
+  loader(true, T('processing'));
+  try {
+    const pdf = await loadPdfLib(file.bytes);
+    pages.forEach(i => {
+      const p = pdf.getPage(i);
+      const cur = (p.getRotation().angle + angle) % 360;
+      p.setRotation(PDFLib.degrees(cur));
+      file.rotations[i] = cur;
+    });
+    file.bytes = new Uint8Array(await pdf.save());
+    /* invalidate thumbs for those pages */
+    pages.forEach(i => { file.thumbs[i] = null; });
+    renderPageGrid();
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+async function deleteSelected(){
+  const file = activeFile(); if (!file) return;
+  const pages = Array.from(App.selected).sort((a, b) => b - a);
+  if (!pages.length){ toast(T('selectPages'), 'info'); return; }
+  if (!confirm(T('confirmDelete') + ' (' + pages.length + ')')) return;
+  loader(true, T('processing'));
+  try {
+    const pdf = await loadPdfLib(file.bytes);
+    pages.forEach(i => pdf.removePage(i));
+    file.bytes = new Uint8Array(await pdf.save());
+    file.pageCount = pdf.getPageCount();
+    /* remove thumbs */
+    pages.forEach(i => file.thumbs.splice(i, 1));
+    const newRot = {};
+    Object.keys(file.rotations).forEach(k => {
+      const n = parseInt(k, 10);
+      if (!pages.includes(n)){
+        const shifted = n - pages.filter(p => p < n).length;
+        newRot[shifted] = file.rotations[k];
+      }
+    });
+    file.rotations = newRot;
+    App.selected.clear();
+    renderAll();
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+async function extractSelected(){
+  const file = activeFile(); if (!file) return;
+  const pages = Array.from(App.selected).sort((a, b) => a - b);
+  if (!pages.length){ toast(T('selectPages'), 'info'); return; }
+  loader(true, T('processing'));
+  try {
+    const src = await loadPdfLib(file.bytes);
+    const out = await PDFLib.PDFDocument.create();
+    const copied = await out.copyPages(src, pages);
+    copied.forEach(p => out.addPage(p));
+    const bytes = new Uint8Array(await out.save());
+    const baseName = file.name.replace(/\.pdf$/i, '');
+    download(bytes, baseName + '_extracted.pdf');
+    toast(T('downloaded'), 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+/* ============================================================
+   9. MERGE / SPLIT
+   ============================================================ */
+async function mergeFiles(){
+  if (App.files.length < 2){ toast('Need 2+ files', 'info'); return; }
+  loader(true, T('processing'));
+  try {
+    const out = await PDFLib.PDFDocument.create();
+    for (const f of App.files){
+      const src = await loadPdfLib(f.bytes);
+      const copied = await out.copyPages(src, src.getPageIndices());
+      copied.forEach(p => out.addPage(p));
+    }
+    const bytes = new Uint8Array(await out.save());
+    const merged = {
+      id: uid(), name: 'merged_' + Date.now() + '.pdf',
+      bytes, pageCount: out.getPageCount(), thumbs: [], rotations: {}, isPDF: true
+    };
+    App.files.push(merged);
+    App.active = merged.id;
+    App.selected.clear();
+    renderAll();
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+function openSplitModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-scissors', title:T('t_split'), wide:false,
+    body:`
+      <div class="grid2">
+        <label class="fld"><span>${T('splitMode')}</span>
+          <select id="spMode">
+            <option value="range">${T('range')}</option>
+            <option value="everyN">${T('everyN')}</option>
+            <option value="each">${T('splitEach')}</option>
+          </select></label>
+        <label class="fld"><span>${T('splitFrom')}</span><input type="number" id="spFrom" value="1" min="1" max="${file.pageCount}"></label>
+        <label class="fld"><span>${T('splitTo')}</span><input type="number" id="spTo" value="${file.pageCount}" min="1" max="${file.pageCount}"></label>
+        <label class="fld"><span>${T('everyN')} N</span><input type="number" id="spN" value="1" min="1" max="${file.pageCount}"></label>
+      </div>
+      <p class="hint">Total pages: ${file.pageCount}</p>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="spGo">${T('apply')}</button>`,
+    onMount:()=>{
+      const mode = $('#spMode');
+      const upd = () => {
+        const v = mode.value;
+        $('#spFrom').parentElement.style.display = v === 'range' ? '' : 'none';
+        $('#spTo').parentElement.style.display = v === 'range' ? '' : 'none';
+        $('#spN').parentElement.style.display = v === 'everyN' ? '' : 'none';
+      };
+      mode.addEventListener('change', upd); upd();
+      $('#spGo').addEventListener('click', async () => {
+        closeModal();
+        await doSplit(file, mode.value, parseInt($('#spFrom').value, 10), parseInt($('#spTo').value, 10), parseInt($('#spN').value, 10));
+      });
+    }
+  });
+}
+
+async function doSplit(file, mode, from, to, n){
+  loader(true, T('processing'));
+  try {
+    const src = await loadPdfLib(file.bytes);
+    const total = file.pageCount;
+    const baseName = file.name.replace(/\.pdf$/i, '');
+    const jobs = [];
+    if (mode === 'range'){
+      const a = Math.max(1, Math.min(from, total));
+      const b = Math.max(a, Math.min(to, total));
+      const idx = [];
+      for (let i = a; i <= b; i++) idx.push(i - 1);
+      jobs.push({ name: baseName + '_pages_' + a + '-' + b + '.pdf', indices: idx });
+    } else if (mode === 'everyN'){
+      const step = Math.max(1, n);
+      for (let i = 0; i < total; i += step){
+        const idx = [];
+        for (let j = i; j < Math.min(i + step, total); j++) idx.push(j);
+        jobs.push({ name: baseName + '_part_' + (jobs.length + 1) + '.pdf', indices: idx });
+      }
+    } else {
+      for (let i = 0; i < total; i++){
+        jobs.push({ name: baseName + '_page_' + (i + 1) + '.pdf', indices: [i] });
+      }
+    }
+    if (jobs.length === 1){
+      const out = await PDFLib.PDFDocument.create();
+      const c = await out.copyPages(src, jobs[0].indices);
+      c.forEach(p => out.addPage(p));
+      download(new Uint8Array(await out.save()), jobs[0].name);
+    } else {
+      const zip = new JSZip();
+      for (const j of jobs){
+        const out = await PDFLib.PDFDocument.create();
+        const c = await out.copyPages(src, j.indices);
+        c.forEach(p => out.addPage(p));
+        zip.file(j.name, await out.save());
+      }
+      const blob = await zip.generateAsync({ type:'blob', compression:'DEFLATE' });
+      download(blob, baseName + '_split.zip');
+    }
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+/* ============================================================
+   10. EDIT & ANNOTATE
+   ============================================================ */
+function openTextOverlay(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-font', title:T('t_text'),
+    body:`
+      <div class="grid2">
+        <label class="fld"><span>${T('textContent')}</span><input type="text" id="txText" placeholder="Hello world"></label>
+        <label class="fld"><span>${T('page')}</span>
+          <select id="txPage">
+            <option value="all">${T('allPages')}</option>
+            ${Array.from({length:file.pageCount},(_,i)=>`<option value="${i}">${T('page')} ${i+1}</option>`).join('')}
+          </select></label>
+        <label class="fld"><span>${T('fontSize')}</span><input type="number" id="txSize" value="24" min="6" max="200"></label>
+        <label class="fld"><span>${T('color')}</span><input type="color" id="txColor" value="#e11d48"></label>
+        <label class="fld"><span>${T('x')}</span><input type="number" id="txX" value="50" min="0" max="100"></label>
+        <label class="fld"><span>${T('y')}</span><input type="number" id="txY" value="50" min="0" max="100"></label>
+        <label class="fld"><span>${T('opacity')}</span><input type="number" id="txOpacity" value="100" min="5" max="100"></label>
+        <label class="fld"><span>${T('rotation')}</span><input type="number" id="txRot" value="0" min="-180" max="180"></label>
+      </div>
+      <label class="chk"><input type="checkbox" id="txBold"> ${T('bold')}</label>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="txGo"><i class="fa-solid fa-check"></i> ${T('apply')}</button>`,
+    onMount:()=>{
+      $('#txGo').addEventListener('click', async () => {
+        const text = $('#txText').value.trim();
+        if (!text){ toast('Text is empty', 'info'); return; }
+        const pageSel = $('#txPage').value;
+        const size = parseFloat($('#txSize').value);
+        const color = hexToRgb($('#txColor').value);
+        const xPct = parseFloat($('#txX').value);
+        const yPct = parseFloat($('#txY').value);
+        const op = parseFloat($('#txOpacity').value) / 100;
+        const rot = parseFloat($('#txRot').value);
+        const bold = $('#txBold').checked;
+        closeModal();
+        await applyTextOverlay(file, text, pageSel, size, color, xPct, yPct, op, rot, bold);
+      });
+    }
+  });
+}
+
+async function applyTextOverlay(file, text, pageSel, size, color, xPct, yPct, opacity, rotDeg, bold){
+  loader(true, T('processing'));
+  try {
+    const pdf = await loadPdfLib(file.bytes);
+    const font = await pdf.embedFont(bold ? PDFLib.StandardFonts.HelveticaBold : PDFLib.StandardFonts.Helvetica);
+    const c = PDFLib.rgb(color.r, color.g, color.b);
+    const pages = pageSel === 'all' ? pdf.getPageIndices() : [parseInt(pageSel, 10)];
+    pages.forEach(i => {
+      const p = pdf.getPage(i);
+      const { width, height } = p.getSize();
+      const x = (xPct / 100) * width;
+      const y = (yPct / 100) * height;
+      p.drawText(text, {
+        x, y, size, font, color: c, opacity: Math.max(0.05, opacity),
+        rotate: PDFLib.degrees(rotDeg)
+      });
+    });
+    file.bytes = new Uint8Array(await pdf.save());
+    file.thumbs = file.thumbs.map(() => null);
+    renderPageGrid();
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+function openStampModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  const presets = ['CONFIDENTIAL','APPROVED','PAID','REJECTED','DRAFT','VOID','COPY','ORIGINAL','URGENT'];
+  openModal({
+    icon:'fa-stamp', title:T('t_stamp'),
+    body:`
+      <div class="grid2">
+        <label class="fld"><span>${T('stampType')}</span>
+          <select id="stPreset">${presets.map(p=>`<option>${p}</option>`).join('')}<option value="custom">Custom...</option></select></label>
+        <label class="fld"><span>${T('stampText')}</span><input type="text" id="stText" value="CONFIDENTIAL"></label>
+        <label class="fld"><span>${T('page')}</span>
+          <select id="stPage"><option value="all">${T('allPages')}</option>
+            ${Array.from({length:file.pageCount},(_,i)=>`<option value="${i}">${T('page')} ${i+1}</option>`).join('')}
+          </select></label>
+        <label class="fld"><span>${T('fontSize')}</span><input type="number" id="stSize" value="60" min="20" max="300"></label>
+        <label class="fld"><span>${T('color')}</span><input type="color" id="stColor" value="#dc2626"></label>
+        <label class="fld"><span>${T('opacity')}</span><input type="number" id="stOpacity" value="40" min="5" max="100"></label>
+        <label class="fld"><span>${T('rotation')}</span><input type="number" id="stRot" value="45" min="-180" max="180"></label>
+      </div>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="stGo"><i class="fa-solid fa-check"></i> ${T('apply')}</button>`,
+    onMount:()=>{
+      const sel = $('#stPreset'), txt = $('#stText');
+      sel.addEventListener('change', () => { if (sel.value !== 'custom') txt.value = sel.value; });
+      $('#stGo').addEventListener('click', async () => {
+        const text = txt.value.trim(); if (!text){ toast('Text is empty', 'info'); return; }
+        const pageSel = $('#stPage').value;
+        const size = parseFloat($('#stSize').value);
+        const color = hexToRgb($('#stColor').value);
+        const op = parseFloat($('#stOpacity').value) / 100;
+        const rot = parseFloat($('#stRot').value);
+        closeModal();
+        await applyStamp(file, text, pageSel, size, color, op, rot);
+      });
+    }
+  });
+}
+
+async function applyStamp(file, text, pageSel, size, color, opacity, rotDeg){
+  loader(true, T('processing'));
+  try {
+    const pdf = await loadPdfLib(file.bytes);
+    const font = await pdf.embedFont(PDFLib.StandardFonts.HelveticaBold);
+    const c = PDFLib.rgb(color.r, color.g, color.b);
+    const pages = pageSel === 'all' ? pdf.getPageIndices() : [parseInt(pageSel, 10)];
+    pages.forEach(i => {
+      const p = pdf.getPage(i);
+      const { width, height } = p.getSize();
+      const tw = font.widthOfTextAtSize(text, size);
+      const x = (width - tw) / 2;
+      const y = height / 2;
+      p.drawText(text, {
+        x, y, size, font, color: c, opacity, rotate: PDFLib.degrees(rotDeg)
+      });
+    });
+    file.bytes = new Uint8Array(await pdf.save());
+    file.thumbs = file.thumbs.map(() => null);
+    renderPageGrid();
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+function openRedactModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-eye-slash', title:T('t_redact'), wide:true,
+    body:`
+      <p class="hint" style="margin-bottom:12px">Click and drag on the preview to draw a black redaction rectangle. Repeat for multiple areas, then apply.</p>
+      <div style="display:grid;grid-template-columns:1fr 280px;gap:14px">
+        <div class="editor-canvas-wrap" id="redWrap" style="text-align:center"></div>
+        <div>
+          <label class="fld"><span>${T('page')}</span>
+            <select id="redPage">
+              ${Array.from({length:file.pageCount},(_,i)=>`<option value="${i}">${T('page')} ${i+1}</option>`).join('')}
+            </select></label>
+          <label class="fld"><span>${T('redactColor')}</span><input type="color" id="redColor" value="#000000"></label>
+          <div class="hint" id="redInfo">Rectangles: 0</div>
+          <button class="btn btn-ghost" id="redUndo" style="width:100%;margin-top:10px;justify-content:center"><i class="fa-solid fa-rotate-left"></i> Undo last</button>
+        </div>
+      </div>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="redGo"><i class="fa-solid fa-check"></i> ${T('apply')}</button>`,
+    onMount:()=>{ mountRedactor(file); }
+  });
+}
+
+async function mountRedactor(file){
+  const pageIdx = 0;
+  const pjs = await loadPdfJs(file.bytes);
+  const page = await pjs.getPage(pageIdx + 1);
+  const vp = page.getViewport({ scale: 1.4, rotation: file.rotations[pageIdx] || 0 });
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.floor(vp.width); canvas.height = Math.floor(vp.height);
+  canvas.style.maxWidth = '100%'; canvas.style.height = 'auto';
+  const wrap = $('#redWrap'); wrap.innerHTML = ''; wrap.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  await page.render({ canvasContext: ctx, viewport: vp }).promise;
+
+  const rects = [];
+  let drawing = false, sx = 0, sy = 0;
+
+  const redraw = () => {
+    /* we need original image; capture once */
+    if (!canvas._bg) canvas._bg = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    ctx.putImageData(canvas._bg, 0, 0);
+    ctx.fillStyle = $('#redColor').value || '#000';
+    rects.forEach(r => ctx.fillRect(r.x, r.y, r.w, r.h));
+    ctx.strokeStyle = '#0ea5e9'; ctx.lineWidth = 2; ctx.setLineDash([6, 4]);
+    rects.forEach(r => ctx.strokeRect(r.x, r.y, r.w, r.h));
+  };
+  redraw();
+
+  const pos = (e) => {
+    const r = canvas.getBoundingClientRect();
+    const cx = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+    const cy = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+    return { x: cx * (canvas.width / r.width), y: cy * (canvas.height / r.height) };
+  };
+  const down = (e) => { e.preventDefault(); drawing = true; const p = pos(e); sx = p.x; sy = p.y; };
+  const move = (e) => {
+    if (!drawing) return;
+    e.preventDefault();
+    const p = pos(e);
+    if (!canvas._bg) canvas._bg = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    ctx.putImageData(canvas._bg, 0, 0);
+    ctx.fillStyle = $('#redColor').value || '#000';
+    rects.forEach(r => ctx.fillRect(r.x, r.y, r.w, r.h));
+    ctx.strokeStyle = '#0ea5e9'; ctx.lineWidth = 2; ctx.setLineDash([6, 4]);
+    rects.forEach(r => ctx.strokeRect(r.x, r.y, r.w, r.h));
+    ctx.fillStyle = $('#redColor').value || '#000';
+    ctx.fillRect(Math.min(sx, p.x), Math.min(sy, p.y), Math.abs(p.x - sx), Math.abs(p.y - sy));
+    ctx.strokeStyle = '#0ea5e9'; ctx.lineWidth = 2; ctx.setLineDash([6, 4]);
+    ctx.strokeRect(Math.min(sx, p.x), Math.min(sy, p.y), Math.abs(p.x - sx), Math.abs(p.y - sy));
+  };
+  const up = (e) => {
+    if (!drawing) return;
+    drawing = false;
+    const p = pos(e.changedTouches ? { clientX: e.changedTouches[0].clientX, clientY: e.changedTouches[0].clientY } : e);
+    const x = Math.min(sx, p.x), y = Math.min(sy, p.y), w = Math.abs(p.x - sx), h = Math.abs(p.y - sy);
+    if (w > 4 && h > 4){ rects.push({ x, y, w, h }); }
+    redraw();
+    $('#redInfo').textContent = 'Rectangles: ' + rects.length;
+  };
+  canvas.addEventListener('mousedown', down);
+  canvas.addEventListener('mousemove', move);
+  canvas.addEventListener('mouseup', up);
+  canvas.addEventListener('mouseleave', up);
+  canvas.addEventListener('touchstart', down, { passive:false });
+  canvas.addEventListener('touchmove', move, { passive:false });
+  canvas.addEventListener('touchend', up);
+  $('#redColor').addEventListener('input', redraw);
+
+  $('#redUndo').addEventListener('click', () => { rects.pop(); redraw(); $('#redInfo').textContent = 'Rectangles: ' + rects.length; });
+
+  $('#redGo').addEventListener('click', async () => {
+    if (!rects.length){ toast('Draw at least one rectangle', 'info'); return; }
+    const pdf = await loadPdfLib(file.bytes);
+    const page = pdf.getPage(pageIdx);
+    const { width, height } = page.getSize();
+    const scX = width / canvas.width, scY = height / canvas.height;
+    const c = hexToRgb($('#redColor').value);
+    rects.forEach(r => {
+      page.drawRectangle({
+        x: r.x * scX,
+        y: height - (r.y + r.h) * scY,
+        width: r.w * scX,
+        height: r.h * scY,
+        color: PDFLib.rgb(c.r, c.g, c.b)
+      });
+    });
+    file.bytes = new Uint8Array(await pdf.save());
+    file.thumbs[pageIdx] = null;
+    closeModal();
+    renderPageGrid();
+    toast(T('done') + ' ✓', 'ok');
+  });
+}
+
+function openDrawModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-pen', title:T('t_draw'), wide:true,
+    body:`
+      <div style="display:grid;grid-template-columns:1fr 240px;gap:14px">
+        <div class="editor-canvas-wrap" id="drWrap" style="text-align:center"></div>
+        <div>
+          <label class="fld"><span>${T('page')}</span>
+            <select id="drPage">
+              ${Array.from({length:file.pageCount},(_,i)=>`<option value="${i}">${T('page')} ${i+1}</option>`).join('')}
+            </select></label>
+          <label class="fld"><span>${T('mode')}</span>
+            <select id="drMode">
+              <option value="pen">${T('freeDraw')}</option>
+              <option value="highlight">${T('highlight')}</option>
+              <option value="underline">${T('underline')}</option>
+              <option value="strike">${T('strike')}</option>
+            </select></label>
+          <label class="fld"><span>${T('strokeWidth')}</span><input type="range" id="drW" min="1" max="30" value="3"></label>
+          <label class="fld"><span>${T('color')}</span><input type="color" id="drColor" value="#ef4444"></label>
+          <label class="fld"><span>${T('opacity')}</span><input type="range" id="drOp" min="10" max="100" value="100"></label>
+          <button class="btn btn-ghost" id="drClear" style="width:100%;margin-top:8px;justify-content:center"><i class="fa-solid fa-eraser"></i> Clear</button>
+        </div>
+      </div>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="drGo"><i class="fa-solid fa-check"></i> ${T('apply')}</button>`,
+    onMount:()=> mountDrawer(file)
+  });
+}
+
+async function mountDrawer(file){
+  const pageIdx = 0;
+  const pjs = await loadPdfJs(file.bytes);
+  const page = await pjs.getPage(pageIdx + 1);
+  const vp = page.getViewport({ scale: 1.4, rotation: file.rotations[pageIdx] || 0 });
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.floor(vp.width); canvas.height = Math.floor(vp.height);
+  canvas.style.maxWidth = '100%'; canvas.style.height = 'auto';
+  const wrap = $('#drWrap'); wrap.innerHTML = ''; wrap.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  await page.render({ canvasContext: ctx, viewport: vp }).promise;
+
+  const strokes = [];
+  let cur = null;
+
+  const pos = (e) => {
+    const r = canvas.getBoundingClientRect();
+    const cx = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+    const cy = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+    return { x: cx * (canvas.width / r.width), y: cy * (canvas.height / r.height) };
+  };
+  const down = (e) => {
+    e.preventDefault();
+    cur = {
+      mode: $('#drMode').value, color: $('#drColor').value,
+      w: parseInt($('#drW').value, 10), op: parseInt($('#drOp').value, 10) / 100,
+      points: [pos(e)]
+    };
+    strokes.push(cur);
+  };
+  const move = (e) => {
+    if (!cur) return;
+    e.preventDefault();
+    cur.points.push(pos(e));
+    redraw();
+  };
+  const up = () => { cur = null; };
+
+  const redraw = () => {
+    ctx.putImageData(canvas._bg || (canvas._bg = ctx.getImageData(0,0,canvas.width,canvas.height)) && canvas._bg, 0, 0);
+    /* strokes drawn visually */
+    ctx.save();
+    strokes.forEach(s => {
+      ctx.globalAlpha = s.op;
+      ctx.strokeStyle = s.color;
+      ctx.fillStyle = s.color;
+      ctx.lineWidth = s.mode === 'highlight' ? Math.max(12, s.w * 5) : s.w;
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      if (s.mode === 'pen' && s.points.length > 1){
+        ctx.beginPath();
+        ctx.moveTo(s.points[0].x, s.points[0].y);
+        for (let i = 1; i < s.points.length; i++) ctx.lineTo(s.points[i].x, s.points[i].y);
+        ctx.stroke();
+      } else if (s.mode === 'highlight' && s.points.length > 1){
+        const ys = s.points.map(p => p.y), xs = s.points.map(p => p.x);
+        const y1 = Math.min(...ys), y2 = Math.max(...ys);
+        const x1 = Math.min(...xs), x2 = Math.max(...xs);
+        ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+      } else if ((s.mode === 'underline' || s.mode === 'strike') && s.points.length > 1){
+        const xs = s.points.map(p => p.x), ys = s.points.map(p => p.y);
+        const x1 = Math.min(...xs), x2 = Math.max(...xs);
+        const yRef = s.mode === 'underline' ? Math.max(...ys) : (Math.min(...ys) + Math.max(...ys)) / 2;
+        ctx.beginPath();
+        ctx.lineWidth = Math.max(2, s.w);
+        ctx.moveTo(x1, yRef);
+        ctx.lineTo(x2, yRef);
+        ctx.stroke();
+      }
+    });
+    ctx.restore();
+  };
+
+  canvas.addEventListener('mousedown', down);
+  canvas.addEventListener('mousemove', move);
+  window.addEventListener('mouseup', up);
+  canvas.addEventListener('touchstart', down, { passive:false });
+  canvas.addEventListener('touchmove', move, { passive:false });
+  window.addEventListener('touchend', up);
+
+  $('#drClear').addEventListener('click', () => { strokes.length = 0; redraw(); });
+  ['drMode','drColor','drW','drOp'].forEach(id => $('#'+id).addEventListener('input', redraw));
+
+  $('#drGo').addEventListener('click', async () => {
+    if (!strokes.length){ toast('Draw something first', 'info'); return; }
+    const pdf = await loadPdfLib(file.bytes);
+    const page = pdf.getPage(pageIdx);
+    const { width, height } = page.getSize();
+    const sx = width / canvas.width, sy = height / canvas.height;
+    strokes.forEach(s => {
+      const c = hexToRgb(s.color);
+      const op = s.op;
+      if (s.mode === 'pen' && s.points.length > 1){
+        for (let i = 1; i < s.points.length; i++){
+          const p0 = s.points[i-1], p1 = s.points[i];
+          page.drawLine({
+            start: { x: p0.x * sx, y: height - p0.y * sy },
+            end:   { x: p1.x * sx, y: height - p1.y * sy },
+            thickness: s.w * Math.max(sx, sy),
+            color: PDFLib.rgb(c.r, c.g, c.b),
+            opacity: op
+          });
+        }
+      } else if (s.mode === 'highlight' && s.points.length > 1){
+        const ys = s.points.map(p => p.y), xs = s.points.map(p => p.x);
+        const x1 = Math.min(...xs), x2 = Math.max(...xs);
+        const y1 = Math.min(...ys), y2 = Math.max(...ys);
+        page.drawRectangle({
+          x: x1 * sx, y: height - y2 * sy,
+          width: (x2-x1) * sx, height: (y2-y1) * sy,
+          color: PDFLib.rgb(c.r, c.g, c.b),
+          opacity: op * 0.4
+        });
+      } else if ((s.mode === 'underline' || s.mode === 'strike') && s.points.length > 1){
+        const xs = s.points.map(p => p.x), ys = s.points.map(p => p.y);
+        const x1 = Math.min(...xs), x2 = Math.max(...xs);
+        const yRef = s.mode === 'underline' ? Math.max(...ys) : (Math.min(...ys) + Math.max(...ys)) / 2;
+        page.drawLine({
+          start: { x: x1 * sx, y: height - yRef * sy },
+          end:   { x: x2 * sx, y: height - yRef * sy },
+          thickness: Math.max(1, s.w) * Math.max(sx, sy),
+          color: PDFLib.rgb(c.r, c.g, c.b), opacity: op
+        });
+      }
+    });
+    file.bytes = new Uint8Array(await pdf.save());
+    file.thumbs[pageIdx] = null;
+    closeModal();
+    renderPageGrid();
+    toast(T('done') + ' ✓', 'ok');
+  });
+}
+
+/* ============================================================
+   11. SECURITY
+   ============================================================ */
+function openEncryptModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-lock', title:T('t_encrypt'),
+    body:`
+      <label class="fld"><span>${T('userPass')}</span><input type="password" id="encUser" placeholder="••••••••"></label>
+      <label class="fld"><span>${T('ownerPass')}</span><input type="password" id="encOwner" placeholder="optional"></label>
+      <div class="chk"><input type="checkbox" id="encNoCopy" checked> Disable copy / extract</div>
+      <div class="chk"><input type="checkbox" id="encNoPrint"> Disable printing</div>
+      <p class="hint">Uses 128-bit PDF encryption. Password never leaves your browser.</p>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="encGo"><i class="fa-solid fa-lock"></i> ${T('apply')}</button>`,
+    onMount:()=>{
+      $('#encGo').addEventListener('click', async () => {
+        const user = $('#encUser').value;
+        if (!user){ toast('Password required', 'info'); return; }
+        const owner = $('#encOwner').value || user + '_owner';
+        const noCopy = $('#encNoCopy').checked;
+        const noPrint = $('#encNoPrint').checked;
+        closeModal();
+        await encryptPDF(file, user, owner, noCopy, noPrint);
+      });
+    }
+  });
+}
+
+async function encryptPDF(file, userPass, ownerPass, noCopy, noPrint){
+  loader(true, T('processing'));
+  try {
+    const pdf = await loadPdfLib(file.bytes);
+    let perms = null;
+    try {
+      perms = PDFLib.Permissions ? {
+        printing: noPrint ? undefined : 'highResolution',
+        copying: !noCopy,
+        modifying: false,
+        annotating: false,
+        fillingForms: true,
+        contentAccessibility: true,
+        documentAssembly: false
+      } : null;
+    } catch(e){ perms = null; }
+
+    let out;
+    try {
+      out = await pdf.save({
+        userPassword: userPass,
+        ownerPassword: ownerPass,
+        permissions: perms || undefined
+      });
+    } catch (e1){
+      /* cantoo-specific signature variations */
+      try {
+        out = await pdf.save({ userPassword: userPass, ownerPassword: ownerPass });
+      } catch (e2){
+        throw new Error('Encryption not available in this library build — try a different CDN or use standard pdf-lib (no encryption).');
+      }
+    }
+    download(new Uint8Array(out), file.name.replace(/\.pdf$/i, '_encrypted.pdf'));
+    toast(T('downloaded'), 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+function openUnlockModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-lock-open', title:T('t_unlock'),
+    body:`
+      <label class="fld"><span>${T('password')}</span><input type="password" id="ulPass" placeholder="••••••••"></label>
+      <p class="hint">${T('unlockHint')}</p>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="ulGo"><i class="fa-solid fa-unlock"></i> ${T('apply')}</button>`,
+    onMount:()=>{
+      $('#ulGo').addEventListener('click', async () => {
+        const pass = $('#ulPass').value;
+        closeModal();
+        await unlockPDF(file, pass);
+      });
+    }
+  });
+}
+
+async function unlockPDF(file, password){
+  loader(true, T('processing'));
+  try {
+    /* Try pdf-lib first (works if not actually encrypted) */
+    let doc = null;
+    try { doc = await PDFLib.PDFDocument.load(file.bytes, { ignoreEncryption: true }); } catch(e){}
+
+    if (doc && !password){
+      const out = new Uint8Array(await doc.save());
+      download(out, file.name.replace(/\.pdf$/i, '_unlocked.pdf'));
+      toast(T('downloaded'), 'ok');
+      return;
+    }
+    /* Use pdf.js to open with password, then rebuild with pdf-lib via canvas re-render (works but loses text) */
+    const task = pdfjsLib.getDocument({ data: new Uint8Array(file.bytes), password });
+    const pjs = await task.promise;
+    const out = await PDFLib.PDFDocument.create();
+    for (let i = 1; i <= pjs.numPages; i++){
+      const p = await pjs.getPage(i);
+      const vp = p.getViewport({ scale: 2 });
+      const c = document.createElement('canvas');
+      c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+      await p.render({ canvasContext: ctx, viewport: vp }).promise;
+      const img = await out.embedJpg(c.toDataURL('image/jpeg', 0.92).split(',')[1] && dataURLToBytes(c.toDataURL('image/jpeg', 0.92)));
+      const page = out.addPage([vp.width / 2, vp.height / 2]);
+      page.drawImage(img, { x: 0, y: 0, width: page.getWidth(), height: page.getHeight() });
+    }
+    download(new Uint8Array(await out.save()), file.name.replace(/\.pdf$/i, '_unlocked.pdf'));
+    toast(T('downloaded'), 'ok');
+  } catch (e){
+    toast('⚠ ' + (e.message || 'Wrong password'), 'err');
+  }
+  finally { loader(false); }
+}
+
+function openSanitizeModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-broom', title:T('t_sanitize'),
+    body:`<p class="hint">${T('sanitizeHint')}</p>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="snGo"><i class="fa-solid fa-broom"></i> ${T('apply')}</button>`,
+    onMount:()=>{
+      $('#snGo').addEventListener('click', async () => {
+        closeModal();
+        await sanitize(file);
+      });
+    }
+  });
+}
+
+async function sanitize(file){
+  loader(true, T('processing'));
+  try {
+    const pdf = await loadPdfLib(file.bytes);
+    try {
+      pdf.setAuthor(''); pdf.setTitle(''); pdf.setSubject('');
+      pdf.setKeywords([]); pdf.setCreator(''); pdf.setProducer('');
+    } catch(e){}
+    file.bytes = new Uint8Array(await pdf.save());
+    download(file.bytes, file.name.replace(/\.pdf$/i, '_clean.pdf'));
+    toast(T('downloaded'), 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+function openSignModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-signature', title:T('t_sign'),
+    body:`
+      <p class="hint" style="margin-bottom:10px">${T('signHint')}</p>
+      <canvas class="sig-canvas" id="sigPad"></canvas>
+      <div class="grid3" style="margin-top:11px">
+        <label class="fld"><span>${T('page')}</span>
+          <select id="sgPage">${Array.from({length:file.pageCount},(_,i)=>`<option value="${i}">${T('page')} ${i+1}</option>`).join('')}</select></label>
+        <label class="fld"><span>${T('x')}</span><input type="number" id="sgX" value="65" min="0" max="100"></label>
+        <label class="fld"><span>${T('y')}</span><input type="number" id="sgY" value="15" min="0" max="100"></label>
+        <label class="fld"><span>Width (px)</span><input type="number" id="sgW" value="180" min="40" max="500"></label>
+      </div>`,
+    foot:`<button class="btn btn-ghost" id="sgClear"><i class="fa-solid fa-eraser"></i> Clear</button>
+          <button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="sgGo"><i class="fa-solid fa-check"></i> ${T('insert')}</button>`,
+    onMount:()=>{ mountSignature(file); }
+  });
+}
+
+function mountSignature(file){
+  const canvas = $('#sigPad');
+  const ctx = canvas.getContext('2d');
+  const resize = () => {
+    const r = canvas.getBoundingClientRect();
+    canvas.width = r.width * devicePixelRatio;
+    canvas.height = r.height * devicePixelRatio;
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+    ctx.lineWidth = 2.4; ctx.lineCap = 'round'; ctx.strokeStyle = '#0f172a';
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, r.width, r.height);
+  };
+  resize();
+  let drawing = false, last = null;
+  const pos = (e) => {
+    const r = canvas.getBoundingClientRect();
+    return {
+      x: (e.touches ? e.touches[0].clientX : e.clientX) - r.left,
+      y: (e.touches ? e.touches[0].clientY : e.clientY) - r.top
+    };
+  };
+  const down = (e) => { e.preventDefault(); drawing = true; last = pos(e); };
+  const move = (e) => {
+    if (!drawing) return;
+    e.preventDefault();
+    const p = pos(e);
+    ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+    last = p;
+  };
+  const up = () => { drawing = false; };
+  canvas.addEventListener('mousedown', down);
+  canvas.addEventListener('mousemove', move);
+  window.addEventListener('mouseup', up);
+  canvas.addEventListener('touchstart', down, { passive:false });
+  canvas.addEventListener('touchmove', move, { passive:false });
+  window.addEventListener('touchend', up);
+  $('#sgClear').addEventListener('click', () => {
+    const r = canvas.getBoundingClientRect();
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, r.width, r.height);
+  });
+  $('#sgGo').addEventListener('click', async () => {
+    /* trim + embed */
+    const trimmed = trimCanvas(canvas);
+    const b64 = trimmed.toDataURL('image/png');
+    const bytes = dataURLToBytes(b64);
+    const pageIdx = parseInt($('#sgPage').value, 10);
+    const xPct = parseFloat($('#sgX').value);
+    const yPct = parseFloat($('#sgY').value);
+    const w = parseFloat($('#sgW').value);
+    closeModal();
+    await embedSignature(file, bytes, pageIdx, xPct, yPct, w);
+  });
+}
+
+function trimCanvas(src){
+  const ctx = src.getContext('2d');
+  const { width, height } = src;
+  const data = ctx.getImageData(0, 0, width, height).data;
+  let minX = width, minY = height, maxX = 0, maxY = 0, any = false;
+  for (let y = 0; y < height; y++){
+    for (let x = 0; x < width; x++){
+      const i = (y * width + x) * 4;
+      const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+      if (a > 10 && !(r > 240 && g > 240 && b > 240)){
+        any = true;
+        if (x < minX) minX = x;
+        if (y < minY) minY = y;
+        if (x > maxX) maxX = x;
+        if (y > maxY) maxY = y;
+      }
+    }
+  }
+  if (!any) return src;
+  const pad = 6;
+  minX = Math.max(0, minX - pad); minY = Math.max(0, minY - pad);
+  maxX = Math.min(width, maxX + pad); maxY = Math.min(height, maxY + pad);
+  const w = maxX - minX, h = maxY - minY;
+  const out = document.createElement('canvas');
+  out.width = w; out.height = h;
+  out.getContext('2d').drawImage(src, minX, minY, w, h, 0, 0, w, h);
+  return out;
+}
+
+async function embedSignature(file, imgBytes, pageIdx, xPct, yPct, wPx){
+  loader(true, T('processing'));
+  try {
+    const pdf = await loadPdfLib(file.bytes);
+    const img = await pdf.embedPng(imgBytes);
+    const p = pdf.getPage(pageIdx);
+    const { width, height } = p.getSize();
+    const ratio = img.height / img.width;
+    const wPt = Math.min(width * 0.5, wPx);
+    const hPt = wPt * ratio;
+    const x = (xPct / 100) * width;
+    const y = (yPct / 100) * height;
+    p.drawImage(img, { x, y, width: wPt, height: hPt });
+    file.bytes = new Uint8Array(await pdf.save());
+    file.thumbs[pageIdx] = null;
+    renderPageGrid();
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+function openFlattenModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-layer-group', title:T('t_flatten'),
+    body:`<p class="hint">Flattening will make all interactive form fields permanent and non-editable.</p>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="flGo"><i class="fa-solid fa-check"></i> ${T('apply')}</button>`,
+    onMount:()=>{
+      $('#flGo').addEventListener('click', async () => {
+        closeModal();
+        await flattenForms(file);
+      });
+    }
+  });
+}
+
+async function flattenForms(file){
+  loader(true, T('processing'));
+  try {
+    const pdf = await loadPdfLib(file.bytes);
+    try {
+      const form = pdf.getForm();
+      form.flatten();
+    } catch(e){ /* no forms */ }
+    file.bytes = new Uint8Array(await pdf.save());
+    download(file.bytes, file.name.replace(/\.pdf$/i, '_flattened.pdf'));
+    toast(T('downloaded'), 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+/* ============================================================
+   12. LAYOUT
+   ============================================================ */
+function openNupModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-table-cells', title:T('t_nup'),
+    body:`
+      <label class="fld"><span>${T('pagesPerSheet')}</span>
+        <select id="nuN"><option value="2">2 (2×1)</option><option value="4" selected>4 (2×2)</option><option value="6">6 (3×2)</option><option value="8">8 (4×2)</option></select></label>
+      <label class="fld"><span>${T('sizePreset')}</span>
+        <select id="nuSize"><option value="A4">A4</option><option value="A3">A3</option><option value="Letter">Letter</option></select></label>
+      <label class="fld"><span>${T('margin')}</span><input type="number" id="nuMargin" value="10" min="0" max="40"></label>
+      <div class="chk"><input type="checkbox" id="nuBorder" checked> Draw border around each page</div>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="nuGo"><i class="fa-solid fa-check"></i> ${T('apply')}</button>`,
+    onMount:()=>{
+      $('#nuGo').addEventListener('click', async () => {
+        const n = parseInt($('#nuN').value, 10);
+        const size = $('#nuSize').value;
+        const margin = parseFloat($('#nuMargin').value);
+        const border = $('#nuBorder').checked;
+        closeModal();
+        await nup(file, n, size, margin, border);
+      });
+    }
+  });
+}
+
+async function nup(file, n, sizeName, margin, border){
+  loader(true, T('processing'));
+  try {
+    const SIZES = { A4:[595.28,841.89], A3:[841.89,1190.55], Letter:[612,792] };
+    const [SW, SH] = SIZES[sizeName] || SIZES.A4;
+    const src = await loadPdfLib(file.bytes);
+    const out = await PDFLib.PDFDocument.create();
+    const pages = src.getPageIndices();
+
+    const grid = { 2:[1,2], 4:[2,2], 6:[3,2], 8:[4,2] }[n] || [2,2];
+    const [cols, rows] = grid;
+    const cellW = (SW - margin * (cols + 1)) / cols;
+    const cellH = (SH - margin * (rows + 1)) / rows;
+
+    const embedded = [];
+    for (let i = 0; i < pages.length; i++){
+      const [emb] = await out.embedPdf(src, [i]);
+      embedded.push(emb);
+    }
+
+    let outPage = null, cell = 0;
+    for (let i = 0; i < embedded.length; i++){
+      if (cell === 0){ outPage = out.addPage([SW, SH]); }
+      const col = cell % cols, row = Math.floor(cell / cols);
+      const cx = margin + col * (cellW + margin);
+      const cy = SH - margin - (row + 1) * cellH - row * margin;
+      const ep = embedded[i];
+      const scale = Math.min(cellW / ep.width, cellH / ep.height);
+      const w = ep.width * scale, h = ep.height * scale;
+      const ox = cx + (cellW - w) / 2;
+      const oy = cy + (cellH - h) / 2;
+      outPage.drawPage(ep, { x: ox, y: oy, width: w, height: h });
+      if (border){
+        outPage.drawRectangle({ x: ox, y: oy, width: w, height: h, borderColor: PDFLib.rgb(0.7,0.7,0.7), borderWidth: 0.5 });
+      }
+      cell = (cell + 1) % (cols * rows);
+    }
+
+    const bytes = new Uint8Array(await out.save());
+    download(bytes, file.name.replace(/\.pdf$/i, `_${n}up.pdf`));
+    toast(T('downloaded'), 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+function openResizeModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-crop', title:T('t_resize'),
+    body:`
+      <div class="grid2">
+        <label class="fld"><span>${T('sizePreset')}</span>
+          <select id="rsPreset">
+            <option value="keep">Keep current</option>
+            <option value="A4">A4</option><option value="A3">A3</option><option value="Letter">Letter</option>
+          </select></label>
+        <label class="fld"><span>${T('applyTo')}</span>
+          <select id="rsApply"><option value="all">${T('allPages')}</option><option value="selected">Selected only</option></select></label>
+      </div>
+      <h4 style="margin:10px 0 4px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#64748b">Crop (points)</h4>
+      <div class="grid4">
+        <label class="fld"><span>${T('cropTop')}</span><input type="number" id="rsTop" value="0" min="0"></label>
+        <label class="fld"><span>${T('cropBottom')}</span><input type="number" id="rsBot" value="0" min="0"></label>
+        <label class="fld"><span>${T('cropLeft')}</span><input type="number" id="rsLeft" value="0" min="0"></label>
+        <label class="fld"><span>${T('cropRight')}</span><input type="number" id="rsRight" value="0" min="0"></label>
+      </div>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="rsGo"><i class="fa-solid fa-check"></i> ${T('apply')}</button>`,
+    onMount:()=>{
+      $('#rsGo').addEventListener('click', async () => {
+        closeModal();
+        await resizeCrop(file,
+          $('#rsPreset').value,
+          $('#rsApply').value,
+          parseFloat($('#rsTop').value), parseFloat($('#rsBot').value),
+          parseFloat($('#rsLeft').value), parseFloat($('#rsRight').value));
+      });
+    }
+  });
+}
+
+async function resizeCrop(file, preset, applyTo, top, bot, left, right){
+  loader(true, T('processing'));
+  try {
+    const SIZES = { A4:[595.28,841.89], A3:[841.89,1190.55], Letter:[612,792] };
+    const pdf = await loadPdfLib(file.bytes);
+    const pages = pdf.getPageIndices();
+    const targets = applyTo === 'all' ? pages : Array.from(App.selected).sort((a,b)=>a-b);
+    if (!targets.length){ targets.push(0); }
+    targets.forEach(i => {
+      const p = pdf.getPage(i);
+      const { width, height } = p.getSize();
+      if (preset !== 'keep'){
+        const [w, h] = SIZES[preset];
+        p.setSize(w, h);
+      }
+      const sz = p.getSize();
+      p.setCropBox(left, bot, sz.width - left - right, sz.height - bot - top);
+    });
+    file.bytes = new Uint8Array(await pdf.save());
+    file.thumbs = file.thumbs.map(() => null);
+    renderPageGrid();
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+function openPageNumModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-hashtag', title:T('t_pagenum'),
+    body:`
+      <div class="grid2">
+        <label class="fld"><span>${T('startNum')}</span><input type="number" id="pnStart" value="1"></label>
+        <label class="fld"><span>${T('prefix')}</span><input type="text" id="pnPrefix" value="" placeholder="Page "></label>
+        <label class="fld"><span>Format</span><input type="text" id="pnFmt" value="{prefix}{n} / {total}"></label>
+        <label class="fld"><span>${T('fontSize')}</span><input type="number" id="pnSize" value="10"></label>
+        <label class="fld"><span>${T('color')}</span><input type="color" id="pnColor" value="#0f172a"></label>
+        <label class="fld"><span>Position</span>
+          <select id="pnAlign"><option value="center">Center</option><option value="left">Left</option><option value="right">Right</option></select></label>
+      </div>
+      <p class="hint">${T('formatHint')}</p>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="pnGo"><i class="fa-solid fa-check"></i> ${T('apply')}</button>`,
+    onMount:()=>{
+      $('#pnGo').addEventListener('click', async () => {
+        closeModal();
+        await addPageNumbers(file, {
+          start: parseInt($('#pnStart').value, 10),
+          prefix: $('#pnPrefix').value,
+          fmt: $('#pnFmt').value,
+          size: parseFloat($('#pnSize').value),
+          color: hexToRgb($('#pnColor').value),
+          align: $('#pnAlign').value
+        });
+      });
+    }
+  });
+}
+
+async function addPageNumbers(file, opts){
+  loader(true, T('processing'));
+  try {
+    const pdf = await loadPdfLib(file.bytes);
+    const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
+    const total = pdf.getPageCount();
+    pdf.getPages().forEach((p, i) => {
+      const n = opts.start + i;
+      const text = String(opts.fmt || '{n}')
+        .replace('{prefix}', opts.prefix || '')
+        .replace('{n}', String(n))
+        .replace('{total}', String(total));
+      const { width } = p.getSize();
+      const tw = font.widthOfTextAtSize(text, opts.size);
+      const x = opts.align === 'center' ? (width - tw) / 2 : (opts.align === 'right' ? width - tw - 30 : 30);
+      p.drawText(text, {
+        x, y: 22, size: opts.size, font,
+        color: PDFLib.rgb(opts.color.r, opts.color.g, opts.color.b)
+      });
+    });
+    file.bytes = new Uint8Array(await pdf.save());
+    file.thumbs = file.thumbs.map(() => null);
+    renderPageGrid();
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+function openHFModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-heading', title:T('t_hf'),
+    body:`
+      <label class="fld"><span>${T('headerText')}</span><input type="text" id="hfHead" placeholder="My Company"></label>
+      <label class="fld"><span>${T('footerText')}</span><input type="text" id="hfFoot" placeholder="www.example.com"></label>
+      <div class="grid3">
+        <label class="fld"><span>${T('fontSize')}</span><input type="number" id="hfSize" value="9"></label>
+        <label class="fld"><span>${T('color')}</span><input type="color" id="hfColor" value="#64748b"></label>
+        <label class="fld"><span>${T('margin')}</span><input type="number" id="hfMargin" value="20"></label>
+      </div>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="hfGo"><i class="fa-solid fa-check"></i> ${T('apply')}</button>`,
+    onMount:()=>{
+      $('#hfGo').addEventListener('click', async () => {
+        closeModal();
+        await addHeaderFooter(file, $('#hfHead').value, $('#hfFoot').value, parseFloat($('#hfSize').value), hexToRgb($('#hfColor').value), parseFloat($('#hfMargin').value));
+      });
+    }
+  });
+}
+
+async function addHeaderFooter(file, head, foot, size, color, margin){
+  loader(true, T('processing'));
+  try {
+    const pdf = await loadPdfLib(file.bytes);
+    const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
+    pdf.getPages().forEach(p => {
+      const { width, height } = p.getSize();
+      if (head){
+        const tw = font.widthOfTextAtSize(head, size);
+        p.drawText(head, { x: (width - tw)/2, y: height - margin - size, size, font, color: PDFLib.rgb(color.r, color.g, color.b) });
+      }
+      if (foot){
+        const tw = font.widthOfTextAtSize(foot, size);
+        p.drawText(foot, { x: (width - tw)/2, y: margin, size, font, color: PDFLib.rgb(color.r, color.g, color.b) });
+      }
+    });
+    file.bytes = new Uint8Array(await pdf.save());
+    file.thumbs = file.thumbs.map(() => null);
+    renderPageGrid();
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+/* ============================================================
+   13. CONVERT & EXTRACT
+   ============================================================ */
+function openPdf2ImgModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-images', title:T('t_pdf2img'),
+    body:`
+      <div class="grid3">
+        <label class="fld"><span>${T('format')}</span>
+          <select id="p2iFmt"><option value="png">PNG</option><option value="jpeg" selected>JPEG</option></select></label>
+        <label class="fld"><span>${T('scale')}</span><input type="number" id="p2iScale" value="2" min="0.5" max="4" step="0.5"></label>
+        <label class="fld"><span>${T('quality')}</span><input type="number" id="p2iQ" value="92" min="10" max="100"></label>
+      </div>
+      <label class="chk"><input type="checkbox" id="p2iSel"> Only selected pages</label>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="p2iGo"><i class="fa-solid fa-download"></i> ${T('apply')}</button>`,
+    onMount:()=>{
+      $('#p2iGo').addEventListener('click', async () => {
+        const fmt = $('#p2iFmt').value, scale = parseFloat($('#p2iScale').value);
+        const q = parseInt($('#p2iQ').value, 10) / 100;
+        const sel = $('#p2iSel').checked;
+        closeModal();
+        await pdfToImages(file, fmt, scale, q, sel);
+      });
+    }
+  });
+}
+
+async function pdfToImages(file, fmt, scale, q, onlySel){
+  loader(true, T('processing'));
+  try {
+    const pjs = await loadPdfJs(file.bytes);
+    const idxs = onlySel && App.selected.size ? Array.from(App.selected).sort((a,b)=>a-b) : Array.from({length: pjs.numPages}, (_, i) => i);
+    const zip = new JSZip();
+    for (const i of idxs){
+      const page = await pjs.getPage(i + 1);
+      const vp = page.getViewport({ scale, rotation: file.rotations[i] || 0 });
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.floor(vp.width); canvas.height = Math.floor(vp.height);
+      const ctx = canvas.getContext('2d');
+      if (fmt === 'jpeg'){ ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+      await page.render({ canvasContext: ctx, viewport: vp }).promise;
+      const dataUrl = canvas.toDataURL('image/' + fmt, q);
+      const b64 = dataUrl.split(',')[1];
+      zip.file(file.name.replace(/\.pdf$/i, '') + '_page_' + (i + 1).toString().padStart(3, '0') + '.' + fmt, b64, { base64:true });
+    }
+    const blob = await zip.generateAsync({ type:'blob', compression:'DEFLATE' });
+    download(blob, file.name.replace(/\.pdf$/i, '') + '_images.zip');
+    toast(T('downloaded'), 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+function openExtractImgModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-image', title:T('t_extractimg'),
+    body:`
+      <p class="hint">${T('imgEmbedded')}</p>
+      <label class="fld"><span>${T('scale')}</span><input type="number" id="eiScale" value="2" min="0.5" max="4" step="0.5"></label>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="eiGo"><i class="fa-solid fa-check"></i> ${T('apply')}</button>`,
+    onMount:()=>{
+      $('#eiGo').addEventListener('click', async () => {
+        const scale = parseFloat($('#eiScale').value);
+        closeModal();
+        await pdfToImages(file, 'png', scale, 0.95, false);
+      });
+    }
+  });
+}
+
+function openToTextModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-file-lines', title:T('t_toText'), wide:true,
+    body:`
+      <div class="grid2">
+        <label class="fld"><span>${T('format')}</span>
+          <select id="ttFmt"><option value="txt">TXT</option><option value="md">Markdown</option><option value="html">HTML</option></select></label>
+        <label class="fld"><span>Pages</span>
+          <select id="ttPages"><option value="all">${T('allPages')}</option><option value="selected">Selected only</option></select></label>
+      </div>
+      <div class="code-out" id="ttOut">Extracting text...</div>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="ttCopy"><i class="fa-solid fa-copy"></i> ${T('copyToClipboard')}</button>
+          <button class="btn btn-primary" id="ttDl"><i class="fa-solid fa-download"></i> ${T('downloadFile')}</button>`,
+    onMount: async ()=>{
+      const run = async () => {
+        const fmt = $('#ttFmt').value;
+        const mode = $('#ttPages').value;
+        const text = await extractText(file, fmt, mode);
+        $('#ttOut').textContent = text || '(no text)';
+        $('#ttCopy').onclick = () => { navigator.clipboard.writeText(text); toast(T('copyToClipboard') + ' ✓', 'ok'); };
+        $('#ttDl').onclick = () => {
+          const ext = fmt === 'html' ? 'html' : (fmt === 'md' ? 'md' : 'txt');
+          const name = file.name.replace(/\.pdf$/i, '') + '.' + ext;
+          download(new TextEncoder().encode(text), name, 'text/plain');
+        };
+      };
+      await run();
+      $('#ttFmt').addEventListener('change', run);
+      $('#ttPages').addEventListener('change', run);
+    }
+  });
+}
+
+async function extractText(file, fmt, pageMode){
+  const pjs = await loadPdfJs(file.bytes);
+  const idxs = pageMode === 'selected' && App.selected.size
+    ? Array.from(App.selected).sort((a,b)=>a-b)
+    : Array.from({length: pjs.numPages}, (_, i) => i);
+  const chunks = [];
+  for (const i of idxs){
+    const page = await pjs.getPage(i + 1);
+    const tc = await page.getTextContent();
+    const lines = [];
+    let lastY = null, buf = '';
+    tc.items.forEach(item => {
+      const y = item.transform[5];
+      if (lastY !== null && Math.abs(y - lastY) > 4){
+        lines.push(buf); buf = '';
+      }
+      buf += item.str + ' ';
+      lastY = y;
+    });
+    if (buf) lines.push(buf);
+    chunks.push({ page: i + 1, text: lines.join('\n').replace(/[ \t]+/g, ' ').trim() });
+  }
+  if (fmt === 'txt'){
+    return chunks.map(c => '--- Page ' + c.page + ' ---\n' + c.text).join('\n\n');
+  }
+  if (fmt === 'md'){
+    return '# ' + file.name.replace(/\.pdf$/i, '') + '\n\n' +
+      chunks.map(c => '## Page ' + c.page + '\n\n' + c.text).join('\n\n');
+  }
+  /* html */
+  const safe = esc;
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><title>' + safe(file.name) + '</title>' +
+    '<style>body{font-family:system-ui;max-width:820px;margin:40px auto;padding:0 20px;line-height:1.7}h2{margin-top:34px;border-bottom:1px solid #ddd;padding-bottom:6px}pre{white-space:pre-wrap;font-family:inherit}</style>' +
+    '</head><body><h1>' + safe(file.name) + '</h1>' +
+    chunks.map(c => '<h2>Page ' + c.page + '</h2><pre>' + safe(c.text) + '</pre>').join('') +
+    '</body></html>';
+}
+
+function openMetaModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-tags', title:T('t_meta'),
+    body:`<div id="mtBody" class="hint">Loading...</div>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="mtGo"><i class="fa-solid fa-check"></i> ${T('apply')}</button>`,
+    onMount: async ()=>{
+      const pdf = await loadPdfLib(file.bytes);
+      const fields = ['Title','Author','Subject','Keywords','Creator','Producer'];
+      $('#mtBody').innerHTML = fields.map(f => {
+        const v = typeof pdf['get' + f] === 'function' ? pdf['get' + f]() : '';
+        return `<label class="fld"><span>${T('meta' + f)}</span><input type="text" id="mt${f}" value="${esc(v || '')}"></label>`;
+      }).join('');
+      $('#mtGo').addEventListener('click', async () => {
+        const updates = {};
+        fields.forEach(f => {
+          const el = $('#mt' + f);
+          if (el) updates[f] = el.value;
+        });
+        closeModal();
+        await applyMeta(file, updates);
+      });
+    }
+  });
+}
+
+async function applyMeta(file, updates){
+  loader(true, T('processing'));
+  try {
+    const pdf = await loadPdfLib(file.bytes);
+    Object.keys(updates).forEach(k => {
+      const fn = 'set' + k;
+      if (typeof pdf[fn] === 'function'){
+        if (k === 'Keywords') pdf[fn](updates[k].split(',').map(s => s.trim()).filter(Boolean));
+        else pdf[fn](updates[k]);
+      }
+    });
+    file.bytes = new Uint8Array(await pdf.save());
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+function openPdfaModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-box-archive', title:T('t_pdfa'),
+    body:`<p class="hint">Archival conversion: sets title, author and keywords, embeds basic metadata and saves uncompressed for long-term preservation. This produces a PDF/A-inspired file (full PDF/A-1b compliance requires ICC profiles, which is not available client-side).</p>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('cancel')}</button>
+          <button class="btn btn-primary" id="paGo"><i class="fa-solid fa-check"></i> ${T('apply')}</button>`,
+    onMount:()=>{
+      $('#paGo').addEventListener('click', async () => {
+        closeModal();
+        await pdfaConvert(file);
+      });
+    }
+  });
+}
+
+async function pdfaConvert(file){
+  loader(true, T('processing'));
+  try {
+    const pdf = await loadPdfLib(file.bytes);
+    try {
+      if (!pdf.getTitle()) pdf.setTitle(file.name.replace(/\.pdf$/i, ''));
+      if (!pdf.getProducer()) pdf.setProducer('SaivPDF Monster Suite — PDF/A archival');
+      if (!pdf.getCreator()) pdf.setCreator('SaivPDF Monster Suite');
+      pdf.setCreationDate(new Date());
+    } catch(e){}
+    const out = await pdf.save({ useObjectStreams: false });
+    download(new Uint8Array(out), file.name.replace(/\.pdf$/i, '_pdfa.pdf'));
+    toast(T('downloaded'), 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+/* ============================================================
+   14. AI SUITE (Gemini)
+   ============================================================ */
+function openChatModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-comments', title:T('t_chat'), xl:true,
+    body:`
+      <div id="gmKeyBar" style="display:${App.geminiKey ? 'none' : 'block'};margin-bottom:12px">
+        <label class="fld"><span>${T('apiKey')} (Google AI Studio)</span>
+          <input type="password" id="gmKey" placeholder="${T('apiKeyPh')}"></label>
+        <button class="btn btn-primary" id="gmSave" style="width:100%;justify-content:center"><i class="fa-solid fa-key"></i> ${T('save')}</button>
+      </div>
+      <div class="chat-box" id="chatBox"></div>
+      <div style="display:flex;gap:7px">
+        <input type="text" id="chatInput" placeholder="${T('askPlaceholder')}" style="flex:1;border:1px solid #dbe2ec;border-radius:9px;padding:10px 12px;font-size:13px;outline:none">
+        <button class="btn btn-primary" id="chatSend"><i class="fa-solid fa-paper-plane"></i> ${T('send')}</button>
+      </div>
+      <p class="hint">Context: the text of the current PDF is extracted locally and sent with your question. Only text is sent — no file upload.</p>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('close')}</button>
+          <button class="btn btn-ghost" id="gmReset"><i class="fa-solid fa-key"></i> Change API key</button>`,
+    onMount:()=> mountChat(file)
+  });
+}
+
+async function mountChat(file){
+  const chat = $('#chatBox');
+  const input = $('#chatInput');
+  const push = (role, text) => {
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + role;
+    div.textContent = text;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+    return div;
+  };
+  push('ai', '👋 ' + 'Ready. I have loaded the text of **' + file.name + '**. Ask me anything about it.');
+
+  $('#gmSave').addEventListener('click', () => {
+    const k = $('#gmKey').value.trim();
+    if (!k) return;
+    App.geminiKey = k;
+    localStorage.setItem('saivpdf_gemini_key', k);
+    $('#gmKeyBar').style.display = 'none';
+    toast(T('save') + ' ✓', 'ok');
+  });
+  $('#gmReset').addEventListener('click', () => {
+    $('#gmKeyBar').style.display = 'block';
+    $('#gmKey').value = App.geminiKey;
+  });
+
+  /* Pre-extract text once */
+  let ctxText = '';
+  try {
+    ctxText = await extractText(file, 'txt', 'all');
+    ctxText = ctxText.slice(0, 180000); /* be gentle on tokens */
+  } catch(e){}
+
+  const send = async () => {
+    const q = input.value.trim();
+    if (!q) return;
+    if (!App.geminiKey){ toast(T('apiKey') + ' required', 'info'); return; }
+    input.value = '';
+    push('user', q);
+    const aiBubble = push('ai', T('thinking'));
+    try {
+      const prompt = 'You are a helpful PDF assistant. Use the document context below to answer the user question. If the answer is not in the context, say so honestly.\n\n=== DOCUMENT CONTEXT ===\n' + ctxText + '\n=== END CONTEXT ===\n\nQuestion: ' + q;
+      const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + encodeURIComponent(App.geminiKey), {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.4, maxOutputTokens: 2048 }
+        })
+      });
+      if (!res.ok){
+        const errText = await res.text();
+        throw new Error('API ' + res.status + ': ' + errText.slice(0, 160));
+      }
+      const data = await res.json();
+      const text = data && data.candidates && data.candidates[0] && data.candidates[0].content
+        && data.candidates[0].content.parts && data.candidates[0].content.parts[0].text;
+      aiBubble.textContent = text || '(no answer)';
+    } catch (e){
+      aiBubble.className = 'chat-msg err';
+      aiBubble.textContent = '⚠ ' + e.message;
+    }
+  };
+  $('#chatSend').addEventListener('click', send);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); send(); } });
+  setTimeout(() => input.focus(), 100);
+}
+
+function openSummarizeModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-brain', title:T('t_summarize'), xl:true,
+    body:`
+      <div id="suKeyBar" style="display:${App.geminiKey ? 'none' : 'block'};margin-bottom:12px">
+        <label class="fld"><span>${T('apiKey')} (Google AI Studio)</span>
+          <input type="password" id="suKey" placeholder="${T('apiKeyPh')}"></label>
+        <button class="btn btn-primary" id="suSave" style="width:100%;justify-content:center"><i class="fa-solid fa-key"></i> ${T('save')}</button>
+      </div>
+      <div class="grid2" style="margin-bottom:11px">
+        <label class="fld"><span>Mode</span>
+          <select id="suMode">
+            <option value="summary">Executive Summary</option>
+            <option value="bullets">Key Bullet Points</option>
+            <option value="translate">Translate</option>
+          </select></label>
+        <label class="fld"><span>${T('translateTo')}</span>
+          <select id="suLang">
+            <option value="English">English</option><option value="French">Français</option>
+            <option value="Arabic">العربية</option><option value="Spanish">Español</option>
+            <option value="German">Deutsch</option>
+          </select></label>
+      </div>
+      <div class="code-out" id="suOut">Ready.</div>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('close')}</button>
+          <button class="btn btn-primary" id="suRun"><i class="fa-solid fa-bolt"></i> Run</button>
+          <button class="btn btn-ghost" id="suCopy"><i class="fa-solid fa-copy"></i> ${T('copyToClipboard')}</button>`,
+    onMount:()=>{
+      $('#suSave').addEventListener('click', () => {
+        const k = $('#suKey').value.trim();
+        if (!k) return;
+        App.geminiKey = k;
+        localStorage.setItem('saivpdf_gemini_key', k);
+        $('#suKeyBar').style.display = 'none';
+      });
+      $('#suCopy').addEventListener('click', () => { navigator.clipboard.writeText($('#suOut').textContent); toast(T('copyToClipboard') + ' ✓', 'ok'); });
+      $('#suRun').addEventListener('click', async () => {
+        if (!App.geminiKey){ toast(T('apiKey') + ' required', 'info'); return; }
+        const mode = $('#suMode').value;
+        const targetLang = $('#suLang').value;
+        $('#suOut').textContent = T('processing');
+        try {
+          const text = (await extractText(file, 'txt', 'all')).slice(0, 180000);
+          let prompt;
+          if (mode === 'summary') prompt = 'Provide a concise executive summary of the following document. Use clear headings and short paragraphs.\n\n' + text;
+          else if (mode === 'bullets') prompt = 'Extract the key points of the following document as a bullet list. Group related items under headings.\n\n' + text;
+          else prompt = 'Translate the following document into ' + targetLang + '. Preserve the structure, headings and formatting.\n\n' + text;
+          const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + encodeURIComponent(App.geminiKey), {
+            method:'POST', headers:{ 'Content-Type':'application/json' },
+            body: JSON.stringify({ contents:[{ parts:[{ text: prompt }] }], generationConfig:{ temperature:0.3, maxOutputTokens:4096 } })
+          });
+          if (!res.ok) throw new Error('API ' + res.status);
+          const data = await res.json();
+          const out = data?.candidates?.[0]?.content?.parts?.[0]?.text || '(empty)';
+          $('#suOut').textContent = out;
+        } catch (e){
+          $('#suOut').textContent = '⚠ ' + e.message;
+        }
+      });
+    }
+  });
+}
+
+function openOcrModal(){
+  const file = activeFile(); if (!file){ toast(T('noFile'), 'info'); return; }
+  openModal({
+    icon:'fa-eye', title:T('t_ocr'), wide:true,
+    body:`
+      <div class="grid2">
+        <label class="fld"><span>Page</span>
+          <select id="ocrPage">${Array.from({length:file.pageCount},(_,i)=>`<option value="${i}">${T('page')} ${i+1}</option>`).join('')}</select></label>
+        <label class="fld"><span>Language</span>
+          <select id="ocrLang">
+            <option value="eng">English</option>
+            <option value="fra">Français</option>
+            <option value="ara">العربية</option>
+            <option value="eng+fra">English + Français</option>
+            <option value="eng+ara">English + العربية</option>
+            <option value="fra+ara">Français + العربية</option>
+          </select></label>
+      </div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:11px;margin-bottom:11px">
+        <div style="font-size:12px;font-weight:700;margin-bottom:6px" id="ocrStatus">${T('ocrProgress')}</div>
+        <div style="height:8px;background:#e2e8f0;border-radius:5px;overflow:hidden"><div id="ocrBar" style="height:100%;width:0;background:linear-gradient(90deg,#0ea5e9,#6366f1);transition:.2s"></div></div>
+      </div>
+      <div class="code-out" id="ocrOut">—</div>`,
+    foot:`<button class="btn btn-ghost" data-close>${T('close')}</button>
+          <button class="btn btn-primary" id="ocrRun"><i class="fa-solid fa-play"></i> Run OCR</button>
+          <button class="btn btn-ghost" id="ocrCopy"><i class="fa-solid fa-copy"></i> ${T('ocrCopy')}</button>
+          <button class="btn btn-ghost" id="ocrDl"><i class="fa-solid fa-download"></i> ${T('ocrDownload')}</button>`,
+    onMount:()=>{
+      $('#ocrCopy').addEventListener('click', () => { navigator.clipboard.writeText($('#ocrOut').textContent); toast(T('copyToClipboard') + ' ✓', 'ok'); });
+      $('#ocrDl').addEventListener('click', () => {
+        download(new TextEncoder().encode($('#ocrOut').textContent), file.name.replace(/\.pdf$/i, '') + '_ocr.txt', 'text/plain');
+      });
+      $('#ocrRun').addEventListener('click', async () => {
+        const idx = parseInt($('#ocrPage').value, 10);
+        const lang = $('#ocrLang').value;
+        $('#ocrOut').textContent = '';
+        try {
+          const pjs = await loadPdfJs(file.bytes);
+          const page = await pjs.getPage(idx + 1);
+          const vp = page.getViewport({ scale: 2, rotation: file.rotations[idx] || 0 });
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.floor(vp.width); canvas.height = Math.floor(vp.height);
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+          await page.render({ canvasContext: ctx, viewport: vp }).promise;
+          const worker = await Tesseract.createWorker(lang, 1, {
+            logger: m => {
+              if (m.status){
+                $('#ocrStatus').textContent = m.status + (m.progress ? ' — ' + Math.round(m.progress * 100) + '%' : '');
+                if (m.progress) $('#ocrBar').style.width = Math.round(m.progress * 100) + '%';
+              }
+            }
+          });
+          const { data: { text } } = await worker.recognize(canvas);
+          await worker.terminate();
+          $('#ocrOut').textContent = text || '(no text found)';
+          $('#ocrStatus').textContent = T('ocrDone');
+          $('#ocrBar').style.width = '100%';
+        } catch (e){
+          $('#ocrOut').textContent = '⚠ ' + e.message;
+        }
+      });
+    }
+  });
+}
+
+/* ============================================================
+   15. SAMPLE PDF (self-generated)
+   ============================================================ */
+async function generateSamplePDF(){
+  loader(true, T('generating'));
+  try {
+    const pdf = await PDFLib.PDFDocument.create();
+    const fontB = await pdf.embedFont(PDFLib.StandardFonts.HelveticaBold);
+    const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
+    const W = 595.28, H = 841.89;
+    for (let p = 1; p <= 3; p++){
+      const page = pdf.addPage([W, H]);
+      page.drawRectangle({ x: 0, y: H - 90, width: W, height: 90, color: PDFLib.rgb(0.11, 0.36, 0.83) });
+      page.drawText('SaivPDF Monster Suite', { x: 40, y: H - 55, size: 22, font: fontB, color: PDFLib.rgb(1,1,1) });
+      page.drawText('Sample Document — Page ' + p + ' of 3', { x: 40, y: H - 76, size: 11, font, color: PDFLib.rgb(0.9,0.95,1) });
+      page.drawText('Introduction', { x: 40, y: H - 140, size: 16, font: fontB, color: PDFLib.rgb(0.1,0.1,0.15) });
+      const para = [
+        'This is a fully client-side generated PDF, created with pdf-lib directly inside your browser.',
+        'Nothing was uploaded. The document, fonts, and layout were assembled in JavaScript on this page.',
+        'You can use it to test merge, split, OCR, redaction, signatures, watermarks, page numbers, N-up, and many more tools available in the toolbox on the left.',
+        '',
+        'Features available in SaivPDF Monster Suite:',
+        '  •  AI: Chat, summarize, translate, OCR',
+        '  •  Edit: Text overlay, drawing, highlights, redaction, stamps, signatures',
+        '  •  Security: Password protect, unlock, sanitize, flatten forms',
+        '  •  Layout: Merge, split, reorder, rotate, delete, N-up, resize, page numbers',
+        '  •  Convert: Images↔PDF, extract images, PDF→TXT/MD/HTML, PDF/A',
+        '',
+        'All processing happens locally. Your files never leave your device.',
+      ];
+      let y = H - 170;
+      para.forEach(line => {
+        page.drawText(line, { x: 40, y, size: 11, font, color: PDFLib.rgb(0.15,0.15,0.2) });
+        y -= 17;
+      });
+      page.drawText('SaivCORE · Made with ❤️ in Algeria 🇩🇿', { x: 40, y: 40, size: 9, font, color: PDFLib.rgb(0.5,0.5,0.55) });
+    }
+    const bytes = new Uint8Array(await pdf.save());
+    const entry = {
+      id: uid(),
+      name: 'SaivSample.pdf',
+      bytes,
+      pageCount: 3,
+      thumbs: [null, null, null],
+      rotations: {},
+      isPDF: true
+    };
+    App.files.push(entry);
+    App.active = entry.id;
+    App.selected.clear();
+    renderAll();
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+/* ============================================================
+   16. UTILITIES
+   ============================================================ */
+function hexToRgb(hex){
+  let h = String(hex || '#000').replace('#','');
+  if (h.length === 3) h = h.split('').map(c => c + c).join('');
+  if (h.length !== 6) h = '000000';
+  const n = parseInt(h, 16);
+  return { r: ((n >> 16) & 255) / 255, g: ((n >> 8) & 255) / 255, b: (n & 255) / 255 };
+}
+function dataURLToBytes(dataUrl){
+  const b64 = dataUrl.split(',')[1];
+  const bin = atob(b64);
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  return arr;
+}
+
+/* ============================================================
+   17. MODAL SYSTEM
+   ============================================================ */
+let modalCleanup = [];
+function openModal({ icon, title, body, foot, wide, xl, onMount }){
+  closeModal();
+  $('#modalIcon').innerHTML = '<i class="fa-solid ' + (icon || 'fa-gear') + '"></i>';
+  $('#modalTitle').textContent = title || '';
+  $('#modalBody').innerHTML = body || '';
+  $('#modalFoot').innerHTML = foot || `<button class="btn btn-ghost" data-close>${T('close')}</button>`;
+  $('#modal').className = 'modal' + (xl ? ' xl' : (wide ? ' wide' : ''));
+  $('#modalBack').classList.add('on');
+  /* wire common close buttons */
+  $$('[data-close]', $('#modal')).forEach(el => el.addEventListener('click', closeModal));
+  if (typeof onMount === 'function'){
+    try { onMount(); } catch(e){ console.error(e); }
+  }
+}
+function closeModal(){
+  $('#modalBack').classList.remove('on');
+  modalCleanup.forEach(fn => { try { fn(); } catch(e){} });
+  modalCleanup = [];
+}
+function updateModalFoot(html){
+  $('#modalFoot').innerHTML = html;
+  $$('[data-close]', $('#modal')).forEach(el => el.addEventListener('click', closeModal));
+}
+
+/* ============================================================
+   18. TOOLBOX DEFINITION
+   ============================================================ */
+const GROUPS = [
+  {
+    id:'ai', labelKey:'g_ai', icon:'fa-wand-magic-sparkles',
+    tools:[
+      { key:'t_chat', icon:'fa-comments', fn: openChatModal },
+      { key:'t_summarize', icon:'fa-brain', fn: openSummarizeModal },
+      { key:'t_ocr', icon:'fa-eye', fn: openOcrModal }
+    ]
+  },
+  {
+    id:'edit', labelKey:'g_edit', icon:'fa-pen-to-square',
+    tools:[
+      { key:'t_text', icon:'fa-font', fn: openTextOverlay },
+      { key:'t_draw', icon:'fa-pen', fn: openDrawModal },
+      { key:'t_redact', icon:'fa-eye-slash', fn: openRedactModal },
+      { key:'t_stamp', icon:'fa-stamp', fn: openStampModal }
+    ]
+  },
+  {
+    id:'security', labelKey:'g_security', icon:'fa-shield-halved',
+    tools:[
+      { key:'t_encrypt', icon:'fa-lock', fn: openEncryptModal },
+      { key:'t_unlock', icon:'fa-lock-open', fn: openUnlockModal },
+      { key:'t_sanitize', icon:'fa-broom', fn: openSanitizeModal },
+      { key:'t_sign', icon:'fa-signature', fn: openSignModal },
+      { key:'t_flatten', icon:'fa-layer-group', fn: openFlattenModal }
+    ]
+  },
+  {
+    id:'layout', labelKey:'g_layout', icon:'fa-table-cells-large',
+    tools:[
+      { key:'t_merge', icon:'fa-object-group', fn: mergeFiles },
+      { key:'t_split', icon:'fa-scissors', fn: openSplitModal },
+      { key:'t_rotate', icon:'fa-rotate-right', fn: () => rotateSelected(90) },
+      { key:'t_delete', icon:'fa-trash-can', fn: deleteSelected },
+      { key:'t_nup', icon:'fa-table-cells', fn: openNupModal },
+      { key:'t_resize', icon:'fa-crop', fn: openResizeModal },
+      { key:'t_pagenum', icon:'fa-hashtag', fn: openPageNumModal },
+      { key:'t_hf', icon:'fa-heading', fn: openHFModal }
+    ]
+  },
+  {
+    id:'convert', labelKey:'g_convert', icon:'fa-right-left',
+    tools:[
+      { key:'t_pdf2img', icon:'fa-images', fn: openPdf2ImgModal },
+      { key:'t_extractimg', icon:'fa-image', fn: openExtractImgModal },
+      { key:'t_toText', icon:'fa-file-lines', fn: openToTextModal },
+      { key:'t_meta', icon:'fa-tags', fn: openMetaModal },
+      { key:'t_pdfa', icon:'fa-box-archive', fn: openPdfaModal }
+    ]
+  }
+];
+
+function renderToolbox(){
+  const tb = $('#toolbox');
+  tb.innerHTML = GROUPS.map((g, i) => `
+    <div class="tool-group ${i === 0 ? 'open' : ''}" data-g="${g.id}">
+      <div class="tool-group-head">
+        <span class="ico"><i class="fa-solid ${g.icon}"></i></span>
+        <span>${T(g.labelKey)}</span>
+        <i class="fa-solid fa-chevron-right chev"></i>
+      </div>
+      <div class="tool-group-body">
+        ${g.tools.map(t => `<button class="tool-btn" data-tool="${t.key}"><i class="fa-solid ${t.icon}"></i><span>${T(t.key)}</span></button>`).join('')}
+      </div>
+    </div>`).join('');
+
+  $$('.tool-group-head', tb).forEach(h => h.addEventListener('click', () => h.parentElement.classList.toggle('open')));
+  $$('.tool-btn', tb).forEach(b => {
+    const key = b.getAttribute('data-tool');
+    b.addEventListener('click', () => {
+      for (const g of GROUPS){
+        const tool = g.tools.find(t => t.key === key);
+        if (tool){ try { tool.fn(); } catch(e){ console.error(e); toast('⚠ ' + e.message, 'err'); } return; }
+      }
+    });
+  });
+}
+
+/* ============================================================
+   19. EVENT WIRING
+   ============================================================ */
+function applyI18n(){
+  $$('[data-i18n]').forEach(el => { el.textContent = T(el.getAttribute('data-i18n')); });
+  renderToolbox();
+}
+
+function wireEvents(){
+  /* Upload */
+  $('#btnUpload').addEventListener('click', () => $('#fileInput').click());
+  $('#fileAdd').addEventListener('click', () => $('#fileInput').click());
+  $('#btnPick').addEventListener('click', (e) => { e.stopPropagation(); $('#fileInput').click(); });
+  $('#fileInput').addEventListener('change', function(){
+    if (this.files) handleFiles(this.files);
+    this.value = '';
+  });
+  $('#dropzone').addEventListener('click', () => $('#fileInput').click());
+
+  /* Drag & drop anywhere */
+  ['dragenter','dragover'].forEach(ev => {
+    document.addEventListener(ev, (e) => {
+      e.preventDefault();
+      $('#dropzone').classList.add('drag');
+    });
+  });
+  ['dragleave','drop'].forEach(ev => {
+    document.addEventListener(ev, (e) => {
+      e.preventDefault();
+      if (ev === 'dragleave' && e.target !== document) return;
+      $('#dropzone').classList.remove('drag');
+    });
+  });
+  document.addEventListener('drop', (e) => {
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length){
+      handleFiles(e.dataTransfer.files);
+    }
+  });
+
+  /* File chips */
+  $('#fileChips').addEventListener('click', (e) => {
+    const closeBtn = e.target.closest('[data-close]');
+    if (closeBtn){
+      const id = closeBtn.getAttribute('data-close');
+      App.files = App.files.filter(f => f.id !== id);
+      if (App.active === id) App.active = App.files.length ? App.files[0].id : null;
+      App.selected.clear();
+      renderAll();
+      return;
+    }
+    const chip = e.target.closest('.file-chip');
+    if (chip){
+      App.active = chip.getAttribute('data-id');
+      App.selected.clear();
+      renderAll();
+    }
+  });
+
+  /* Page card click */
+  $('#pageGrid').addEventListener('click', (e) => {
+    const act = e.target.closest('[data-act]');
+    if (act){
+      e.stopPropagation();
+      const idx = parseInt(act.getAttribute('data-page'), 10);
+      const a = act.getAttribute('data-act');
+      if (a === 'rotate'){
+        App.selected.clear(); App.selected.add(idx);
+        rotateSelected(90);
+      } else if (a === 'dupe'){
+        duplicatePage(idx);
+      }
+      return;
+    }
+    const card = e.target.closest('.page-card');
+    if (!card) return;
+    const idx = parseInt(card.getAttribute('data-page'), 10);
+    if (e.shiftKey || e.ctrlKey || e.metaKey){
+      if (App.selected.has(idx)) App.selected.delete(idx); else App.selected.add(idx);
+      renderPageGrid();
+    } else {
+      if (App.selected.size === 1 && App.selected.has(idx)){
+        App.selected.clear();
+      } else {
+        App.selected.clear();
+        App.selected.add(idx);
+      }
+      renderPageGrid();
+    }
+  });
+
+  /* Selection actions */
+  $('#selActions').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-selact]');
+    if (!b) return;
+    const a = b.getAttribute('data-selact');
+    if (a === 'rotate') rotateSelected(90);
+    else if (a === 'extract') extractSelected();
+    else if (a === 'delete') deleteSelected();
+    else if (a === 'selectAll'){
+      const file = activeFile(); if (!file) return;
+      if (App.selected.size === file.pageCount) App.selected.clear();
+      else for (let i = 0; i < file.pageCount; i++) App.selected.add(i);
+      renderPageGrid();
+    }
+  });
+  $('#selClear').addEventListener('click', () => { App.selected.clear(); renderPageGrid(); });
+
+  /* Top actions */
+  $('#btnDownload').addEventListener('click', () => {
+    const f = activeFile(); if (!f) return;
+    download(f.bytes, f.name);
+    toast(T('downloaded'), 'ok');
+  });
+  $('#btnDownloadAll').addEventListener('click', async () => {
+    if (!App.files.length) return;
+    loader(true, T('processing'));
+    try {
+      if (App.files.length === 1){
+        download(App.files[0].bytes, App.files[0].name);
+      } else {
+        const zip = new JSZip();
+        App.files.forEach(f => zip.file(safeName(f.name), f.bytes));
+        const blob = await zip.generateAsync({ type:'blob', compression:'DEFLATE' });
+        download(blob, 'SaivPDF_export.zip');
+      }
+      toast(T('downloaded'), 'ok');
+    } finally { loader(false); }
+  });
+  $('#btnClear').addEventListener('click', () => {
+    if (!confirm(T('confirmClear'))) return;
+    App.files = []; App.active = null; App.selected.clear();
+    renderAll();
+  });
+  $('#btnSample').addEventListener('click', generateSamplePDF);
+
+  /* Lang & theme */
+  $('#langSelect').addEventListener('change', function(){
+    LANG = this.value;
+    document.body.classList.toggle('ar', LANG === 'ar');
+    document.documentElement.setAttribute('dir', LANG === 'ar' ? 'rtl' : 'ltr');
+    applyI18n();
+    renderAll();
+  });
+  $('#btnTheme').addEventListener('click', () => {
+    App.theme = App.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.classList.toggle('dark', App.theme === 'dark');
+    $('#btnTheme').innerHTML = App.theme === 'dark'
+      ? '<i class="fa-solid fa-sun"></i>'
+      : '<i class="fa-solid fa-moon"></i>';
+    localStorage.setItem('saivpdf_theme', App.theme);
+  });
+
+  /* Sidebar toggle */
+  $('#sbToggle').addEventListener('click', () => {
+    $('#sidebar').classList.toggle('collapsed');
+  });
+
+  /* Modal */
+  $('#modalClose').addEventListener('click', closeModal);
+  $('#modalBack').addEventListener('click', (e) => { if (e.target === $('#modalBack')) closeModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'o'){
+      e.preventDefault(); $('#fileInput').click();
+    }
+  });
+
+  /* Prevent default drop on non-target */
+  window.addEventListener('dragover', e => e.preventDefault());
+  window.addEventListener('drop', e => e.preventDefault());
+}
+
+/* ============================================================
+   20. PAGE DUPLICATE
+   ============================================================ */
+async function duplicatePage(idx){
+  const file = activeFile(); if (!file) return;
+  loader(true, T('processing'));
+  try {
+    const src = await loadPdfLib(file.bytes);
+    const out = await PDFLib.PDFDocument.create();
+    const indices = src.getPageIndices();
+    const ordered = indices.slice(0, idx + 1).concat([idx], indices.slice(idx + 1));
+    const pages = await out.copyPages(src, ordered);
+    pages.forEach(p => out.addPage(p));
+    file.bytes = new Uint8Array(await out.save());
+    file.pageCount = out.getPageCount();
+    file.thumbs.splice(idx + 1, 0, file.thumbs[idx]);
+    renderPageGrid();
+    toast(T('done') + ' ✓', 'ok');
+  } catch (e){ toast('⚠ ' + e.message, 'err'); }
+  finally { loader(false); }
+}
+
+/* ============================================================
+   21. INIT
+   ============================================================ */
+function init(){
+  /* theme */
+  const savedTheme = localStorage.getItem('saivpdf_theme') || 'light';
+  App.theme = savedTheme;
+  if (savedTheme === 'dark'){
+    document.documentElement.classList.add('dark');
+    $('#btnTheme').innerHTML = '<i class="fa-solid fa-sun"></i>';
+  }
+
+  /* language */
+  LANG = 'en';
+  document.body.classList.remove('ar');
+  document.documentElement.setAttribute('dir', 'ltr');
+
+  applyI18n();
+  wireEvents();
+  renderAll();
+
+  /* sidebar open on desktop */
+  if (window.innerWidth > 900) $('#sidebar').classList.remove('collapsed');
+}
+
+if (document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+
+<!-- ============ FOOTER CREDIT ============ -->
+<div id="creditBar" style="position:fixed;left:0;right:0;bottom:0;z-index:35;pointer-events:none;
+     background:linear-gradient(0deg,rgba(11,18,32,.94),rgba(11,18,32,0));padding:14px 18px 8px;
+     display:flex;justify-content:center;font-size:11px;color:#8ea3c0;letter-spacing:.3px">
+  <span style="pointer-events:auto">SaivPDF Monster Suite — Powered by <b style="color:#f87171">SaivCORE</b> &nbsp;|&nbsp; Made with ❤️ in Algeria 🇩🇿</span>
+</div>
+
+</body>
+</html>
