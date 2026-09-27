@@ -111,6 +111,7 @@
     font-weight: 600;
     font-size: 15px;
     color: var(--text);
+    flex: none;
   }
   .brand-mark {
     width: 32px;
@@ -124,7 +125,7 @@
     font-weight: 700;
     letter-spacing: .02em;
   }
-  .brand-name { font-weight: 600; }
+  .brand-name { font-weight: 600; white-space: nowrap; }
 
   .nav-links {
     display: flex;
@@ -132,17 +133,18 @@
     gap: 2px;
   }
   .nav-link {
-    padding: 8px 14px;
-    font-size: 14px;
+    padding: 8px 12px;
+    font-size: 13.5px;
     color: var(--muted);
     border-radius: 8px;
     transition: color .15s ease, background .15s ease;
     font-weight: 500;
+    white-space: nowrap;
   }
   .nav-link:hover { color: var(--text); }
   .nav-link.active { color: var(--text); font-weight: 600; }
 
-  .nav-actions { display: flex; align-items: center; gap: 8px; }
+  .nav-actions { display: flex; align-items: center; gap: 8px; flex: none; }
 
   .icon-btn {
     width: 36px;
@@ -218,7 +220,7 @@
 
   .menu-toggle { display: none; }
 
-  @media (max-width: 900px) {
+  @media (max-width: 980px) {
     .nav-links { display: none; }
     .menu-toggle { display: grid; }
   }
@@ -279,6 +281,7 @@
   @media (max-width: 640px) { section { padding: 60px 0; } }
 
   .section-head { margin-bottom: 48px; max-width: 620px; }
+  .section-head.center { margin-inline: auto; text-align: center; }
   .section-eyebrow {
     font-size: 12px;
     font-weight: 500;
@@ -331,6 +334,12 @@
     height: 7px;
     border-radius: 50%;
     background: #16a34a;
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot {
+    0% { box-shadow: 0 0 0 0 rgba(22,163,74,.5); }
+    70% { box-shadow: 0 0 0 7px rgba(22,163,74,0); }
+    100% { box-shadow: 0 0 0 0 rgba(22,163,74,0); }
   }
 
   .hero-title {
@@ -517,6 +526,97 @@
   html[dir="rtl"] .card-link i { transform: scaleX(-1); }
   html[dir="rtl"] .card:hover .card-link i { transform: scaleX(-1) translateX(3px); }
 
+  /* ---------- SAIVCORE FEATURED ---------- */
+  .saivcore-card {
+    padding: 36px 34px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    transition: border-color .2s ease, transform .25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .saivcore-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, var(--bg-soft) 0%, transparent 55%);
+    opacity: .7;
+    pointer-events: none;
+  }
+  html[dir="rtl"] .saivcore-card::before {
+    background: radial-gradient(circle at top left, var(--bg-soft) 0%, transparent 55%);
+  }
+  .saivcore-card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+  }
+
+  .saivcore-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+  }
+  .saivcore-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: var(--text);
+    color: var(--bg);
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    font-weight: 700;
+    flex: none;
+    font-family: 'Inter', sans-serif;
+  }
+  .saivcore-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.2;
+  }
+  .saivcore-tag {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 3px 0 0;
+    font-weight: 500;
+  }
+  .saivcore-desc {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text-2);
+    margin: 0;
+    position: relative;
+    max-width: 720px;
+  }
+  .saivcore-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+  }
+  .saivcore-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-2);
+  }
+  .saivcore-features li i {
+    color: var(--text);
+    font-size: 12px;
+    flex: none;
+  }
+
   /* Novel card */
   .novel-card {
     padding: 0;
@@ -566,35 +666,6 @@
     gap: 16px;
     flex: 1;
   }
-
-  /* Project */
-  .project-card {
-    padding: 28px 26px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--surface);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    transition: border-color .2s ease;
-  }
-  .project-card:hover { border-color: var(--border-strong); }
-
-  .project-head { display: flex; align-items: center; gap: 12px; }
-  .project-avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    background: var(--text);
-    color: var(--bg);
-    display: grid;
-    place-items: center;
-    font-size: 16px;
-    font-weight: 700;
-    flex: none;
-  }
-  .project-name { font-size: 16px; font-weight: 600; color: var(--text); }
-  .project-tag { font-size: 12px; color: var(--muted); margin-top: 1px; }
 
   /* ---------- TOOL / GAME ---------- */
   .mini-card {
@@ -714,6 +785,13 @@
   }
   .social-btn:hover { border-color: var(--text); color: var(--text); }
 
+  /* ---------- SECTION CTA ---------- */
+  .section-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+  }
+
   /* ---------- FOOTER ---------- */
   footer {
     border-top: 1px solid var(--border);
@@ -800,13 +878,13 @@
     </a>
 
     <nav class="nav-links">
-      <a href="#home"     class="nav-link active" data-i18n="nav_home">الرئيسية</a>
-      <a href="#services" class="nav-link" data-i18n="nav_services">خدماتي</a>
-      <a href="#novels"   class="nav-link" data-i18n="nav_novels">رواياتي</a>
-      <a href="#projects" class="nav-link" data-i18n="nav_projects">مشاريعي</a>
-      <a href="#tools"    class="nav-link" data-i18n="nav_tools">الأدوات</a>
-      <a href="#games"    class="nav-link" data-i18n="nav_games">الألعاب</a>
-      <a href="#contact"  class="nav-link" data-i18n="nav_contact">اتصل بي</a>
+      <a href="#home"      class="nav-link active" data-i18n="nav_home">الرئيسية</a>
+      <a href="#saivcore"  class="nav-link" data-i18n="nav_saivcore">SaivCORE</a>
+      <a href="#services"  class="nav-link" data-i18n="nav_services">خدماتي</a>
+      <a href="#novels"    class="nav-link" data-i18n="nav_novels">رواياتي</a>
+      <a href="#tools"     class="nav-link" data-i18n="nav_tools">الأدوات</a>
+      <a href="#games"     class="nav-link" data-i18n="nav_games">الألعاب</a>
+      <a href="#contact"   class="nav-link" data-i18n="nav_contact">اتصل بي</a>
     </nav>
 
     <div class="nav-actions">
@@ -846,13 +924,13 @@
     </button>
   </div>
   <nav class="drawer-links">
-    <a href="#home"     class="drawer-link active" data-i18n="nav_home">الرئيسية</a>
-    <a href="#services" class="drawer-link" data-i18n="nav_services">خدماتي</a>
-    <a href="#novels"   class="drawer-link" data-i18n="nav_novels">رواياتي</a>
-    <a href="#projects" class="drawer-link" data-i18n="nav_projects">مشاريعي</a>
-    <a href="#tools"    class="drawer-link" data-i18n="nav_tools">الأدوات</a>
-    <a href="#games"    class="drawer-link" data-i18n="nav_games">الألعاب</a>
-    <a href="#contact"  class="drawer-link" data-i18n="nav_contact">اتصل بي</a>
+    <a href="#home"      class="drawer-link active" data-i18n="nav_home">الرئيسية</a>
+    <a href="#saivcore"  class="drawer-link" data-i18n="nav_saivcore">SaivCORE</a>
+    <a href="#services"  class="drawer-link" data-i18n="nav_services">خدماتي</a>
+    <a href="#novels"    class="drawer-link" data-i18n="nav_novels">رواياتي</a>
+    <a href="#tools"     class="drawer-link" data-i18n="nav_tools">الأدوات</a>
+    <a href="#games"     class="drawer-link" data-i18n="nav_games">الألعاب</a>
+    <a href="#contact"   class="drawer-link" data-i18n="nav_contact">اتصل بي</a>
   </nav>
 </aside>
 
@@ -915,6 +993,51 @@
   </div>
 </section>
 
+<!-- ============ SAIVCORE ============ -->
+<section id="saivcore">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-eyebrow" data-i18n="saivcore_eyebrow">SaivCORE</div>
+      <h2 class="section-title" data-i18n="saivcore_title">شركة SaivCORE للبرمجيات</h2>
+      <p class="section-sub" data-i18n="saivcore_sub">مؤسسة تقنية جزائرية ناشئة تسعى لتمكين المواهب العربية بحلول برمجية مبتكرة.</p>
+    </div>
+
+    <a href="https://saivcore.github.io" target="_blank" rel="noopener noreferrer" class="saivcore-card reveal">
+      <div class="saivcore-top">
+        <div class="saivcore-avatar">S</div>
+        <div>
+          <h3 class="saivcore-name">SaivCORE</h3>
+          <p class="saivcore-tag" data-i18n="saivcore_tag">شركة برمجيات جزائرية ناشئة</p>
+        </div>
+      </div>
+
+      <p class="saivcore-desc" data-i18n="saivcore_desc">
+        SaivCORE هي مؤسسة تقنية ناشئة أطلقتها بشغف، متخصصة في تطوير الحلول البرمجية المبتكرة والأدوات الرقمية التي تخدم المستخدم العربي. نؤمن بأن التقنية يجب أن تكون بسيطة، آمنة، وفي متناول الجميع.
+      </p>
+
+      <ul class="saivcore-features">
+        <li>
+          <i class="fa-solid fa-check"></i>
+          <span data-i18n="saivcore_feature_1">حلول برمجية مخصصة للأفراد والشركات</span>
+        </li>
+        <li>
+          <i class="fa-solid fa-check"></i>
+          <span data-i18n="saivcore_feature_2">أدوات رقمية تعمل بالكامل داخل المتصفح</span>
+        </li>
+        <li>
+          <i class="fa-solid fa-check"></i>
+          <span data-i18n="saivcore_feature_3">التزام كامل بالخصوصية — لا خوادم ولا تتبع</span>
+        </li>
+      </ul>
+
+      <span class="card-link">
+        <span data-i18n="saivcore_cta">زيارة موقع SaivCORE</span>
+        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+      </span>
+    </a>
+  </div>
+</section>
+
 <!-- ============ SERVICES ============ -->
 <section id="services">
   <div class="wrap">
@@ -927,21 +1050,28 @@
     <div class="grid grid-3">
       <div class="card reveal">
         <div class="card-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-        <h3 class="card-title" data-i18n="svc1_title">صيانة الحاسوب</h3>
-        <p class="card-desc" data-i18n="svc1_desc">تشخيص دقيق للأعطاب، تسريع الأجهزة، إصلاح عتاد وبرمجيات الحواسيب المكتبية والمحمولة.</p>
+        <h3 class="card-title" data-i18n="svc1_title">صيانة الحواسيب والشبكات</h3>
+        <p class="card-desc" data-i18n="svc1_desc">تشخيص دقيق للأعطاب، إصلاح العتاد والبرمجيات، ترقية الأجهزة وتحسين الأداء للحواسيب المكتبية والمحمولة.</p>
       </div>
 
       <div class="card reveal">
         <div class="card-icon"><i class="fa-solid fa-compact-disc"></i></div>
         <h3 class="card-title" data-i18n="svc2_title">تثبيت وتفعيل البرامج الأساسية</h3>
-        <p class="card-desc" data-i18n="svc2_desc">توفير وتثبيت حزمة Office، أدوات Adobe (Photoshop وغيرها)، AutoCAD، وكل برامج التصميم والبرمجة.</p>
+        <p class="card-desc" data-i18n="svc2_desc">توفير وتثبيت حزمة Office، أدوات Adobe (Photoshop وغيرها)، AutoCAD، وكل برامج التصميم والبرمجة بأسعار مناسبة.</p>
       </div>
 
       <div class="card reveal">
         <div class="card-icon"><i class="fa-solid fa-file-pen"></i></div>
         <h3 class="card-title" data-i18n="svc3_title">تنسيق وطباعة البحوث والمذكرات</h3>
-        <p class="card-desc" data-i18n="svc3_desc">إعداد المذكرات الجامعية والبحوث بتنسيق أكاديمي احترافي، مع خيار الطباعة والتسليم الرقمي.</p>
+        <p class="card-desc" data-i18n="svc3_desc">إعداد المذكرات الجامعية والبحوث بتنسيق أكاديمي احترافي، مع خيارات الطباعة الملونة أو بالأبيض والأسود والتسليم الرقمي.</p>
       </div>
+    </div>
+
+    <div class="section-cta reveal">
+      <a href="services.html" class="btn btn-outline">
+        <span data-i18n="services_cta">عرض كل الخدمات</span>
+        <i class="fa-solid fa-arrow-right" style="font-size:11px"></i>
+      </a>
     </div>
   </div>
 </section>
@@ -956,7 +1086,7 @@
     </div>
 
     <div class="grid grid-3">
-      <a href="pages/novel-1.html" class="card novel-card reveal">
+      <div class="card novel-card reveal">
         <div class="novel-head">
           <span class="novel-num">01</span>
           <div>
@@ -971,9 +1101,9 @@
             <i class="fa-solid fa-arrow-right"></i>
           </span>
         </div>
-      </a>
+      </div>
 
-      <a href="pages/novel-2.html" class="card novel-card reveal">
+      <div class="card novel-card reveal">
         <div class="novel-head">
           <span class="novel-num">02</span>
           <div>
@@ -988,9 +1118,9 @@
             <i class="fa-solid fa-arrow-right"></i>
           </span>
         </div>
-      </a>
+      </div>
 
-      <a href="pages/novel-3.html" class="card novel-card reveal">
+      <div class="card novel-card reveal">
         <div class="novel-head">
           <span class="novel-num">03</span>
           <div>
@@ -1005,53 +1135,13 @@
             <i class="fa-solid fa-arrow-right"></i>
           </span>
         </div>
-      </a>
+      </div>
     </div>
 
-    <div style="display:flex;justify-content:center;margin-top:32px">
-      <a href="novels.html" class="btn btn-outline" data-i18n="view_all">عرض كل الروايات</a>
-    </div>
-  </div>
-</section>
-
-<!-- ============ PROJECTS ============ -->
-<section id="projects">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="section-eyebrow" data-i18n="projects_eyebrow">المشاريع</div>
-      <h2 class="section-title" data-i18n="projects_title">مشاريعي البرمجية</h2>
-      <p class="section-sub" data-i18n="projects_sub">منتجات وشركات أسستها بشغف، تعمل اليوم لخدمة المستخدم العربي.</p>
-    </div>
-
-    <div class="grid grid-2">
-      <a href="https://SaivCORE.github.io" target="_blank" rel="noopener noreferrer" class="project-card reveal">
-        <div class="project-head">
-          <div class="project-avatar">S</div>
-          <div>
-            <div class="project-name">SaivCORE</div>
-            <div class="project-tag" data-i18n="project_tag_company">شركة برمجيات</div>
-          </div>
-        </div>
-        <p class="card-desc" data-i18n="proj1_desc">شركة برمجيات جزائرية ناشئة متخصصة في الحلول التقنية المبتكرة، تهدف لتمكين المواهب العربية.</p>
-        <span class="card-link">
-          <span data-i18n="visit_site">زيارة الموقع</span>
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </span>
-      </a>
-
-      <a href="https://SaivCORE.github.io/saivtube" target="_blank" rel="noopener noreferrer" class="project-card reveal">
-        <div class="project-head">
-          <div class="project-avatar">T</div>
-          <div>
-            <div class="project-name">SaivTUBE</div>
-            <div class="project-tag" data-i18n="project_tag_app">تطبيق مكتبي</div>
-          </div>
-        </div>
-        <p class="card-desc" data-i18n="proj2_desc">تطبيق مكتبي قوي لتحميل الفيديوهات والمحتوى من مختلف المنصات بجودة عالية وسرعة فائقة.</p>
-        <span class="card-link">
-          <span data-i18n="visit_site">زيارة الموقع</span>
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </span>
+    <div class="section-cta reveal">
+      <a href="novels.html" class="btn btn-outline">
+        <span data-i18n="view_all">عرض كل الروايات</span>
+        <i class="fa-solid fa-arrow-right" style="font-size:11px"></i>
       </a>
     </div>
   </div>
@@ -1067,33 +1157,44 @@
     </div>
 
     <div class="grid grid-4">
-      <a href="doc.html" class="mini-card reveal">
+      <a href="tools.html" class="mini-card reveal">
         <div class="mini-icon"><i class="fa-solid fa-file-word"></i></div>
         <p class="mini-name" data-i18n="tool_doc">محرر ومصمم المستندات</p>
       </a>
-      <a href="qr.html" class="mini-card reveal">
+      <a href="tools.html" class="mini-card reveal">
         <div class="mini-icon"><i class="fa-solid fa-qrcode"></i></div>
         <p class="mini-name" data-i18n="tool_qr">مولد QR Code</p>
       </a>
-      <a href="ai.html" class="mini-card reveal">
+      <a href="tools.html" class="mini-card reveal">
         <div class="mini-icon"><i class="fa-solid fa-robot"></i></div>
         <p class="mini-name" data-i18n="tool_ai">واجهة الذكاء الاصطناعي</p>
       </a>
-      <a href="mockup.html" class="mini-card reveal">
+      <a href="tools.html" class="mini-card reveal">
         <div class="mini-icon"><i class="fa-solid fa-layer-group"></i></div>
         <p class="mini-name" data-i18n="tool_mockup">مصمم الموكاب</p>
       </a>
-      <a href="shortlink.html" class="mini-card reveal">
+      <a href="tools.html" class="mini-card reveal">
         <div class="mini-icon"><i class="fa-solid fa-link"></i></div>
         <p class="mini-name" data-i18n="tool_shortlink">مختصر الروابط</p>
       </a>
-      <a href="sign.html" class="mini-card reveal">
+      <a href="tools.html" class="mini-card reveal">
         <div class="mini-icon"><i class="fa-solid fa-signature"></i></div>
         <p class="mini-name" data-i18n="tool_sign">لافتات والتوقيع الرقمي</p>
       </a>
-      <a href="date.html" class="mini-card reveal">
-        <div class="mini-icon"><i class="fa-solid fa-calendar-days"></i></div>
-        <p class="mini-name" data-i18n="tool_date">أداة التواريخ والتقويم</p>
+      <a href="tools.html" class="mini-card reveal">
+        <div class="mini-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+        <p class="mini-name" data-i18n="tool_invoice">مولّد الفواتير</p>
+      </a>
+      <a href="tools.html" class="mini-card reveal">
+        <div class="mini-icon"><i class="fa-solid fa-id-card"></i></div>
+        <p class="mini-name" data-i18n="tool_resume">منشئ السيرة الذاتية</p>
+      </a>
+    </div>
+
+    <div class="section-cta reveal">
+      <a href="tools.html" class="btn btn-outline">
+        <span data-i18n="tools_cta">استكشف كل الأدوات</span>
+        <i class="fa-solid fa-arrow-right" style="font-size:11px"></i>
       </a>
     </div>
   </div>
@@ -1109,42 +1210,45 @@
     </div>
 
     <div class="grid grid-4">
-      <a href="2048.html" class="game-card reveal">
+      <a href="games.html" class="game-card reveal">
         <div class="game-icon"><i class="fa-solid fa-hashtag"></i></div>
         <p class="game-name">2048</p>
       </a>
-      <a href="tetris.html" class="game-card reveal">
+      <a href="games.html" class="game-card reveal">
         <div class="game-icon"><i class="fa-solid fa-shapes"></i></div>
         <p class="game-name">Tetris</p>
       </a>
-      <a href="snake.html" class="game-card reveal">
+      <a href="games.html" class="game-card reveal">
         <div class="game-icon"><i class="fa-solid fa-worm"></i></div>
         <p class="game-name">Snake</p>
       </a>
-      <a href="solitaire.html" class="game-card reveal">
+      <a href="games.html" class="game-card reveal">
         <div class="game-icon"><i class="fa-solid fa-clone"></i></div>
         <p class="game-name">Solitaire</p>
       </a>
-      <a href="bird.html" class="game-card reveal">
+      <a href="games.html" class="game-card reveal">
         <div class="game-icon"><i class="fa-solid fa-dove"></i></div>
         <p class="game-name">Flappy Bird</p>
       </a>
-      <a href="bounce.html" class="game-card reveal">
+      <a href="games.html" class="game-card reveal">
         <div class="game-icon"><i class="fa-solid fa-baseball"></i></div>
         <p class="game-name">Bounce</p>
       </a>
-      <a href="domino.html" class="game-card reveal">
+      <a href="games.html" class="game-card reveal">
         <div class="game-icon"><i class="fa-solid fa-dice-d6"></i></div>
         <p class="game-name">Domino</p>
       </a>
-      <a href="dice.html" class="game-card reveal">
+      <a href="games.html" class="game-card reveal">
         <div class="game-icon"><i class="fa-solid fa-dice"></i></div>
         <p class="game-name">Dice</p>
       </a>
     </div>
 
-    <div style="display:flex;justify-content:center;margin-top:32px">
-      <a href="games.html" class="btn btn-outline" data-i18n="all_games">كل الألعاب</a>
+    <div class="section-cta reveal">
+      <a href="games.html" class="btn btn-outline">
+        <span data-i18n="all_games">كل الألعاب</span>
+        <i class="fa-solid fa-arrow-right" style="font-size:11px"></i>
+      </a>
     </div>
   </div>
 </section>
@@ -1152,7 +1256,7 @@
 <!-- ============ CONTACT ============ -->
 <section id="contact">
   <div class="wrap">
-    <div class="section-head reveal" style="margin-inline:auto;text-align:center;max-width:640px">
+    <div class="section-head center reveal">
       <div class="section-eyebrow" data-i18n="contact_eyebrow">التواصل</div>
       <h2 class="section-title" data-i18n="contact_title">تواصل معي</h2>
       <p class="section-sub" data-i18n="contact_sub">أنا هنا للإجابة على استفساراتك ومناقشة أفكارك ومشاريعك.</p>
@@ -1199,9 +1303,9 @@
 
     <nav class="footer-links">
       <a href="#home" data-i18n="nav_home">الرئيسية</a>
+      <a href="#saivcore" data-i18n="nav_saivcore">SaivCORE</a>
       <a href="#services" data-i18n="nav_services">خدماتي</a>
       <a href="#novels" data-i18n="nav_novels">رواياتي</a>
-      <a href="#projects" data-i18n="nav_projects">مشاريعي</a>
       <a href="#tools" data-i18n="nav_tools">الأدوات</a>
       <a href="#games" data-i18n="nav_games">الألعاب</a>
       <a href="#contact" data-i18n="nav_contact">اتصل بي</a>
@@ -1229,162 +1333,273 @@
       dir: 'rtl',
       htmlLang: 'ar',
       font: "'Cairo', 'Inter', sans-serif",
+      title: 'سيف الإسلام زحاف | Saif El Islem Zahaf',
       labels: {
         lang: 'AR',
         logo_name: 'سيف الإسلام زحاف',
-        nav_home: 'الرئيسية', nav_services: 'خدماتي', nav_novels: 'رواياتي',
-        nav_projects: 'مشاريعي', nav_tools: 'الأدوات', nav_games: 'الألعاب', nav_contact: 'اتصل بي',
+        nav_home: 'الرئيسية',
+        nav_saivcore: 'SaivCORE',
+        nav_services: 'خدماتي',
+        nav_novels: 'رواياتي',
+        nav_tools: 'الأدوات',
+        nav_games: 'الألعاب',
+        nav_contact: 'اتصل بي',
+
         hero_available: 'متاح للمشاريع',
         hero_greeting: 'مرحباً، أنا',
         hero_name: 'سيف الإسلام زحاف',
-        hero_role_1: 'مبرمج', hero_role_2: 'روائي جزائري', hero_role_3: 'مؤسس SaivCORE',
+        hero_role_1: 'مبرمج',
+        hero_role_2: 'روائي جزائري',
+        hero_role_3: 'مؤسس SaivCORE',
         hero_bio: 'أدمج بين دقة الكود وسحر الكلمة. أبني حلولاً برمجية احترافية وأكتب روايات تنبض بالحياة، راسماً جسراً بين التقنية والأدب.',
-        hero_cta_services: 'استكشف خدماتي', hero_cta_contact: 'تواصل معي',
-        services_eyebrow: 'الخدمات', services_title: 'خدماتي التقنية والأكاديمية',
+        hero_cta_services: 'استكشف خدماتي',
+        hero_cta_contact: 'تواصل معي',
+
+        saivcore_eyebrow: 'SaivCORE',
+        saivcore_title: 'شركة SaivCORE للبرمجيات',
+        saivcore_sub: 'مؤسسة تقنية جزائرية ناشئة تسعى لتمكين المواهب العربية بحلول برمجية مبتكرة.',
+        saivcore_tag: 'شركة برمجيات جزائرية ناشئة',
+        saivcore_desc: 'SaivCORE هي مؤسسة تقنية ناشئة أطلقتها بشغف، متخصصة في تطوير الحلول البرمجية المبتكرة والأدوات الرقمية التي تخدم المستخدم العربي. نؤمن بأن التقنية يجب أن تكون بسيطة، آمنة، وفي متناول الجميع.',
+        saivcore_feature_1: 'حلول برمجية مخصصة للأفراد والشركات',
+        saivcore_feature_2: 'أدوات رقمية تعمل بالكامل داخل المتصفح',
+        saivcore_feature_3: 'التزام كامل بالخصوصية — لا خوادم ولا تتبع',
+        saivcore_cta: 'زيارة موقع SaivCORE',
+
+        services_eyebrow: 'الخدمات',
+        services_title: 'خدماتي التقنية والأكاديمية',
         services_sub: 'حلول احترافية بأسعار مدروسة، بجودة عالية وسرعة في التنفيذ.',
-        svc1_title: 'صيانة الحاسوب',
-        svc1_desc: 'تشخيص دقيق للأعطاب، تسريع الأجهزة، إصلاح عتاد وبرمجيات الحواسيب المكتبية والمحمولة.',
+        svc1_title: 'صيانة الحواسيب والشبكات',
+        svc1_desc: 'تشخيص دقيق للأعطاب، إصلاح العتاد والبرمجيات، ترقية الأجهزة وتحسين الأداء للحواسيب المكتبية والمحمولة.',
         svc2_title: 'تثبيت وتفعيل البرامج الأساسية',
-        svc2_desc: 'توفير وتثبيت حزمة Office، أدوات Adobe (Photoshop وغيرها)، AutoCAD، وكل برامج التصميم والبرمجة.',
+        svc2_desc: 'توفير وتثبيت حزمة Office، أدوات Adobe (Photoshop وغيرها)، AutoCAD، وكل برامج التصميم والبرمجة بأسعار مناسبة.',
         svc3_title: 'تنسيق وطباعة البحوث والمذكرات',
-        svc3_desc: 'إعداد المذكرات الجامعية والبحوث بتنسيق أكاديمي احترافي، مع خيار الطباعة والتسليم الرقمي.',
-        novels_eyebrow: 'الأدب', novels_title: 'رواياتي',
+        svc3_desc: 'إعداد المذكرات الجامعية والبحوث بتنسيق أكاديمي احترافي، مع خيارات الطباعة الملونة أو بالأبيض والأسود والتسليم الرقمي.',
+        services_cta: 'عرض كل الخدمات',
+
+        novels_eyebrow: 'الأدب',
+        novels_title: 'رواياتي',
         novels_sub: 'ثلاث روايات جزائرية تنبض بالحياة، بين الصمت والكلام، وبين الكود والنبض.',
-        novel_num_1: 'رواية · الجزء الأول', novel_num_2: 'رواية · الجزء الثاني', novel_num_3: 'رواية · الجزء الثالث',
+        novel_num_1: 'رواية · الجزء الأول',
+        novel_num_2: 'رواية · الجزء الثاني',
+        novel_num_3: 'رواية · الجزء الثالث',
         novel1_title: 'بتر اللسان',
         novel1_desc: 'رواية عن الصمت والكلام… وحين يصبح اللسان أداة للنجاة أو الهلاك في عالم مليء بالأسرار.',
         novel2_title: 'شيفرة النبض',
         novel2_desc: 'حيث تتقاطع البرمجة مع نبضات القلب في عالم من الغموض والدهشة، وتصبح الأصفار حكاية.',
         novel3_title: 'سيمفونية المرادية',
         novel3_desc: 'حكاية عن الحب والفقد في ربوع الجزائر، حيث تلتقي الألحان بالحنين في سيمفونية خالدة.',
-        read_now: 'اقرأ الآن', view_all: 'عرض كل الروايات',
-        projects_eyebrow: 'المشاريع', projects_title: 'مشاريعي البرمجية',
-        projects_sub: 'منتجات وشركات أسستها بشغف، تعمل اليوم لخدمة المستخدم العربي.',
-        project_tag_company: 'شركة برمجيات', project_tag_app: 'تطبيق مكتبي',
-        proj1_desc: 'شركة برمجيات جزائرية ناشئة متخصصة في الحلول التقنية المبتكرة، تهدف لتمكين المواهب العربية.',
-        proj2_desc: 'تطبيق مكتبي قوي لتحميل الفيديوهات والمحتوى من مختلف المنصات بجودة عالية وسرعة فائقة.',
-        visit_site: 'زيارة الموقع',
-        tools_eyebrow: 'الأدوات', tools_title: 'مركز الأدوات الرقمية',
+        read_now: 'اقرأ الآن',
+        view_all: 'عرض كل الروايات',
+
+        tools_eyebrow: 'الأدوات',
+        tools_title: 'مركز الأدوات الرقمية',
         tools_sub: 'أدوات مجانية تعمل مباشرة في متصفحك، بخصوصية كاملة وسرعة استثنائية.',
-        tool_doc: 'محرر ومصمم المستندات', tool_qr: 'مولد QR Code',
-        tool_ai: 'واجهة الذكاء الاصطناعي', tool_mockup: 'مصمم الموكاب',
-        tool_shortlink: 'مختصر الروابط', tool_sign: 'لافتات والتوقيع الرقمي',
-        tool_date: 'أداة التواريخ والتقويم',
-        games_eyebrow: 'الترفيه', games_title: 'مركز الألعاب',
+        tool_doc: 'محرر ومصمم المستندات',
+        tool_qr: 'مولد QR Code',
+        tool_ai: 'واجهة الذكاء الاصطناعي',
+        tool_mockup: 'مصمم الموكاب',
+        tool_shortlink: 'مختصر الروابط',
+        tool_sign: 'لافتات والتوقيع الرقمي',
+        tool_invoice: 'مولّد الفواتير',
+        tool_resume: 'منشئ السيرة الذاتية',
+        tools_cta: 'استكشف كل الأدوات',
+
+        games_eyebrow: 'الترفيه',
+        games_title: 'مركز الألعاب',
         games_sub: 'استرجع ذكريات الألعاب الكلاسيكية واستمتع بلحظات من المرح.',
         all_games: 'كل الألعاب',
-        contact_eyebrow: 'التواصل', contact_title: 'تواصل معي',
+
+        contact_eyebrow: 'التواصل',
+        contact_title: 'تواصل معي',
         contact_sub: 'أنا هنا للإجابة على استفساراتك ومناقشة أفكارك ومشاريعك.',
-        contact_phone: 'الهاتف', contact_email: 'البريد الإلكتروني', contact_github: 'GitHub',
-        footer_made: 'صُنع بـ', footer_by: 'بواسطة سيف الإسلام زحاف',
+        contact_phone: 'الهاتف',
+        contact_email: 'البريد الإلكتروني',
+        contact_github: 'GitHub',
+
+        footer_made: 'صُنع بـ',
+        footer_by: 'بواسطة سيف الإسلام زحاف',
       },
     },
     en: {
       dir: 'ltr',
       htmlLang: 'en',
       font: "'Inter', sans-serif",
+      title: 'Saif El Islem Zahaf — Developer · Novelist',
       labels: {
         lang: 'EN',
         logo_name: 'Saif El Islem Zahaf',
-        nav_home: 'Home', nav_services: 'Services', nav_novels: 'Novels',
-        nav_projects: 'Projects', nav_tools: 'Tools', nav_games: 'Games', nav_contact: 'Contact',
+        nav_home: 'Home',
+        nav_saivcore: 'SaivCORE',
+        nav_services: 'Services',
+        nav_novels: 'Novels',
+        nav_tools: 'Tools',
+        nav_games: 'Games',
+        nav_contact: 'Contact',
+
         hero_available: 'Available for projects',
         hero_greeting: "Hi, I'm",
         hero_name: 'Saif El Islem Zahaf',
-        hero_role_1: 'Developer', hero_role_2: 'Algerian Novelist', hero_role_3: 'Founder of SaivCORE',
+        hero_role_1: 'Developer',
+        hero_role_2: 'Algerian Novelist',
+        hero_role_3: 'Founder of SaivCORE',
         hero_bio: 'I fuse the precision of code with the magic of words — building professional software and writing novels that pulse with life, bridging technology and literature.',
-        hero_cta_services: 'Explore Services', hero_cta_contact: 'Get in Touch',
-        services_eyebrow: 'Services', services_title: 'Technical & Academic Services',
+        hero_cta_services: 'Explore Services',
+        hero_cta_contact: 'Get in Touch',
+
+        saivcore_eyebrow: 'SaivCORE',
+        saivcore_title: 'SaivCORE Software Company',
+        saivcore_sub: 'An emerging Algerian tech company empowering Arab talent through innovative software solutions.',
+        saivcore_tag: 'Emerging Algerian software company',
+        saivcore_desc: 'SaivCORE is an emerging tech enterprise I founded with passion, specialized in innovative software solutions and digital tools that serve the Arab user. We believe technology should be simple, safe, and accessible to everyone.',
+        saivcore_feature_1: 'Custom software solutions for individuals and businesses',
+        saivcore_feature_2: 'Digital tools that run entirely inside the browser',
+        saivcore_feature_3: 'Full commitment to privacy — no servers, no tracking',
+        saivcore_cta: 'Visit SaivCORE Website',
+
+        services_eyebrow: 'Services',
+        services_title: 'Technical & Academic Services',
         services_sub: 'Professional solutions at fair prices, delivered with high quality and speed.',
-        svc1_title: 'Computer Maintenance',
-        svc1_desc: 'Precise diagnostics, performance boosting, and repair of hardware and software for desktops and laptops.',
+        svc1_title: 'Hardware & Network Maintenance',
+        svc1_desc: 'Precise diagnostics, hardware and software repair, device upgrades and performance boosting for desktops and laptops.',
         svc2_title: 'Software Installation & Activation',
-        svc2_desc: 'Providing and installing Office suite, Adobe tools (Photoshop, etc.), AutoCAD, and all design and development software.',
+        svc2_desc: 'Providing and installing Office suite, Adobe tools (Photoshop, etc.), AutoCAD, and all design and development software at fair prices.',
         svc3_title: 'Thesis & Research Formatting',
-        svc3_desc: 'Preparing university theses and research papers in professional academic formatting, with printing option.',
-        novels_eyebrow: 'Literature', novels_title: 'My Novels',
+        svc3_desc: 'Preparing university theses and research papers in professional academic formatting, with colour or black-and-white printing and digital delivery options.',
+        services_cta: 'View All Services',
+
+        novels_eyebrow: 'Literature',
+        novels_title: 'My Novels',
         novels_sub: 'Three Algerian novels pulsing with life — between silence and speech, code and heartbeat.',
-        novel_num_1: 'Novel · Volume One', novel_num_2: 'Novel · Volume Two', novel_num_3: 'Novel · Volume Three',
+        novel_num_1: 'Novel · Volume One',
+        novel_num_2: 'Novel · Volume Two',
+        novel_num_3: 'Novel · Volume Three',
         novel1_title: 'Tongue Amputation',
         novel1_desc: 'A novel about silence and speech — when the tongue becomes a tool for survival or doom, in a world full of secrets.',
         novel2_title: 'Pulse Code',
         novel2_desc: 'Where programming meets heartbeats in a world of mystery and wonder, and zeros become a tale.',
         novel3_title: 'The Mouradia Symphony',
         novel3_desc: 'A story of love and loss across Algeria, where melodies meet nostalgia in an eternal symphony.',
-        read_now: 'Read Now', view_all: 'View All Novels',
-        projects_eyebrow: 'Projects', projects_title: 'My Tech Projects',
-        projects_sub: 'Products and companies I founded with passion, serving the Arab user today.',
-        project_tag_company: 'Software Company', project_tag_app: 'Desktop App',
-        proj1_desc: 'An emerging Algerian software company specialized in innovative tech solutions, empowering Arab talent.',
-        proj2_desc: 'A powerful desktop app for downloading videos and content from various platforms, with high quality and blazing speed.',
-        visit_site: 'Visit Website',
-        tools_eyebrow: 'Tools', tools_title: 'Web Tools Hub',
+        read_now: 'Read Now',
+        view_all: 'View All Novels',
+
+        tools_eyebrow: 'Tools',
+        tools_title: 'Web Tools Hub',
         tools_sub: 'Free tools that run directly in your browser, with full privacy and exceptional speed.',
-        tool_doc: 'Document Editor & Designer', tool_qr: 'QR Code Generator',
-        tool_ai: 'AI Interface', tool_mockup: 'Mockup Builder',
-        tool_shortlink: 'URL Shortener', tool_sign: 'Banners & Digital Signature',
-        tool_date: 'Dates & Calendar Tool',
-        games_eyebrow: 'Entertainment', games_title: 'Games Portal',
+        tool_doc: 'Document Editor & Designer',
+        tool_qr: 'QR Code Generator',
+        tool_ai: 'AI Interface',
+        tool_mockup: 'Mockup Builder',
+        tool_shortlink: 'URL Shortener',
+        tool_sign: 'Banners & Digital Signature',
+        tool_invoice: 'Invoice Generator',
+        tool_resume: 'Resume Builder',
+        tools_cta: 'Explore All Tools',
+
+        games_eyebrow: 'Entertainment',
+        games_title: 'Games Portal',
         games_sub: 'Relive classic games and enjoy moments of fun.',
         all_games: 'All Games',
-        contact_eyebrow: 'Contact', contact_title: 'Get in Touch',
+
+        contact_eyebrow: 'Contact',
+        contact_title: 'Get in Touch',
         contact_sub: 'I am here to answer your questions and discuss your ideas and projects.',
-        contact_phone: 'Phone', contact_email: 'Email', contact_github: 'GitHub',
-        footer_made: 'Made with', footer_by: 'by Saif El Islem Zahaf',
+        contact_phone: 'Phone',
+        contact_email: 'Email',
+        contact_github: 'GitHub',
+
+        footer_made: 'Made with',
+        footer_by: 'by Saif El Islem Zahaf',
       },
     },
     fr: {
       dir: 'ltr',
       htmlLang: 'fr',
       font: "'Inter', sans-serif",
+      title: 'Saif El Islem Zahaf — Développeur · Romancier',
       labels: {
         lang: 'FR',
         logo_name: 'Saif El Islem Zahaf',
-        nav_home: 'Accueil', nav_services: 'Services', nav_novels: 'Romans',
-        nav_projects: 'Projets', nav_tools: 'Outils', nav_games: 'Jeux', nav_contact: 'Contact',
+        nav_home: 'Accueil',
+        nav_saivcore: 'SaivCORE',
+        nav_services: 'Services',
+        nav_novels: 'Romans',
+        nav_tools: 'Outils',
+        nav_games: 'Jeux',
+        nav_contact: 'Contact',
+
         hero_available: 'Disponible pour projets',
         hero_greeting: 'Bonjour, je suis',
         hero_name: 'Saif El Islem Zahaf',
-        hero_role_1: 'Développeur', hero_role_2: 'Romancier algérien', hero_role_3: 'Fondateur de SaivCORE',
+        hero_role_1: 'Développeur',
+        hero_role_2: 'Romancier algérien',
+        hero_role_3: 'Fondateur de SaivCORE',
         hero_bio: 'Je fusionne la précision du code avec la magie des mots — je construis des solutions logicielles et j\'écris des romans vibrants de vie, un pont entre technologie et littérature.',
-        hero_cta_services: 'Explorer mes services', hero_cta_contact: 'Me contacter',
-        services_eyebrow: 'Services', services_title: 'Services Techniques & Académiques',
+        hero_cta_services: 'Explorer mes services',
+        hero_cta_contact: 'Me contacter',
+
+        saivcore_eyebrow: 'SaivCORE',
+        saivcore_title: 'Société SaivCORE',
+        saivcore_sub: 'Une entreprise technologique algérienne émergente qui autonomise les talents arabes par des solutions logicielles innovantes.',
+        saivcore_tag: 'Entreprise algérienne émergente',
+        saivcore_desc: 'SaivCORE est une entreprise technologique émergente que j\'ai fondée avec passion, spécialisée dans les solutions logicielles innovantes et les outils numériques au service de l\'utilisateur arabe. Nous croyons que la technologie doit être simple, sûre et accessible à tous.',
+        saivcore_feature_1: 'Solutions logicielles sur mesure pour particuliers et entreprises',
+        saivcore_feature_2: 'Outils numériques qui fonctionnent entièrement dans le navigateur',
+        saivcore_feature_3: 'Engagement total envers la confidentialité — aucun serveur, aucun suivi',
+        saivcore_cta: 'Visiter le site SaivCORE',
+
+        services_eyebrow: 'Services',
+        services_title: 'Services Techniques & Académiques',
         services_sub: 'Des solutions professionnelles à prix justes, livrées avec qualité et rapidité.',
-        svc1_title: 'Maintenance informatique',
-        svc1_desc: 'Diagnostic précis, optimisation des performances et réparation matérielle et logicielle des ordinateurs.',
+        svc1_title: 'Maintenance matérielle & réseaux',
+        svc1_desc: 'Diagnostic précis, réparation matérielle et logicielle, mise à niveau des appareils et optimisation des performances pour ordinateurs de bureau et portables.',
         svc2_title: 'Installation & activation de logiciels',
-        svc2_desc: 'Fourniture et installation d\'Office, des outils Adobe (Photoshop, etc.), AutoCAD, et tous les logiciels de design et de développement.',
+        svc2_desc: 'Fourniture et installation d\'Office, des outils Adobe (Photoshop, etc.), AutoCAD, et de tous les logiciels de design et de développement à prix justes.',
         svc3_title: 'Mise en forme & impression de mémoires',
-        svc3_desc: 'Préparation de mémoires universitaires et de recherches avec une mise en forme académique professionnelle.',
-        novels_eyebrow: 'Littérature', novels_title: 'Mes Romans',
+        svc3_desc: 'Préparation de mémoires universitaires et de recherches avec une mise en forme académique professionnelle, avec options d\'impression couleur ou noir et blanc.',
+        services_cta: 'Voir tous les services',
+
+        novels_eyebrow: 'Littérature',
+        novels_title: 'Mes Romans',
         novels_sub: 'Trois romans algériens vibrants de vie — entre silence et parole, code et battement.',
-        novel_num_1: 'Roman · Tome 1', novel_num_2: 'Roman · Tome 2', novel_num_3: 'Roman · Tome 3',
+        novel_num_1: 'Roman · Tome 1',
+        novel_num_2: 'Roman · Tome 2',
+        novel_num_3: 'Roman · Tome 3',
         novel1_title: 'L\'Amputation de la Langue',
-        novel1_desc: 'Un roman sur le silence et la parole — quand la langue devient un outil de survie ou de perte.',
+        novel1_desc: 'Un roman sur le silence et la parole — quand la langue devient un outil de survie ou de perte, dans un monde plein de secrets.',
         novel2_title: 'Le Code du Pouls',
-        novel2_desc: 'Là où la programmation rencontre les battements du cœur dans un monde de mystère.',
+        novel2_desc: 'Là où la programmation rencontre les battements du cœur dans un monde de mystère et d\'émerveillement.',
         novel3_title: 'La Symphonie de Mouradia',
-        novel3_desc: 'Une histoire d\'amour et de perte à travers l\'Algérie, où mélodies et nostalgie se rencontrent.',
-        read_now: 'Lire maintenant', view_all: 'Voir tous les romans',
-        projects_eyebrow: 'Projets', projects_title: 'Mes Projets Tech',
-        projects_sub: 'Produits et entreprises fondés avec passion, au service de l\'utilisateur arabe.',
-        project_tag_company: 'Entreprise logicielle', project_tag_app: 'Application bureau',
-        proj1_desc: 'Une entreprise algérienne émergente spécialisée dans les solutions technologiques innovantes.',
-        proj2_desc: 'Une puissante application de bureau pour télécharger vidéos et contenus, avec haute qualité et rapidité.',
-        visit_site: 'Visiter le site',
-        tools_eyebrow: 'Outils', tools_title: 'Centre d\'Outils Web',
-        tools_sub: 'Des outils gratuits qui fonctionnent directement dans votre navigateur.',
-        tool_doc: 'Éditeur & concepteur de documents', tool_qr: 'Générateur de QR Code',
-        tool_ai: 'Interface IA', tool_mockup: 'Créateur de maquettes',
-        tool_shortlink: 'Raccourcisseur d\'URL', tool_sign: 'Bannières & signature numérique',
-        tool_date: 'Outil de dates & calendrier',
-        games_eyebrow: 'Divertissement', games_title: 'Portail des Jeux',
+        novel3_desc: 'Une histoire d\'amour et de perte à travers l\'Algérie, où mélodies et nostalgie se rencontrent dans une symphonie éternelle.',
+        read_now: 'Lire maintenant',
+        view_all: 'Voir tous les romans',
+
+        tools_eyebrow: 'Outils',
+        tools_title: 'Centre d\'Outils Web',
+        tools_sub: 'Des outils gratuits qui fonctionnent directement dans votre navigateur, avec une confidentialité totale et une vitesse exceptionnelle.',
+        tool_doc: 'Éditeur & concepteur de documents',
+        tool_qr: 'Générateur de QR Code',
+        tool_ai: 'Interface IA',
+        tool_mockup: 'Créateur de maquettes',
+        tool_shortlink: 'Raccourcisseur d\'URL',
+        tool_sign: 'Bannières & signature numérique',
+        tool_invoice: 'Générateur de factures',
+        tool_resume: 'Créateur de CV',
+        tools_cta: 'Explorer tous les outils',
+
+        games_eyebrow: 'Divertissement',
+        games_title: 'Portail des Jeux',
         games_sub: 'Revivez les jeux classiques et profitez de moments de plaisir.',
         all_games: 'Tous les jeux',
-        contact_eyebrow: 'Contact', contact_title: 'Me Contacter',
+
+        contact_eyebrow: 'Contact',
+        contact_title: 'Me Contacter',
         contact_sub: 'Je suis là pour répondre à vos questions et discuter de vos idées et projets.',
-        contact_phone: 'Téléphone', contact_email: 'E-mail', contact_github: 'GitHub',
-        footer_made: 'Fait avec', footer_by: 'par Saif El Islem Zahaf',
+        contact_phone: 'Téléphone',
+        contact_email: 'E-mail',
+        contact_github: 'GitHub',
+
+        footer_made: 'Fait avec',
+        footer_by: 'par Saif El Islem Zahaf',
       },
     },
   };
@@ -1440,9 +1655,7 @@
       opt.classList.toggle('active', opt.getAttribute('data-lang') === lang);
     });
 
-    if (lang === 'ar') document.title = 'سيف الإسلام زحاف | Saif El Islem Zahaf';
-    else if (lang === 'fr') document.title = 'Saif El Islem Zahaf — Développeur · Romancier';
-    else document.title = 'Saif El Islem Zahaf — Developer · Novelist';
+    if (dict.title) document.title = dict.title;
 
     langWrap.classList.remove('open');
   }
@@ -1457,11 +1670,13 @@
     if (theme === 'dark') {
       htmlEl.classList.add('dark');
       themeIcon.className = 'fa-solid fa-sun';
-      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0a0a0a');
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', '#0a0a0a');
     } else {
       htmlEl.classList.remove('dark');
       themeIcon.className = 'fa-solid fa-moon';
-      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff');
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', '#ffffff');
     }
   }
 
