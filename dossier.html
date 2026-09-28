@@ -1,0 +1,3063 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SaivDOSSIER — دليل الملفات الإدارية الجزائرية</title>
+<meta name="description" content="دليل شامل للملفات الإدارية الجزائرية — قوائم تحقق تفاعلية ومولّد طلبات خطية جاهزة للطباعة.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23111111'/%3E%3Ctext x='50' y='68' font-size='44' font-weight='800' fill='white' text-anchor='middle' font-family='Arial'%3ESD%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+/* ============================================================
+   DESIGN TOKENS — matches index.html
+   ============================================================ */
+:root{
+  --bg:#ffffff;
+  --bg-soft:#fafafa;
+  --surface:#ffffff;
+  --border:#e5e5e5;
+  --border-strong:#d4d4d4;
+  --text:#111111;
+  --text-2:#404040;
+  --muted:#737373;
+  --hover:#f5f5f5;
+  --radius-sm:8px;
+  --radius:10px;
+  --radius-lg:12px;
+  --radius-xl:16px;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.04);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.08);
+  --font:'Inter','Cairo',system-ui,-apple-system,sans-serif;
+  --font-ar:'Cairo','Inter',system-ui,sans-serif;
+  --transition:180ms cubic-bezier(.4,0,.2,1);
+}
+.dark{
+  --bg:#0a0a0a;
+  --bg-soft:#0f0f0f;
+  --surface:#141414;
+  --border:#262626;
+  --border-strong:#333333;
+  --text:#fafafa;
+  --text-2:#d4d4d4;
+  --muted:#a3a3a3;
+  --hover:#1a1a1a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.35);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.55);
+}
+html[lang="ar"]{--font:var(--font-ar)}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  font-size:14.5px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  transition:background var(--transition),color var(--transition);
+}
+button,input,select,textarea{font-family:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+::selection{background:var(--text);color:var(--bg)}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:8px;border:2px solid var(--bg);background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:var(--muted);background-clip:content-box;border:2px solid var(--bg)}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar{
+  position:sticky;top:0;z-index:60;
+  background:var(--bg);
+  border-bottom:1px solid transparent;
+  transition:border-color var(--transition),background var(--transition);
+}
+.navbar.scrolled{border-bottom-color:var(--border)}
+.nav-inner{
+  max-width:1180px;margin:0 auto;
+  padding:0 22px;height:64px;
+  display:flex;align-items:center;gap:14px;
+}
+.brand{display:flex;align-items:center;gap:11px;flex:0 0 auto}
+.brand-mark{
+  width:36px;height:36px;border-radius:var(--radius);
+  background:var(--text);color:var(--bg);
+  display:grid;place-items:center;
+  font-weight:800;font-size:12.5px;letter-spacing:.02em;
+  font-family:'Inter',sans-serif;
+}
+.brand-text{display:flex;flex-direction:column;line-height:1.1}
+.brand-text b{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+.brand-text small{
+  font-size:9.5px;color:var(--muted);font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;margin-top:2px;
+}
+
+.nav-links{display:flex;align-items:center;gap:2px;margin-inline-start:16px}
+.nav-link{
+  padding:8px 13px;border-radius:var(--radius-sm);
+  font-size:13.5px;font-weight:600;color:var(--muted);
+  transition:color var(--transition),background var(--transition);
+  display:inline-flex;align-items:center;gap:7px;
+}
+.nav-link:hover{color:var(--text);background:var(--hover)}
+.nav-link.active{color:var(--text)}
+
+.nav-spacer{flex:1}
+.nav-actions{display:flex;align-items:center;gap:6px}
+
+/* Language dropdown */
+.lang-wrap{position:relative}
+.lang-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 12px;height:36px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--surface);
+  font-size:12.5px;font-weight:700;color:var(--text);
+  transition:all var(--transition);
+}
+.lang-btn:hover{background:var(--hover);border-color:var(--border-strong)}
+.lang-btn i.fa-chevron-down{font-size:9px;color:var(--muted);transition:transform var(--transition)}
+.lang-wrap.open .lang-btn i.fa-chevron-down{transform:rotate(180deg)}
+.lang-menu{
+  position:absolute;top:calc(100% + 8px);inset-inline-end:0;
+  min-width:160px;padding:5px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow-lg);
+  opacity:0;visibility:hidden;transform:translateY(-6px);
+  transition:all var(--transition);z-index:70;
+}
+.lang-wrap.open .lang-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.lang-opt{
+  display:flex;align-items:center;gap:10px;width:100%;
+  padding:9px 11px;border-radius:var(--radius-sm);
+  font-size:13px;font-weight:600;color:var(--text-2);text-align:start;
+  transition:background var(--transition);
+}
+.lang-opt:hover{background:var(--hover);color:var(--text)}
+.lang-opt.active{color:var(--text);background:var(--hover)}
+.lang-opt .flag{font-size:15px}
+.lang-opt .check{margin-inline-start:auto;font-size:10px;opacity:0}
+.lang-opt.active .check{opacity:1;color:var(--text)}
+
+.icon-btn{
+  width:36px;height:36px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--text-2);display:grid;place-items:center;
+  font-size:13.5px;transition:all var(--transition);
+}
+.icon-btn:hover{background:var(--hover);border-color:var(--border-strong);color:var(--text)}
+.icon-btn .fa-sun{display:none}
+.dark .icon-btn .fa-sun{display:inline-block}
+.dark .icon-btn .fa-moon{display:none}
+
+#menuBtn{display:none}
+
+/* Mobile drawer */
+#drawerBack{
+  position:fixed;inset:0;background:rgba(0,0,0,.42);
+  opacity:0;visibility:hidden;transition:all var(--transition);
+  z-index:80;
+}
+#drawerBack.open{opacity:1;visibility:visible}
+#drawer{
+  position:fixed;top:0;bottom:0;inset-inline-end:0;
+  width:min(320px,85vw);z-index:90;
+  background:var(--surface);border-inline-start:1px solid var(--border);
+  transform:translateX(100%);
+  transition:transform 300ms cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;padding:20px;
+}
+html[dir="rtl"] #drawer{transform:translateX(-100%)}
+#drawer.open{transform:translateX(0)!important}
+.drawer-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--border);
+}
+.drawer-links{display:flex;flex-direction:column;gap:4px;flex:1}
+.drawer-link{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:var(--radius);
+  font-size:14.5px;font-weight:600;color:var(--text);
+  transition:background var(--transition);
+}
+.drawer-link:hover{background:var(--hover)}
+.drawer-link i{width:18px;text-align:center;color:var(--muted);font-size:14px}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  max-width:1180px;margin:0 auto;
+  padding:60px 22px 26px;text-align:center;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:999px;
+  border:1px solid var(--border);background:var(--surface);
+  font-size:11.5px;font-weight:700;color:var(--text-2);
+  margin-bottom:22px;letter-spacing:.02em;
+}
+.hero-badge .dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#16a34a;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(22,163,74,.5)}
+  70%{box-shadow:0 0 0 8px rgba(22,163,74,0)}
+  100%{box-shadow:0 0 0 0 rgba(22,163,74,0)}
+}
+.hero h1{
+  font-size:clamp(26px,4.4vw,44px);
+  font-weight:800;letter-spacing:-.03em;
+  line-height:1.15;margin:0 0 14px;color:var(--text);
+}
+.hero h1 .accent{
+  display:block;color:var(--muted);
+  font-size:clamp(20px,3vw,28px);
+  margin-top:6px;font-weight:800;letter-spacing:-.02em;
+}
+.hero p{
+  max-width:620px;margin:0 auto 30px;
+  font-size:15px;color:var(--muted);line-height:1.7;
+}
+
+.search-wrap{
+  max-width:600px;margin:0 auto 22px;position:relative;
+}
+.search-wrap .search-icon{
+  position:absolute;top:50%;inset-inline-start:18px;
+  transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none;
+}
+#searchInput{
+  width:100%;padding:15px 46px;
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  background:var(--surface);color:var(--text);
+  font-size:14.5px;font-weight:500;outline:none;
+  transition:all var(--transition);
+}
+#searchInput::placeholder{color:var(--muted);opacity:.8}
+#searchInput:focus{border-color:var(--text);box-shadow:0 0 0 4px rgba(0,0,0,.04)}
+.dark #searchInput:focus{box-shadow:0 0 0 4px rgba(255,255,255,.05)}
+.search-clear{
+  position:absolute;top:50%;inset-inline-end:14px;
+  transform:translateY(-50%);
+  width:28px;height:28px;border-radius:50%;
+  background:var(--hover);color:var(--muted);
+  display:none;place-items:center;font-size:11px;
+  transition:all var(--transition);
+}
+.search-clear:hover{background:var(--border-strong);color:var(--text)}
+.search-clear.on{display:grid}
+
+/* Category pills */
+.cats{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+  max-width:900px;margin:0 auto;
+}
+.cat-pill{
+  padding:9px 18px;border-radius:999px;
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--muted);font-size:12.5px;font-weight:700;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all var(--transition);white-space:nowrap;
+}
+.cat-pill:hover{color:var(--text);border-color:var(--border-strong)}
+.cat-pill.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.cat-pill .count{
+  font-size:10.5px;font-weight:700;
+  padding:1px 7px;border-radius:999px;
+  background:var(--hover);color:var(--muted);
+}
+.cat-pill.active .count{background:rgba(255,255,255,.16);color:var(--bg)}
+.dark .cat-pill.active .count{background:rgba(0,0,0,.16)}
+
+/* ============================================================
+   MAIN
+   ============================================================ */
+.main{
+  max-width:1180px;margin:0 auto;
+  padding:20px 22px 60px;
+}
+.section-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:16px;margin-bottom:22px;flex-wrap:wrap;
+}
+.section-title{
+  font-size:15px;font-weight:800;letter-spacing:-.01em;
+  display:flex;align-items:center;gap:10px;
+}
+.section-title i{color:var(--muted);font-size:13px}
+.section-meta{font-size:12.5px;color:var(--muted);font-weight:600}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:16px;
+}
+
+/* Dossier card */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:22px;
+  display:flex;flex-direction:column;gap:14px;
+  cursor:pointer;
+  transition:all var(--transition);
+  position:relative;overflow:hidden;
+}
+.card:hover{
+  transform:translateY(-3px);
+  border-color:var(--text);
+  box-shadow:var(--shadow-lg);
+}
+.card.hidden{display:none}
+
+.card-top{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:12px;
+}
+.card-icon{
+  width:46px;height:46px;border-radius:var(--radius);
+  background:var(--bg-soft);border:1px solid var(--border);
+  color:var(--text);display:grid;place-items:center;
+  font-size:18px;flex:0 0 auto;
+  transition:all var(--transition);
+}
+.card:hover .card-icon{background:var(--text);color:var(--bg);border-color:var(--text)}
+.card-cat{
+  font-size:10px;font-weight:800;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 10px;border-radius:999px;
+  background:var(--bg-soft);color:var(--muted);
+  border:1px solid var(--border);white-space:nowrap;
+}
+.card-title{
+  font-size:16px;font-weight:800;line-height:1.35;
+  letter-spacing:-.01em;color:var(--text);
+}
+.card-desc{
+  font-size:13px;line-height:1.65;color:var(--muted);flex:1;
+}
+.card-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding-top:14px;
+  border-top:1px solid var(--border);margin-top:auto;
+}
+.card-fee{
+  display:flex;align-items:center;gap:7px;
+  font-size:11.5px;font-weight:700;color:var(--text-2);
+}
+.card-fee i{font-size:10.5px;color:var(--muted)}
+.card-arrow{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--bg-soft);color:var(--muted);
+  display:grid;place-items:center;font-size:11px;
+  transition:all var(--transition);
+}
+.card:hover .card-arrow{background:var(--text);color:var(--bg);transform:translateX(3px)}
+html[dir="rtl"] .card:hover .card-arrow{transform:translateX(-3px)}
+
+.card-progress{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;color:var(--muted);
+}
+.card-progress .bar{
+  flex:1;height:5px;border-radius:3px;
+  background:var(--bg-soft);overflow:hidden;max-width:100px;
+}
+.card-progress .bar span{
+  display:block;height:100%;border-radius:3px;
+  background:var(--text);transition:width .3s ease;
+}
+.card-progress .bar.full span{background:#16a34a}
+
+/* Empty */
+.empty{
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  padding:70px 24px;text-align:center;gap:12px;
+  border:1px dashed var(--border);border-radius:var(--radius-lg);
+  background:var(--bg-soft);
+}
+.empty.on{display:flex}
+.empty-icon{
+  width:64px;height:64px;border-radius:50%;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--muted);display:grid;place-items:center;font-size:24px;
+}
+.empty h3{font-size:16px;font-weight:800}
+.empty p{font-size:13.5px;color:var(--muted);max-width:380px}
+
+/* ============================================================
+   DETAIL VIEW
+   ============================================================ */
+.detail{display:none;max-width:1180px;margin:0 auto;padding:20px 22px 60px}
+.detail.on{display:block}
+
+.back-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:9px 16px;border-radius:var(--radius);
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text-2);font-size:13px;font-weight:700;
+  transition:all var(--transition);margin-bottom:22px;
+}
+.back-btn:hover{background:var(--hover);color:var(--text);border-color:var(--border-strong)}
+.back-btn i{font-size:11px}
+html[dir="rtl"] .back-btn i{transform:scaleX(-1)}
+
+.detail-head{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:26px 28px;margin-bottom:20px;
+}
+.dh-top{
+  display:flex;align-items:flex-start;gap:16px;
+  margin-bottom:20px;flex-wrap:wrap;
+}
+.dh-icon{
+  width:58px;height:58px;border-radius:var(--radius-lg);
+  background:var(--bg-soft);border:1px solid var(--border);
+  color:var(--text);display:grid;place-items:center;
+  font-size:24px;flex:0 0 auto;
+}
+.dh-text{flex:1;min-width:220px}
+.dh-cat{
+  font-size:10.5px;font-weight:800;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:6px;
+}
+.dh-title{
+  font-size:clamp(20px,2.6vw,28px);font-weight:800;
+  line-height:1.25;letter-spacing:-.02em;
+  color:var(--text);margin-bottom:8px;
+}
+.dh-desc{
+  font-size:14px;color:var(--muted);line-height:1.7;
+  max-width:760px;
+}
+
+.info-chips{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:10px;
+}
+.info-chip{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 15px;border-radius:var(--radius);
+  background:var(--bg-soft);border:1px solid var(--border);
+}
+.info-chip .ic-ico{
+  width:34px;height:34px;border-radius:9px;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text);display:grid;place-items:center;
+  font-size:14px;flex:0 0 auto;
+}
+.info-chip .ic-text{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.info-chip .ic-lbl{
+  font-size:9.5px;font-weight:800;color:var(--muted);
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.info-chip .ic-val{
+  font-size:13px;font-weight:700;color:var(--text);
+  margin-top:2px;word-break:break-word;
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:20px;align-items:start;
+}
+@media (max-width:980px){.detail-grid{grid-template-columns:1fr}}
+
+.panel{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+}
+.panel-head{
+  padding:16px 20px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;flex-wrap:wrap;background:var(--bg-soft);
+}
+.panel-head h3{
+  font-size:14.5px;font-weight:800;
+  display:flex;align-items:center;gap:9px;
+}
+.panel-head h3 i{color:var(--muted);font-size:13.5px}
+.panel-head .actions{display:flex;gap:7px;flex-wrap:wrap}
+
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 14px;border-radius:var(--radius);
+  font-size:12.5px;font-weight:700;
+  transition:all var(--transition);
+  border:1px solid transparent;line-height:1;
+  white-space:nowrap;
+}
+.btn i{font-size:11.5px}
+.btn-primary{background:var(--text);color:var(--bg)}
+.btn-primary:hover{opacity:.85}
+.btn-ghost{
+  background:var(--surface);color:var(--text-2);
+  border-color:var(--border);
+}
+.btn-ghost:hover{background:var(--hover);border-color:var(--border-strong);color:var(--text)}
+
+.panel-body{padding:20px}
+
+/* Progress block */
+.progress-block{
+  padding:16px 20px;
+  background:var(--bg-soft);border-bottom:1px solid var(--border);
+}
+.progress-info{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;margin-bottom:10px;flex-wrap:wrap;
+}
+.progress-label{
+  font-size:12.5px;font-weight:800;color:var(--text);
+  display:flex;align-items:center;gap:8px;
+}
+.progress-label i{color:var(--muted)}
+.progress-label .pct{color:var(--text);font-weight:900}
+.progress-bar{
+  height:8px;border-radius:4px;
+  background:var(--border);overflow:hidden;
+}
+.progress-bar span{
+  display:block;height:100%;border-radius:4px;
+  background:var(--text);transition:width .35s cubic-bezier(.4,0,.2,1);
+}
+.progress-bar.full span{background:#16a34a}
+.progress-msg{
+  font-size:11.5px;color:var(--muted);font-weight:600;margin-top:8px;
+}
+.progress-msg.ok{color:#16a34a;font-weight:700}
+
+/* Checklist */
+.checklist{display:flex;flex-direction:column;gap:8px}
+.check-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 14px;border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--surface);
+  cursor:pointer;transition:all var(--transition);
+}
+.check-item:hover{border-color:var(--border-strong);background:var(--bg-soft)}
+.check-item.done{background:rgba(22,163,74,.06);border-color:rgba(22,163,74,.25)}
+.dark .check-item.done{background:rgba(74,222,128,.08)}
+.check-item.done .check-text{
+  text-decoration:line-through;text-decoration-color:#16a34a;
+  color:var(--muted);
+}
+.check-box{
+  width:22px;height:22px;border-radius:6px;
+  border:1.5px solid var(--border-strong);background:var(--surface);
+  display:grid;place-items:center;flex:0 0 auto;
+  font-size:11px;color:transparent;font-weight:800;
+  transition:all var(--transition);margin-top:1px;
+}
+.check-item:hover .check-box{border-color:var(--text)}
+.check-item.done .check-box{background:#16a34a;border-color:#16a34a;color:#fff}
+.check-text{
+  font-size:13px;font-weight:600;line-height:1.55;
+  color:var(--text-2);flex:1;transition:color var(--transition);
+}
+.check-num{
+  font-size:10px;font-weight:800;
+  color:var(--muted);padding:2px 7px;border-radius:6px;
+  background:var(--bg-soft);border:1px solid var(--border);
+  letter-spacing:.02em;font-family:'Inter',monospace;flex:0 0 auto;
+}
+.check-item.done .check-num{background:rgba(22,163,74,.12);border-color:rgba(22,163,74,.25);color:#16a34a}
+
+/* Tips */
+.tips{
+  margin-top:16px;padding:14px 16px;
+  border-radius:var(--radius);
+  background:var(--bg-soft);
+  border:1px solid var(--border);
+  display:flex;gap:12px;align-items:flex-start;
+}
+.tips i{color:var(--muted);font-size:15px;margin-top:2px;flex:0 0 auto}
+.tips .text{font-size:12.5px;color:var(--text-2);line-height:1.65}
+.tips .text b{
+  color:var(--text);font-weight:800;display:block;
+  margin-bottom:4px;font-size:11.5px;
+  letter-spacing:.05em;text-transform:uppercase;
+}
+
+/* Letters quick list */
+.letters-list{
+  display:flex;flex-direction:column;gap:10px;
+}
+.letter-cta{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--surface);
+  transition:all var(--transition);
+  cursor:pointer;
+}
+.letter-cta:hover{border-color:var(--text);background:var(--bg-soft);transform:translateY(-1px)}
+.letter-cta .lc-ico{
+  width:38px;height:38px;border-radius:9px;
+  background:var(--bg-soft);border:1px solid var(--border);
+  color:var(--text);display:grid;place-items:center;
+  font-size:15px;flex:0 0 auto;
+  transition:all var(--transition);
+}
+.letter-cta:hover .lc-ico{background:var(--text);color:var(--bg);border-color:var(--text)}
+.letter-cta .lc-text{flex:1;min-width:0}
+.letter-cta .lc-title{font-size:13.5px;font-weight:700;color:var(--text);line-height:1.3}
+.letter-cta .lc-desc{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+.letter-cta .lc-go{font-size:11px;color:var(--muted);flex:0 0 auto;transition:transform var(--transition)}
+.letter-cta:hover .lc-go{transform:translateX(3px);color:var(--text)}
+html[dir="rtl"] .letter-cta:hover .lc-go{transform:translateX(-3px)}
+
+/* ============================================================
+   MODAL — Letter Generator
+   ============================================================ */
+.modal-back{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);
+  backdrop-filter:blur(4px);z-index:150;
+  opacity:0;visibility:hidden;transition:all var(--transition);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;overflow-y:auto;
+}
+.modal-back.on{opacity:1;visibility:visible}
+.modal{
+  background:var(--bg);color:var(--text);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  width:100%;max-width:1100px;
+  max-height:92vh;
+  display:flex;flex-direction:column;
+  overflow:hidden;box-shadow:var(--shadow-lg);
+  transform:scale(.96);transition:transform var(--transition);
+}
+.modal-back.on .modal{transform:scale(1)}
+.modal-head{
+  padding:16px 22px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:14px;flex-wrap:wrap;background:var(--surface);
+}
+.modal-head h3{
+  font-size:15px;font-weight:800;
+  display:flex;align-items:center;gap:10px;
+}
+.modal-head h3 i{color:var(--muted);font-size:14px}
+.modal-head .close{
+  width:32px;height:32px;border-radius:var(--radius-sm);
+  color:var(--muted);display:grid;place-items:center;font-size:14px;
+  transition:all var(--transition);
+}
+.modal-head .close:hover{background:var(--hover);color:var(--text)}
+.modal-body{
+  flex:1;overflow-y:auto;padding:22px;
+  display:grid;grid-template-columns:1fr 1.15fr;gap:22px;
+}
+@media (max-width:820px){.modal-body{grid-template-columns:1fr}}
+
+.modal-foot{
+  padding:14px 22px;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;flex-wrap:wrap;background:var(--surface);
+}
+.modal-foot .left{display:flex;gap:8px;flex-wrap:wrap}
+.modal-foot .right{display:flex;gap:8px;flex-wrap:wrap}
+
+/* Form */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-grid .full{grid-column:span 2}
+.field{display:flex;flex-direction:column;gap:5px}
+.field-lbl{
+  font-size:10.5px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);
+}
+.field-lbl .opt{
+  font-size:9.5px;color:var(--muted);opacity:.7;
+  text-transform:none;letter-spacing:0;
+  font-weight:600;margin-inline-start:4px;
+}
+.field input,.field textarea,.field select{
+  padding:9px 11px;border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--text);font-size:12.8px;font-weight:500;
+  outline:none;transition:all var(--transition);
+  width:100%;
+}
+.field textarea{resize:vertical;min-height:64px;line-height:1.55;font-family:inherit}
+.field input:focus,.field textarea:focus,.field select:focus{
+  border-color:var(--text);box-shadow:0 0 0 3px rgba(0,0,0,.05);
+}
+.dark .field input:focus,.dark .field textarea:focus,.dark .field select:focus{
+  box-shadow:0 0 0 3px rgba(255,255,255,.05);
+}
+
+.letter-type-pills{
+  display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;
+}
+.lt-pill{
+  padding:8px 13px;border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--muted);font-size:11.5px;font-weight:700;
+  display:inline-flex;align-items:center;gap:7px;
+  transition:all var(--transition);
+}
+.lt-pill i{font-size:10.5px}
+.lt-pill:hover{color:var(--text);border-color:var(--border-strong)}
+.lt-pill.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+
+/* Letter preview */
+.letter-preview-wrap{
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:#fff;color:#0f172a;
+  padding:26px 30px;
+  font-family:'Cairo',sans-serif;
+  font-size:12.5px;line-height:1.9;
+  min-height:400px;max-height:64vh;overflow-y:auto;
+  box-shadow:0 2px 12px rgba(0,0,0,.05);
+}
+.letter-preview-wrap.ltr{direction:ltr;font-family:'Inter',sans-serif;font-size:12px}
+
+.lp-republic{
+  text-align:center;font-size:12px;font-weight:800;
+  color:#0f172a;letter-spacing:.4px;
+  padding-bottom:10px;border-bottom:1px solid #e2e8f0;
+  margin-bottom:18px;line-height:1.5;
+}
+.lp-republic small{
+  display:block;font-size:10.5px;font-weight:600;
+  color:#475569;margin-top:3px;letter-spacing:.3px;
+}
+.lp-recipient{margin:14px 0;font-size:12.5px;font-weight:700;color:#0f172a}
+.lp-subject{
+  margin:14px 0;padding:9px 14px;
+  background:#f1f5f9;border-inline-start:3px solid #0f172a;
+  border-radius:3px;font-size:12.5px;font-weight:700;color:#0f172a;
+}
+.lp-subject .lbl{color:#0f172a;font-weight:900;margin-inline-end:6px}
+.lp-identity{margin-bottom:16px;font-size:12px;line-height:1.75;color:#334155}
+.lp-identity p{margin:0 0 5px}
+.lp-identity b{color:#0f172a;font-weight:700}
+.lp-body{
+  margin:16px 0;text-align:justify;line-height:2;
+  font-size:12.5px;color:#334155;
+}
+.lp-body p{margin:0 0 10px}
+.lp-body p:last-child{margin-bottom:0}
+.lp-date{
+  text-align:end;margin:22px 0 8px;
+  font-size:12px;font-weight:700;color:#0f172a;
+}
+.lp-sign{
+  margin-top:28px;text-align:end;
+  font-size:12px;font-weight:700;color:#0f172a;
+}
+.lp-sign .line{
+  display:inline-block;min-width:170px;
+  border-top:1px solid #94a3b8;padding-top:6px;
+  color:#475569;font-weight:600;font-size:11.5px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{
+  border-top:1px solid var(--border);
+  background:var(--bg-soft);
+  padding:30px 22px;
+  margin-top:auto;
+}
+.footer-inner{
+  max-width:1180px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+  font-size:12.5px;color:var(--muted);
+}
+.footer-inner b{color:var(--text);font-weight:800}
+.footer-inner .heart{color:#dc2626}
+.footer-links{display:flex;gap:6px;flex-wrap:wrap}
+.footer-link{
+  padding:6px 10px;border-radius:var(--radius-sm);
+  font-size:12.5px;font-weight:600;color:var(--muted);
+  transition:all var(--transition);
+}
+.footer-link:hover{color:var(--text);background:var(--hover)}
+
+/* Scroll top */
+#toTop{
+  position:fixed;bottom:22px;inset-inline-end:22px;z-index:55;
+  width:42px;height:42px;border-radius:50%;
+  background:var(--text);color:var(--bg);
+  display:grid;place-items:center;font-size:13px;
+  box-shadow:var(--shadow-lg);
+  opacity:0;visibility:hidden;
+  transform:translateY(12px);
+  transition:all var(--transition);
+}
+#toTop.on{opacity:1;visibility:visible;transform:translateY(0)}
+#toTop:hover{opacity:.85}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(20px);
+  padding:11px 18px;border-radius:var(--radius);
+  background:var(--text);color:var(--bg);
+  font-size:12.5px;font-weight:700;
+  display:flex;align-items:center;gap:9px;
+  box-shadow:var(--shadow-lg);
+  opacity:0;pointer-events:none;
+  transition:all .25s ease;z-index:200;
+  max-width:90vw;white-space:nowrap;
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast i{color:#4ade80}
+.toast.err i{color:#f87171}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:900px){
+  .nav-links{display:none}
+  #menuBtn{display:grid}
+  .brand-text small{display:none}
+}
+@media (max-width:720px){
+  .nav-inner{padding:0 14px;height:60px}
+  .hero{padding:40px 14px 20px}
+  .hero p{font-size:14px}
+  .main,.detail{padding:16px 14px 50px}
+  .grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .form-grid .full{grid-column:span 1}
+  .detail-head{padding:20px 18px}
+  .dh-top{flex-direction:column;align-items:flex-start;gap:12px}
+  .panel-body{padding:16px}
+  .progress-block{padding:12px 16px}
+  .modal-body{padding:16px}
+  .letter-preview-wrap{padding:20px 18px}
+  .footer-inner{flex-direction:column;align-items:flex-start}
+}
+@media (max-width:520px){
+  .brand-mark{width:32px;height:32px;font-size:11.5px}
+  .brand-text b{font-size:13px}
+  .hero h1{font-size:22px}
+  .hero h1 .accent{font-size:16px}
+  .cat-pill{padding:8px 14px;font-size:11.5px}
+  .card{padding:18px}
+  .btn{padding:7px 11px;font-size:11.5px}
+}
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+#printArea{display:none}
+
+@page{size:A4;margin:0}
+
+@media print{
+  html,body{
+    background:#fff !important;color:#000 !important;
+    margin:0 !important;padding:0 !important;
+    height:auto !important;overflow:visible !important;
+    display:block !important;
+  }
+  body > *{display:none !important}
+  #printArea{display:block !important}
+  #printArea .print-doc{
+    width:210mm;min-height:297mm;
+    padding:20mm;box-sizing:border-box;
+    background:#fff;color:#000;
+    font-family:'Cairo','Inter',sans-serif;
+    font-size:12pt;line-height:1.8;
+  }
+  #printArea .print-doc.ltr{direction:ltr;font-family:'Inter',sans-serif}
+  #printArea .print-doc.rtl{direction:rtl;font-family:'Cairo',sans-serif}
+  #printArea h1{font-size:20pt;font-weight:800;margin:0 0 8px;letter-spacing:-.02em}
+  #printArea .p-meta{font-size:11pt;color:#444;margin-bottom:20px}
+  #printArea .p-republic{
+    text-align:center;font-size:13pt;font-weight:800;
+    padding-bottom:10px;border-bottom:1px solid #000;margin-bottom:20px;line-height:1.5;
+  }
+  #printArea .p-republic small{display:block;font-size:11pt;font-weight:600;margin-top:4px}
+  #printArea .p-recipient{margin:16px 0;font-size:12pt;font-weight:700}
+  #printArea .p-subject{
+    margin:16px 0;padding:10px 14px;background:#f2f2f2;
+    border-inline-start:3px solid #000;font-size:12pt;font-weight:700;
+  }
+  #printArea .p-identity{margin-bottom:18px;font-size:11.5pt;line-height:1.8}
+  #printArea .p-identity p{margin:0 0 5px}
+  #printArea .p-body{margin:18px 0;text-align:justify;line-height:2;font-size:12pt}
+  #printArea .p-body p{margin:0 0 10px}
+  #printArea .p-date{text-align:end;margin:22px 0 10px;font-size:11.5pt;font-weight:700}
+  #printArea .p-sign{margin-top:30px;text-align:end;font-size:11.5pt;font-weight:700}
+  #printArea .p-sign .line{
+    display:inline-block;min-width:180px;
+    border-top:1px solid #000;padding-top:6px;color:#000;
+  }
+  #printArea .p-progress{
+    padding:12px 16px;background:#f2f2f2;
+    border:1px solid #000;border-radius:4px;
+    margin-bottom:20px;font-size:11pt;font-weight:700;
+  }
+  #printArea .p-cl-item{
+    display:flex;align-items:flex-start;gap:12px;
+    padding:9px 0;border-bottom:1px dashed #999;
+    font-size:11.5pt;line-height:1.6;
+  }
+  #printArea .p-cl-item .box{
+    width:16px;height:16px;border:1.5px solid #000;
+    flex:0 0 auto;margin-top:3px;
+    display:grid;place-items:center;font-size:11pt;font-weight:900;
+  }
+  #printArea .p-cl-item.done .box::after{content:'✓'}
+  #printArea .p-cl-item.done .txt{text-decoration:line-through;color:#666}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+
+    <a href="#top" class="brand">
+      <span class="brand-mark">SD</span>
+      <span class="brand-text">
+        <b>SaivDOSSIER</b>
+        <small data-i18n="brandSub">Administrative Guide</small>
+      </span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#top" class="nav-link active" data-i18n="navHome">
+        <i class="fa-solid fa-house"></i><span>الرئيسية</span>
+      </a>
+      <a href="#dossiers" class="nav-link" data-i18n="navDossiers">
+        <i class="fa-solid fa-folder-open"></i><span>الملفات</span>
+      </a>
+      <a href="#about" class="nav-link" data-i18n="navAbout">
+        <i class="fa-solid fa-circle-info"></i><span>حول</span>
+      </a>
+    </nav>
+
+    <div class="nav-spacer"></div>
+
+    <div class="nav-actions">
+
+      <!-- Language -->
+      <div class="lang-wrap" id="langWrap">
+        <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">
+          <i class="fa-solid fa-globe"></i>
+          <span id="langLabel">AR</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="lang-menu" role="menu">
+          <button class="lang-opt" data-lang="ar" role="menuitem">
+            <span class="flag">🇩🇿</span><span>العربية</span>
+            <i class="fa-solid fa-check check"></i>
+          </button>
+          <button class="lang-opt" data-lang="en" role="menuitem">
+            <span class="flag">🇬🇧</span><span>English</span>
+            <i class="fa-solid fa-check check"></i>
+          </button>
+          <button class="lang-opt" data-lang="fr" role="menuitem">
+            <span class="flag">🇫🇷</span><span>Français</span>
+            <i class="fa-solid fa-check check"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Theme -->
+      <button class="icon-btn" id="themeBtn" aria-label="Theme">
+        <i class="fa-solid fa-moon"></i>
+        <i class="fa-solid fa-sun"></i>
+      </button>
+
+      <!-- Mobile menu -->
+      <button class="icon-btn" id="menuBtn" aria-label="Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<div id="drawerBack"></div>
+<aside id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <div class="brand">
+      <span class="brand-mark">SD</span>
+      <span class="brand-text"><b>SaivDOSSIER</b></span>
+    </div>
+    <button class="icon-btn" id="drawerClose" aria-label="Close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  <nav class="drawer-links">
+    <a href="#top" class="drawer-link">
+      <i class="fa-solid fa-house"></i><span data-i18n="navHome">الرئيسية</span>
+    </a>
+    <a href="#dossiers" class="drawer-link">
+      <i class="fa-solid fa-folder-open"></i><span data-i18n="navDossiers">الملفات</span>
+    </a>
+    <a href="#about" class="drawer-link">
+      <i class="fa-solid fa-circle-info"></i><span data-i18n="navAbout">حول</span>
+    </a>
+  </nav>
+</aside>
+
+<!-- ============================================================
+     HOME VIEW
+     ============================================================ -->
+<div id="homeView">
+
+  <section class="hero" id="top">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      <span data-i18n="heroBadge">محدّث لسنة 2026</span>
+    </div>
+
+    <h1>
+      <span data-i18n="heroTitle1">دليل الملفات الإدارية الجزائرية</span>
+      <span class="accent" data-i18n="heroTitle2">قوائم تحقق وطلبات خطية جاهزة</span>
+    </h1>
+
+    <p data-i18n="heroSub">
+      جميع الوثائق المطلوبة، الرسوم الدقيقة، مواصفات الصور، ومدة الصلاحية — مع قوائم تحقق تفاعلية ومولّد طلبات خطية جاهزة للتوقيع.
+    </p>
+
+    <div class="search-wrap">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="search" id="searchInput" autocomplete="off" spellcheck="false">
+      <button class="search-clear" id="searchClear" aria-label="Clear">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="cats" id="cats"></div>
+  </section>
+
+  <main class="main" id="dossiers">
+    <div class="section-head">
+      <h2 class="section-title">
+        <i class="fa-solid fa-folder-open"></i>
+        <span data-i18n="dossiersTitle">الملفات الإدارية</span>
+      </h2>
+      <span class="section-meta" id="resultCount"></span>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="empty" id="empty">
+      <div class="empty-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+      <h3 data-i18n="emptyTitle">لا توجد ملفات مطابقة</h3>
+      <p data-i18n="emptySub">جرّب كلمة أخرى أو غيّر التصنيف.</p>
+    </div>
+  </main>
+</div>
+
+<!-- ============================================================
+     DETAIL VIEW
+     ============================================================ -->
+<div class="detail" id="detailView">
+
+  <button class="back-btn" id="backBtn">
+    <i class="fa-solid fa-arrow-left"></i>
+    <span data-i18n="backBtn">الرجوع إلى جميع الملفات</span>
+  </button>
+
+  <div class="detail-head" id="detailHead"></div>
+
+  <div class="detail-grid">
+
+    <!-- Checklist -->
+    <div class="panel">
+      <div class="panel-head">
+        <h3><i class="fa-solid fa-list-check"></i><span data-i18n="checklistTitle">الوثائق المطلوبة</span></h3>
+        <div class="actions">
+          <button class="btn btn-ghost" id="checkAllBtn">
+            <i class="fa-solid fa-check-double"></i>
+            <span data-i18n="checkAll">تحديد الكل</span>
+          </button>
+          <button class="btn btn-ghost" id="resetCheckBtn">
+            <i class="fa-solid fa-rotate-left"></i>
+            <span data-i18n="resetCheck">إعادة تعيين</span>
+          </button>
+          <button class="btn btn-primary" id="printChecklistBtn">
+            <i class="fa-solid fa-print"></i>
+            <span data-i18n="printChecklist">طباعة</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="progress-block">
+        <div class="progress-info">
+          <div class="progress-label">
+            <i class="fa-solid fa-chart-simple"></i>
+            <span><span class="pct" id="progressPct">0%</span> · <span id="progressCount">0/0</span></span>
+          </div>
+        </div>
+        <div class="progress-bar"><span id="progressFill" style="width:0%"></span></div>
+        <div class="progress-msg" id="progressMsg"></div>
+      </div>
+
+      <div class="panel-body">
+        <div class="checklist" id="checklist"></div>
+        <div id="tipsBlock"></div>
+      </div>
+    </div>
+
+    <!-- Letter generator CTA list -->
+    <div class="panel">
+      <div class="panel-head">
+        <h3><i class="fa-solid fa-pen-fancy"></i><span data-i18n="lettersTitle">مولّد الطلبات الخطية</span></h3>
+      </div>
+      <div class="panel-body">
+        <p style="font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:16px" data-i18n="lettersIntro">
+          اختر نوع الوثيقة، املأ الحقول، ثم اطبعها جاهزة للتوقيع.
+        </p>
+        <div class="letters-list" id="lettersList"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================
+     LETTER MODAL
+     ============================================================ -->
+<div class="modal-back" id="modalBack">
+  <div class="modal">
+    <div class="modal-head">
+      <h3><i class="fa-solid fa-pen-fancy"></i><span id="modalTitle">طلب خطي</span></h3>
+      <button class="close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- Left: form -->
+      <div>
+        <div class="letter-type-pills" id="letterTypePills"></div>
+
+        <div class="form-grid">
+          <div class="field full">
+            <label class="field-lbl" data-i18n="fName">الاسم الكامل</label>
+            <input type="text" id="fName" autocomplete="name">
+          </div>
+          <div class="field">
+            <label class="field-lbl" data-i18n="fDob">تاريخ الميلاد</label>
+            <input type="text" id="fDob" placeholder="DD/MM/YYYY">
+          </div>
+          <div class="field">
+            <label class="field-lbl" data-i18n="fBirthPlace">مكان الميلاد</label>
+            <input type="text" id="fBirthPlace">
+          </div>
+          <div class="field full">
+            <label class="field-lbl" data-i18n="fIdNumber">رقم التعريف الوطني</label>
+            <input type="text" id="fIdNumber">
+          </div>
+          <div class="field full">
+            <label class="field-lbl" data-i18n="fAddress">العنوان الكامل</label>
+            <input type="text" id="fAddress">
+          </div>
+          <div class="field">
+            <label class="field-lbl" data-i18n="fCity">البلدية</label>
+            <input type="text" id="fCity">
+          </div>
+          <div class="field">
+            <label class="field-lbl" data-i18n="fWilaya">الولاية</label>
+            <input type="text" id="fWilaya">
+          </div>
+          <div class="field full">
+            <label class="field-lbl" data-i18n="fAuthority">الجهة المعنية</label>
+            <input type="text" id="fAuthority">
+          </div>
+          <div class="field full">
+            <label class="field-lbl">
+              <span data-i18n="fSubject">الموضوع</span>
+              <span class="opt" data-i18n="fOpt">اختياري</span>
+            </label>
+            <input type="text" id="fSubject">
+          </div>
+          <div class="field full">
+            <label class="field-lbl">
+              <span data-i18n="fBody">المضمون / السبب</span>
+              <span class="opt" data-i18n="fOpt2">اختياري</span>
+            </label>
+            <textarea id="fBody" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: preview -->
+      <div>
+        <div class="letter-preview-wrap" id="letterPreview"></div>
+      </div>
+
+    </div>
+
+    <div class="modal-foot">
+      <div class="left">
+        <button class="btn btn-ghost" id="clearLetterBtn">
+          <i class="fa-solid fa-eraser"></i>
+          <span data-i18n="clearLetter">تفريغ</span>
+        </button>
+      </div>
+      <div class="right">
+        <button class="btn btn-ghost" id="modalCancelBtn">
+          <i class="fa-solid fa-xmark"></i>
+          <span data-i18n="cancelBtn">إلغاء</span>
+        </button>
+        <button class="btn btn-primary" id="printLetterBtn">
+          <i class="fa-solid fa-print"></i>
+          <span data-i18n="printLetter">طباعة الرسالة</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     ABOUT
+     ============================================================ -->
+<section id="about" class="main" style="padding-top:0;padding-bottom:60px">
+  <div class="section-head">
+    <h2 class="section-title">
+      <i class="fa-solid fa-circle-info"></i>
+      <span data-i18n="aboutTitle">حول التطبيق</span>
+    </h2>
+  </div>
+
+  <div class="info-chips" style="max-width:900px">
+    <div class="info-chip">
+      <div class="ic-ico"><i class="fa-solid fa-shield-halved"></i></div>
+      <div class="ic-text">
+        <span class="ic-lbl" data-i18n="about1Title">خصوصية كاملة</span>
+        <span class="ic-val" data-i18n="about1Val">بياناتك لا تغادر متصفحك</span>
+      </div>
+    </div>
+    <div class="info-chip">
+      <div class="ic-ico"><i class="fa-solid fa-bolt"></i></div>
+      <div class="ic-text">
+        <span class="ic-lbl" data-i18n="about2Title">يعمل دون اتصال</span>
+        <span class="ic-val" data-i18n="about2Val">جميع الأدوات محلية</span>
+      </div>
+    </div>
+    <div class="info-chip">
+      <div class="ic-ico"><i class="fa-solid fa-circle-check"></i></div>
+      <div class="ic-text">
+        <span class="ic-lbl" data-i18n="about3Title">أداة إعلامية</span>
+        <span class="ic-val" data-i18n="about3Val">للتوعية والإرشاد المدني</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <span data-i18n="footerMade">صُنع بـ</span>
+      <span class="heart">♥</span>
+      <span data-i18n="footerBy">بواسطة سيف الإسلام زحاف</span>
+      · <span data-i18n="footerIn">صُنع في الجزائر</span> 🇩🇿
+    </div>
+    <div class="footer-links">
+      <a href="#top" class="footer-link" data-i18n="navHome">الرئيسية</a>
+      <a href="#dossiers" class="footer-link" data-i18n="navDossiers">الملفات</a>
+      <a href="#about" class="footer-link" data-i18n="navAbout">حول</a>
+    </div>
+    <div>© 2026 <b>SaivCORE</b></div>
+  </div>
+</footer>
+
+<!-- Print area -->
+<div id="printArea"></div>
+
+<!-- Scroll top -->
+<button id="toTop" aria-label="Back to top">
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <i class="fa-solid fa-circle-check"></i>
+  <span id="toastMsg">OK</span>
+</div>
+
+<script>
+/* ==================================================================
+   SaivDOSSIER — Algerian Administrative Dossier Guide
+   Powered by SaivCORE | Made with ❤️ in Algeria 🇩🇿
+   ================================================================== */
+(function(){
+'use strict';
+
+/* ============================================================
+   1. I18N DICTIONARY — 100% PURE TRANSLATIONS
+   ============================================================ */
+const I18N = {
+  ar:{
+    brandSub:'دليل إداري',
+    navHome:'الرئيسية',
+    navDossiers:'الملفات',
+    navAbout:'حول',
+    heroBadge:'محدّث لسنة 2026',
+    heroTitle1:'دليل الملفات الإدارية الجزائرية',
+    heroTitle2:'قوائم تحقق وطلبات خطية جاهزة',
+    heroSub:'جميع الوثائق المطلوبة، الرسوم الدقيقة، مواصفات الصور، ومدة الصلاحية — مع قوائم تحقق تفاعلية ومولّد طلبات خطية جاهزة للتوقيع.',
+    searchPh:'ابحث عن وثيقة أو إجراء...',
+    dossiersTitle:'الملفات الإدارية',
+    emptyTitle:'لا توجد ملفات مطابقة',
+    emptySub:'جرّب كلمة أخرى أو غيّر التصنيف.',
+    backBtn:'الرجوع إلى جميع الملفات',
+    checklistTitle:'الوثائق المطلوبة',
+    checkAll:'تحديد الكل',
+    resetCheck:'إعادة تعيين',
+    printChecklist:'طباعة',
+    lettersTitle:'مولّد الطلبات الخطية',
+    lettersIntro:'اختر نوع الوثيقة، املأ الحقول، ثم اطبعها جاهزة للتوقيع.',
+    fName:'الاسم الكامل',
+    fDob:'تاريخ الميلاد',
+    fBirthPlace:'مكان الميلاد',
+    fIdNumber:'رقم التعريف الوطني',
+    fAddress:'العنوان الكامل',
+    fCity:'البلدية',
+    fWilaya:'الولاية',
+    fAuthority:'الجهة المعنية',
+    fSubject:'الموضوع',
+    fBody:'المضمون / السبب',
+    fOpt:'اختياري',
+    fOpt2:'اختياري',
+    clearLetter:'تفريغ',
+    cancelBtn:'إلغاء',
+    printLetter:'طباعة الرسالة',
+    footerMade:'صُنع بـ',
+    footerBy:'بواسطة سيف الإسلام زحاف',
+    footerIn:'صُنع في الجزائر',
+    aboutTitle:'حول التطبيق',
+    about1Title:'خصوصية كاملة',
+    about1Val:'بياناتك لا تغادر متصفحك',
+    about2Title:'يعمل دون اتصال',
+    about2Val:'جميع الأدوات محلية',
+    about3Title:'أداة إعلامية',
+    about3Val:'للتوعية والإرشاد المدني',
+    /* Categories */
+    catAll:'الكل',
+    catCivil:'الحالة المدنية',
+    catVehicles:'السيارات',
+    catHousing:'السكن',
+    catEmployment:'العمل والمنح',
+    catVisas:'الفيزا والسفر',
+    catBusiness:'التجارة والمهن',
+    /* Info chips */
+    chipFee:'الرسوم',
+    chipValidity:'الصلاحية',
+    chipProcessing:'مدة المعالجة',
+    chipPhoto:'مواصفات الصورة',
+    chipAge:'السن',
+    /* Progress */
+    progressReady:'وثيقة جاهزة',
+    progressMsgEmpty:'ابدأ بتحديد الوثائق التي بحوزتك.',
+    progressMsgPartial:'استمر — أنت في منتصف الطريق.',
+    progressMsgAlmost:'اقتربت جداً، تبقّى القليل!',
+    progressMsgDone:'رائع! جميع الوثائق جاهزة.',
+    /* Tips */
+    tipsTitle:'نصائح مهمة',
+    /* Letter types */
+    ltManuscript:'طلب خطي',
+    ltHonor:'تصريح شرفي',
+    ltEngagement:'تعهد',
+    ltLoss:'تصريح بضياع',
+    /* Letter preview */
+    lpRepublic:'الجمهورية الجزائرية الديمقراطية الشعبية',
+    lpMinistry:'المصلحة الإدارية المختصة',
+    lpTo:'إلى السيد(ة):',
+    lpSubject:'الموضوع:',
+    lpDate:'حُرر بـ',
+    lpOn:'في:',
+    lpSignature:'التوقيع',
+    lpRequestPrefix:'أنا الموقع أدناه، السيد(ة):',
+    lpRequestBorn:'المولود(ة) في',
+    lpRequestAt:'بـ',
+    lpRequestId:'الحامل(ة) لبطاقة التعريف الوطنية رقم',
+    lpRequestAddr:'الساكن(ة) في',
+    lpRequestBody:'يشرفني أن أتقدم إلى سيادتكم بطلب:',
+    lpRequestReason:'وذلك لـ:',
+    lpRequestClosing:'وفي انتظار ردكم، تقبلوا سيدي فائق الاحترام والتقدير.',
+    lpHonorPrefix:'أنا الموقع أدناه، السيد(ة):',
+    lpHonorDeclare:'أُصرّح بشرفي بأنني:',
+    lpHonorResponsibility:'وأتحمل كامل المسؤولية القانونية على صحة هذا التصريح.',
+    lpEngagePrefix:'أنا الموقع أدناه، السيد(ة):',
+    lpEngageCommit:'أتعهد بـ:',
+    lpLossPrefix:'أنا الموقع أدناه، السيد(ة):',
+    lpLossDeclare:'أُصرّح بشرفي أنني فقدت الوثيقة التالية:',
+    lpLossCircumstances:'في الظروف التالية:',
+    lpPreviewEmpty:'املأ الحقول أعلاه لرؤية الرسالة.',
+    /* Toast */
+    resetDone:'تمت إعادة التعيين',
+    printReady:'جاهز للطباعة',
+    needName:'الرجاء إدخال الاسم على الأقل',
+    copied:'تم النسخ'
+  },
+  fr:{
+    brandSub:'Guide administratif',
+    navHome:'Accueil',
+    navDossiers:'Dossiers',
+    navAbout:'À propos',
+    heroBadge:'Mis à jour 2026',
+    heroTitle1:'Guide des dossiers administratifs algériens',
+    heroTitle2:'Checklists et demandes pré-remplies',
+    heroSub:'Tous les documents requis, frais exacts, spécifications photo et durées de validité — avec checklists interactives et générateur de demandes manuscrites.',
+    searchPh:'Rechercher un document ou une procédure...',
+    dossiersTitle:'Dossiers administratifs',
+    emptyTitle:'Aucun dossier trouvé',
+    emptySub:'Essayez un autre mot-clé ou changez de catégorie.',
+    backBtn:'Retour à tous les dossiers',
+    checklistTitle:'Documents requis',
+    checkAll:'Tout cocher',
+    resetCheck:'Réinitialiser',
+    printChecklist:'Imprimer',
+    lettersTitle:'Générateur de demandes manuscrites',
+    lettersIntro:'Choisissez le type, remplissez le formulaire, puis imprimez la lettre prête à signer.',
+    fName:'Nom complet',
+    fDob:'Date de naissance',
+    fBirthPlace:'Lieu de naissance',
+    fIdNumber:'N° carte d\'identité',
+    fAddress:'Adresse complète',
+    fCity:'Commune',
+    fWilaya:'Wilaya',
+    fAuthority:'Autorité destinataire',
+    fSubject:'Objet',
+    fBody:'Corps / motif',
+    fOpt:'optionnel',
+    fOpt2:'optionnel',
+    clearLetter:'Vider',
+    cancelBtn:'Annuler',
+    printLetter:'Imprimer',
+    footerMade:'Fait avec',
+    footerBy:'par Saif El Islem Zahaf',
+    footerIn:'Fabriqué en Algérie',
+    aboutTitle:'À propos',
+    about1Title:'Confidentialité totale',
+    about1Val:'Vos données restent dans votre navigateur',
+    about2Title:'Fonctionne hors ligne',
+    about2Val:'Tous les outils sont locaux',
+    about3Title:'Outil informatif',
+    about3Val:'Pour l\'éducation civique',
+    catAll:'Tout',
+    catCivil:'État civil',
+    catVehicles:'Véhicules',
+    catHousing:'Logement',
+    catEmployment:'Emploi & Aides',
+    catVisas:'Visas & Voyage',
+    catBusiness:'Commerce & Métiers',
+    chipFee:'Frais',
+    chipValidity:'Validité',
+    chipProcessing:'Délai',
+    chipPhoto:'Specs photo',
+    chipAge:'Âge',
+    progressReady:'documents prêts',
+    progressMsgEmpty:'Commencez par cocher les documents en votre possession.',
+    progressMsgPartial:'Continuez — vous êtes à mi-chemin.',
+    progressMsgAlmost:'Presque terminé !',
+    progressMsgDone:'Parfait ! Tous les documents sont prêts.',
+    tipsTitle:'Conseils importants',
+    ltManuscript:'Demande manuscrite',
+    ltHonor:'Déclaration sur l\'honneur',
+    ltEngagement:'Engagement',
+    ltLoss:'Déclaration de perte',
+    lpRepublic:'République Algérienne Démocratique et Populaire',
+    lpMinistry:'Service administratif compétent',
+    lpTo:'À Monsieur/Madame :',
+    lpSubject:'Objet :',
+    lpDate:'Fait à',
+    lpOn:'le',
+    lpSignature:'Signature',
+    lpRequestPrefix:'Je soussigné(e),',
+    lpRequestBorn:'né(e) le',
+    lpRequestAt:'à',
+    lpRequestId:'titulaire de la carte nationale d\'identité n°',
+    lpRequestAddr:'demeurant à',
+    lpRequestBody:'J\'ai l\'honneur de solliciter :',
+    lpRequestReason:'pour :',
+    lpRequestClosing:'Dans l\'attente d\'une réponse favorable, veuillez agréer, Monsieur, l\'expression de mes salutations respectueuses.',
+    lpHonorPrefix:'Je soussigné(e),',
+    lpHonorDeclare:'déclare sur l\'honneur que :',
+    lpHonorResponsibility:'J\'assume l\'entière responsabilité juridique de cette déclaration.',
+    lpEngagePrefix:'Je soussigné(e),',
+    lpEngageCommit:'je m\'engage à :',
+    lpLossPrefix:'Je soussigné(e),',
+    lpLossDeclare:'déclare sur l\'honneur avoir perdu le document suivant :',
+    lpLossCircumstances:'dans les circonstances suivantes :',
+    lpPreviewEmpty:'Remplissez le formulaire pour voir l\'aperçu.',
+    resetDone:'Réinitialisé',
+    printReady:'Prêt à imprimer',
+    needName:'Veuillez saisir au moins le nom',
+    copied:'Copié'
+  },
+  en:{
+    brandSub:'Administrative Guide',
+    navHome:'Home',
+    navDossiers:'Dossiers',
+    navAbout:'About',
+    heroBadge:'Updated for 2026',
+    heroTitle1:'Algerian Administrative Dossier Guide',
+    heroTitle2:'Checklists & pre-filled requests',
+    heroSub:'Every document you need, exact fees, photo specs and validity periods — with interactive checklists and a handwritten request generator.',
+    searchPh:'Search a document or procedure...',
+    dossiersTitle:'Administrative Dossiers',
+    emptyTitle:'No dossiers found',
+    emptySub:'Try another keyword or change the category.',
+    backBtn:'Back to all dossiers',
+    checklistTitle:'Required Documents',
+    checkAll:'Check all',
+    resetCheck:'Reset',
+    printChecklist:'Print',
+    lettersTitle:'Handwritten Request Generator',
+    lettersIntro:'Pick a type, fill the form, then print the letter ready to sign.',
+    fName:'Full name',
+    fDob:'Date of birth',
+    fBirthPlace:'Place of birth',
+    fIdNumber:'National ID number',
+    fAddress:'Full address',
+    fCity:'Commune',
+    fWilaya:'Wilaya',
+    fAuthority:'Target authority',
+    fSubject:'Subject',
+    fBody:'Body / reason',
+    fOpt:'optional',
+    fOpt2:'optional',
+    clearLetter:'Clear',
+    cancelBtn:'Cancel',
+    printLetter:'Print letter',
+    footerMade:'Made with',
+    footerBy:'by Saif El Islem Zahaf',
+    footerIn:'Made in Algeria',
+    aboutTitle:'About',
+    about1Title:'Full privacy',
+    about1Val:'Your data stays in your browser',
+    about2Title:'Works offline',
+    about2Val:'All tools are local',
+    about3Title:'Informative tool',
+    about3Val:'For civic education',
+    catAll:'All',
+    catCivil:'Civil Status',
+    catVehicles:'Vehicles',
+    catHousing:'Housing',
+    catEmployment:'Employment & Grants',
+    catVisas:'Visas & Travel',
+    catBusiness:'Business & Trades',
+    chipFee:'Fee',
+    chipValidity:'Validity',
+    chipProcessing:'Processing',
+    chipPhoto:'Photo specs',
+    chipAge:'Age',
+    progressReady:'documents ready',
+    progressMsgEmpty:'Start by checking the documents you already have.',
+    progressMsgPartial:'Keep going — you are halfway there.',
+    progressMsgAlmost:'Almost done, just a few left!',
+    progressMsgDone:'Perfect! All documents are ready.',
+    tipsTitle:'Important tips',
+    ltManuscript:'Written request',
+    ltHonor:'Sworn declaration',
+    ltEngagement:'Commitment',
+    ltLoss:'Loss declaration',
+    lpRepublic:'People\'s Democratic Republic of Algeria',
+    lpMinistry:'Competent administrative service',
+    lpTo:'To:',
+    lpSubject:'Subject:',
+    lpDate:'Issued at',
+    lpOn:'on',
+    lpSignature:'Signature',
+    lpRequestPrefix:'I, the undersigned,',
+    lpRequestBorn:'born on',
+    lpRequestAt:'at',
+    lpRequestId:'holder of national ID no.',
+    lpRequestAddr:'residing at',
+    lpRequestBody:'I have the honour to request:',
+    lpRequestReason:'for:',
+    lpRequestClosing:'Awaiting a favourable response, please accept, Sir, the expression of my highest regards.',
+    lpHonorPrefix:'I, the undersigned,',
+    lpHonorDeclare:'declare on my honour that:',
+    lpHonorResponsibility:'I assume full legal responsibility for this declaration.',
+    lpEngagePrefix:'I, the undersigned,',
+    lpEngageCommit:'I undertake to:',
+    lpLossPrefix:'I, the undersigned,',
+    lpLossDeclare:'declare on my honour the loss of the following document:',
+    lpLossCircumstances:'under the following circumstances:',
+    lpPreviewEmpty:'Fill the form above to see the preview.',
+    resetDone:'Reset done',
+    printReady:'Ready to print',
+    needName:'Please enter at least the name',
+    copied:'Copied'
+  }
+};
+
+/* ============================================================
+   2. CATEGORIES
+   ============================================================ */
+const CATEGORIES = [
+  { id:'all',        icon:'fa-border-all',           key:'catAll' },
+  { id:'civil',      icon:'fa-id-card',              key:'catCivil' },
+  { id:'vehicles',   icon:'fa-car',                  key:'catVehicles' },
+  { id:'housing',    icon:'fa-house-chimney',        key:'catHousing' },
+  { id:'employment', icon:'fa-briefcase',            key:'catEmployment' },
+  { id:'visas',      icon:'fa-plane-departure',      key:'catVisas' },
+  { id:'business',   icon:'fa-store',                key:'catBusiness' }
+];
+
+/* ============================================================
+   3. DOSSIERS DATABASE — Pure Arabic, no French words
+   ============================================================ */
+const DOSSIERS = [
+
+  /* ============ CIVIL STATUS ============ */
+  {
+    id:'passport',
+    cat:'civil',
+    icon:'fa-passport',
+    name:{ ar:'جواز السفر البيومتري', en:'Biometric Passport', fr:'Passeport Biométrique' },
+    desc:{
+      ar:'جواز سفر إلكتروني بيومتري صادر للرعايا الجزائريين، صالح لمدة عشر سنوات للبالغين.',
+      en:'Biometric electronic passport issued to Algerian nationals, valid for ten years for adults.',
+      fr:'Passeport électronique biométrique délivré aux ressortissants algériens, valable dix ans pour adultes.'
+    },
+    fee:{ ar:'6,000 دج', en:'6,000 DA', fr:'6 000 DA' },
+    validity:{ ar:'10 سنوات للبالغين · 5 سنوات للأطفال', en:'10 years adults · 5 years children', fr:'10 ans adultes · 5 ans enfants' },
+    processing:{ ar:'من 10 إلى 15 يوم عمل', en:'10 to 15 working days', fr:'10 à 15 jours ouvrables' },
+    photo:{ ar:'35×45 مم، خلفية بيضاء، حديثة', en:'35×45 mm, white background, recent', fr:'35×45 mm, fond blanc, récente' },
+    age:{ ar:'يمكن استخراجه من الولادة', en:'Available from birth', fr:'Dès la naissance' },
+    docs:[
+      { ar:'بطاقة التعريف الوطنية البيومترية (الأصل ونسخة)', en:'Biometric national ID card (original + copy)', fr:'Carte nationale d\'identité biométrique (original + copie)' },
+      { ar:'شهادة الميلاد رقم 12 (حديثة أقل من ثلاثة أشهر)', en:'Birth certificate 12 (less than three months old)', fr:'Extrait de naissance 12 (moins de trois mois)' },
+      { ar:'شهادة الإقامة', en:'Residence certificate', fr:'Certificat de résidence' },
+      { ar:'صورتان شمسيتان بمقاس 35×45 مم بخلفية بيضاء', en:'Two photos 35×45 mm with white background', fr:'Deux photos 35×45 mm fond blanc' },
+      { ar:'وصل دفع الرسوم الجبائية', en:'Fiscal stamp receipt', fr:'Quittance timbre fiscal' },
+      { ar:'ظرف بريدي مدبّج', en:'Stamped registered envelope', fr:'Enveloppe postale recommandée' }
+    ],
+    tips:{
+      ar:'النساء المتزوجات: إضافة عقد الزواج. القُصّر: حضور الأب والأم مع بطاقتيهما. يُنصح بالحجز المسبق لدى البلدية.',
+      en:'Married women: add marriage certificate. Minors: both parents must attend with their IDs. Advance booking at the commune is recommended.',
+      fr:'Femmes mariées : ajouter l\'acte de mariage. Mineurs : présence des deux parents. Réservation préalable à la commune recommandée.'
+    },
+    letters:['manuscript','engagement','honor']
+  },
+  {
+    id:'passport-fast',
+    cat:'civil',
+    icon:'fa-bolt',
+    name:{ ar:'جواز السفر المستعجل', en:'Fast-track Passport', fr:'Passeport en 48h' },
+    desc:{
+      ar:'خدمة استخراج جواز السفر البيومتري في مدة لا تتجاوز ثمانياً وأربعين ساعة.',
+      en:'Fast-track issuance of the biometric passport within forty-eight hours.',
+      fr:'Délivrance accélérée du passeport biométrique en quarante-huit heures.'
+    },
+    fee:{ ar:'10,000 دج', en:'10,000 DA', fr:'10 000 DA' },
+    validity:{ ar:'10 سنوات', en:'10 years', fr:'10 ans' },
+    processing:{ ar:'من 24 إلى 48 ساعة', en:'24 to 48 hours', fr:'24 à 48 heures' },
+    photo:{ ar:'35×45 مم، خلفية بيضاء', en:'35×45 mm, white background', fr:'35×45 mm, fond blanc' },
+    age:{ ar:'نفس الشروط المعمول بها', en:'Same conditions as standard', fr:'Mêmes conditions' },
+    docs:[
+      { ar:'بطاقة التعريف الوطنية البيومترية', en:'Biometric national ID card', fr:'Carte nationale d\'identité biométrique' },
+      { ar:'شهادة الميلاد رقم 12', en:'Birth certificate 12', fr:'Extrait de naissance 12' },
+      { ar:'شهادة الإقامة', en:'Residence certificate', fr:'Certificat de résidence' },
+      { ar:'صورتان شمسيتان بمقاس 35×45 مم', en:'Two photos 35×45 mm', fr:'Deux photos 35×45 mm' },
+      { ar:'وصل دفع الرسوم', en:'Payment receipt', fr:'Quittance de paiement' },
+      { ar:'مبرر الاستعجال', en:'Proof of urgency', fr:'Justificatif d\'urgence' }
+    ],
+    tips:{
+      ar:'متاح في مراكز معتمدة. يجب تقديم مبرر رسمي للاستعجال.',
+      en:'Available at approved centres. Official proof of urgency is required.',
+      fr:'Disponible dans des centres agréés. Justificatif d\'urgence obligatoire.'
+    },
+    letters:['manuscript','engagement']
+  },
+  {
+    id:'cni',
+    cat:'civil',
+    icon:'fa-id-card',
+    name:{ ar:'بطاقة التعريف الوطنية البيومترية', en:'National Biometric ID Card', fr:'Carte Nationale d\'Identité Biométrique' },
+    desc:{
+      ar:'البطاقة الوطنية للتعريف الإلكترونية البيومترية الصادرة عن بلدية الإقامة.',
+      en:'Biometric electronic national ID card issued by the commune of residence.',
+      fr:'Carte nationale d\'identité électronique biométrique délivrée par la commune.'
+    },
+    fee:{ ar:'2,500 دج', en:'2,500 DA', fr:'2 500 DA' },
+    validity:{ ar:'10 سنوات (5 سنوات لمن هم دون 18)', en:'10 years (5 under 18)', fr:'10 ans (5 ans moins de 18)' },
+    processing:{ ar:'من 5 إلى 10 أيام', en:'5 to 10 days', fr:'5 à 10 jours' },
+    photo:{ ar:'35×45 مم، خلفية بيضاء، حديثة', en:'35×45 mm, white background, recent', fr:'35×45 mm, fond blanc, récente' },
+    age:{ ar:'من الولادة', en:'From birth', fr:'Dès la naissance' },
+    docs:[
+      { ar:'شهادة الميلاد رقم 12', en:'Birth certificate 12', fr:'Extrait de naissance 12' },
+      { ar:'شهادة الإقامة', en:'Residence certificate', fr:'Certificat de résidence' },
+      { ar:'صورتان شمسيتان بمقاس 35×45 مم', en:'Two photos 35×45 mm', fr:'Deux photos 35×45 mm' },
+      { ar:'البطاقة القديمة عند التجديد', en:'Old card if renewing', fr:'Ancienne carte si renouvellement' },
+      { ar:'وصل دفع الرسوم', en:'Payment receipt', fr:'Quittance de paiement' }
+    ],
+    tips:{
+      ar:'الحضور الشخصي إلزامي. القُصّر: حضور الأب والأم مع بطاقتيهما.',
+      en:'Personal attendance mandatory. Minors: both parents must attend.',
+      fr:'Présence personnelle obligatoire. Mineurs : présence des deux parents.'
+    },
+    letters:['manuscript']
+  },
+  {
+    id:'extrait12',
+    cat:'civil',
+    icon:'fa-file-lines',
+    name:{ ar:'شهادة الميلاد رقم 12', en:'Birth Certificate 12', fr:'Extrait de Naissance 12' },
+    desc:{
+      ar:'النسخة الحديثة من شهادة الميلاد مع الرقم التعريفي الوطني.',
+      en:'Modern birth certificate version including the National Identification Number.',
+      fr:'Version moderne de l\'acte de naissance incluant le numéro national d\'identification.'
+    },
+    fee:{ ar:'200 دج للنسخة', en:'200 DA per copy', fr:'200 DA par copie' },
+    validity:{ ar:'3 أشهر للاستعمال الإداري', en:'3 months for administrative use', fr:'3 mois pour usage administratif' },
+    processing:{ ar:'في نفس اليوم', en:'Same day', fr:'Le jour même' },
+    photo:null,
+    age:{ ar:'متاح للجميع', en:'Available to all', fr:'Pour tous' },
+    docs:[
+      { ar:'رقم التعريف الوطني', en:'National Identification Number', fr:'Numéro national d\'identification' },
+      { ar:'بطاقة التعريف الوطنية', en:'National ID card', fr:'Carte nationale d\'identité' },
+      { ar:'وصل دفع الرسوم', en:'Payment receipt', fr:'Quittance de paiement' }
+    ],
+    tips:{
+      ar:'متوفر بالبلدية الأصلية أو عبر المنصة الرقمية للحالة المدنية.',
+      en:'Available at the original commune or via the digital civil status platform.',
+      fr:'Disponible à la commune d\'origine ou via la plateforme numérique.'
+    },
+    letters:['manuscript']
+  },
+  {
+    id:'chifa',
+    cat:'civil',
+    icon:'fa-heart-pulse',
+    name:{ ar:'بطاقة الشفاء', en:'Chifa Health Card', fr:'Carte Chifa' },
+    desc:{
+      ar:'بطاقة التأمين الصحي لموظفي القطاع العام والخاص والأجراء.',
+      en:'Health insurance card for public and private sector employees.',
+      fr:'Carte d\'assurance maladie pour les salariés des secteurs public et privé.'
+    },
+    fee:{ ar:'مجانية', en:'Free', fr:'Gratuite' },
+    validity:{ ar:'مرتبطة بالتوظيف', en:'Tied to employment', fr:'Liée à l\'emploi' },
+    processing:{ ar:'من أسبوع إلى أسبوعين', en:'1 to 2 weeks', fr:'1 à 2 semaines' },
+    photo:{ ar:'صورة شمسية واحدة', en:'One ID photo', fr:'Une photo d\'identité' },
+    age:{ ar:'من سن التوظيف', en:'From working age', fr:'Dès l\'âge d\'embauche' },
+    docs:[
+      { ar:'بطاقة التعريف الوطنية', en:'National ID card', fr:'Carte nationale d\'identité' },
+      { ar:'شهادة الميلاد رقم 12', en:'Birth certificate 12', fr:'Extrait de naissance 12' },
+      { ar:'شهادة العمل', en:'Certificate of employment', fr:'Attestation de travail' },
+      { ar:'شهادة عائلية عند الحاجة', en:'Family record if applicable', fr:'Fiche familiale si applicable' },
+      { ar:'صورة شمسية', en:'ID photo', fr:'Photo d\'identité' }
+    ],
+    tips:{
+      ar:'تُسلَّم في صيغة إلكترونية. يجب التصريح بالتغييرات العائلية في الآجال.',
+      en:'Issued in electronic format. Family changes must be reported in time.',
+      fr:'Délivrée sous forme électronique. Les changements doivent être déclarés dans les délais.'
+    },
+    letters:['manuscript']
+  },
+
+  /* ============ VEHICLES ============ */
+  {
+    id:'permis',
+    cat:'vehicles',
+    icon:'fa-id-card-clip',
+    name:{ ar:'رخصة السياقة', en:'Driving License', fr:'Permis de Conduire' },
+    desc:{
+      ar:'رخصة سياقة بيومترية لجميع الفئات، تُسلَّم بعد النجاح في الامتحانين النظري والتطبيقي.',
+      en:'Biometric driving license for all categories, issued after passing both theory and practical exams.',
+      fr:'Permis de conduire biométrique pour toutes les catégories, délivré après réussite aux examens.'
+    },
+    fee:{ ar:'2,500 دج (رسم) + تكاليف التكوين', en:'2,500 DA (fee) + training costs', fr:'2 500 DA (frais) + formation' },
+    validity:{ ar:'10 سنوات', en:'10 years', fr:'10 ans' },
+    processing:{ ar:'من أسبوعين إلى أربعة أسابيع بعد النجاح', en:'2 to 4 weeks after passing', fr:'2 à 4 semaines après réussite' },
+    photo:{ ar:'35×45 مم، خلفية بيضاء، دون نظارات', en:'35×45 mm, white background, no glasses', fr:'35×45 mm, fond blanc, sans lunettes' },
+    age:{ ar:'18 سنة للفئة ب، 21 للفئة ج', en:'18 for category B, 21 for C', fr:'18 ans catégorie B, 21 catégorie C' },
+    docs:[
+      { ar:'بطاقة التعريف الوطنية', en:'National ID card', fr:'Carte nationale d\'identité' },
+      { ar:'شهادة الميلاد رقم 12', en:'Birth certificate 12', fr:'Extrait de naissance 12' },
+      { ar:'شهادة الإقامة', en:'Residence certificate', fr:'Certificat de résidence' },
+      { ar:'شهادة طبية من طبيب مختص في العيون', en:'Medical certificate from an ophthalmologist', fr:'Certificat médical d\'ophtalmologie' },
+      { ar:'أربع صور شمسية بمقاس 35×45 مم', en:'Four photos 35×45 mm', fr:'Quatre photos 35×45 mm' },
+      { ar:'وصل دفع الرسوم', en:'Payment receipt', fr:'Quittance de paiement' }
+    ],
+    tips:{
+      ar:'التسجيل في مدرسة تعليم السياقة معتمدة. النجاح في الامتحان النظري مطلوب قبل التطبيقي.',
+      en:'Enrolment at an approved driving school. Passing the theory exam is required before the practical one.',
+      fr:'Inscription dans une auto-école agréée. Réussite au code obligatoire avant le créneau.'
+    },
+    letters:['manuscript']
+  },
+  {
+    id:'carte-grise',
+    cat:'vehicles',
+    icon:'fa-car-side',
+    name:{ ar:'البطاقة الرمادية للمركبة', en:'Vehicle Registration Card', fr:'Carte Grise' },
+    desc:{
+      ar:'وثيقة تسجيل المركبة الصادرة عن مصلحة تسجيل المركبات.',
+      en:'Vehicle registration certificate issued by the vehicle registration service.',
+      fr:'Certificat d\'immatriculation délivré par le service des mines.'
+    },
+    fee:{ ar:'من 7,000 إلى 12,000 دج حسب نوع المركبة', en:'7,000 to 12,000 DA depending on vehicle', fr:'7 000 à 12 000 DA selon véhicule' },
+    validity:{ ar:'مرتبطة بالمركبة', en:'Tied to the vehicle', fr:'Liée au véhicule' },
+    processing:{ ar:'من 3 إلى 7 أيام', en:'3 to 7 days', fr:'3 à 7 jours' },
+    photo:null,
+    age:{ ar:'18 سنة وما فوق للمالك', en:'18+ for the owner', fr:'18+ pour le propriétaire' },
+    docs:[
+      { ar:'فاتورة الشراء للمركبة الجديدة', en:'Invoice for a new vehicle', fr:'Facture d\'achat véhicule neuf' },
+      { ar:'شهادة التسجيل المؤقتة', en:'Temporary registration certificate', fr:'Certificat d\'immatriculation provisoire' },
+      { ar:'بطاقة التعريف الوطنية', en:'National ID card', fr:'Carte nationale d\'identité' },
+      { ar:'شهادة الإقامة', en:'Residence certificate', fr:'Certificat de résidence' },
+      { ar:'شهادة التأمين', en:'Insurance certificate', fr:'Attestation d\'assurance' },
+      { ar:'وصل دفع الرسوم', en:'Payment receipt', fr:'Quittance de paiement' }
+    ],
+    tips:{
+      ar:'التسجيل المؤقت صالح ثلاثين يوماً. الرسوم تُحتسب حسب القوة الجبائية والحجم.',
+      en:'Temporary registration is valid for thirty days. Fees depend on fiscal horsepower and engine size.',
+      fr:'La carte provisoire est valable trente jours. Les frais dépendent de la puissance fiscale.'
+    },
+    letters:['manuscript']
+  },
+  {
+    id:'mutation',
+    cat:'vehicles',
+    icon:'fa-right-left',
+    name:{ ar:'تحويل ملكية المركبة', en:'Vehicle Ownership Transfer', fr:'Mutation' },
+    desc:{
+      ar:'إجراء تحويل ملكية المركبة من البائع إلى المشتري.',
+      en:'Procedure to transfer vehicle ownership from seller to buyer.',
+      fr:'Procédure de transfert de propriété du véhicule du vendeur à l\'acheteur.'
+    },
+    fee:{ ar:'من 4,000 إلى 8,000 دج', en:'4,000 to 8,000 DA', fr:'4 000 à 8 000 DA' },
+    validity:{ ar:'دائمة بعد التسجيل', en:'Permanent after registration', fr:'Permanente après enregistrement' },
+    processing:{ ar:'من 5 إلى 10 أيام', en:'5 to 10 days', fr:'5 à 10 jours' },
+    photo:null,
+    age:{ ar:'18 سنة وما فوق', en:'18+', fr:'18+' },
+    docs:[
+      { ar:'البطاقة الرمادية الأصلية باسم البائع', en:'Original registration card in seller\'s name', fr:'Carte grise originale au nom du vendeur' },
+      { ar:'عقد البيع موثّق أو محرّر', en:'Notarised or written sale contract', fr:'Acte de vente notarié ou écrit' },
+      { ar:'بطاقتا التعريف للبائع والمشتري', en:'Seller and buyer national IDs', fr:'CNI vendeur et acheteur' },
+      { ar:'شهادة إقامة المشتري', en:'Buyer residence certificate', fr:'Certificat de résidence acheteur' },
+      { ar:'شهادة التأمين', en:'Insurance certificate', fr:'Attestation d\'assurance' },
+      { ar:'وصل دفع الرسوم', en:'Payment receipt', fr:'Quittance de paiement' }
+    ],
+    tips:{
+      ar:'يجب على الطرفين الحضور شخصياً أو بتوكيل رسمي.',
+      en:'Both parties must attend in person or via power of attorney.',
+      fr:'Présence des deux parties obligatoire ou par procuration.'
+    },
+    letters:['manuscript','honor','engagement']
+  },
+
+  /* ============ HOUSING ============ */
+  {
+    id:'housing-social',
+    cat:'housing',
+    icon:'fa-house-chimney',
+    name:{ ar:'السكن الاجتماعي', en:'Social Housing', fr:'Logement Social' },
+    desc:{
+      ar:'برنامج السكن الاجتماعي الإيجاري الموجه للأسر محدودة الدخل.',
+      en:'Social rental housing program for low-income families.',
+      fr:'Programme de logement social locatif pour familles à faible revenu.'
+    },
+    fee:{ ar:'ملف مجاني + إيجار رمزي', en:'Free file + symbolic rent', fr:'Dossier gratuit + loyer symbolique' },
+    validity:{ ar:'حسب البرنامج', en:'Program-dependent', fr:'Selon programme' },
+    processing:{ ar:'عدة أشهر', en:'Several months', fr:'Plusieurs mois' },
+    photo:{ ar:'صورة شمسية واحدة', en:'One ID photo', fr:'Une photo d\'identité' },
+    age:{ ar:'18 سنة وما فوق', en:'18+', fr:'18+' },
+    docs:[
+      { ar:'بطاقة التعريف الوطنية', en:'National ID card', fr:'Carte nationale d\'identité' },
+      { ar:'شهادة الميلاد رقم 12', en:'Birth certificate 12', fr:'Extrait de naissance 12' },
+      { ar:'شهادة الإقامة', en:'Residence certificate', fr:'Certificat de résidence' },
+      { ar:'شهادة عائلية', en:'Family record', fr:'Fiche familiale' },
+      { ar:'شهادة عدم الاستفادة من سكن سابق', en:'Non-beneficiary certificate', fr:'Attestation de non-bénéfice' },
+      { ar:'تصريح شرفي بعدم الملكية', en:'Sworn declaration of non-ownership', fr:'Déclaration sur l\'honneur de non-propriété' }
+    ],
+    tips:{
+      ar:'التسجيل عبر المنصة الرقمية للولاية. مدة الانتظار حسب القوائم الولائية.',
+      en:'Registration via the wilaya digital platform. Waiting times depend on wilaya lists.',
+      fr:'Inscription via la plateforme numérique de la wilaya.'
+    },
+    letters:['manuscript','honor']
+  },
+  {
+    id:'housing-aadl',
+    cat:'housing',
+    icon:'fa-building',
+    name:{ ar:'سكن الترقية الإيجارية المدعمة', en:'AADL Rental-Promotion Housing', fr:'Logement AADL' },
+    desc:{
+      ar:'برنامج السكن الإيجاري الترقوي المدعم للأجراء.',
+      en:'Assisted rental-promotion housing program for salaried workers.',
+      fr:'Programme de logement locatif promotionnel aidé pour salariés.'
+    },
+    fee:{ ar:'ملف مجاني + أقساط شهرية', en:'Free file + monthly instalments', fr:'Dossier gratuit + mensualités' },
+    validity:{ ar:'حسب البرنامج', en:'Program-dependent', fr:'Selon programme' },
+    processing:{ ar:'عدة أشهر', en:'Several months', fr:'Plusieurs mois' },
+    photo:{ ar:'صورة شمسية', en:'One ID photo', fr:'Une photo d\'identité' },
+    age:{ ar:'18 سنة وما فوق', en:'18+', fr:'18+' },
+    docs:[
+      { ar:'بطاقة التعريف الوطنية', en:'National ID card', fr:'Carte nationale d\'identité' },
+      { ar:'شهادة الميلاد رقم 12', en:'Birth certificate 12', fr:'Extrait de naissance 12' },
+      { ar:'شهادة الإقامة', en:'Residence certificate', fr:'Certificat de résidence' },
+      { ar:'شهادة العمل وكشف الراتب', en:'Work certificate and pay slip', fr:'Attestation de travail et fiche de paie' },
+      { ar:'شهادة عدم الاستفادة من سكن', en:'Non-beneficiary certificate', fr:'Attestation de non-bénéfice' },
+      { ar:'شهادة عائلية', en:'Family record', fr:'Fiche familiale' },
+      { ar:'تصريح شرفي بعدم الملكية', en:'Sworn declaration of non-ownership', fr:'Déclaration sur l\'honneur' }
+    ],
+    tips:{
+      ar:'التسجيل عبر المنصة الرقمية. مدة الانتظار قد تكون طويلة.',
+      en:'Registration via the digital platform. Waiting times can be long.',
+      fr:'Inscription via la plateforme numérique. Délais pouvant être longs.'
+    },
+    letters:['manuscript','honor']
+  },
+  {
+    id:'housing-lpa',
+    cat:'housing',
+    icon:'fa-house-flag',
+    name:{ ar:'السكن الترقوي المدعم والعمومي', en:'LPA / LPP Housing', fr:'Logement LPA / LPP' },
+    desc:{
+      ar:'برامج السكن الترقوي المدعم والعمومي الموجهة لمختلف الفئات.',
+      en:'Assisted and public promotional housing programs for various categories.',
+      fr:'Programmes de logement promotionnel aidé et public pour toutes catégories.'
+    },
+    fee:{ ar:'حسب البرنامج', en:'Program-dependent', fr:'Selon programme' },
+    validity:{ ar:'حسب البرنامج', en:'Program-dependent', fr:'Selon programme' },
+    processing:{ ar:'عدة أشهر', en:'Several months', fr:'Plusieurs mois' },
+    photo:{ ar:'صورة شمسية', en:'One ID photo', fr:'Une photo d\'identité' },
+    age:{ ar:'18 سنة وما فوق', en:'18+', fr:'18+' },
+    docs:[
+      { ar:'بطاقة التعريف الوطنية', en:'National ID card', fr:'Carte nationale d\'identité' },
+      { ar:'شهادة الميلاد رقم 12', en:'Birth certificate 12', fr:'Extrait de naissance 12' },
+      { ar:'شهادة الإقامة', en:'Residence certificate', fr:'Certificat de résidence' },
+      { ar:'شهادة عائلية', en:'Family record', fr:'Fiche familiale' },
+      { ar:'شهادة عدم الاستفادة', en:'Non-beneficiary certificate', fr:'Attestation de non-bénéfice' },
+      { ar:'تصريح شرفي بعدم الملكية', en:'Sworn declaration of non-ownership', fr:'Déclaration sur l\'honneur' }
+    ],
+    tips:{
+      ar:'التسجيل عبر المنصة الرقمية للولاية أو القطاع المختص.',
+      en:'Registration via the wilaya or competent sector platform.',
+      fr:'Inscription via la plateforme de la wilaya ou du secteur compétent.'
+    },
+    letters:['manuscript','honor']
+  },
+
+  /* ============ EMPLOYMENT & GRANTS ============ */
+  {
+    id:'minhat-batala',
+    cat:'employment',
+    icon:'fa-hand-holding-dollar',
+    name:{ ar:'منحة البطالة', en:'Unemployment Grant', fr:'Allocation Chômage' },
+    desc:{
+      ar:'منحة شهرية للشباب البطالين المسجلين في وكالة التشغيل.',
+      en:'Monthly grant for unemployed youth registered at the employment agency.',
+      fr:'Allocation mensuelle pour jeunes chômeurs inscrits à l\'agence de l\'emploi.'
+    },
+    fee:{ ar:'مجانية', en:'Free', fr:'Gratuite' },
+    validity:{ ar:'حسب المراجعة السنوية', en:'Annual review basis', fr:'Selon révision annuelle' },
+    processing:{ ar:'من شهر إلى شهرين', en:'1 to 2 months', fr:'1 à 2 mois' },
+    photo:{ ar:'صورة شمسية', en:'One ID photo', fr:'Une photo d\'identité' },
+    age:{ ar:'من 19 إلى 40 سنة', en:'19 to 40 years', fr:'19 à 40 ans' },
+    docs:[
+      { ar:'بطاقة التعريف الوطنية البيومترية', en:'Biometric national ID card', fr:'Carte nationale d\'identité biométrique' },
+      { ar:'شهادة الميلاد رقم 12', en:'Birth certificate 12', fr:'Extrait de naissance 12' },
+      { ar:'شهادة الإقامة', en:'Residence certificate', fr:'Certificat de résidence' },
+      { ar:'شهادة التسجيل في وكالة التشغيل', en:'Employment agency registration certificate', fr:'Attestation d\'inscription à l\'agence de l\'emploi' },
+      { ar:'تصريح شرفي بعدم العمل', en:'Sworn declaration of non-employment', fr:'Déclaration sur l\'honneur de non-emploi' },
+      { ar:'شهادة عدم الانتساب للضمان الاجتماعي', en:'Social security non-affiliation certificate', fr:'Attestation de non-affiliation sociale' },
+      { ar:'صورة شمسية', en:'ID photo', fr:'Photo d\'identité' },
+      { ar:'كشف الحساب البريدي الجاري', en:'Postal account statement', fr:'Relevé de compte postal' }
+    ],
+    tips:{
+      ar:'التسجيل عبر المنصة الرقمية المخصصة. المتزوجون والنساء المعيلات لهم الأولوية.',
+      en:'Registration via the dedicated digital platform. Married applicants and female heads of household have priority.',
+      fr:'Inscription via la plateforme dédiée. Priorité aux mariés et femmes chefs de famille.'
+    },
+    letters:['manuscript','honor','engagement']
+  },
+  {
+    id:'cnas-non-affiliation',
+    cat:'employment',
+    icon:'fa-file-shield',
+    name:{ ar:'شهادة عدم الانتساب للضمان الاجتماعي', en:'Social Security Non-Affiliation Certificate', fr:'Attestation de Non-Affiliation' },
+    desc:{
+      ar:'شهادة تُثبت عدم الانتساب لأي صندوق ضمان اجتماعي.',
+      en:'Certificate proving non-affiliation to any social security body.',
+      fr:'Attestation prouvant la non-affiliation à tout organisme de sécurité sociale.'
+    },
+    fee:{ ar:'مجانية', en:'Free', fr:'Gratuite' },
+    validity:{ ar:'شهر واحد', en:'1 month', fr:'1 mois' },
+    processing:{ ar:'من يوم إلى ثلاثة أيام', en:'1 to 3 days', fr:'1 à 3 jours' },
+    photo:null,
+    age:{ ar:'16 سنة وما فوق', en:'16+', fr:'16+' },
+    docs:[
+      { ar:'بطاقة التعريف الوطنية', en:'National ID card', fr:'Carte nationale d\'identité' },
+      { ar:'شهادة الميلاد رقم 12', en:'Birth certificate 12', fr:'Extrait de naissance 12' },
+      { ar:'شهادة الإقامة', en:'Residence certificate', fr:'Certificat de résidence' },
+      { ar:'تصريح شرفي بعدم الانتساب', en:'Sworn declaration of non-affiliation', fr:'Déclaration sur l\'honneur de non-affiliation' }
+    ],
+    tips:{
+      ar:'تُستخرج من أقرب وكالة للضمان الاجتماعي. مطلوبة في ملفات المنحة والمساعدات.',
+      en:'Issued by the nearest social security agency. Required for grant and assistance files.',
+      fr:'Délivrée par l\'agence la plus proche. Requise pour les dossiers d\'aides.'
+    },
+    letters:['manuscript','honor']
+  },
+
+  /* ============ VISAS ============ */
+  {
+    id:'visa-schengen',
+    cat:'visas',
+    icon:'fa-passport',
+    name:{ ar:'تأشيرة شنغن', en:'Schengen Visa', fr:'Visa Schengen' },
+    desc:{
+      ar:'تأشيرة دخول إلى منطقة شنغن الأوروبية.',
+      en:'Entry visa for the European Schengen area.',
+      fr:'Visa d\'entrée dans l\'espace Schengen européen.'
+    },
+    fee:{ ar:'80 يورو للبالغين · 40 يورو للأطفال', en:'€80 adults · €40 children', fr:'80 € adultes · 40 € enfants' },
+    validity:{ ar:'حسب نوع التأشيرة', en:'Visa type-dependent', fr:'Selon type de visa' },
+    processing:{ ar:'15 يوم عمل', en:'15 working days', fr:'15 jours ouvrables' },
+    photo:{ ar:'35×45 مم، خلفية بيضاء، حديثة', en:'35×45 mm, white background, recent', fr:'35×45 mm, fond blanc, récente' },
+    age:{ ar:'لكل الأعمار', en:'All ages', fr:'Tous âges' },
+    docs:[
+      { ar:'جواز السفر ساري المفعول', en:'Valid passport', fr:'Passeport valide' },
+      { ar:'استمارة طلب التأشيرة مُملّأة', en:'Completed visa application form', fr:'Formulaire de demande rempli' },
+      { ar:'صورتان شمسيتان', en:'Two ID photos', fr:'Deux photos d\'identité' },
+      { ar:'شهادة الإقامة أو شهادة عائلية', en:'Residence or family certificate', fr:'Certificat de résidence ou fiche familiale' },
+      { ar:'كشف الحساب البنكي لثلاثة أشهر', en:'Bank statement for three months', fr:'Relevé bancaire de trois mois' },
+      { ar:'حجز فندقي أو دعوة رسمية', en:'Hotel booking or official invitation', fr:'Réservation hôtel ou invitation officielle' },
+      { ar:'تأمين السفر بمبلغ لا يقل عن ثلاثين ألف يورو', en:'Travel insurance of at least thirty thousand euros', fr:'Assurance voyage d\'au moins trente mille euros' },
+      { ar:'حجز تذكرة الطائرة', en:'Flight reservation', fr:'Réservation du billet d\'avion' },
+      { ar:'شهادة العمل وكشف الراتب', en:'Work certificate and pay slip', fr:'Attestation de travail et fiche de paie' }
+    ],
+    tips:{
+      ar:'الموعد يُحجز مسبقاً. الملف يُودَع شخصياً. مدة المعالجة قد تطول في الموسم.',
+      en:'Appointment must be booked in advance. File submitted in person. Processing can take longer in high season.',
+      fr:'Rendez-vous à réserver à l\'avance. Dépôt en personne. Délais plus longs en haute saison.'
+    },
+    letters:['manuscript','engagement']
+  },
+  {
+    id:'visa-canada',
+    cat:'visas',
+    icon:'fa-maple-leaf',
+    name:{ ar:'تأشيرة كندا', en:'Canada Visa', fr:'Visa Canada' },
+    desc:{
+      ar:'تأشيرة زيارة أو دراسة أو عمل إلى كندا.',
+      en:'Visitor, study or work visa for Canada.',
+      fr:'Visa visiteur, études ou travail pour le Canada.'
+    },
+    fee:{ ar:'100 دولار كندي + 85 دولار للبيومتري', en:'CAD 100 + CAD 85 biometrics', fr:'100 CAD + 85 CAD biométrie' },
+    validity:{ ar:'حسب نوع التأشيرة', en:'Visa type-dependent', fr:'Selon type de visa' },
+    processing:{ ar:'من 3 إلى 8 أسابيع', en:'3 to 8 weeks', fr:'3 à 8 semaines' },
+    photo:{ ar:'35×45 مم، خلفية بيضاء', en:'35×45 mm, white background', fr:'35×45 mm, fond blanc' },
+    age:{ ar:'لكل الأعمار', en:'All ages', fr:'Tous âges' },
+    docs:[
+      { ar:'جواز السفر ساري المفعول', en:'Valid passport', fr:'Passeport valide' },
+      { ar:'استمارة طلب التأشيرة الإلكترونية', en:'Online visa application form', fr:'Formulaire en ligne' },
+      { ar:'كشف الحساب البنكي لستة أشهر', en:'Bank statement for six months', fr:'Relevé bancaire de six mois' },
+      { ar:'شهادة العمل أو الدراسة', en:'Work or study certificate', fr:'Attestation de travail ou d\'études' },
+      { ar:'خطاب توضيحي للغرض من الزيارة', en:'Explanatory letter for the visit', fr:'Lettre explicative' },
+      { ar:'تأمين السفر', en:'Travel insurance', fr:'Assurance voyage' },
+      { ar:'حجز الطيران', en:'Flight reservation', fr:'Réservation de vol' },
+      { ar:'إثبات الروابط بالبلد', en:'Proof of ties to home country', fr:'Preuves d\'attaches au pays' }
+    ],
+    tips:{
+      ar:'يجب إنشاء حساب على المنصة الرقمية الرسمية. البيومتري يُقدَّم في مركز معتمد.',
+      en:'Create an account on the official digital platform. Biometrics submitted at an approved centre.',
+      fr:'Créer un compte sur la plateforme officielle. Biométrie dans un centre agréé.'
+    },
+    letters:['manuscript','engagement']
+  },
+  {
+    id:'visa-uk',
+    cat:'visas',
+    icon:'fa-crown',
+    name:{ ar:'تأشيرة المملكة المتحدة', en:'UK Visa', fr:'Visa Royaume-Uni' },
+    desc:{
+      ar:'تأشيرة زيارة أو دراسة أو عمل إلى المملكة المتحدة.',
+      en:'Visitor, study or work visa for the United Kingdom.',
+      fr:'Visa visiteur, études ou travail pour le Royaume-Uni.'
+    },
+    fee:{ ar:'115 جنيهاً إسترلينياً + البيومتري', en:'£115 + biometrics', fr:'115 £ + biométrie' },
+    validity:{ ar:'6 أشهر لتأشيرة الزيارة', en:'6 months for visitor visa', fr:'6 mois pour visa visiteur' },
+    processing:{ ar:'حوالي 3 أسابيع', en:'About 3 weeks', fr:'Environ 3 semaines' },
+    photo:{ ar:'صورة بيومترية', en:'Biometric photo', fr:'Photo biométrique' },
+    age:{ ar:'لكل الأعمار', en:'All ages', fr:'Tous âges' },
+    docs:[
+      { ar:'جواز السفر', en:'Passport', fr:'Passeport' },
+      { ar:'استمارة طلب التأشيرة الإلكترونية', en:'Online visa application form', fr:'Formulaire en ligne' },
+      { ar:'كشف الحساب البنكي لستة أشهر', en:'Bank statement for six months', fr:'Relevé bancaire de six mois' },
+      { ar:'خطاب توضيحي', en:'Explanatory letter', fr:'Lettre explicative' },
+      { ar:'حجز الفندق والطيران', en:'Hotel and flight booking', fr:'Réservation hôtel et vol' },
+      { ar:'تأمين السفر', en:'Travel insurance', fr:'Assurance voyage' }
+    ],
+    tips:{
+      ar:'الموعد والبيومتري في مركز معتمد. الوثائق تُترجم إلى اللغة الإنجليزية.',
+      en:'Appointment and biometrics at an approved centre. Documents translated to English.',
+      fr:'RDV et biométrie dans un centre agréé. Documents traduits en anglais.'
+    },
+    letters:['manuscript','engagement']
+  },
+  {
+    id:'visa-usa',
+    cat:'visas',
+    icon:'fa-flag-usa',
+    name:{ ar:'تأشيرة الولايات المتحدة', en:'USA Visa', fr:'Visa États-Unis' },
+    desc:{
+      ar:'تأشيرة زيارة أو دراسة أو عمل إلى الولايات المتحدة.',
+      en:'Visitor, study or work visa for the United States.',
+      fr:'Visa visiteur, études ou travail pour les États-Unis.'
+    },
+    fee:{ ar:'185 دولاراً أمريكياً', en:'$185', fr:'185 USD' },
+    validity:{ ar:'حسب نوع التأشيرة', en:'Visa type-dependent', fr:'Selon type de visa' },
+    processing:{ ar:'مدة الموعد + أسبوع للمعالجة', en:'Appointment wait + one week', fr:'Délai de RDV + une semaine' },
+    photo:{ ar:'5×5 سم، خلفية بيضاء', en:'5×5 cm, white background', fr:'5×5 cm, fond blanc' },
+    age:{ ar:'لكل الأعمار', en:'All ages', fr:'Tous âges' },
+    docs:[
+      { ar:'جواز السفر', en:'Passport', fr:'Passeport' },
+      { ar:'استمارة طلب التأشيرة الإلكترونية', en:'Online visa application form', fr:'Formulaire en ligne' },
+      { ar:'صورة شمسية بمقاس 5×5 سم', en:'Photo 5×5 cm', fr:'Photo 5×5 cm' },
+      { ar:'وصل دفع الرسوم', en:'Payment receipt', fr:'Reçu de paiement' },
+      { ar:'كشف الحساب البنكي', en:'Bank statement', fr:'Relevé bancaire' },
+      { ar:'شهادة العمل أو الدراسة', en:'Work or study certificate', fr:'Attestation de travail ou d\'études' },
+      { ar:'إثبات الروابط بالبلد', en:'Proof of ties to home country', fr:'Preuves d\'attaches au pays' }
+    ],
+    tips:{
+      ar:'الموعد يُحجز مسبقاً. المقابلة شخصية وإلزامية.',
+      en:'Appointment booked in advance. In-person interview is mandatory.',
+      fr:'Rendez-vous à réserver. Entretien en personne obligatoire.'
+    },
+    letters:['manuscript','engagement']
+  },
+
+  /* ============ BUSINESS ============ */
+  {
+    id:'auto-entrepreneur',
+    cat:'business',
+    icon:'fa-user-tie',
+    name:{ ar:'صفة المقاول الذاتي', en:'Auto-Entrepreneur Status', fr:'Statut Auto-Entrepreneur' },
+    desc:{
+      ar:'بطاقة المقاول الذاتي للأشخاص الذين يزاولون نشاطاً فردياً.',
+      en:'Auto-entrepreneur card for individuals conducting independent activity.',
+      fr:'Carte d\'auto-entrepreneur pour les personnes exerçant une activité individuelle.'
+    },
+    fee:{ ar:'مجانية', en:'Free', fr:'Gratuite' },
+    validity:{ ar:'3 سنوات قابلة للتجديد', en:'3 years renewable', fr:'3 ans renouvelable' },
+    processing:{ ar:'من 15 إلى 30 يوماً', en:'15 to 30 days', fr:'15 à 30 jours' },
+    photo:{ ar:'صورة شمسية', en:'One ID photo', fr:'Une photo d\'identité' },
+    age:{ ar:'18 سنة وما فوق', en:'18+', fr:'18+' },
+    docs:[
+      { ar:'بطاقة التعريف الوطنية البيومترية', en:'Biometric national ID card', fr:'Carte nationale d\'identité biométrique' },
+      { ar:'شهادة الميلاد رقم 12', en:'Birth certificate 12', fr:'Extrait de naissance 12' },
+      { ar:'شهادة الإقامة', en:'Residence certificate', fr:'Certificat de résidence' },
+      { ar:'صورة شمسية', en:'ID photo', fr:'Photo d\'identité' },
+      { ar:'شهادة عدم الانتساب للضمان الاجتماعي', en:'Social security non-affiliation certificate', fr:'Attestation de non-affiliation sociale' },
+      { ar:'تصريح شرفي بعدم ممارسة نشاط آخر', en:'Sworn declaration of no other activity', fr:'Déclaration sur l\'honneur' }
+    ],
+    tips:{
+      ar:'التسجيل عبر المنصة الرقمية المخصصة. البطاقة تتيح فتح حساب بنكي مهني.',
+      en:'Registration via the dedicated digital platform. The card allows opening a professional bank account.',
+      fr:'Inscription via la plateforme numérique dédiée. La carte permet d\'ouvrir un compte professionnel.'
+    },
+    letters:['manuscript','honor']
+  },
+  {
+    id:'rc',
+    cat:'business',
+    icon:'fa-store',
+    name:{ ar:'السجل التجاري', en:'Commercial Register', fr:'Registre de Commerce' },
+    desc:{
+      ar:'تسجيل النشاط التجاري لدى المركز الوطني للسجل التجاري.',
+      en:'Commercial activity registration at the National Commercial Register Centre.',
+      fr:'Immatriculation de l\'activité commerciale au Centre National du Registre de Commerce.'
+    },
+    fee:{ ar:'من 10,000 إلى 15,000 دج', en:'10,000 to 15,000 DA', fr:'10 000 à 15 000 DA' },
+    validity:{ ar:'5 سنوات', en:'5 years', fr:'5 ans' },
+    processing:{ ar:'من 3 إلى 7 أيام', en:'3 to 7 days', fr:'3 à 7 jours' },
+    photo:{ ar:'صورة شمسية', en:'One ID photo', fr:'Une photo d\'identité' },
+    age:{ ar:'18 سنة وما فوق', en:'18+', fr:'18+' },
+    docs:[
+      { ar:'بطاقة التعريف الوطنية', en:'National ID card', fr:'Carte nationale d\'identité' },
+      { ar:'شهادة الميلاد رقم 12', en:'Birth certificate 12', fr:'Extrait de naissance 12' },
+      { ar:'شهادة الإقامة', en:'Residence certificate', fr:'Certificat de résidence' },
+      { ar:'شهادة عدم الانتساب للضمان الاجتماعي', en:'Social security non-affiliation certificate', fr:'Attestation de non-affiliation sociale' },
+      { ar:'عقد الملكية أو عقد الإيجار للمحل', en:'Ownership deed or lease for the premises', fr:'Acte de propriété ou bail du local' },
+      { ar:'محضر تعيين المدير المسؤول عند الحاجة', en:'Manager appointment minutes if applicable', fr:'PV de nomination du gérant si applicable' },
+      { ar:'وصل دفع الرسوم', en:'Payment receipt', fr:'Quittance de paiement' }
+    ],
+    tips:{
+      ar:'التسجيل عبر البوابة الإلكترونية المخصصة. تحديد النشاط بدقة وفق التصنيف الوطني.',
+      en:'Registration via the dedicated online portal. Activity must be precisely chosen according to national classification.',
+      fr:'Inscription via le portail en ligne dédié. Activité à choisir selon la nomenclature nationale.'
+    },
+    letters:['manuscript','engagement']
+  },
+  {
+    id:'loss',
+    cat:'business',
+    icon:'fa-file-circle-exclamation',
+    name:{ ar:'تصريح ضياع وثيقة', en:'Document Loss Declaration', fr:'Déclaration de Perte' },
+    desc:{
+      ar:'تصريح رسمي بضياع وثيقة إدارية أو مالية للاستفادة من التعويض.',
+      en:'Official declaration for loss of an administrative or financial document.',
+      fr:'Déclaration officielle pour perte de document administratif ou financier.'
+    },
+    fee:{ ar:'مجانية', en:'Free', fr:'Gratuite' },
+    validity:{ ar:'فوري', en:'Immediate', fr:'Immédiate' },
+    processing:{ ar:'في نفس اليوم', en:'Same day', fr:'Le jour même' },
+    photo:null,
+    age:{ ar:'16 سنة وما فوق', en:'16+', fr:'16+' },
+    docs:[
+      { ar:'بطاقة التعريف الوطنية', en:'National ID card', fr:'Carte nationale d\'identité' },
+      { ar:'شهادة الإقامة', en:'Residence certificate', fr:'Certificat de résidence' },
+      { ar:'تصريح شرفي مفصّل بالضياع', en:'Detailed sworn declaration of loss', fr:'Déclaration détaillée de perte' },
+      { ar:'محضر الضياع عند الحاجة', en:'Loss report if applicable', fr:'Procès-verbal si applicable' }
+    ],
+    tips:{
+      ar:'التصريح في أقرب مركز أمني. الوثائق المالية تتطلب إجراءً إضافياً لدى المؤسسة المالية.',
+      en:'Report to the nearest police station. Financial documents require an additional step at the financial institution.',
+      fr:'Déclaration au poste de police le plus proche. Documents financiers : démarche supplémentaire auprès de la banque.'
+    },
+    letters:['loss','honor','manuscript']
+  }
+];
+
+/* ============================================================
+   4. LETTER TYPES
+   ============================================================ */
+const LETTER_TYPES = [
+  { id:'manuscript', icon:'fa-pen-fancy',           key:'ltManuscript' },
+  { id:'honor',      icon:'fa-file-signature',      key:'ltHonor' },
+  { id:'engagement', icon:'fa-handshake',           key:'ltEngagement' },
+  { id:'loss',       icon:'fa-triangle-exclamation',key:'ltLoss' }
+];
+
+/* ============================================================
+   5. STATE
+   ============================================================ */
+const STORAGE_KEY = 'saivdossier_state_v2';
+
+const State = {
+  lang:'ar',
+  theme:'light',
+  category:'all',
+  search:'',
+  activeId:null,
+  checks:{},
+  letterTab:'manuscript',
+  letterFields:{
+    name:'', dob:'', birthPlace:'', idNumber:'',
+    address:'', city:'', wilaya:'', authority:'',
+    subject:'', body:''
+  }
+};
+
+/* ============================================================
+   6. HELPERS
+   ============================================================ */
+const $  = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.prototype.slice.call((r || document).querySelectorAll(s));
+
+function t(k){
+  const d = I18N[State.lang] || I18N.en;
+  return d[k] !== undefined ? d[k] : (I18N.en[k] || k);
+}
+function L(o){
+  if (!o) return '';
+  if (typeof o === 'string') return o;
+  return o[State.lang] || o.en || o.fr || o.ar || '';
+}
+function esc(v){
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[c]);
+}
+function toast(msg, isErr){
+  const el = $('#toast');
+  el.querySelector('i').className = isErr ? 'fa-solid fa-triangle-exclamation' : 'fa-solid fa-circle-check';
+  el.querySelector('i').style.color = isErr ? '#f87171' : '#4ade80';
+  $('#toastMsg').textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => el.classList.remove('on'), 2400);
+}
+function save(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(State)); }catch(e){} }
+function load(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.lang && I18N[d.lang]) State.lang = d.lang;
+    if (d.theme) State.theme = d.theme;
+    if (d.category) State.category = d.category;
+    if (d.checks && typeof d.checks === 'object') State.checks = d.checks;
+    if (d.letterTab) State.letterTab = d.letterTab;
+    if (d.letterFields) Object.assign(State.letterFields, d.letterFields);
+  }catch(e){}
+}
+function currentDossier(){
+  return DOSSIERS.find(d => d.id === State.activeId) || null;
+}
+
+/* ============================================================
+   7. THEME
+   ============================================================ */
+function applyTheme(theme){
+  State.theme = theme === 'dark' ? 'dark' : 'light';
+  document.documentElement.classList.toggle('dark', State.theme === 'dark');
+  save();
+}
+
+/* ============================================================
+   8. LANGUAGE
+   ============================================================ */
+function applyLang(lang){
+  if (!I18N[lang]) lang = 'ar';
+  State.lang = lang;
+  document.documentElement.setAttribute('lang', lang);
+  document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+  $('#langLabel').textContent = lang.toUpperCase();
+  $$('.lang-opt').forEach(o => o.classList.toggle('active', o.getAttribute('data-lang') === lang));
+
+  /* Update static i18n text */
+  $$('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (I18N[lang][k]) el.textContent = I18N[lang][k];
+  });
+
+  /* Re-render dynamic content */
+  renderCategories();
+  renderCards();
+  if (State.activeId){
+    renderDetailHead();
+    renderChecklist();
+    renderLettersList();
+    renderLetterPreview();
+  }
+  save();
+}
+
+/* ============================================================
+   9. RENDER — CATEGORIES
+   ============================================================ */
+function renderCategories(){
+  const el = $('#cats');
+  el.innerHTML = CATEGORIES.map(c => {
+    const count = c.id === 'all' ? DOSSIERS.length : DOSSIERS.filter(d => d.cat === c.id).length;
+    const active = State.category === c.id ? 'active' : '';
+    return '<button class="cat-pill ' + active + '" data-cat="' + c.id + '">' +
+      '<i class="fa-solid ' + c.icon + '"></i>' +
+      '<span>' + esc(t(c.key)) + '</span>' +
+      '<span class="count">' + count + '</span>' +
+    '</button>';
+  }).join('');
+
+  $$('.cat-pill', el).forEach(b => {
+    b.addEventListener('click', () => {
+      State.category = b.getAttribute('data-cat');
+      renderCategories();
+      renderCards();
+      save();
+    });
+  });
+}
+
+/* ============================================================
+   10. RENDER — CARDS
+   ============================================================ */
+function dossierProgress(d){
+  const checks = State.checks[d.id] || {};
+  const done = d.docs.filter((_, i) => checks[i]).length;
+  const total = d.docs.length;
+  return { done, total, pct: total ? Math.round(done / total * 100) : 0 };
+}
+
+function matches(d){
+  if (State.category !== 'all' && d.cat !== State.category) return false;
+  if (!State.search) return true;
+  const q = State.search.toLowerCase().trim();
+  if (!q) return true;
+  const hay = [
+    d.id, d.cat,
+    d.name.ar, d.name.en, d.name.fr,
+    d.desc.ar, d.desc.en, d.desc.fr,
+    d.docs.map(x => x.ar + ' ' + x.en + ' ' + x.fr).join(' ')
+  ].join(' ').toLowerCase();
+  return q.split(/\s+/).every(tok => hay.indexOf(tok) !== -1);
+}
+
+function renderCards(){
+  const el = $('#grid');
+  const empty = $('#empty');
+  const visible = DOSSIERS.filter(matches);
+
+  if (!visible.length){
+    el.innerHTML = '';
+    empty.classList.add('on');
+    $('#resultCount').textContent = '';
+    return;
+  }
+  empty.classList.remove('on');
+
+  el.innerHTML = visible.map(d => {
+    const p = dossierProgress(d);
+    const catKey = CATEGORIES.find(c => c.id === d.cat);
+    return '<article class="card" data-id="' + d.id + '">' +
+      '<div class="card-top">' +
+        '<div class="card-icon"><i class="fa-solid ' + d.icon + '"></i></div>' +
+        '<span class="card-cat">' + esc(t(catKey.key)) + '</span>' +
+      '</div>' +
+      '<h3 class="card-title">' + esc(L(d.name)) + '</h3>' +
+      '<p class="card-desc">' + esc(L(d.desc)) + '</p>' +
+      '<div class="card-progress">' +
+        '<div class="bar' + (p.pct === 100 ? ' full' : '') + '"><span style="width:' + p.pct + '%"></span></div>' +
+        '<span>' + p.done + '/' + p.total + '</span>' +
+      '</div>' +
+      '<div class="card-foot">' +
+        '<span class="card-fee"><i class="fa-solid fa-tag"></i>' + esc(L(d.fee)) + '</span>' +
+        '<span class="card-arrow"><i class="fa-solid fa-arrow-right"></i></span>' +
+      '</div>' +
+    '</article>';
+  }).join('');
+
+  $('#resultCount').textContent = visible.length + ' / ' + DOSSIERS.length;
+
+  $$('.card', el).forEach(c => {
+    c.addEventListener('click', () => openDetail(c.getAttribute('data-id')));
+  });
+}
+
+/* ============================================================
+   11. OPEN / CLOSE DETAIL
+   ============================================================ */
+function openDetail(id){
+  const d = DOSSIERS.find(x => x.id === id);
+  if (!d) return;
+  State.activeId = id;
+
+  $('#homeView').style.display = 'none';
+  $('#detailView').classList.add('on');
+
+  renderDetailHead();
+  renderChecklist();
+  renderLettersList();
+
+  /* Choose first available letter type */
+  if (d.letters && d.letters.length && !d.letters.includes(State.letterTab)){
+    State.letterTab = d.letters[0];
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  save();
+}
+
+function closeDetail(){
+  State.activeId = null;
+  $('#detailView').classList.remove('on');
+  $('#homeView').style.display = '';
+  renderCards();
+  save();
+}
+
+/* ============================================================
+   12. RENDER — DETAIL HEAD
+   ============================================================ */
+function renderDetailHead(){
+  const d = currentDossier();
+  if (!d) return;
+  const catKey = CATEGORIES.find(c => c.id === d.cat);
+
+  const chips = [
+    { icon:'fa-tag', label:t('chipFee'), val:L(d.fee) },
+    { icon:'fa-calendar-check', label:t('chipValidity'), val:L(d.validity) },
+    { icon:'fa-clock', label:t('chipProcessing'), val:L(d.processing) },
+    d.photo ? { icon:'fa-camera', label:t('chipPhoto'), val:L(d.photo) } : null,
+    d.age ? { icon:'fa-user-clock', label:t('chipAge'), val:L(d.age) } : null
+  ].filter(Boolean);
+
+  $('#detailHead').innerHTML =
+    '<div class="dh-top">' +
+      '<div class="dh-icon"><i class="fa-solid ' + d.icon + '"></i></div>' +
+      '<div class="dh-text">' +
+        '<div class="dh-cat">' + esc(t(catKey.key)) + '</div>' +
+        '<h1 class="dh-title">' + esc(L(d.name)) + '</h1>' +
+        '<p class="dh-desc">' + esc(L(d.desc)) + '</p>' +
+      '</div>' +
+    '</div>' +
+    '<div class="info-chips">' +
+      chips.map(c =>
+        '<div class="info-chip">' +
+          '<div class="ic-ico"><i class="fa-solid ' + c.icon + '"></i></div>' +
+          '<div class="ic-text">' +
+            '<span class="ic-lbl">' + esc(c.label) + '</span>' +
+            '<span class="ic-val">' + esc(c.val) + '</span>' +
+          '</div>' +
+        '</div>'
+      ).join('') +
+    '</div>';
+}
+
+/* ============================================================
+   13. RENDER — CHECKLIST
+   ============================================================ */
+function renderChecklist(){
+  const d = currentDossier();
+  if (!d) return;
+  const checks = State.checks[d.id] || {};
+
+  $('#checklist').innerHTML = d.docs.map((doc, i) => {
+    const done = !!checks[i];
+    return '<div class="check-item ' + (done ? 'done' : '') + '" data-idx="' + i + '">' +
+      '<span class="check-box"><i class="fa-solid fa-check"></i></span>' +
+      '<span class="check-text">' + esc(L(doc)) + '</span>' +
+      '<span class="check-num">' + String(i + 1).padStart(2, '0') + '</span>' +
+    '</div>';
+  }).join('');
+
+  $$('.check-item', $('#checklist')).forEach(item => {
+    item.addEventListener('click', () => {
+      const idx = parseInt(item.getAttribute('data-idx'), 10);
+      if (!State.checks[d.id]) State.checks[d.id] = {};
+      if (State.checks[d.id][idx]) delete State.checks[d.id][idx];
+      else State.checks[d.id][idx] = true;
+      renderChecklist();
+      save();
+    });
+  });
+
+  renderTips(d);
+  updateProgress();
+}
+
+function renderTips(d){
+  const el = $('#tipsBlock');
+  if (!d.tips){ el.innerHTML = ''; return; }
+  el.innerHTML =
+    '<div class="tips">' +
+      '<i class="fa-solid fa-lightbulb"></i>' +
+      '<div class="text">' +
+        '<b>' + esc(t('tipsTitle')) + '</b>' +
+        esc(L(d.tips)) +
+      '</div>' +
+    '</div>';
+}
+
+function updateProgress(){
+  const d = currentDossier();
+  if (!d) return;
+  const p = dossierProgress(d);
+  $('#progressPct').textContent = p.pct + '%';
+  $('#progressCount').textContent = p.done + '/' + p.total;
+  const fill = $('#progressFill');
+  fill.style.width = p.pct + '%';
+  fill.parentElement.classList.toggle('full', p.pct === 100);
+
+  const msg = $('#progressMsg');
+  if (p.pct === 0) msg.textContent = t('progressMsgEmpty');
+  else if (p.pct < 50) msg.textContent = p.done + ' ' + t('progressReady');
+  else if (p.pct < 100) msg.textContent = t('progressMsgPartial');
+  else msg.textContent = t('progressMsgDone');
+  msg.classList.toggle('ok', p.pct === 100);
+}
+
+/* ============================================================
+   14. RENDER — LETTERS LIST (in detail panel)
+   ============================================================ */
+function renderLettersList(){
+  const d = currentDossier();
+  if (!d) return;
+  const available = d.letters || ['manuscript'];
+  const el = $('#lettersList');
+
+  el.innerHTML = LETTER_TYPES.filter(lt => available.includes(lt.id)).map(lt => {
+    return '<div class="letter-cta" data-lt="' + lt.id + '">' +
+      '<div class="lc-ico"><i class="fa-solid ' + lt.icon + '"></i></div>' +
+      '<div class="lc-text">' +
+        '<div class="lc-title">' + esc(t(lt.key)) + '</div>' +
+        '<div class="lc-desc">' + esc(L(d.name)) + '</div>' +
+      '</div>' +
+      '<i class="fa-solid fa-chevron-right lc-go"></i>' +
+    '</div>';
+  }).join('');
+
+  $$('.letter-cta', el).forEach(cta => {
+    cta.addEventListener('click', () => {
+      const lt = cta.getAttribute('data-lt');
+      openLetterModal(lt);
+    });
+  });
+}
+
+/* ============================================================
+   15. LETTER MODAL
+   ============================================================ */
+function openLetterModal(letterType){
+  const d = currentDossier();
+  if (!d) return;
+  if (letterType) State.letterTab = letterType;
+
+  renderLetterTypePills();
+  bindLetterInputs();
+  renderLetterPreview();
+
+  $('#modalBack').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLetterModal(){
+  $('#modalBack').classList.remove('on');
+  document.body.style.overflow = '';
+}
+
+function renderLetterTypePills(){
+  const d = currentDossier();
+  if (!d) return;
+  const available = d.letters || ['manuscript'];
+  const el = $('#letterTypePills');
+  el.innerHTML = LETTER_TYPES.filter(lt => available.includes(lt.id)).map(lt => {
+    const active = State.letterTab === lt.id ? 'active' : '';
+    return '<button class="lt-pill ' + active + '" data-lt="' + lt.id + '">' +
+      '<i class="fa-solid ' + lt.icon + '"></i>' +
+      '<span>' + esc(t(lt.key)) + '</span>' +
+    '</button>';
+  }).join('');
+
+  $$('.lt-pill', el).forEach(p => {
+    p.addEventListener('click', () => {
+      State.letterTab = p.getAttribute('data-lt');
+      renderLetterTypePills();
+      renderLetterPreview();
+      save();
+    });
+  });
+}
+
+function bindLetterInputs(){
+  const map = {
+    fName:'name', fDob:'dob', fBirthPlace:'birthPlace', fIdNumber:'idNumber',
+    fAddress:'address', fCity:'city', fWilaya:'wilaya', fAuthority:'authority',
+    fSubject:'subject', fBody:'body'
+  };
+  Object.keys(map).forEach(id => {
+    const el = $('#' + id);
+    if (!el) return;
+    el.value = State.letterFields[map[id]] || '';
+    if (!el._wired){
+      el._wired = true;
+      el.addEventListener('input', () => {
+        State.letterFields[map[id]] = el.value;
+        renderLetterPreview();
+        save();
+      });
+    }
+  });
+}
+
+function renderLetterPreview(){
+  const f = State.letterFields;
+  const el = $('#letterPreview');
+  const lt = State.letterTab;
+  const isAr = State.lang === 'ar';
+
+  el.className = 'letter-preview-wrap ' + (isAr ? 'rtl' : 'ltr');
+
+  if (!f.name && !f.address && !f.authority){
+    el.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:60px 24px;text-align:center;color:#94a3b8">' +
+        '<i class="fa-solid fa-pen-fancy" style="font-size:28px"></i>' +
+        '<p style="font-size:12.5px;font-weight:600">' + esc(t('lpPreviewEmpty')) + '</p>' +
+      '</div>';
+    return;
+  }
+
+  const city = f.city || '..........................';
+  const wilaya = f.wilaya || '..........................';
+  const dateStr = new Date().toLocaleDateString(
+    isAr ? 'fr-DZ' : (State.lang === 'fr' ? 'fr-FR' : 'en-GB')
+  );
+
+  let bodyHTML = '';
+
+  if (lt === 'manuscript'){
+    bodyHTML =
+      '<div class="lp-identity">' +
+        '<p><b>' + esc(t('lpRequestPrefix')) + '</b> ' + esc(f.name || '..........................') + '</p>' +
+        '<p>' + esc(t('lpRequestBorn')) + ' <b>' + esc(f.dob || '__/__/____') + '</b> ' +
+          esc(t('lpRequestAt')) + ' <b>' + esc(f.birthPlace || '..........................') + '</b></p>' +
+        '<p>' + esc(t('lpRequestId')) + ' <b>' + esc(f.idNumber || '..........................') + '</b></p>' +
+        '<p>' + esc(t('lpRequestAddr')) + ' <b>' + esc(f.address || '..........................') + '</b>، ' +
+          esc(city) + ' — ' + esc(wilaya) + '</p>' +
+      '</div>' +
+      '<div class="lp-body">' +
+        '<p>' + esc(t('lpRequestBody')) + ' <b>' + esc(f.subject || '..........................') + '</b></p>' +
+        (f.body ? '<p>' + esc(t('lpRequestReason')) + ' <b>' + esc(f.body) + '</b></p>' : '') +
+        '<p>' + esc(t('lpRequestClosing')) + '</p>' +
+      '</div>';
+  } else if (lt === 'honor'){
+    bodyHTML =
+      '<div class="lp-identity">' +
+        '<p><b>' + esc(t('lpHonorPrefix')) + '</b> ' + esc(f.name || '..........................') + '</p>' +
+        '<p>' + esc(t('lpRequestBorn')) + ' <b>' + esc(f.dob || '__/__/____') + '</b> ' +
+          esc(t('lpRequestAt')) + ' <b>' + esc(f.birthPlace || '..........................') + '</b></p>' +
+        '<p>' + esc(t('lpRequestId')) + ' <b>' + esc(f.idNumber || '..........................') + '</b></p>' +
+      '</div>' +
+      '<div class="lp-body">' +
+        '<p>' + esc(t('lpHonorDeclare')) + ' <b>' + esc(f.body || f.subject || '..........................') + '</b></p>' +
+        '<p>' + esc(t('lpHonorResponsibility')) + '</p>' +
+      '</div>';
+  } else if (lt === 'engagement'){
+    bodyHTML =
+      '<div class="lp-identity">' +
+        '<p><b>' + esc(t('lpEngagePrefix')) + '</b> ' + esc(f.name || '..........................') + '</p>' +
+        '<p>' + esc(t('lpRequestBorn')) + ' <b>' + esc(f.dob || '__/__/____') + '</b> ' +
+          esc(t('lpRequestAt')) + ' <b>' + esc(f.birthPlace || '..........................') + '</b></p>' +
+        '<p>' + esc(t('lpRequestId')) + ' <b>' + esc(f.idNumber || '..........................') + '</b></p>' +
+      '</div>' +
+      '<div class="lp-body">' +
+        '<p>' + esc(t('lpEngageCommit')) + ' <b>' + esc(f.body || f.subject || '..........................') + '</b></p>' +
+      '</div>';
+  } else if (lt === 'loss'){
+    bodyHTML =
+      '<div class="lp-identity">' +
+        '<p><b>' + esc(t('lpLossPrefix')) + '</b> ' + esc(f.name || '..........................') + '</p>' +
+        '<p>' + esc(t('lpRequestBorn')) + ' <b>' + esc(f.dob || '__/__/____') + '</b> ' +
+          esc(t('lpRequestAt')) + ' <b>' + esc(f.birthPlace || '..........................') + '</b></p>' +
+        '<p>' + esc(t('lpRequestId')) + ' <b>' + esc(f.idNumber || '..........................') + '</b></p>' +
+      '</div>' +
+      '<div class="lp-body">' +
+        '<p>' + esc(t('lpLossDeclare')) + ' <b>' + esc(f.subject || '..........................') + '</b></p>' +
+        (f.body ? '<p>' + esc(t('lpLossCircumstances')) + ' <b>' + esc(f.body) + '</b></p>' : '') +
+      '</div>';
+  }
+
+  el.innerHTML =
+    '<div class="lp-republic">' + esc(t('lpRepublic')) +
+      '<small>' + esc(t('lpMinistry')) + '</small>' +
+    '</div>' +
+    '<div class="lp-recipient">' + esc(t('lpTo')) + ' ' + esc(f.authority || '..........................') + '</div>' +
+    (f.subject && lt === 'manuscript'
+      ? '<div class="lp-subject"><span class="lbl">' + esc(t('lpSubject')) + '</span>' + esc(f.subject) + '</div>'
+      : '') +
+    bodyHTML +
+    '<div class="lp-date">' + esc(t('lpDate')) + ' ' + esc(city) + '، ' + esc(t('lpOn')) + ' ' + esc(dateStr) + '</div>' +
+    '<div class="lp-sign">' + esc(t('lpSignature')) + '<br><span class="line">..........................</span></div>';
+}
+
+/* ============================================================
+   16. PRINT — CHECKLIST
+   ============================================================ */
+function printChecklist(){
+  const d = currentDossier();
+  if (!d) return;
+  const checks = State.checks[d.id] || {};
+  const isAr = State.lang === 'ar';
+  const p = dossierProgress(d);
+
+  $('#printArea').innerHTML =
+    '<div class="print-doc ' + (isAr ? 'rtl' : 'ltr') + '">' +
+      '<h1>' + esc(L(d.name)) + '</h1>' +
+      '<div class="p-meta">' +
+        esc(t('chipFee')) + ': ' + esc(L(d.fee)) + ' · ' +
+        esc(t('chipValidity')) + ': ' + esc(L(d.validity)) +
+      '</div>' +
+      '<div class="p-progress">' +
+        '✓ ' + p.done + ' / ' + p.total + ' — ' + p.pct + '% ' + esc(t('progressReady')) +
+      '</div>' +
+      d.docs.map((doc, i) => {
+        const done = !!checks[i];
+        return '<div class="p-cl-item ' + (done ? 'done' : '') + '">' +
+          '<span class="box"></span>' +
+          '<span class="txt">' + esc(L(doc)) + '</span>' +
+        '</div>';
+      }).join('') +
+    '</div>';
+
+  setTimeout(() => window.print(), 80);
+  toast(t('printReady'));
+}
+
+/* ============================================================
+   17. PRINT — LETTER
+   ============================================================ */
+function printLetter(){
+  const f = State.letterFields;
+  if (!f.name){ toast(t('needName'), true); return; }
+  const lt = State.letterTab;
+  const isAr = State.lang === 'ar';
+  const city = f.city || '..........................';
+  const dateStr = new Date().toLocaleDateString(
+    isAr ? 'fr-DZ' : (State.lang === 'fr' ? 'fr-FR' : 'en-GB')
+  );
+
+  let bodyHTML = '';
+  if (lt === 'manuscript'){
+    bodyHTML =
+      '<div class="p-identity">' +
+        '<p><b>' + esc(t('lpRequestPrefix')) + '</b> ' + esc(f.name) + '</p>' +
+        '<p>' + esc(t('lpRequestBorn')) + ' <b>' + esc(f.dob || '__/__/____') + '</b> ' +
+          esc(t('lpRequestAt')) + ' <b>' + esc(f.birthPlace || '—') + '</b></p>' +
+        '<p>' + esc(t('lpRequestId')) + ' <b>' + esc(f.idNumber || '—') + '</b></p>' +
+        '<p>' + esc(t('lpRequestAddr')) + ' <b>' + esc(f.address || '—') + '</b>، ' + esc(city) + '</p>' +
+      '</div>' +
+      '<div class="p-subject">' + esc(t('lpSubject')) + ' ' + esc(f.subject || '—') + '</div>' +
+      '<div class="p-body">' +
+        '<p>' + esc(t('lpRequestBody')) + ' <b>' + esc(f.subject || '—') + '</b></p>' +
+        (f.body ? '<p>' + esc(t('lpRequestReason')) + ' <b>' + esc(f.body) + '</b></p>' : '') +
+        '<p>' + esc(t('lpRequestClosing')) + '</p>' +
+      '</div>';
+  } else if (lt === 'honor'){
+    bodyHTML =
+      '<div class="p-identity">' +
+        '<p><b>' + esc(t('lpHonorPrefix')) + '</b> ' + esc(f.name) + '</p>' +
+        '<p>' + esc(t('lpRequestBorn')) + ' <b>' + esc(f.dob || '__/__/____') + '</b> ' +
+          esc(t('lpRequestAt')) + ' <b>' + esc(f.birthPlace || '—') + '</b></p>' +
+        '<p>' + esc(t('lpRequestId')) + ' <b>' + esc(f.idNumber || '—') + '</b></p>' +
+      '</div>' +
+      '<div class="p-body">' +
+        '<p>' + esc(t('lpHonorDeclare')) + ' <b>' + esc(f.body || f.subject || '—') + '</b></p>' +
+        '<p>' + esc(t('lpHonorResponsibility')) + '</p>' +
+      '</div>';
+  } else if (lt === 'engagement'){
+    bodyHTML =
+      '<div class="p-identity">' +
+        '<p><b>' + esc(t('lpEngagePrefix')) + '</b> ' + esc(f.name) + '</p>' +
+        '<p>' + esc(t('lpRequestBorn')) + ' <b>' + esc(f.dob || '__/__/____') + '</b></p>' +
+        '<p>' + esc(t('lpRequestId')) + ' <b>' + esc(f.idNumber || '—') + '</b></p>' +
+      '</div>' +
+      '<div class="p-body">' +
+        '<p>' + esc(t('lpEngageCommit')) + ' <b>' + esc(f.body || f.subject || '—') + '</b></p>' +
+      '</div>';
+  } else if (lt === 'loss'){
+    bodyHTML =
+      '<div class="p-identity">' +
+        '<p><b>' + esc(t('lpLossPrefix')) + '</b> ' + esc(f.name) + '</p>' +
+        '<p>' + esc(t('lpRequestId')) + ' <b>' + esc(f.idNumber || '—') + '</b></p>' +
+      '</div>' +
+      '<div class="p-body">' +
+        '<p>' + esc(t('lpLossDeclare')) + ' <b>' + esc(f.subject || '—') + '</b></p>' +
+        (f.body ? '<p>' + esc(t('lpLossCircumstances')) + ' <b>' + esc(f.body) + '</b></p>' : '') +
+      '</div>';
+  }
+
+  $('#printArea').innerHTML =
+    '<div class="print-doc ' + (isAr ? 'rtl' : 'ltr') + '">' +
+      '<div class="p-republic">' + esc(t('lpRepublic')) +
+        '<small>' + esc(t('lpMinistry')) + '</small>' +
+      '</div>' +
+      '<div class="p-recipient">' + esc(t('lpTo')) + ' ' + esc(f.authority || '..........................') + '</div>' +
+      bodyHTML +
+      '<div class="p-date">' + esc(t('lpDate')) + ' ' + esc(city) + '، ' + esc(t('lpOn')) + ' ' + esc(dateStr) + '</div>' +
+      '<div class="p-sign">' + esc(t('lpSignature')) + '<br><span class="line">..........................</span></div>' +
+    '</div>';
+
+  setTimeout(() => window.print(), 80);
+  toast(t('printReady'));
+}
+
+/* ============================================================
+   18. EVENT WIRING
+   ============================================================ */
+function wire(){
+
+  /* Navbar scroll */
+  const nav = $('#navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+    $('#toTop').classList.toggle('on', window.scrollY > 500);
+  }, { passive:true });
+
+  /* Theme */
+  $('#themeBtn').addEventListener('click', () => {
+    applyTheme(State.theme === 'dark' ? 'light' : 'dark');
+  });
+
+  /* Language dropdown */
+  const langWrap = $('#langWrap');
+  $('#langBtn').addEventListener('click', e => {
+    e.stopPropagation();
+    langWrap.classList.toggle('open');
+  });
+  $$('.lang-opt').forEach(o => {
+    o.addEventListener('click', () => {
+      applyLang(o.getAttribute('data-lang'));
+      langWrap.classList.remove('open');
+    });
+  });
+  document.addEventListener('click', e => {
+    if (!langWrap.contains(e.target)) langWrap.classList.remove('open');
+  });
+
+  /* Mobile drawer */
+  const openDrawer = () => {
+    $('#drawer').classList.add('open');
+    $('#drawerBack').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  const closeDrawer = () => {
+    $('#drawer').classList.remove('open');
+    $('#drawerBack').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+  $('#menuBtn').addEventListener('click', openDrawer);
+  $('#drawerClose').addEventListener('click', closeDrawer);
+  $('#drawerBack').addEventListener('click', closeDrawer);
+  $$('.drawer-link').forEach(a => a.addEventListener('click', closeDrawer));
+
+  /* Escape key */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape'){
+      closeDrawer();
+      closeLetterModal();
+      langWrap.classList.remove('open');
+    }
+  });
+
+  /* Search */
+  const si = $('#searchInput');
+  si.setAttribute('placeholder', t('searchPh'));
+  let deb = null;
+  si.addEventListener('input', () => {
+    clearTimeout(deb);
+    deb = setTimeout(() => {
+      State.search = si.value;
+      $('#searchClear').classList.toggle('on', !!State.search);
+      renderCards();
+      save();
+    }, 100);
+  });
+  $('#searchClear').addEventListener('click', () => {
+    si.value = '';
+    State.search = '';
+    $('#searchClear').classList.remove('on');
+    renderCards();
+    save();
+  });
+
+  /* Back */
+  $('#backBtn').addEventListener('click', closeDetail);
+
+  /* Checklist actions */
+  $('#checkAllBtn').addEventListener('click', () => {
+    const d = currentDossier();
+    if (!d) return;
+    State.checks[d.id] = {};
+    d.docs.forEach((_, i) => State.checks[d.id][i] = true);
+    renderChecklist();
+    save();
+  });
+  $('#resetCheckBtn').addEventListener('click', () => {
+    const d = currentDossier();
+    if (!d) return;
+    State.checks[d.id] = {};
+    renderChecklist();
+    save();
+    toast(t('resetDone'));
+  });
+  $('#printChecklistBtn').addEventListener('click', printChecklist);
+
+  /* Letter modal */
+  $('#modalClose').addEventListener('click', closeLetterModal);
+  $('#modalCancelBtn').addEventListener('click', closeLetterModal);
+  $('#modalBack').addEventListener('click', e => {
+    if (e.target === $('#modalBack')) closeLetterModal();
+  });
+  $('#clearLetterBtn').addEventListener('click', () => {
+    State.letterFields = {
+      name:'', dob:'', birthPlace:'', idNumber:'',
+      address:'', city:'', wilaya:'', authority:'',
+      subject:'', body:''
+    };
+    bindLetterInputs();
+    renderLetterPreview();
+    save();
+  });
+  $('#printLetterBtn').addEventListener('click', printLetter);
+
+  /* Scroll top */
+  $('#toTop').addEventListener('click', () => {
+    window.scrollTo({ top:0, behavior:'smooth' });
+  });
+
+  /* Ctrl+P shortcut */
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p'){
+      e.preventDefault();
+      if (State.activeId){
+        if ($('#modalBack').classList.contains('on')) printLetter();
+        else printChecklist();
+      }
+    }
+  });
+}
+
+/* ============================================================
+   19. INIT
+   ============================================================ */
+function init(){
+  load();
+
+  /* Theme first to avoid flash */
+  if (State.theme === 'dark') document.documentElement.classList.add('dark');
+
+  /* Lang pills initial state */
+  $('#langLabel').textContent = State.lang.toUpperCase();
+  $$('.lang-opt').forEach(o => o.classList.toggle('active', o.getAttribute('data-lang') === State.lang));
+
+  /* Apply language (renders everything) */
+  applyLang(State.lang);
+
+  /* Wire events */
+  wire();
+
+  /* Restore search */
+  if (State.search){
+    $('#searchInput').value = State.search;
+    $('#searchClear').classList.toggle('on', true);
+  }
+}
+
+if (document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>
