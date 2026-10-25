@@ -64,7 +64,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 
 <!-- 1. Announcement -->
 <div class="bg-gradient-to-l from-blue-700 via-violet-700 to-emerald-600 text-white text-center text-sm md:text-base py-2.5 px-4 font-bold f">
-  🔥 عرض خاص لأصحاب محلات الهواتف في الجزائر: احصل على نظام تسيير ومتجر خاص بمحلك في أقل من 48 ساعة!
+  🔥 عرض خاص لأصحاب محلات الهواتف في الجزائر: احصل على نظام تسيير ومتجر خاص بمحلك في أقل من 07 أيام!
 </div>
 
 <!-- Nav -->
@@ -134,7 +134,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 <section class="max-w-6xl mx-auto px-4 pb-16 grid grid-cols-2 md:grid-cols-4 gap-4 rv">
   <div class="glass p-5 text-center"><div class="f font-black text-3xl text-emerald-400"><span data-n="0">0</span>%</div><div class="text-sm mt-1">فواتير استضافة وسيرفر شهرية</div></div>
   <div class="glass p-5 text-center"><div class="f font-black text-3xl text-blue-400"><span data-n="100">0</span>%</div><div class="text-sm mt-1">مُحسَّن للسوق الجزائري: Yalidine، BaridiMob، Caba/Neuf/Occasion</div></div>
-  <div class="glass p-5 text-center"><div class="f font-black text-3xl text-violet-400"><span data-n="48">0</span>h</div><div class="text-sm mt-1">أقصى مدة لتسليم نسختك</div></div>
+  <div class="glass p-5 text-center"><div class="f font-black text-3xl text-violet-400"><span data-n="7">0</span>Days</div><div class="text-sm mt-1">أقصى مدة لتسليم نسختك</div></div>
   <div class="glass p-5 text-center"><div class="f font-black text-3xl text-amber-400">⚡</div><div class="text-sm mt-1">سرعة خارقة حتى مع اتصال ضعيف</div></div>
 </section>
 
@@ -230,7 +230,7 @@ document.querySelectorAll('#est input').forEach(c=>c.onchange=calc);
 $('#sendEst').onclick=()=>{const r=calc();wa(msg(`التقدير: ${r.s.toLocaleString('en-US')} دج. الميزات: ${r.sel.join('، ')||'المنصة الأساسية'}.`))};
 
 
-$('#fq').innerHTML=[['هل أحتاج إلى مهارات تقنية؟','لا إطلاقاً. نسلّمك النظام جاهزاً، وندرّبك أنت وموظفيك خطوة بخطوة، والواجهة بسيطة كاستعمال واتساب.'],['هل هناك اشتراك شهري؟','لا. تدفع مرة واحدة حسب الباقة، والنظام مصمم ليعمل بدون فواتير استضافة شهرية. الدومين الخاص فقط إن اخترته.'],['كم تستغرق مدة التجهيز؟','الأساسية والمحترفة في أقل من 48 ساعة بعد استلام الاسم والشعار. التخصيصات الإضافية الكبيرة قد تحتاج وقتاً أطول نتفق عليه مسبقاً.'],['هل يمكنني إدارة عدة موظفين بصلاحيات مختلفة؟','نعم. تحدد لكل موظف ما يراه وما يفعله: البيع فقط، المخزون، أو المحاسبة، بينما تبقى أنت المالك الوحيد لأرقام الأرباح.'],['هل سيظهر اسم محلي وشعاري فعلاً؟','نعم. المتجر والفواتير ولوحة التحكم كلها تحمل اسمك وشعارك وألوانك، ونبنيها لك من الصفر.'],['هل يدعم الدفع والشحن المحلي؟','نعم: BaridiMob وCCP، والدفع عند الاستلام، والشحن مع Yalidine وZR Express وMaystro وغيرها.']].map(q=>`<details class="glass p-5 rv"><summary class="flex justify-between items-center f font-bold text-white">${q[0]}<span class="pl text-2xl text-blue-400">+</span></summary><p class="mt-3 leading-8 text-gray-400">${q[1]}</p></details>`).join('');
+$('#fq').innerHTML=[['هل أحتاج إلى مهارات تقنية؟','لا إطلاقاً. نسلّمك النظام جاهزاً، وندرّبك أنت وموظفيك خطوة بخطوة، والواجهة بسيطة كاستعمال واتساب.'],['هل هناك اشتراك شهري؟','لا. تدفع مرة واحدة حسب الباقة، والنظام مصمم ليعمل بدون فواتير استضافة شهرية. الدومين الخاص فقط إن اخترته.'],['كم تستغرق مدة التجهيز؟','الأساسية والمحترفة في أقل من 07 أيام بعد استلام الاسم والشعار. التخصيصات الإضافية الكبيرة قد تحتاج وقتاً أطول نتفق عليه مسبقاً.'],['هل يمكنني إدارة عدة موظفين بصلاحيات مختلفة؟','نعم. تحدد لكل موظف ما يراه وما يفعله: البيع فقط، المخزون، أو المحاسبة، بينما تبقى أنت المالك الوحيد لأرقام الأرباح.'],['هل سيظهر اسم محلي وشعاري فعلاً؟','نعم. المتجر والفواتير ولوحة التحكم كلها تحمل اسمك وشعارك وألوانك، ونبنيها لك من الصفر.'],['هل يدعم الدفع والشحن المحلي؟','نعم: BaridiMob وCCP، والدفع عند الاستلام، والشحن مع Yalidine وZR Express وMaystro وغيرها.']].map(q=>`<details class="glass p-5 rv"><summary class="flex justify-between items-center f font-bold text-white">${q[0]}<span class="pl text-2xl text-blue-400">+</span></summary><p class="mt-3 leading-8 text-gray-400">${q[1]}</p></details>`).join('');
 
 // personalization
 const upd=()=>{const n=shop.trim();$('#mn').textContent=n||'اسم محلك هنا';$('#mi').textContent=n?[...n][0].toUpperCase():'S'};
