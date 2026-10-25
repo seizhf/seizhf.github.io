@@ -7,7 +7,7 @@
 <meta name="description" content="نصمم لك من الصفر متجراً إلكترونياً ونظام تسيير ERP يحمل اسم محلك وشعارك: IMEI، الشحن، العربون، الكاشير، التبادل، المحاسبة والفوترة.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <style>
 :root{--acc:#3b82f6}
@@ -57,14 +57,28 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 @keyframes dr{50%{transform:translate(18px,-28px) rotate(14deg)}}
 .st{animation:pu2 2.4s infinite}@keyframes pu2{0%{box-shadow:0 0 0 0 var(--c)}100%{box-shadow:0 0 0 18px transparent}}
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+
+html{overflow-x:hidden}img{max-width:100%}
+@media(max-width:767px){
+.glass{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(15,23,42,.72)}
+.aur.a2,.aur.a3,.blob,.pt,body::before,.glass:not(.sticky)::before{display:none!important}
+.aur.a1{animation:none;filter:blur(70px);width:80vw;height:80vw;opacity:.2}
+.grad,.hot,.fl,.st{animation:none}
+.btn-p::after,.btn-w::after{display:none}
+.btn{padding:.8rem 1.1rem;font-size:.95rem}
+#cmpT thead{display:none}#cmpT,#cmpT tbody,#cmpT tr,#cmpT td{display:block;width:100%}
+#cmpT td{text-align:right!important;padding:.35rem 1rem!important}
+#cmpT td:first-child{padding-top:.8rem!important;font-size:1rem}
+#cmpT td[data-l]::before{content:attr(data-l) ": ";opacity:.65;font-size:.75rem}
+#cmpT tr{padding-bottom:.6rem}}
 </style>
 </head>
 <body>
-<div id="bar" class="fixed top-0 right-0 h-1 z-[60] w-0 bg-gradient-to-l from-blue-500 via-violet-500 to-emerald-400"></div><div class="aur a1"></div><div class="aur a2"></div><div class="aur a3"></div>
+<div id="bar" class="fixed top-0 right-0 h-1 z-[60] w-full origin-right scale-x-0 bg-gradient-to-l from-blue-500 via-violet-500 to-emerald-400"></div><div class="aur a1"></div><div class="aur a2"></div><div class="aur a3"></div>
 
 <!-- 1. Announcement -->
-<div class="bg-gradient-to-l from-blue-700 via-violet-700 to-emerald-600 text-white text-center text-sm md:text-base py-2.5 px-4 font-bold f">
-  🔥 عرض خاص لأصحاب محلات الهواتف في الجزائر: احصل على نظام تسيير ومتجر خاص بمحلك في أقل من 07 أيام!
+<div class="bg-gradient-to-l from-blue-700 via-violet-700 to-emerald-600 text-white text-center text-xs md:text-base leading-6 py-2 md:py-2.5 px-4 font-bold f">
+  🔥 عرض خاص لأصحاب محلات الهواتف في الجزائر: احصل على نظام تسيير ومتجر خاص بمحلك جاهز خلال 7 أيام!
 </div>
 
 <!-- Nav -->
@@ -80,16 +94,16 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 </header>
 
 <!-- 2. Hero -->
-<section id="top" class="relative max-w-6xl mx-auto px-4 pt-14 pb-20 grid lg:grid-cols-2 gap-12 items-center">
+<section id="top" class="relative max-w-6xl mx-auto px-4 pt-8 pb-12 md:pt-14 md:pb-20 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
   <div class="blob w-96 h-96 bg-blue-600 -top-10 right-0"></div><div class="blob w-96 h-96 bg-violet-600 bottom-0 left-0"></div>
   <div class="relative rv">
     <span class="glass inline-block px-4 py-1 text-sm text-emerald-300 mb-5">⚡ مصمم خصيصاً لسوق الهواتف الجزائري</span>
-    <h1 class="f font-black text-4xl md:text-5xl leading-[1.35] text-white">حوّل محلك إلى <span id="rot" class="grad inline-block">إمبراطورية رقمية</span>: متجر إلكتروني احترافي + نظام تسيير ERP مخصص 100% لمحلات الهواتف والإكسسوارات.</h1>
-    <p class="mt-6 text-lg leading-8 text-gray-400">وداعاً للفوضى الدفترية. امتلك منصة رقمية تحمل <b class="text-white">اسم محلك وشعارك</b>، مرتبطة مباشرة بشركات الشحن الجزائرية، نظام العربون، الكاشير، وحساب الأرباح الصافية.</p>
+    <h1 class="f font-black text-[1.7rem] sm:text-4xl md:text-5xl leading-[1.5] md:leading-[1.35] text-white">حوّل محلك إلى <span id="rot" class="grad inline-block">إمبراطورية رقمية</span>: متجر إلكتروني احترافي + نظام تسيير ERP مخصص 100% لمحلات الهواتف والإكسسوارات.</h1>
+    <p class="mt-5 text-base md:text-lg leading-7 md:leading-8 text-gray-400">وداعاً للفوضى الدفترية. امتلك منصة رقمية تحمل <b class="text-white">اسم محلك وشعارك</b>، مرتبطة مباشرة بشركات الشحن الجزائرية، نظام العربون، الكاشير، وحساب الأرباح الصافية.</p>
     <p class="mt-4 text-emerald-300 font-bold">لا نبيعك نسخة جاهزة: سنبني وننسّق هذا النظام الكامل خصيصاً لمحلك أنت، باسمك وشعارك وهويتك من الصفر.</p>
     <div class="mt-8 flex flex-wrap gap-3">
-      <button class="btn btn-w" data-wa="">💬 اطلب تصميم محلك الآن عبر واتساب</button>
-      <a href="#pricing" class="btn glass">💰 شاهد الأسعار</a>
+      <button class="btn btn-w w-full sm:w-auto justify-center" data-wa="">💬 اطلب تصميم محلك الآن عبر واتساب</button>
+      <a href="#pricing" class="btn glass w-full sm:w-auto justify-center">💰 شاهد الأسعار</a>
     </div>
   </div>
 
@@ -109,9 +123,9 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
       <!-- Mock -->
       <div class="mt-5 rounded-2xl overflow-hidden border border-white/10 bg-[#0b1220] fl" dir="rtl">
         <div class="flex items-center justify-between px-4 py-3 border-b border-white/10">
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 min-w-0">
             <span id="ml" class="w-9 h-9 rounded-xl grid place-items-center font-black text-white overflow-hidden" style="background:var(--acc)"><span id="mi">S</span><img id="mg" class="hidden w-full h-full object-cover" alt=""></span>
-            <b id="mn" class="f text-white">اسم محلك هنا</b>
+            <b id="mn" class="f text-white truncate max-w-[9.5rem] sm:max-w-[16rem]">اسم محلك هنا</b>
           </div>
           <span class="text-xs px-3 py-1 rounded-full text-white" style="background:var(--acc)">🛒 السلة (2)</span>
         </div>
@@ -121,7 +135,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
           <div class="bg-white/5 rounded-xl p-2"><div class="text-3xl">📲</div>Galaxy A54<div class="font-bold mt-1" style="color:var(--acc)">62,000 دج</div></div>
           <div class="bg-white/5 rounded-xl p-2"><div class="text-3xl">🔌</div>شاحن 35W<div class="font-bold mt-1" style="color:var(--acc)">2,500 دج</div></div>
         </div>
-        <div class="px-4 py-2 text-[11px] text-gray-400 border-t border-white/10 flex justify-between"><span>🚚 Yalidine · ZR Express</span><span>💳 BaridiMob</span><span>🧾 Facture A4</span></div>
+        <div class="px-4 py-2 text-[11px] text-gray-400 border-t border-white/10 flex flex-wrap gap-x-3 gap-y-1 justify-between"><span>🚚 Yalidine · ZR Express</span><span>💳 BaridiMob</span><span>🧾 Facture A4</span></div>
       </div>
       <p class="text-xs text-gray-500 mt-3">هذه معاينة توضيحية: التصميم النهائي يُبنى حسب هويتك الكاملة.</p>
       <button class="btn btn-p w-full justify-center mt-3" data-wa="shop">🚀 أريد هذا النظام باسم محلي</button>
@@ -131,33 +145,33 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 
 <div class="border-y border-white/10 bg-white/[.03] py-3 overflow-hidden mb-14" dir="ltr"><div class="mq flex w-max whitespace-nowrap f font-bold text-gray-300"><span class="mx-5">IMEI <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Yalidine <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">ZR Express <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Maystro <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">BaridiMob <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">CCP <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Neuf Scellé <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Caba <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Bon Occasion <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Échange <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Facture A4 <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Ticket Caisse <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">IMEI <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Yalidine <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">ZR Express <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Maystro <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">BaridiMob <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">CCP <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Neuf Scellé <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Caba <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Bon Occasion <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Échange <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Facture A4 <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Ticket Caisse <b class="text-blue-400 mx-3">✦</b></span></div></div>
 <!-- 3. Stats -->
-<section class="max-w-6xl mx-auto px-4 pb-16 grid grid-cols-2 md:grid-cols-4 gap-4 rv">
-  <div class="glass p-5 text-center"><div class="f font-black text-3xl text-emerald-400"><span data-n="0">0</span>%</div><div class="text-sm mt-1">فواتير استضافة وسيرفر شهرية</div></div>
+<section class="max-w-6xl mx-auto px-4 pb-12 md:pb-16 grid grid-cols-2 md:grid-cols-4 gap-4 rv">
+  <div class="glass p-5 text-center"><div class="f font-black text-3xl text-emerald-400"><span data-n="5">0</span></div><div class="text-sm mt-1">وحدات متكاملة في منصة واحدة</div></div>
   <div class="glass p-5 text-center"><div class="f font-black text-3xl text-blue-400"><span data-n="100">0</span>%</div><div class="text-sm mt-1">مُحسَّن للسوق الجزائري: Yalidine، BaridiMob، Caba/Neuf/Occasion</div></div>
-  <div class="glass p-5 text-center"><div class="f font-black text-3xl text-violet-400"><span data-n="7">0</span>Days</div><div class="text-sm mt-1">أقصى مدة لتسليم نسختك</div></div>
+  <div class="glass p-5 text-center"><div class="f font-black text-3xl text-violet-400"><span data-n="7">0</span></div><div class="text-sm mt-1">أيام فقط لتسليم نسختك جاهزة</div></div>
   <div class="glass p-5 text-center"><div class="f font-black text-3xl text-amber-400">⚡</div><div class="text-sm mt-1">سرعة خارقة حتى مع اتصال ضعيف</div></div>
 </section>
 
 <!-- 4. Features -->
-<section id="features" class="max-w-6xl mx-auto px-4 pb-16">
-  <div class="text-center mb-10 rv"><h2 class="f font-black text-3xl md:text-4xl text-white">5 وحدات متكاملة، <span class="grad">مصنوعة لمحلك</span></h2><p class="mt-3 text-gray-400">كل ما يحتاجه صاحب محل هواتف في الجزائر، في منصة واحدة تحمل علامتك التجارية.</p></div>
+<section id="features" class="max-w-6xl mx-auto px-4 pb-12 md:pb-16">
+  <div class="text-center mb-10 rv"><h2 class="f font-black text-2xl md:text-4xl text-white">5 وحدات متكاملة، <span class="grad">مصنوعة لمحلك</span></h2><p class="mt-3 text-gray-400">كل ما يحتاجه صاحب محل هواتف في الجزائر، في منصة واحدة تحمل علامتك التجارية.</p></div>
   <div id="mods" class="grid md:grid-cols-2 gap-5"></div>
   <div id="extra" class="mt-6 flex flex-wrap justify-center gap-2 rv"></div>
 </section>
 
 <!-- 5. Compare -->
-<section id="compare" class="max-w-5xl mx-auto px-4 pb-16">
-  <div class="text-center mb-8 rv"><h2 class="f font-black text-3xl text-white">لماذا نحن؟ <span class="grad">الدفتر مقابل منصتك</span></h2></div>
-  <div class="glass overflow-x-auto rv"><table class="w-full text-sm md:text-base min-w-[560px]">
+<section id="compare" class="max-w-5xl mx-auto px-4 pb-12 md:pb-16">
+  <div class="text-center mb-8 rv"><h2 class="f font-black text-2xl md:text-3xl text-white">لماذا نحن؟ <span class="grad">الدفتر مقابل منصتك</span></h2></div>
+  <div class="glass rv md:overflow-x-auto"><table id="cmpT" class="w-full text-sm md:text-base">
     <thead><tr class="text-white f"><th class="p-4 text-right">الجانب</th><th class="p-4 text-red-300">😩 الطريقة التقليدية</th><th class="p-4 text-emerald-300">🚀 منصتك المخصصة</th></tr></thead>
     <tbody id="cmp"></tbody></table></div>
 </section>
 
 <!-- 6. Pricing -->
-<section id="pricing" class="relative max-w-6xl mx-auto px-4 pb-16">
+<section id="pricing" class="relative max-w-6xl mx-auto px-4 pb-12 md:pb-16">
   <div class="blob w-96 h-96 bg-emerald-600 top-20 left-1/2"></div>
-  <div class="text-center mb-10 rv"><h2 class="f font-black text-3xl md:text-4xl text-white">استثمار واحد، <span class="grad">بدون اشتراك شهري</span></h2>
-  <p class="mt-3 text-gray-400">يبدأ من <b class="text-emerald-300">50,000.00 دج</b> ويصل إلى <b class="text-emerald-300">100,000.00 دج</b> حسب التعديلات والميزات الإضافية والدومين والتخصيص الذي يطلبه صاحب المحل.</p></div>
+  <div class="text-center mb-10 rv"><h2 class="f font-black text-2xl md:text-4xl text-white">استثمار واحد، <span class="grad">بدون اشتراك شهري</span></h2>
+  <p class="mt-3 text-gray-400">يبدأ من <b class="text-emerald-300">50,000.00 دج</b> ويصل إلى <b class="text-emerald-300">100,000.00 دج</b> حسب التعديلات والميزات الإضافية والتخصيص الذي يطلبه صاحب المحل.</p></div>
   <div id="tiers" class="grid md:grid-cols-3 gap-5 items-stretch"></div>
 
   <div class="glass p-6 mt-8 rv" style="--c:#10b981">
@@ -171,22 +185,22 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 </section>
 
 <!-- 7. Process -->
-<section class="max-w-6xl mx-auto px-4 pb-16">
-  <div class="text-center mb-10 rv"><h2 class="f font-black text-3xl md:text-4xl text-white">من الفكرة إلى <span class="grad">محلك الرقمي</span> في 4 خطوات</h2></div>
+<section class="max-w-6xl mx-auto px-4 pb-12 md:pb-16">
+  <div class="text-center mb-10 rv"><h2 class="f font-black text-2xl md:text-4xl text-white">من الفكرة إلى <span class="grad">محلك الرقمي</span> في 4 خطوات</h2></div>
   <div id="steps" class="grid md:grid-cols-4 gap-5"></div>
 </section>
 
 <!-- 8. FAQ -->
-<section id="faq" class="max-w-3xl mx-auto px-4 pb-16">
-  <div class="text-center mb-8 rv"><h2 class="f font-black text-3xl text-white">الأسئلة <span class="grad">الشائعة</span></h2></div>
+<section id="faq" class="max-w-3xl mx-auto px-4 pb-12 md:pb-16">
+  <div class="text-center mb-8 rv"><h2 class="f font-black text-2xl md:text-3xl text-white">الأسئلة <span class="grad">الشائعة</span></h2></div>
   <div id="fq" class="space-y-3"></div>
 </section>
 
 <!-- 9. Footer CTA -->
-<section class="relative max-w-5xl mx-auto px-4 pb-16 rv">
-  <div class="glass p-10 text-center overflow-hidden" style="--c:#7c3aed">
+<section class="relative max-w-5xl mx-auto px-4 pb-12 md:pb-16 rv">
+  <div class="glass p-6 md:p-10 text-center overflow-hidden" style="--c:#7c3aed">
     <div class="blob w-72 h-72 bg-violet-600 -top-20 right-10"></div>
-    <h2 class="f font-black text-3xl md:text-4xl text-white relative">لا تترك محلك متأخراً عن المنافسة.</h2>
+    <h2 class="f font-black text-2xl md:text-4xl text-white relative">لا تترك محلك متأخراً عن المنافسة.</h2>
     <p class="mt-4 text-lg text-gray-300 relative">تواصل معنا اليوم واحجز نسختك الخاصة، باسم محلك وشعارك وهويتك.</p>
     <button class="btn btn-w mt-7 relative" data-wa="shop">💬 احجز نسختك الخاصة عبر واتساب</button>
   </div>
@@ -209,28 +223,28 @@ const MODS=[
  {i:'🚚',c:'#10b981',t:'محرك الشحن الجزائري ونظام العربون (Avance)',l:['توصيل لكل ولايات الجزائر مع Yalidine وZR Express وMaystro','شحن مجاني تلقائي داخل ولاية المحل','عربون إلزامي (مثلاً 4000 دج) يُخصم من سعر الهاتف الأصلي','رفع وصل CCP / BaridiMob أو التأكيد عبر واتساب']},
  {i:'🧾',c:'#8b5cf6',t:'الكاشير الداخلي والتبادل (POS & Échange)',l:['واجهة بيع سريعة جداً داخل المحل','نظام Trade-In: التكملة (Soulte) = سعر هاتف المحل − تقييم هاتف الزبون القديم','هاتف الزبون القديم يتحول فوراً إلى مخزون Bon Occasion','سجل كامل لكل عملية بيع وتبادل ومن قام بها']},
  {i:'📊',c:'#f59e0b',t:'المحاسبة العميقة وصافي الأرباح',l:['الرواتب مع التسبيقات، والمستهلكات (أكياس المحل، العلب)','التكاليف الثابتة: الإيجار، الإنترنت، إعلانات فيسبوك','هدايا الزبائن تُسجَّل بسعر تكلفتها ضمن المصاريف','صافي الربح الحقيقي = المبيعات − تكلفة السلع − كل المصاريف، بدقة متناهية']},
- {i:'🖨️',c:'#ec4899',t:'الفوترة الاحترافية وتتبع الديون',l:['طباعة Facture A4 رسمية و Ticket Caisse حراري بالفرنسية مع شعار محلك','إدارة ديون وكريدي الزبائن بسجل واضح','زر تذكير سريع عبر واتساب لكل مدين','تقارير يومية وشهرية جاهزة للطباعة']}
+ {i:'🖨️',c:'#ec4899',t:'الفوترة الاحترافية وتتبع الديون',l:['طباعة Facture A4 رسمية و Ticket Caisse حراري بالفرنسية مع شعار محلك','إدارة ديون وكريدي الزبائن بسجل واضح','معرفة المتبقي على كل زبون في أي لحظة','تقارير يومية وشهرية جاهزة للطباعة']}
 ];
 $('#mods').innerHTML=MODS.map((m,k)=>`<div class="glass lift p-6 rv ${k==4?'md:col-span-2':''}" style="--c:${m.c}"><div class="flex items-center gap-3 mb-4"><div class="ic">${m.i}</div><h3 class="f font-extrabold text-lg text-white">وحدة ${k+1}: ${m.t}</h3></div><ul class="space-y-2 text-gray-300">${m.l.map(x=>`<li class="li">${x}</li>`).join('')}</ul></div>`).join('');
-$('#extra').innerHTML=['👥 صلاحيات مختلفة لكل موظف','📲 لوحة تحكم تعمل من هاتفك','🔔 تنبيه نفاد المخزون','🔍 متجر محسّن لمحركات البحث','🌐 دومين باسم محلك','🔒 نسخ احتياطي تلقائي'].map(x=>`<span class="glass px-4 py-2 text-sm">${x}</span>`).join('');
+$('#extra').innerHTML=['👥 صلاحيات مختلفة لكل موظف','📲 لوحة تحكم تعمل من هاتفك','🔔 تنبيه نفاد المخزون','🔍 متجر محسّن لمحركات البحث','📈 تقارير يومية وشهرية','🔒 نسخ احتياطي تلقائي'].map(x=>`<span class="glass px-4 py-2 text-sm">${x}</span>`).join('');
 
-$('#cmp').innerHTML=[['تسجيل الهواتف','دفتر وأوراق تضيع','قاعدة بيانات مع IMEI لكل قطعة'],['البيع عبر الإنترنت','منشورات فيسبوك وردود يدوية','متجر باسمك يستقبل الطلبات 24/7'],['الشحن والتوصيل','مكالمات وتسجيل يدوي','ربط مباشر مع شركات الشحن'],['العربون','وعود شفهية والزبون يختفي','عربون إلزامي مع وصل مرفوع'],['التبادل Échange','حسابات على الورقة وأخطاء','التكملة تُحسب آلياً والهاتف يدخل المخزون'],['صافي الربح','تخمين نهاية الشهر','رقم دقيق لحظة بلحظة'],['ديون الزبائن','دفتر كريدي منسي','سجل وتذكير واتساب بنقرة'],['الفواتير','وصل مكتوب باليد','Facture A4 وTicket Caisse بشعارك']].map(r=>`<tr class="border-t border-white/10"><td class="p-4 font-bold text-white">${r[0]}</td><td class="p-4 text-center text-gray-400">${r[1]}</td><td class="p-4 text-center text-emerald-300">${r[2]}</td></tr>`).join('');
+$('#cmp').innerHTML=[['تسجيل الهواتف','دفتر وأوراق تضيع','قاعدة بيانات مع IMEI لكل قطعة'],['البيع عبر الإنترنت','منشورات فيسبوك وردود يدوية','متجر باسمك يستقبل الطلبات 24/7'],['الشحن والتوصيل','مكالمات وتسجيل يدوي','ربط مباشر مع شركات الشحن'],['العربون','وعود شفهية والزبون يختفي','عربون إلزامي مع وصل مرفوع'],['التبادل Échange','حسابات على الورقة وأخطاء','التكملة تُحسب آلياً والهاتف يدخل المخزون'],['صافي الربح','تخمين نهاية الشهر','رقم دقيق لحظة بلحظة'],['ديون الزبائن','دفتر كريدي منسي','سجل واضح لكل زبون والمتبقي عليه'],['الفواتير','وصل مكتوب باليد','Facture A4 وTicket Caisse بشعارك']].map(r=>`<tr class="border-t border-white/10"><td class="p-4 font-bold text-white">${r[0]}</td><td data-l="😩 التقليدية" class="p-4 text-center text-gray-400">${r[1]}</td><td data-l="🚀 منصتك" class="p-4 text-center text-emerald-300">${r[2]}</td></tr>`).join('');
 
 const T=[
- {n:'الأساسية',p:'50,000',c:'#3b82f6',l:['متجر إلكتروني بالاسم والشعار والألوان','لوحة تحكم المنتجات والطلبات','ربط الطلبات بالواتساب','استضافة مجانية بدون اشتراك']},
+ {n:'الأساسية',p:'50,000',c:'#3b82f6',l:['متجر إلكتروني بالاسم والشعار والألوان','لوحة تحكم المنتجات والطلبات','ربط الطلبات بالواتساب','واجهة سريعة ومتوافقة مع الهاتف']},
  {n:'المحترفة',p:'75,000',c:'#8b5cf6',hot:1,l:['كل ما في الأساسية','وحدة المخزون + IMEI + الحالات','الشحن لكل الولايات + العربون','الكاشير الداخلي + الفوترة A4 وTicket','تدريب الموظفين']},
- {n:'الإمبراطورية',p:'100,000',c:'#10b981',l:['كل ما في المحترفة','نظام التبادل (Échange / Soulte)','المحاسبة الكاملة وصافي الأرباح','الديون + تذكير واتساب + صلاحيات الموظفين','دومين خاص + تدريب + دعم لمدة سنة']}
+ {n:'الإمبراطورية',p:'100,000',c:'#10b981',l:['كل ما في المحترفة','نظام التبادل (Échange / Soulte)','المحاسبة الكاملة وصافي الأرباح','الديون + صلاحيات الموظفين','تدريب شامل + دعم لمدة سنة']}
 ];
 $('#tiers').innerHTML=T.map(t=>`<div class="glass lift p-6 rv flex flex-col ${t.hot?'hot':''}" style="--c:${t.c}">${t.hot?'<span class="self-start text-xs bg-violet-600 text-white px-3 py-1 rounded-full mb-2">⭐ الأكثر طلباً</span>':''}<h3 class="f font-black text-2xl text-white">${t.n}</h3><div class="my-3"><span class="f font-black text-4xl" style="color:${t.c}">${t.p}</span> <span class="text-gray-400">دج</span><div class="text-xs text-gray-500">تبدأ من · دفعة واحدة</div></div><ul class="space-y-2 flex-1 mb-5">${t.l.map(x=>`<li class="li">${x}</li>`).join('')}</ul><button class="btn btn-p justify-center" data-wa="أريد الباقة ${t.n} (${t.p} دج).">اختر هذه الباقة</button></div>`).join('');
 
-const ADD=[['ERP: المخزون و IMEI والحالات',12000],['الشحن + نظام العربون',10000],['الكاشير + التبادل (Échange)',9000],['المحاسبة وصافي الأرباح',8000],['دومين خاص + إعداد كامل',5000],['تدريب الموظفين + دعم سنة',6000]];
+const ADD=[['ERP: المخزون و IMEI والحالات',12000],['الشحن + نظام العربون',10000],['الكاشير + التبادل (Échange)',9000],['المحاسبة وصافي الأرباح',8000],['تخصيص إضافي للهوية والتصميم',5000],['تدريب الموظفين + دعم سنة',6000]];
 $('#est').innerHTML=ADD.map((a,k)=>`<label class="glass p-3 flex items-center gap-3 cursor-pointer !rounded-xl"><input type="checkbox" data-p="${a[1]}" class="w-5 h-5 accent-emerald-500"><span class="flex-1">${a[0]}</span><b class="text-emerald-300 text-sm">+${a[1].toLocaleString('en-US')}</b></label>`).join('');
 const calc=()=>{let s=50000,sel=[];document.querySelectorAll('#est input').forEach((c,k)=>{if(c.checked){s+=+c.dataset.p;sel.push(ADD[k][0])}});$('#tot').textContent=s.toLocaleString('en-US');return {s,sel}};
 document.querySelectorAll('#est input').forEach(c=>c.onchange=calc);
 $('#sendEst').onclick=()=>{const r=calc();wa(msg(`التقدير: ${r.s.toLocaleString('en-US')} دج. الميزات: ${r.sel.join('، ')||'المنصة الأساسية'}.`))};
 
 
-$('#fq').innerHTML=[['هل أحتاج إلى مهارات تقنية؟','لا إطلاقاً. نسلّمك النظام جاهزاً، وندرّبك أنت وموظفيك خطوة بخطوة، والواجهة بسيطة كاستعمال واتساب.'],['هل هناك اشتراك شهري؟','لا. تدفع مرة واحدة حسب الباقة، والنظام مصمم ليعمل بدون فواتير استضافة شهرية. الدومين الخاص فقط إن اخترته.'],['كم تستغرق مدة التجهيز؟','الأساسية والمحترفة في أقل من 07 أيام بعد استلام الاسم والشعار. التخصيصات الإضافية الكبيرة قد تحتاج وقتاً أطول نتفق عليه مسبقاً.'],['هل يمكنني إدارة عدة موظفين بصلاحيات مختلفة؟','نعم. تحدد لكل موظف ما يراه وما يفعله: البيع فقط، المخزون، أو المحاسبة، بينما تبقى أنت المالك الوحيد لأرقام الأرباح.'],['هل سيظهر اسم محلي وشعاري فعلاً؟','نعم. المتجر والفواتير ولوحة التحكم كلها تحمل اسمك وشعارك وألوانك، ونبنيها لك من الصفر.'],['هل يدعم الدفع والشحن المحلي؟','نعم: BaridiMob وCCP، والدفع عند الاستلام، والشحن مع Yalidine وZR Express وMaystro وغيرها.']].map(q=>`<details class="glass p-5 rv"><summary class="flex justify-between items-center f font-bold text-white">${q[0]}<span class="pl text-2xl text-blue-400">+</span></summary><p class="mt-3 leading-8 text-gray-400">${q[1]}</p></details>`).join('');
+$('#fq').innerHTML=[['هل أحتاج إلى مهارات تقنية؟','لا إطلاقاً. نسلّمك النظام جاهزاً، وندرّبك أنت وموظفيك خطوة بخطوة، والواجهة بسيطة كاستعمال واتساب.'],['هل هناك اشتراك شهري؟','لا. تدفع مرة واحدة حسب الباقة، بدون أي اشتراك شهري.'],['كم تستغرق مدة التجهيز؟','نسلّمك نظامك جاهزاً خلال 7 أيام بعد استلام اسم المحل والشعار. وإن طلبت تخصيصات إضافية كبيرة نتفق معك على المدة مسبقاً.'],['هل يمكنني إدارة عدة موظفين بصلاحيات مختلفة؟','نعم. تحدد لكل موظف ما يراه وما يفعله: البيع فقط، المخزون، أو المحاسبة، بينما تبقى أنت المالك الوحيد لأرقام الأرباح.'],['هل سيظهر اسم محلي وشعاري فعلاً؟','نعم. المتجر والفواتير ولوحة التحكم كلها تحمل اسمك وشعارك وألوانك، ونبنيها لك من الصفر.'],['هل يدعم الدفع والشحن المحلي؟','نعم: BaridiMob وCCP، والدفع عند الاستلام، والشحن مع Yalidine وZR Express وMaystro وغيرها.']].map(q=>`<details class="glass p-5 rv"><summary class="flex justify-between items-center f font-bold text-white">${q[0]}<span class="pl text-2xl text-blue-400">+</span></summary><p class="mt-3 leading-8 text-gray-400">${q[1]}</p></details>`).join('');
 
 // personalization
 const upd=()=>{const n=shop.trim();$('#mn').textContent=n||'اسم محلك هنا';$('#mi').textContent=n?[...n][0].toUpperCase():'S'};
@@ -248,10 +262,10 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 
 // effects
 const W=['إمبراطورية رقمية','ماكينة مبيعات','متجر بعلامتك','مصنع أرباح'];let wi=0;
-setInterval(()=>{const r=$('#rot');r.style.opacity=0;r.style.transform='translateY(10px)';setTimeout(()=>{wi=(wi+1)%W.length;r.textContent=W[wi];r.style.opacity=1;r.style.transform='none'},350)},2800);
-['📱','🔌','🎧','💳','🚚','🧾','⚡','🔋'].forEach((e,i)=>{const s=document.createElement('span');s.textContent=e;s.className='pt';s.style.cssText=`left:${(i*13+7)%92}%;top:${(i*29+8)%80}%;animation-delay:${i*-1.3}s;animation-duration:${7+i%4*2}s;font-size:${1.2+i%3*.5}rem`;$('#top').appendChild(s)});
-addEventListener('scroll',()=>{$('#bar').style.width=scrollY/(document.body.scrollHeight-innerHeight)*100+'%'},{passive:true});
-document.addEventListener('pointermove',e=>{const g=e.target.closest&&e.target.closest('.glass');if(g){const r=g.getBoundingClientRect();g.style.setProperty('--mx',e.clientX-r.left+'px');g.style.setProperty('--my',e.clientY-r.top+'px')}});
+if(innerWidth>767)setInterval(()=>{const r=$('#rot');r.style.opacity=0;r.style.transform='translateY(10px)';setTimeout(()=>{wi=(wi+1)%W.length;r.textContent=W[wi];r.style.opacity=1;r.style.transform='none'},350)},2800);
+if(innerWidth>767)['📱','🔌','🎧','💳','🚚','🧾','⚡','🔋'].forEach((e,i)=>{const s=document.createElement('span');s.textContent=e;s.className='pt';s.style.cssText=`left:${(i*13+7)%92}%;top:${(i*29+8)%80}%;animation-delay:${i*-1.3}s;animation-duration:${7+i%4*2}s;font-size:${1.2+i%3*.5}rem`;$('#top').appendChild(s)});
+addEventListener('scroll',()=>{$('#bar').style.transform='scaleX('+scrollY/(document.body.scrollHeight-innerHeight)+')'},{passive:true});
+document.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;const g=e.target.closest&&e.target.closest('.glass');if(g){const r=g.getBoundingClientRect();g.style.setProperty('--mx',e.clientX-r.left+'px');g.style.setProperty('--my',e.clientY-r.top+'px')}});
 document.querySelectorAll('.lift').forEach(c=>{c.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(900px) rotateY(${x*8}deg) rotateX(${-y*8}deg) translateY(-6px)`});c.addEventListener('pointerleave',()=>c.style.transform='')});
 // numbers stay left-to-right inside Arabic text (fixes "3 000" showing as "000 3")
 (()=>{const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),L=[];while(w.nextNode())L.push(w.currentNode);L.forEach(n=>{const p=n.parentNode;if(/^(SCRIPT|STYLE|BDI|TEXTAREA)$/.test(p.tagName)||p.dataset.n!==undefined||p.id==='tot'||!/\d/.test(n.nodeValue))return;const f=document.createDocumentFragment();n.nodeValue.split(/(\+?\d[\d,.]*\d|\d)/).forEach((t,i)=>{if(i%2){const b=document.createElement('bdi');b.dir='ltr';b.textContent=t;f.append(b)}else if(t)f.append(t)});p.replaceChild(f,n)})})();
