@@ -26,11 +26,145 @@
 @media(max-width:980px){.nav-links{display:none;position:absolute;top:78px;inset-inline:0;background:var(--surface);border-bottom:1px solid var(--line);padding:18px 22px;flex-direction:column;align-items:stretch;gap:15px}.nav-links.open{display:flex}.menu-toggle{display:grid}.hero-grid{grid-template-columns:1fr}.hero-copy{max-width:780px}.hero-art{min-height:470px}.feature-grid{grid-template-columns:repeat(2,1fr)}.management-grid{grid-template-columns:1fr}.management-copy{max-width:760px}.faq-grid{grid-template-columns:1fr;gap:15px}.price-content{grid-template-columns:1fr  .8fr}}
 @media(max-width:680px){.container{width:min(100% - 28px,1160px)}.section{padding:70px 0}.nav{height:70px}.brand{font-size:.9rem}.brand-mark{width:39px;height:39px}.nav-links{top:70px}.nav-actions{gap:6px}.icon-btn{width:39px;height:39px}.lang-btn{height:39px;padding:0 9px}.hero{padding:52px 0 65px}.hero-art{min-height:390px}.art-orbit{width:320px;height:320px}.showcase{max-width:420px}.showcase-card{min-height:185px}.showcase-card .visual{height:110px}.product-bottle{height:90px}.chip-one{top:14px;inset-inline-start:0}.chip-two{bottom:14px;inset-inline-end:0}.pain-items{grid-template-columns:1fr;gap:14px}.dual-grid{grid-template-columns:1fr}.department{min-height:340px}.feature-grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.management-list{grid-template-columns:1fr}.tech-grid{grid-template-columns:1fr 1fr}.scaling{align-items:flex-start;flex-direction:column}.price-content{grid-template-columns:1fr}.price-points{grid-template-columns:1fr 1fr}.scope-grid{grid-template-columns:1fr}.comparison{overflow-x:auto}.comparison table{min-width:560px}.footer-inner{flex-direction:column;align-items:flex-start}.wa-float{width:53px;height:53px;bottom:15px;inset-inline-end:15px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+
+/* Responsive refinement: balanced layouts from small phones to tablets */
+@media (max-width: 980px) {
+  .container { width: min(100% - 36px, 760px); }
+  .hero-grid { gap: 28px; }
+  .hero-copy, .hero-art, .management-copy, .dash-mock,
+  .section-head, .feature-card, .scope-card, .tech-card { min-width: 0; }
+  .price-content { grid-template-columns: 1fr; }
+}
+@media (max-width: 680px) {
+  html { scroll-padding-top: 76px; }
+  body { overflow-x: clip; font-size: 15px; }
+  .container { width: calc(100% - 32px); }
+  .section { padding: 54px 0; }
+  .section-head { margin-bottom: 26px; }
+  .section-head p { font-size: .96rem; line-height: 1.8; }
+
+  .topbar { position: sticky; }
+  .nav { height: 66px; gap: 7px; }
+  .brand { gap: 8px; min-width: 0; flex: 1 1 auto; white-space: normal; }
+  .brand-mark { width: 36px; height: 36px; flex: 0 0 36px; border-radius: 12px; }
+  .brand-mark svg { width: 22px; height: 22px; }
+  .brand > span:last-child { font-size: .78rem; line-height: 1.2; }
+  .brand small { font-size: .54rem; letter-spacing: .02em; }
+  .nav-actions { flex: 0 0 auto; gap: 5px; }
+  .icon-btn { width: 36px; height: 36px; border-radius: 11px; }
+  .lang-btn { height: 36px; min-width: 48px; padding: 0 8px; border-radius: 11px; font-size: .75rem; }
+  .nav-links { top: 66px; padding: 15px 18px; gap: 12px; }
+  .lang-menu { top: 43px; }
+
+  .hero { padding: 40px 0 48px; }
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .hero h1 { font-size: clamp(2rem, 8.7vw, 2.75rem); line-height: 1.22; letter-spacing: -.025em; margin: 14px 0 16px; overflow-wrap: anywhere; }
+  .hero h1 span { display: inline; }
+  .lead { font-size: .98rem; line-height: 1.85; }
+  .hero-actions { display: grid; grid-template-columns: minmax(0, 1fr); gap: 9px; margin: 22px 0 18px; }
+  .btn { width: 100%; min-height: 48px; padding: 12px 16px; border-radius: 13px; }
+  .trust-row { align-items: flex-start; gap: 10px 14px; font-size: .76rem; }
+  .trust-row span { min-width: 0; }
+  .price-note { display: flex; width: 100%; align-items: flex-start; flex-direction: column; gap: 4px; padding: 12px 14px; margin-top: 15px; }
+  .price-note strong { font-size: 1.05rem; }
+  .price-note span { display: flex; flex-wrap: wrap; gap: 3px 12px; }
+  .price-note small { font-size: .72rem; }
+
+  .hero-art { min-height: 330px; padding: 20px 0; }
+  .art-orbit { width: min(78vw, 300px); height: min(78vw, 300px); }
+  .showcase { width: 100%; max-width: 440px; }
+  .showcase-window { transform: none; border-radius: 22px; padding: 12px; }
+  .showcase-top { padding-bottom: 10px; }
+  .showcase-top b { font-size: .8rem; }
+  .showcase-tiles { gap: 9px; padding-top: 11px; }
+  .showcase-card { min-height: 164px; padding: 9px; border-radius: 15px; }
+  .showcase-card .visual { height: 94px; }
+  .product-bottle { height: 78px; width: 48px; }
+  .choco-box { transform: rotate(-5deg) scale(.86); }
+  .showcase-card b { font-size: .82rem; }
+  .showcase-card small { font-size: .68rem; }
+  .mini-stats { gap: 6px; margin-top: 9px; }
+  .mini-stat { padding: 7px 4px; border-radius: 11px; }
+  .mini-stat b { font-size: .96rem; }
+  .mini-stat small { font-size: .61rem; }
+  .float-chip { max-width: 64%; padding: 8px 10px; border-radius: 12px; font-size: .67rem; line-height: 1.45; }
+  .float-chip svg { width: 15px; margin-inline-end: 4px; }
+  .chip-one { top: 0; inset-inline-start: 0; }
+  .chip-two { bottom: 0; inset-inline-end: 0; }
+
+  .pain-strip { padding: 17px 0; }
+  .pain-items { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .pain-item { align-items: center; gap: 11px; }
+  .pain-item b { font-size: .86rem; }
+  .pain-item small { font-size: .72rem; }
+  .pain-icon { width: 38px; height: 38px; border-radius: 12px; }
+
+  .dual-grid, .feature-grid, .management-grid, .scope-grid,
+  .faq-grid, .price-content { grid-template-columns: minmax(0, 1fr); }
+  .dual-grid, .feature-grid { gap: 13px; }
+  .department { min-height: 0; border-radius: 20px; }
+  .department-head { padding: 21px 19px 9px; }
+  .department-art { height: 145px; margin: 0 15px 15px; gap: 17px; }
+  .feature-card { padding: 19px; border-radius: 18px; }
+  .feature-icon { width: 43px; height: 43px; margin-bottom: 13px; }
+  .feature-card p { font-size: .84rem; }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 22px; }
+  .step { padding: 14px; border-radius: 15px; }
+  .step-num { margin-bottom: 13px; }
+  .step h3 { font-size: .91rem; }
+  .step p { font-size: .75rem; line-height: 1.7; }
+
+  .management-grid { gap: 22px; }
+  .management-list { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .dash-mock { padding: 13px; border-radius: 20px; }
+  .dash-metric-grid { gap: 8px; }
+  .dash-metric { padding: 11px; }
+  .dash-metric b { font-size: 1.2rem; }
+  .bar-row span:first-child { width: 62px; }
+
+  .comparison { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; border-radius: 18px; }
+  .comparison table { min-width: 520px; }
+  .comparison th, .comparison td { padding: 12px 14px; font-size: .78rem; }
+  .tech-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  .tech-card { padding: 14px; border-radius: 15px; }
+  .tech-card b { font-size: .82rem; overflow-wrap: anywhere; }
+  .tech-card small { display: block; font-size: .69rem; line-height: 1.6; }
+  .scaling { padding: 19px; gap: 10px; border-radius: 18px; }
+  .scaling p { font-size: .8rem; }
+
+  .price-card { border-radius: 22px; padding: 24px 19px; }
+  .price-content { gap: 20px; }
+  .price-number { font-size: clamp(2.6rem, 12vw, 3.8rem); }
+  .price-points { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 19px; }
+  .price-points span { font-size: .79rem; }
+  .price-box { padding: 19px; border-radius: 18px; }
+  .scope-card { padding: 19px; border-radius: 17px; }
+  .faq-list details { padding: 14px; border-radius: 14px; }
+  .faq-list summary { gap: 12px; font-size: .88rem; }
+  .final-cta { padding: 50px 0 66px; }
+  .final-panel { padding: 25px 18px; border-radius: 21px; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .footer-inner > * { max-width: 100%; overflow-wrap: anywhere; }
+  .wa-float { width: 50px; height: 50px; border-radius: 16px; bottom: calc(13px + env(safe-area-inset-bottom)); inset-inline-end: 13px; }
+}
+@media (max-width: 390px) {
+  .container { width: calc(100% - 28px); }
+  .brand > span:last-child { max-width: 118px; font-size: .73rem; }
+  .brand small { font-size: .5rem; }
+  .nav-actions { gap: 4px; }
+  .icon-btn { width: 34px; height: 34px; }
+  .lang-btn { min-width: 44px; height: 34px; padding: 0 6px; }
+  .hero h1 { font-size: clamp(1.9rem, 8.5vw, 2.35rem); }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+  .tech-grid { grid-template-columns: minmax(0, 1fr); }
+  .showcase-card { min-height: 154px; }
+}
+
 </style>
 </head>
 <body>
 <header class="topbar"><div class="container nav">
- <a class="brand" href="#home" aria-label="Beauty and sweets commerce"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7.5-4.6-7.5-10A4.2 4.2 0 0 1 12 7.5 4.2 4.2 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10Z"/><path d="M8.5 14.5h7M12 11v7"/></svg></span><span><span data-t="brand">Beauty & Sweet Commerce</span><small data-t="brandSub">حل إلكتروني للمحلات الجزائرية</small></span></a>
+ <a class="brand" href="#home" aria-label="Beauty and sweets commerce"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.2 4.2 0 0 1 12 7.5 4.2 4.2 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10Z"/></svg></span><span><span data-t="brand">Beauty & Sweet Commerce</span><small data-t="brandSub">حل إلكتروني للمحلات الجزائرية</small></span></a>
  <nav class="nav-links" id="navLinks"><a href="#solution" data-t="navSolution">الحل</a><a href="#catalog" data-t="navCatalog">القطاعات</a><a href="#features" data-t="navFeatures">المميزات</a><a href="#technology" data-t="navTech">التقنية</a><a href="#price" data-t="navPrice">السعر</a><a href="#faq" data-t="navFaq">الأسئلة</a></nav>
  <div class="nav-actions"><div class="lang-wrap"><button class="lang-btn" id="langToggle" aria-expanded="false"><span id="langCurrent">العربية</span><span>⌄</span></button><div class="lang-menu" id="langMenu"><button data-lang="ar">العربية</button><button data-lang="fr">Français</button><button data-lang="en">English</button></div></div><button class="icon-btn" id="themeToggle" aria-label="Toggle theme"><svg id="themeIcon" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4m0-12.8L17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="4"/></svg></button><button class="icon-btn menu-toggle" id="menuToggle" aria-label="Open menu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
 </div></header>
