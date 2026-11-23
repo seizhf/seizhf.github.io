@@ -1,274 +1,489 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="light">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SaivCORE | متجر إلكتروني + نظام ERP مخصص لمحلات الهواتف في الجزائر</title>
-<meta name="description" content="نصمم لك من الصفر متجراً إلكترونياً ونظام تسيير ERP يحمل اسم محلك وشعارك: IMEI، الشحن، العربون، الكاشير، التبادل، المحاسبة والفوترة.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com/3.4.17"></script>
-<style>
-:root{--acc:#3b82f6}
-html{scroll-behavior:smooth}
-body{background:#030712;color:#d1d5db;font-family:Tajawal,Cairo,sans-serif;overflow-x:hidden}
-h1,h2,h3,.f{font-family:Cairo,sans-serif}
-.glass{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(14px);border-radius:1.25rem;transition:.35s}
-.lift:hover{border-color:var(--c,#3b82f6);box-shadow:0 0 45px -12px var(--c,#3b82f6);transform:translateY(-5px)}
-.grad{background:linear-gradient(90deg,#38bdf8,#34d399,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
-.rv{opacity:0;transform:translateY(32px);transition:opacity .8s,transform .8s}.rv.in{opacity:1;transform:none}
-.blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.22;pointer-events:none}
-@keyframes fl{50%{transform:translateY(-14px)}}.fl{animation:fl 5s ease-in-out infinite}
-@keyframes pu{0%{box-shadow:0 0 0 0 rgba(37,211,102,.6)}100%{box-shadow:0 0 0 22px rgba(37,211,102,0)}}
-.wab{animation:pu 2s infinite}
-.btn{display:inline-flex;align-items:center;gap:.5rem;font-family:Cairo;font-weight:800;border-radius:.9rem;padding:.9rem 1.6rem;transition:.3s;cursor:pointer}
-.btn-p{background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;box-shadow:0 10px 40px -10px #2563eb}
-.btn-p:hover{transform:translateY(-3px) scale(1.03)}
-.btn-w{background:#25d366;color:#04210f}.btn-w:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 10px 40px -10px #25d366}
-.ic{width:3rem;height:3rem;border-radius:.9rem;display:grid;place-items:center;font-size:1.5rem;background:color-mix(in srgb,var(--c) 18%,transparent);border:1px solid color-mix(in srgb,var(--c) 45%,transparent)}
-.li::before{content:"✓";color:var(--c);font-weight:900;margin-left:.5rem}
-details summary{cursor:pointer;list-style:none}details summary::-webkit-details-marker{display:none}
-details[open] .pl{transform:rotate(45deg)}.pl{transition:.3s;display:inline-block}
-input[type=text]{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:.8rem;padding:.8rem 1rem;color:#fff;width:100%;outline:none}
-input[type=text]:focus{border-color:var(--acc)}
-.sw{width:1.8rem;height:1.8rem;border-radius:50%;border:2px solid #fff3;cursor:pointer}
-::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:#1f2a44;border-radius:9px}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="يا صاحب محل الهواتف، طوّر تجارتك بمتجر إلكتروني خاص باسم محلك، من تطوير جزائري، دون اشتراك منصة شهري إجباري. يبدأ من 80,000 دج.">
+  <meta property="og:title" content="متجر إلكتروني خاص بمحلك — يبدأ من 80,000 دج">
+  <meta property="og:description" content="مش اشتراك في منصة جاهزة: متجر خاص بنشاطك مع إدارة الطلبات والمخزون، إحصائيات الزيارات، ودعم شهر كامل بعد التسليم.">
+  <title>متجر إلكتروني خاص بمحلك | يبدأ من 80,000 دج</title>
+  <style>
+    :root{
+      color-scheme:light;
+      --bg:#f4f7fb;--surface:#fff;--surface-2:#f8fafd;--ink:#0a2340;--muted:#62728a;
+      --line:rgba(10,35,64,.11);--navy:#0a2340;--navy-2:#123b61;--red:#e3263d;--red-2:#c91832;
+      --green:#169b70;--blue:#3978b8;--shadow:0 24px 70px rgba(8,35,65,.11);--shadow-sm:0 10px 28px rgba(8,35,65,.08);
+      --glass:rgba(255,255,255,.78);--grid:rgba(10,35,64,.055);--radius:26px;
+    }
+    html[data-theme="dark"]{
+      color-scheme:dark;--bg:#071322;--surface:#0c1c30;--surface-2:#10243b;--ink:#f2f6fc;--muted:#9aabc1;
+      --line:rgba(220,235,255,.12);--navy:#dce9f8;--navy-2:#9ebbd9;--red:#ff4058;--red-2:#e52c48;
+      --green:#4bd4a5;--blue:#72b8f4;--shadow:0 26px 80px rgba(0,0,0,.32);--shadow-sm:0 10px 30px rgba(0,0,0,.23);
+      --glass:rgba(9,25,43,.78);--grid:rgba(220,235,255,.055);
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.7;overflow-x:hidden;transition:background .28s,color .28s}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;background:radial-gradient(ellipse at 12% 8%,rgba(227,38,61,.08),transparent 34%),radial-gradient(ellipse at 88% 20%,rgba(43,125,190,.1),transparent 35%)}
+    a{color:inherit;text-decoration:none}button,select{font:inherit}button{cursor:pointer}svg{display:block}.container{width:min(1160px,calc(100% - 44px));margin-inline:auto}.section{padding:104px 0;position:relative}.section-head{max-width:720px;margin:0 auto 48px;text-align:center}.eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--red);font-size:.79rem;font-weight:850;letter-spacing:.035em;margin-bottom:13px}.eyebrow:before{content:"";width:23px;height:2px;background:currentColor;border-radius:9px}.section-title{font-size:clamp(1.9rem,4vw,3.1rem);letter-spacing:-.045em;line-height:1.18;margin:0 0 16px;font-weight:950}.section-desc{font-size:1.02rem;color:var(--muted);margin:0;line-height:1.9}.accent{color:var(--red)}.muted{color:var(--muted)}
+    .top-progress{position:fixed;inset:0 0 auto;height:3px;background:transparent;z-index:1001}.top-progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--red),#ff8b5b);box-shadow:0 0 15px rgba(227,38,61,.45)}
+    .header{position:sticky;top:0;z-index:100;background:var(--glass);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}.nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:11px;min-width:190px}.brand-mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,#0a2340,#174a76);box-shadow:0 8px 18px rgba(10,35,64,.2)}.brand-mark svg{width:23px;height:23px}.brand-name{display:block;font-size:1.02rem;font-weight:950;letter-spacing:.025em;line-height:1.1}.brand-sub{display:block;color:var(--muted);font-size:.61rem;font-weight:800;letter-spacing:.13em;margin-top:4px;direction:ltr;text-align:start}.nav-links{display:flex;align-items:center;gap:29px}.nav-links a{font-size:.84rem;font-weight:750;color:var(--muted);transition:color .2s}.nav-links a:hover{color:var(--red)}.nav-actions{display:flex;align-items:center;gap:9px}.icon-btn,.lang-select{height:41px;border:1px solid var(--line);border-radius:13px;background:var(--surface);color:var(--ink)}.icon-btn{width:42px;display:grid;place-items:center}.icon-btn svg{width:18px;height:18px}.lang-select{padding:0 11px;font-size:.79rem;font-weight:800;outline:none}.btn{min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:0 20px;border:1px solid transparent;border-radius:14px;font-weight:850;font-size:.88rem;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}.btn:hover{transform:translateY(-3px)}.btn-primary{background:var(--red);color:#fff;box-shadow:0 12px 24px rgba(227,38,61,.2)}.btn-primary:hover{background:var(--red-2);box-shadow:0 16px 28px rgba(227,38,61,.28)}.btn-secondary{background:var(--surface);border-color:var(--line);color:var(--ink)}.btn-secondary:hover{border-color:var(--red);color:var(--red)}.btn svg{width:18px;height:18px}.nav-cta{min-height:41px;padding-inline:15px;font-size:.8rem}.menu-btn{display:none}
+    .hero{padding:82px 0 74px;position:relative;isolation:isolate;overflow:hidden}.hero:before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:52px 52px;mask-image:linear-gradient(to bottom,black,transparent 94%);opacity:.7}.hero:after{content:"";position:absolute;width:440px;height:440px;left:-190px;top:8%;z-index:-1;border-radius:50%;border:1px solid var(--line);box-shadow:0 0 0 48px rgba(227,38,61,.025),0 0 0 96px rgba(227,38,61,.02)}.hero-grid{display:grid;grid-template-columns:.92fr 1.08fr;align-items:center;gap:62px}.hero-copy{position:relative;z-index:2}.hero-badge{display:inline-flex;align-items:center;gap:9px;padding:8px 13px;border:1px solid rgba(227,38,61,.2);border-radius:999px;background:rgba(227,38,61,.055);color:var(--red);font-size:.77rem;font-weight:850;margin-bottom:20px}.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 5px rgba(227,38,61,.12)}.hero h1{font-size:clamp(2.45rem,5.2vw,4.5rem);font-weight:1000;line-height:1.12;letter-spacing:-.06em;margin:0 0 23px}.hero h1 .line{display:block}.hero h1 .highlight{color:var(--red);position:relative;white-space:nowrap}.hero-desc{font-size:1.03rem;line-height:2;color:var(--muted);max-width:590px;margin:0 0 28px}.hero-actions{display:flex;flex-wrap:wrap;gap:12px}.hero-trust{display:flex;align-items:center;gap:17px;margin-top:30px;color:var(--muted);font-size:.75rem;font-weight:750;flex-wrap:wrap}.trust-item{display:inline-flex;align-items:center;gap:7px}.trust-item svg{width:16px;height:16px;color:var(--green)}.trust-sep{width:4px;height:4px;border-radius:50%;background:var(--red);opacity:.65}
+    .hero-visual{position:relative;min-width:0;perspective:1200px}.orbit{position:absolute;inset:6% 4%;border:1px dashed rgba(227,38,61,.23);border-radius:50%;transform:rotate(-12deg);pointer-events:none}.dashboard-window{position:relative;padding:12px;border:1px solid var(--line);border-radius:24px;background:var(--glass);backdrop-filter:blur(16px);box-shadow:var(--shadow);transform:rotateY(-5deg) rotateX(2deg);animation:float 7s ease-in-out infinite}.window-top{height:35px;display:flex;align-items:center;justify-content:space-between;padding:0 9px 10px;border-bottom:1px solid var(--line);font-size:.64rem;color:var(--muted);font-weight:800}.window-dots{display:flex;gap:5px;direction:ltr}.window-dots i{width:7px;height:7px;border-radius:50%;background:#ed6a67}.window-dots i:nth-child(2){background:#efbd57}.window-dots i:nth-child(3){background:#45bc8c}.dash-body{display:grid;grid-template-columns:116px 1fr;gap:12px;padding-top:12px;min-height:340px}.dash-side{border-radius:14px;background:linear-gradient(160deg,#0a2340,#0d3156);padding:13px 10px;color:#fff}.dash-logo{display:flex;align-items:center;gap:7px;margin:0 0 24px;font-size:.61rem;font-weight:950;direction:ltr}.dash-logo img{width:19px;height:28px;object-fit:contain}.side-line{height:8px;border-radius:9px;background:rgba(255,255,255,.18);margin:13px 0}.side-line.active{background:var(--red);width:82%;height:22px;border-radius:7px}.side-line.short{width:64%}.side-line.mid{width:83%}.dash-main{min-width:0;padding:4px 4px 4px 0}.dash-heading{display:flex;justify-content:space-between;align-items:center;gap:9px;margin-bottom:13px}.dash-heading strong{font-size:.77rem}.dash-heading span{font-size:.57rem;color:var(--muted);background:var(--surface-2);padding:5px 8px;border-radius:6px}.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.mini-stat{background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:10px 9px;min-width:0}.mini-stat span{display:block;font-size:.54rem;color:var(--muted);white-space:nowrap}.mini-stat strong{display:block;font-size:.9rem;line-height:1.7;white-space:nowrap}.stat-up{font-size:.53rem;color:var(--green);font-weight:800}.dash-lower{display:grid;grid-template-columns:1.2fr .8fr;gap:8px;margin-top:9px}.chart-card,.stock-card{padding:10px;border:1px solid var(--line);background:var(--surface-2);border-radius:11px;min-width:0}.chart-title{font-size:.59rem;font-weight:850;margin-bottom:8px}.chart-svg{width:100%;height:90px}.stock-row{display:flex;justify-content:space-between;gap:5px;padding:7px 0;border-bottom:1px solid var(--line);font-size:.53rem;color:var(--muted)}.stock-row:last-child{border:0}.stock-row b{color:var(--ink)}.dash-orders{margin-top:9px;border:1px solid var(--line);border-radius:11px;padding:10px;background:var(--surface-2)}.orders-head{display:flex;justify-content:space-between;font-size:.59rem;font-weight:850;margin-bottom:8px}.order-line{display:grid;grid-template-columns:1fr auto auto;gap:9px;align-items:center;padding:6px 0;border-top:1px solid var(--line);font-size:.53rem;color:var(--muted)}.order-line b{color:var(--ink)}.order-pill{background:rgba(22,155,112,.12);color:var(--green);border-radius:20px;padding:2px 7px;font-weight:850}.float-card{position:absolute;padding:12px 15px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:10px;animation:float 6s ease-in-out infinite}.float-card.one{top:15%;right:-28px}.float-card.two{bottom:8%;left:-25px;animation-delay:-2.8s}.float-icon{width:33px;height:33px;display:grid;place-items:center;border-radius:11px;background:rgba(22,155,112,.12);color:var(--green)}.float-icon.red{background:rgba(227,38,61,.1);color:var(--red)}.float-icon svg{width:17px;height:17px}.float-card b{display:block;font-size:.68rem}.float-card small{display:block;color:var(--muted);font-size:.57rem}.hero-caption{text-align:center;margin-top:14px;font-size:.65rem;color:var(--muted)}
+    .proof-strip{border-block:1px solid var(--line);background:var(--surface);padding:22px 0}.proof-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.proof-item{display:flex;align-items:center;justify-content:center;gap:11px;text-align:start}.proof-icon{width:39px;height:39px;display:grid;place-items:center;border-radius:12px;background:rgba(227,38,61,.08);color:var(--red);flex:none}.proof-icon svg{width:19px;height:19px}.proof-item strong{display:block;font-size:.9rem;font-weight:950;line-height:1.3}.proof-item span{display:block;color:var(--muted);font-size:.69rem;margin-top:3px}
+    .problem-section{background:var(--surface-2)}.problem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.problem-card{padding:23px 20px;border:1px solid var(--line);border-radius:19px;background:var(--surface);position:relative;overflow:hidden;transition:transform .25s,border-color .25s}.problem-card:hover{transform:translateY(-5px);border-color:rgba(227,38,61,.45)}.problem-card:after{content:"";position:absolute;width:90px;height:90px;left:-46px;bottom:-50px;border-radius:50%;background:rgba(227,38,61,.06)}.problem-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:rgba(227,38,61,.09);color:var(--red);margin-bottom:16px}.problem-icon svg{width:20px;height:20px}.problem-card h3{font-size:.98rem;margin:0 0 8px;font-weight:900}.problem-card p{font-size:.8rem;line-height:1.85;color:var(--muted);margin:0}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.feature-card{padding:25px 23px 23px;background:var(--surface);border:1px solid var(--line);border-radius:21px;box-shadow:0 5px 16px rgba(8,35,65,.025);transition:transform .25s,border-color .25s,box-shadow .25s;position:relative;overflow:hidden}.feature-card:hover{transform:translateY(-6px);border-color:rgba(227,38,61,.34);box-shadow:var(--shadow-sm)}.feature-card:before{content:"";position:absolute;inset:auto -30px -70px auto;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(227,38,61,.075),transparent 70%);pointer-events:none}.feature-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:19px}.feature-icon{width:47px;height:47px;border-radius:15px;background:linear-gradient(145deg,rgba(227,38,61,.12),rgba(227,38,61,.045));color:var(--red);display:grid;place-items:center}.feature-icon svg{width:23px;height:23px}.feature-num{font-size:.68rem;letter-spacing:.1em;color:var(--muted);font-weight:900;direction:ltr}.feature-card h3{font-size:1.04rem;font-weight:950;margin:0 0 9px}.feature-card p{color:var(--muted);font-size:.82rem;line-height:1.9;margin:0}.feature-tag{display:inline-flex;margin-top:17px;padding:5px 9px;border-radius:7px;font-size:.65rem;font-weight:850;color:var(--red);background:rgba(227,38,61,.07)}
+    .journey{background:linear-gradient(135deg,#091e35,#10385c);color:#fff;overflow:hidden}.journey:before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:20px 20px;opacity:.18;mask-image:linear-gradient(90deg,transparent,black,transparent)}.journey .section-head{position:relative}.journey .eyebrow{color:#ff6c7e}.journey .section-desc{color:#b8c8d9}.step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;position:relative}.step-grid:before{content:"";position:absolute;top:29px;inset-inline:11%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent)}.step-card{position:relative;text-align:center;padding:0 13px}.step-number{width:59px;height:59px;margin:0 auto 18px;border-radius:19px;background:var(--red);display:grid;place-items:center;color:#fff;font-size:1.1rem;font-weight:950;box-shadow:0 0 0 8px rgba(255,255,255,.08);position:relative;z-index:1}.step-card h3{font-size:.98rem;font-weight:900;margin:0 0 8px}.step-card p{margin:0;color:#b8c8d9;font-size:.78rem;line-height:1.85}
+    .preview-section{overflow:hidden}.preview-layout{display:grid;grid-template-columns:.8fr 1.2fr;gap:50px;align-items:center}.preview-copy .section-title{font-size:clamp(2rem,3.5vw,2.8rem)}.preview-copy p{font-size:.9rem;color:var(--muted);line-height:2}.preview-points{display:grid;gap:13px;margin:26px 0}.preview-point{display:flex;align-items:flex-start;gap:11px;font-size:.83rem;font-weight:750}.check{width:23px;height:23px;border-radius:8px;background:rgba(22,155,112,.12);color:var(--green);display:grid;place-items:center;flex:none}.check svg{width:14px;height:14px}.preview-shell{border:1px solid var(--line);border-radius:24px;background:var(--surface);padding:12px;box-shadow:var(--shadow);min-width:0}.preview-tabs{display:flex;gap:7px;padding:4px;background:var(--surface-2);border-radius:13px;width:max-content;max-width:100%;margin-bottom:13px}.preview-tab{border:0;background:transparent;color:var(--muted);padding:8px 13px;border-radius:9px;font-size:.74rem;font-weight:850}.preview-tab.active{background:var(--red);color:#fff;box-shadow:0 5px 12px rgba(227,38,61,.2)}.preview-scene{min-height:320px;border:1px solid var(--line);border-radius:17px;padding:18px;background:var(--surface-2);overflow:hidden}.store-preview-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:17px}.store-brand{display:flex;align-items:center;gap:9px;font-size:.79rem;font-weight:950}.store-brand img{width:25px;height:37px;object-fit:contain}.store-actions{display:flex;gap:6px}.store-actions span{width:29px;height:29px;border:1px solid var(--line);border-radius:8px;display:grid;place-items:center;color:var(--muted)}.store-actions svg{width:14px;height:14px}.store-banner{padding:18px 20px;border-radius:13px;background:linear-gradient(115deg,#0a2340,#174e7b);color:#fff;position:relative;overflow:hidden;margin-bottom:15px}.store-banner:after{content:"";position:absolute;width:130px;height:130px;border:1px solid rgba(255,255,255,.2);border-radius:50%;left:8%;top:-60px;box-shadow:0 0 0 20px rgba(255,255,255,.03),0 0 0 40px rgba(255,255,255,.025)}.store-banner small{display:block;color:#bacce0;font-size:.61rem}.store-banner strong{display:block;font-size:1.15rem;line-height:1.4;margin:5px 0}.store-banner span{font-size:.63rem;color:#e4edf7}.store-products{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.store-product{border:1px solid var(--line);background:var(--surface);border-radius:12px;overflow:hidden}.product-art{height:105px;display:grid;place-items:center;background:linear-gradient(145deg,#eaf0f6,#dce6f1);position:relative}.product-art:after{content:"";position:absolute;width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,.6);filter:blur(16px)}.mini-phone{height:76px;width:37px;border:3px solid #142c45;border-radius:9px;background:linear-gradient(135deg,#334e6c,#0a192a);position:relative;z-index:1;box-shadow:5px 7px 12px rgba(10,35,64,.2);transform:rotate(-8deg)}.mini-phone:before{content:"";position:absolute;width:10px;height:3px;border-radius:4px;background:#8ca4bf;left:50%;top:3px;transform:translateX(-50%)}.product-art.headphone{background:linear-gradient(145deg,#f8e7e9,#f1d3d8)}.mini-headphone{width:54px;height:56px;border:7px solid #d8314a;border-bottom:0;border-radius:35px 35px 0 0;position:relative;z-index:1}.mini-headphone:before,.mini-headphone:after{content:"";position:absolute;width:10px;height:22px;border-radius:8px;background:#d8314a;bottom:-1px}.mini-headphone:before{left:-8px}.mini-headphone:after{right:-8px}.product-art.watch{background:linear-gradient(145deg,#e6f1ed,#cde6dc)}.mini-watch{width:38px;height:55px;border-radius:11px;background:#173653;position:relative;z-index:1}.mini-watch:before,.mini-watch:after{content:"";position:absolute;width:17px;height:15px;left:10px;background:#799aab}.mini-watch:before{top:-12px;border-radius:8px 8px 0 0}.mini-watch:after{bottom:-12px;border-radius:0 0 8px 8px}.product-info{padding:9px}.product-info span{display:block;color:var(--muted);font-size:.54rem}.product-info b{display:block;font-size:.65rem;margin:2px 0}.product-info em{font-style:normal;color:var(--red);font-weight:950;font-size:.67rem}.admin-preview{display:none}.admin-preview.active,.store-preview.active{display:block}.admin-preview{grid-template-columns:100px 1fr;gap:12px;min-height:280px}.admin-preview.active{display:grid}.admin-menu{background:#0a2340;border-radius:12px;padding:12px 9px;color:white}.admin-menu strong{font-size:.66rem;display:block;margin-bottom:19px;direction:ltr;text-align:center}.admin-menu i{height:7px;border-radius:7px;background:rgba(255,255,255,.2);display:block;margin:13px 0}.admin-menu i:first-of-type{height:21px;background:var(--red)}.admin-content{min-width:0}.admin-content h4{margin:0 0 12px;font-size:.85rem}.admin-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.admin-kpi{padding:12px 9px;border-radius:11px;background:var(--surface);border:1px solid var(--line)}.admin-kpi span{display:block;font-size:.55rem;color:var(--muted)}.admin-kpi b{display:block;font-size:.85rem}.admin-table{margin-top:10px;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:10px}.admin-table-head{display:flex;justify-content:space-between;font-size:.62rem;font-weight:900;margin-bottom:9px}.admin-table-row{display:grid;grid-template-columns:1.2fr 1fr .6fr;gap:8px;align-items:center;border-top:1px solid var(--line);padding:8px 0;font-size:.56rem;color:var(--muted)}.admin-table-row b{color:var(--ink)}.progress-mini{height:5px;background:rgba(22,155,112,.13);border-radius:6px;overflow:hidden}.progress-mini i{display:block;width:75%;height:100%;background:var(--green);border-radius:6px}
+    .architecture{padding:0 0 104px}.architecture-box{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:16px;padding:28px;border-radius:22px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-sm)}.tech-item{display:flex;align-items:center;gap:12px;min-width:0}.tech-logo{width:47px;height:47px;display:grid;place-items:center;border-radius:14px;color:#fff;font-weight:950;font-size:.9rem;flex:none;background:linear-gradient(135deg,#f48136,#ee6032)}.tech-logo.cf{background:linear-gradient(135deg,#f58d37,#dc5b29)}.tech-logo.db{background:linear-gradient(135deg,#e6a23c,#c47a20)}.tech-logo.storage{background:linear-gradient(135deg,#38a98f,#197c74)}.tech-item b{display:block;font-size:.83rem}.tech-item span{display:block;font-size:.67rem;color:var(--muted);margin-top:2px}.tech-arrow{color:var(--red);font-size:1.4rem;font-weight:900}
+    .closing-band{padding:0 0 100px}.closing-card{position:relative;overflow:hidden;padding:53px 55px;border-radius:28px;background:linear-gradient(120deg,#0a2340,#123d65);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:30px;box-shadow:0 30px 70px rgba(10,35,64,.2)}.closing-card:before,.closing-card:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.12);border-radius:50%;pointer-events:none}.closing-card:before{width:340px;height:340px;left:-90px;top:-190px;box-shadow:0 0 0 35px rgba(255,255,255,.025),0 0 0 70px rgba(255,255,255,.02)}.closing-card:after{width:220px;height:220px;right:25%;bottom:-175px}.closing-copy{position:relative;z-index:1;max-width:660px}.closing-copy .eyebrow{color:#ff7d8c}.closing-copy h2{font-size:clamp(1.7rem,3.3vw,2.6rem);line-height:1.25;margin:0 0 12px;letter-spacing:-.04em}.closing-copy p{margin:0;color:#bdcfe1;font-size:.9rem;line-height:1.9}.closing-card .btn{position:relative;z-index:1;flex:none}.faq-list{max-width:850px;margin:0 auto;display:grid;gap:11px}.faq-item{border:1px solid var(--line);border-radius:16px;background:var(--surface);overflow:hidden}.faq-item summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:19px 21px;font-size:.9rem;font-weight:900}.faq-item summary::-webkit-details-marker{display:none}.faq-item summary:after{content:"+";width:27px;height:27px;display:grid;place-items:center;border-radius:9px;background:var(--surface-2);color:var(--red);font-size:1.1rem;flex:none}.faq-item[open] summary:after{content:"−"}.faq-answer{padding:0 21px 20px;color:var(--muted);font-size:.83rem;line-height:1.95;max-width:780px}
+    .footer{padding:28px 0 35px;border-top:1px solid var(--line);background:var(--surface)}.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px}.footer-note{color:var(--muted);font-size:.72rem}.footer-links{display:flex;align-items:center;gap:18px;color:var(--muted);font-size:.75rem;font-weight:800}.footer-links a:hover{color:var(--red)}.footer-brand{display:flex;align-items:center;gap:9px}.footer-brand .brand-mark{width:34px;height:34px;border-radius:11px}.footer-brand strong{font-size:.83rem}.floating-wa{position:fixed;bottom:22px;inset-inline-end:22px;z-index:99;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;color:#fff;background:#20b86a;box-shadow:0 12px 28px rgba(32,184,106,.35);transition:transform .2s}.floating-wa:hover{transform:translateY(-4px) scale(1.04)}.floating-wa svg{width:29px;height:29px}.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}.reveal.visible{opacity:1;transform:none}.delay-1{transition-delay:.08s}.delay-2{transition-delay:.16s}.delay-3{transition-delay:.24s}
+    @keyframes float{0%,100%{transform:translateY(0) rotateY(-5deg) rotateX(2deg)}50%{transform:translateY(-9px) rotateY(-3deg) rotateX(1deg)}}
+    @media(max-width:1000px){.hero-grid{gap:35px;grid-template-columns:1fr 1fr}.nav-links{gap:17px}.problem-grid{grid-template-columns:repeat(2,1fr)}.feature-grid{grid-template-columns:repeat(2,1fr)}.preview-layout{gap:30px}.float-card.one{right:-10px}.float-card.two{left:-10px}}
+    @media(max-width:800px){.nav{height:70px}.nav-links{display:none;position:absolute;top:70px;inset-inline:18px;padding:15px;border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--shadow);flex-direction:column;align-items:stretch;gap:0}.nav-links.open{display:flex}.nav-links a{padding:11px 8px;border-bottom:1px solid var(--line)}.nav-links a:last-child{border:0}.menu-btn{display:grid}.nav-cta{display:none}.hero{padding-top:60px}.hero-grid{grid-template-columns:1fr;gap:50px}.hero-copy{text-align:center}.hero-desc{margin-inline:auto}.hero-actions,.hero-trust{justify-content:center}.hero-visual{max-width:650px;margin-inline:auto;width:100%}.dashboard-window{transform:none;animation:none}.preview-layout{grid-template-columns:1fr}.preview-copy{text-align:center}.preview-points{text-align:start;max-width:510px;margin-inline:auto}.preview-copy .section-desc{max-width:600px;margin-inline:auto}.architecture-box{grid-template-columns:1fr;gap:12px}.tech-arrow{transform:rotate(90deg);text-align:center}.closing-card{padding:42px 30px;flex-direction:column;text-align:center}.closing-card .btn{align-self:center}.proof-inner{grid-template-columns:repeat(2,1fr);row-gap:22px}.step-grid{grid-template-columns:repeat(2,1fr);row-gap:32px}.step-grid:before{display:none}}
+    @media(max-width:560px){.container{width:min(100% - 28px,1160px)}.section{padding:78px 0}.section-head{margin-bottom:34px}.brand{min-width:0}.brand-name{font-size:.91rem}.brand-sub{font-size:.54rem}.nav-actions{gap:6px}.lang-select{height:39px;padding:0 7px;font-size:.72rem}.icon-btn{height:39px;width:39px}.hero{padding:48px 0 58px}.hero h1{font-size:clamp(2.18rem,10vw,3.25rem)}.hero-desc{font-size:.92rem}.hero-actions{display:grid;grid-template-columns:1fr;max-width:330px;margin-inline:auto}.hero-actions .btn{width:100%}.hero-trust{gap:9px;font-size:.67rem}.dashboard-window{padding:8px;border-radius:18px}.dash-body{grid-template-columns:76px 1fr;gap:7px;min-height:280px}.dash-side{padding:10px 7px}.dash-logo{font-size:.48rem;gap:4px}.dash-logo img{width:14px;height:22px}.mini-stat{padding:7px 6px}.mini-stat span{font-size:.46rem}.mini-stat strong{font-size:.72rem}.dash-lower{gap:6px}.chart-card,.stock-card{padding:7px}.chart-svg{height:66px}.stock-row{font-size:.45rem}.order-line{font-size:.45rem;gap:4px}.float-card{padding:8px 10px}.float-card.one{right:-3px;top:10%}.float-card.two{left:-2px;bottom:4%}.float-icon{width:27px;height:27px}.float-card b{font-size:.59rem}.float-card small{font-size:.48rem}.proof-inner{grid-template-columns:1fr 1fr;gap:16px 8px}.proof-item{justify-content:flex-start}.proof-item strong{font-size:.78rem}.proof-item span{font-size:.61rem}.problem-grid,.feature-grid{grid-template-columns:1fr}.problem-card{padding:20px}.feature-card{padding:22px}.step-grid{gap:26px 9px}.step-card{padding:0 5px}.step-number{width:50px;height:50px;border-radius:16px}.step-card h3{font-size:.84rem}.step-card p{font-size:.72rem}.preview-shell{padding:8px}.preview-scene{padding:11px;min-height:275px}.store-products{gap:6px}.product-art{height:78px}.mini-phone{height:59px;width:30px}.product-info{padding:7px}.product-info b{font-size:.57rem}.admin-preview{grid-template-columns:70px 1fr;gap:7px}.admin-menu{padding:10px 7px}.admin-kpi{padding:8px 6px}.admin-kpi span{font-size:.48rem}.admin-kpi b{font-size:.7rem}.admin-table{padding:8px}.closing-card{padding:35px 20px}.footer-inner{flex-direction:column;text-align:center}.footer-links{justify-content:center;flex-wrap:wrap}.floating-wa{width:53px;height:53px;bottom:15px;inset-inline-end:15px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
 
-body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse at 50% 0,#000 15%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 0,#000 15%,transparent 75%)}
-.aur{position:fixed;width:46vw;height:46vw;border-radius:50%;filter:blur(120px);opacity:.26;z-index:-1;pointer-events:none;animation:dft 18s ease-in-out infinite alternate}
-.a1{background:#2563eb;top:-12%;right:-10%}.a2{background:#7c3aed;top:35%;left:-15%;animation-delay:-6s}.a3{background:#059669;bottom:-15%;right:25%;animation-delay:-12s}
-@keyframes dft{to{transform:translate(8vw,6vh) scale(1.2)}}
-.glass:not(.sticky){position:relative}
-.glass:not(.sticky)::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(129,140,248,.17),transparent 65%);opacity:0;transition:opacity .3s;pointer-events:none}
-.glass:hover::before{opacity:1}
-.lift.rv.in{transition:transform .18s,opacity .8s,border-color .35s,box-shadow .35s}
-.grad{background:linear-gradient(90deg,#38bdf8,#34d399,#a78bfa,#38bdf8);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gs 6s linear infinite}
-@keyframes gs{to{background-position:-300% 0}}
-#rot{transition:opacity .35s,transform .35s}
-.btn-p,.btn-w{position:relative;overflow:hidden}
-.btn-p::after,.btn-w::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);animation:sh 3.2s infinite}
-@keyframes sh{60%,100%{transform:translateX(120%)}}
-@property --a{syntax:'<angle>';initial-value:0deg;inherits:false}
-@keyframes sp{to{--a:360deg}}
-.hot{border:2px solid transparent!important;background:linear-gradient(#0a0f1f,#0a0f1f) padding-box,conic-gradient(from var(--a),#3b82f6,#8b5cf6,#10b981,#3b82f6) border-box!important;animation:sp 4s linear infinite}
-.mq{animation:mq 32s linear infinite}@keyframes mq{to{transform:translateX(-50%)}}
-.pt{position:absolute;opacity:.22;pointer-events:none;animation:dr ease-in-out infinite}
-@keyframes dr{50%{transform:translate(18px,-28px) rotate(14deg)}}
-.st{animation:pu2 2.4s infinite}@keyframes pu2{0%{box-shadow:0 0 0 0 var(--c)}100%{box-shadow:0 0 0 18px transparent}}
-@media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+    .demo-logo-mark{width:26px;height:30px;display:grid;place-items:center;border-radius:8px;background:linear-gradient(145deg,#0a2340,#174e7b);color:#fff;font-size:.72rem;font-weight:1000;box-shadow:0 4px 10px rgba(10,35,64,.18)}
+    /* Direct-response sales sections */
+    .owner-section{padding:86px 0;background:linear-gradient(180deg,transparent,rgba(227,38,61,.035),transparent)}
+    .owner-intro{max-width:820px;margin:0 auto 36px;text-align:center}
+    .owner-lead{font-size:clamp(1.1rem,2.2vw,1.4rem);font-weight:850;line-height:1.85;margin:0 auto;color:var(--ink);max-width:850px}
+    .owner-lead strong{color:var(--red)}
+    .owner-grid,.metric-grid,.hosting-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .owner-card,.metric-card,.hosting-card{background:var(--surface);border:1px solid var(--line);border-radius:21px;padding:24px;box-shadow:var(--shadow-sm);height:100%}
+    .owner-card .feature-icon,.metric-card .feature-icon,.hosting-card .feature-icon{margin-bottom:17px}
+    .owner-card h3,.metric-card h3,.hosting-card h3{font-size:1.02rem;margin:0 0 8px;font-weight:950;line-height:1.5}
+    .owner-card p,.metric-card p,.hosting-card p{font-size:.84rem;color:var(--muted);margin:0;line-height:1.9}
+    .model-note{margin:23px auto 0;padding:19px 22px;max-width:950px;border:1px solid rgba(227,38,61,.2);border-radius:17px;background:rgba(227,38,61,.055);color:var(--muted);font-size:.85rem;line-height:1.95}
+    .model-note strong{color:var(--ink)}
+    .tracking-section{padding:104px 0}
+    .metric-card.featured{border-color:rgba(22,155,112,.35);background:linear-gradient(145deg,var(--surface),rgba(22,155,112,.055))}
+    .metric-status{display:inline-flex;margin-top:15px;padding:5px 10px;border-radius:999px;background:rgba(22,155,112,.12);color:var(--green);font-size:.68rem;font-weight:900}
+    .metric-status.optional{background:rgba(227,38,61,.09);color:var(--red)}
+    .tracking-note{margin:22px auto 0;max-width:930px;color:var(--muted);font-size:.8rem;line-height:1.9;text-align:center}
+    .tracking-note strong{color:var(--ink)}
+    .hosting-section{padding:90px 0;background:var(--surface-2);border-block:1px solid var(--line)}
+    .hosting-grid{grid-template-columns:repeat(4,1fr)}
+    .hosting-card{padding:21px}
+    .hosting-card .hosting-value{display:block;font-size:1.3rem;font-weight:1000;letter-spacing:-.03em;color:var(--red);margin:5px 0 8px;direction:ltr;text-align:start}
+    .hosting-footnote{margin-top:22px;padding:17px 20px;border:1px solid var(--line);border-radius:15px;background:var(--surface);color:var(--muted);font-size:.76rem;line-height:1.95}
+    .hosting-footnote strong{color:var(--ink)}
+    .hosting-sources{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:.72rem;font-weight:800}
+    .hosting-sources a{color:var(--blue);text-decoration:underline;text-underline-offset:3px}
+    .offer-section{padding:104px 0}
+    .offer-wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:25px;align-items:stretch;max-width:1000px;margin:0 auto}
+    .offer-copy{padding:18px 8px}
+    .offer-copy h2{font-size:clamp(2rem,4vw,3rem);line-height:1.2;letter-spacing:-.045em;margin:0 0 15px;font-weight:1000}
+    .offer-copy>p{color:var(--muted);line-height:1.95;margin:0 0 20px}
+    .offer-includes{display:grid;gap:12px;margin:20px 0 0;padding:0;list-style:none}
+    .offer-includes li{display:flex;gap:10px;align-items:flex-start;color:var(--ink);font-size:.88rem;font-weight:750}
+    .offer-includes svg{width:19px;height:19px;flex:none;color:var(--green);margin-top:2px}
+    .price-card{position:relative;overflow:hidden;padding:32px;border:1px solid rgba(227,38,61,.25);border-radius:26px;background:var(--surface);box-shadow:var(--shadow)}
+    .price-card:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,var(--red),#ff9a65)}
+    .price-label{display:block;color:var(--muted);font-size:.82rem;font-weight:850}
+    .price-value{display:block;font-size:clamp(2.3rem,5vw,3.35rem);font-weight:1000;line-height:1.2;letter-spacing:-.055em;margin:9px 0;color:var(--ink);direction:ltr;text-align:start}
+    .price-value small{font-size:.95rem;letter-spacing:0;color:var(--muted);font-weight:900}
+    .price-negotiable{display:inline-flex;padding:6px 11px;border-radius:9px;background:rgba(22,155,112,.1);color:var(--green);font-size:.75rem;font-weight:900;margin:3px 0 17px}
+    .price-card p{color:var(--muted);font-size:.82rem;line-height:1.9;margin:0 0 20px}
+    .price-card .btn{width:100%}
+    .price-disclaimer{font-size:.69rem!important;margin:13px 0 0!important;text-align:center}
+    .section-anchor{scroll-margin-top:100px}
+    @media(max-width:900px){.owner-grid,.metric-grid{grid-template-columns:repeat(2,1fr)}.hosting-grid{grid-template-columns:repeat(2,1fr)}.offer-wrap{grid-template-columns:1fr}.offer-copy{text-align:center}.offer-includes{max-width:620px;margin-inline:auto;text-align:start}.offer-card{max-width:620px;width:100%;margin-inline:auto}}
+    @media(max-width:560px){.owner-grid,.metric-grid,.hosting-grid{grid-template-columns:1fr}.owner-card,.metric-card,.hosting-card{padding:20px}.model-note{padding:15px}.tracking-section,.hosting-section,.offer-section{padding:78px 0}.price-card{padding:25px 20px}.offer-copy{padding:0 2px}}
 
-html{overflow-x:hidden}img{max-width:100%}
-@media(max-width:767px){
-.glass{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(15,23,42,.72)}
-.aur.a2,.aur.a3,.blob,.pt,body::before,.glass:not(.sticky)::before{display:none!important}
-.aur.a1{animation:none;filter:blur(70px);width:80vw;height:80vw;opacity:.2}
-.grad,.hot,.fl,.st{animation:none}
-.btn-p::after,.btn-w::after{display:none}
-.btn{padding:.8rem 1.1rem;font-size:.95rem}
-#cmpT thead{display:none}#cmpT,#cmpT tbody,#cmpT tr,#cmpT td{display:block;width:100%}
-#cmpT td{text-align:right!important;padding:.35rem 1rem!important}
-#cmpT td:first-child{padding-top:.8rem!important;font-size:1rem}
-#cmpT td[data-l]::before{content:attr(data-l) ": ";opacity:.65;font-size:.75rem}
-#cmpT tr{padding-bottom:.6rem}}
-</style>
+  </style>
 </head>
 <body>
-<div id="bar" class="fixed top-0 right-0 h-1 z-[60] w-full origin-right scale-x-0 bg-gradient-to-l from-blue-500 via-violet-500 to-emerald-400"></div><div class="aur a1"></div><div class="aur a2"></div><div class="aur a3"></div>
-
-<!-- 1. Announcement -->
-<div class="bg-gradient-to-l from-blue-700 via-violet-700 to-emerald-600 text-white text-center text-xs md:text-base leading-6 py-2 md:py-2.5 px-4 font-bold f">
-  🔥 عرض خاص لأصحاب محلات الهواتف في الجزائر: احصل على نظام تسيير ومتجر خاص بمحلك جاهز خلال 7 أيام!
-</div>
-
-<!-- Nav -->
-<header class="sticky top-0 z-40 glass !rounded-none border-x-0 border-t-0">
-  <div class="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
-    <a href="#top" class="f font-black text-xl text-white">Saiv<span class="text-blue-400">CORE</span></a>
-    <nav class="hidden md:flex gap-6 text-sm font-semibold">
-      <a href="#features" class="hover:text-white">المميزات</a><a href="#compare" class="hover:text-white">المقارنة</a>
-      <a href="#pricing" class="hover:text-white">الأسعار</a><a href="#faq" class="hover:text-white">الأسئلة</a>
-    </nav>
-    <button class="btn btn-w !py-2 !px-4 text-sm" data-wa="">💬 واتساب</button>
-  </div>
-</header>
-
-<!-- 2. Hero -->
-<section id="top" class="relative max-w-6xl mx-auto px-4 pt-8 pb-12 md:pt-14 md:pb-20 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-  <div class="blob w-96 h-96 bg-blue-600 -top-10 right-0"></div><div class="blob w-96 h-96 bg-violet-600 bottom-0 left-0"></div>
-  <div class="relative rv">
-    <span class="glass inline-block px-4 py-1 text-sm text-emerald-300 mb-5">⚡ مصمم خصيصاً لسوق الهواتف الجزائري</span>
-    <h1 class="f font-black text-[1.7rem] sm:text-4xl md:text-5xl leading-[1.5] md:leading-[1.35] text-white">حوّل محلك إلى <span id="rot" class="grad inline-block">إمبراطورية رقمية</span>: متجر إلكتروني احترافي + نظام تسيير ERP مخصص 100% لمحلات الهواتف والإكسسوارات.</h1>
-    <p class="mt-5 text-base md:text-lg leading-7 md:leading-8 text-gray-400">وداعاً للفوضى الدفترية. امتلك منصة رقمية تحمل <b class="text-white">اسم محلك وشعارك</b>، مرتبطة مباشرة بشركات الشحن الجزائرية، نظام العربون، الكاشير، وحساب الأرباح الصافية.</p>
-    <p class="mt-4 text-emerald-300 font-bold">لا نبيعك نسخة جاهزة: سنبني وننسّق هذا النظام الكامل خصيصاً لمحلك أنت، باسمك وشعارك وهويتك من الصفر.</p>
-    <div class="mt-8 flex flex-wrap gap-3">
-      <button class="btn btn-w w-full sm:w-auto justify-center" data-wa="">💬 اطلب تصميم محلك الآن عبر واتساب</button>
-      <a href="#pricing" class="btn glass w-full sm:w-auto justify-center">💰 شاهد الأسعار</a>
-    </div>
-  </div>
-
-  <!-- Personalization widget -->
-  <div class="relative rv">
-    <div class="glass p-5">
-      <div class="f font-extrabold text-white mb-3">✨ شاهد محلك المستقبلي الآن</div>
-      <input id="sn" type="text" maxlength="30" placeholder="اكتب اسم محلك (مثال: Sidi El Bachir Phone)">
-      <div class="flex items-center gap-3 mt-3 flex-wrap">
-        <label class="btn glass !py-2 !px-4 text-sm">🖼️ ارفع شعارك<input id="lg" type="file" accept="image/*" class="hidden"></label>
-        <div class="flex gap-2 items-center text-xs">لون الهوية:
-          <span class="sw" style="background:#3b82f6" data-c="#3b82f6"></span><span class="sw" style="background:#10b981" data-c="#10b981"></span>
-          <span class="sw" style="background:#8b5cf6" data-c="#8b5cf6"></span><span class="sw" style="background:#f59e0b" data-c="#f59e0b"></span>
-          <span class="sw" style="background:#ec4899" data-c="#ec4899"></span>
-        </div>
+  <div class="top-progress"><span id="progressBar"></span></div>
+  <header class="header">
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="Phone Store home">
+        <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10 5h4M11 18.5h2"/></svg></span>
+        <span><span class="brand-name">PHONE STORE</span><span class="brand-sub" data-t="brandSub">E-COMMERCE SOLUTION</span></span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#ownership" data-t="navOwner">الفكرة</a><a href="#features" data-t="navFeatures">المميزات</a><a href="#analytics" data-t="navAnalytics">الإحصائيات</a><a href="#offer" data-t="navOffer">السعر</a><a href="#faq" data-t="navFaq">الأسئلة</a>
+      </nav>
+      <div class="nav-actions">
+        <select class="lang-select" id="languageSelect" aria-label="Select language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle theme"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button>
+        <a class="btn btn-primary nav-cta" data-wa href="https://wa.me/213793390349" target="_blank" rel="noopener"><span data-t="navContact">اطلب عرضك</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <button class="icon-btn menu-btn" id="menuToggle" type="button" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
       </div>
-      <!-- Mock -->
-      <div class="mt-5 rounded-2xl overflow-hidden border border-white/10 bg-[#0b1220] fl" dir="rtl">
-        <div class="flex items-center justify-between px-4 py-3 border-b border-white/10">
-          <div class="flex items-center gap-2 min-w-0">
-            <span id="ml" class="w-9 h-9 rounded-xl grid place-items-center font-black text-white overflow-hidden" style="background:var(--acc)"><span id="mi">S</span><img id="mg" class="hidden w-full h-full object-cover" alt=""></span>
-            <b id="mn" class="f text-white truncate max-w-[9.5rem] sm:max-w-[16rem]">اسم محلك هنا</b>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero" id="solution">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="hero-badge"><i class="pulse-dot"></i><span data-t="heroBadge">لصاحب محل الهواتف والإكسسوارات</span></div>
+          <h1><span class="line" data-t="heroLine1">راك صاحب محل؟</span><span class="line" data-t="heroLine2">كبّر تجارتك بمتجر</span><span class="line highlight" data-t="heroLine3">إلكتروني خاص بيك.</span></h1>
+          <p class="hero-desc" data-t="heroDesc">بدل ما يبقى البيع مربوط غير بالمحل والرسائل، نعطيك متجر إلكتروني باسم محلك: الزبون يتصفح ويطلب من هاتفه، وانت تسيّر المنتجات والمخزون والطلبات من لوحة واحدة. مشروع يتبنى على احتياجاتك، ماشي اشتراك في منصة جاهزة.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" data-wa href="https://wa.me/213793390349" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.08 0C5.5 0 .16 5.34.16 11.92c0 2.1.55 4.15 1.6 5.96L.06 24l6.28-1.65a11.9 11.9 0 0 0 5.73 1.46h.01C18.66 23.81 24 18.47 24 11.9c0-3.18-1.24-6.17-3.48-8.42ZM12.08 21.8a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.73.98 1-3.64-.24-.38a9.85 9.85 0 0 1-1.52-5.25c0-5.45 4.44-9.89 9.9-9.89 2.64 0 5.12 1.03 6.98 2.9a9.82 9.82 0 0 1 2.9 6.98c0 5.46-4.44 9.9-9.89 9.9Zm5.43-7.41c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.38-.03-.53-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.21 5.1 4.5.71.31 1.27.5 1.7.64.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z"/></svg><span data-t="heroCta">اطلب عرض خاص بمحلك</span></a>
+            <a class="btn btn-secondary" href="#features"><span data-t="heroSecondary">شوف كيفاش يخدم</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14m-7-7 7 7 7-7"/></svg></a>
           </div>
-          <span class="text-xs px-3 py-1 rounded-full text-white" style="background:var(--acc)">🛒 السلة (2)</span>
+          <div class="hero-trust"><span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><span data-t="trust1">متجر خاص باسمك</span></span><i class="trust-sep"></i><span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><span data-t="trust2">تطوير جزائري مباشر</span></span><i class="trust-sep"></i><span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><span data-t="trust3">بدون اشتراك منصة شهري</span></span></div>
         </div>
-        <div class="flex gap-2 p-3 text-xs"><span class="px-3 py-1 rounded-full text-white" style="background:var(--acc)">Neuf Scellé</span><span class="px-3 py-1 rounded-full bg-white/10">Caba</span><span class="px-3 py-1 rounded-full bg-white/10">Bon Occasion</span></div>
-        <div class="grid grid-cols-3 gap-2 px-3 pb-3 text-center text-xs">
-          <div class="bg-white/5 rounded-xl p-2"><div class="text-3xl">📱</div>iPhone 15<div class="font-bold mt-1" style="color:var(--acc)">189,000 دج</div></div>
-          <div class="bg-white/5 rounded-xl p-2"><div class="text-3xl">📲</div>Galaxy A54<div class="font-bold mt-1" style="color:var(--acc)">62,000 دج</div></div>
-          <div class="bg-white/5 rounded-xl p-2"><div class="text-3xl">🔌</div>شاحن 35W<div class="font-bold mt-1" style="color:var(--acc)">2,500 دج</div></div>
+        <div class="hero-visual reveal">
+          <div class="orbit"></div>
+          <div class="dashboard-window">
+            <div class="window-top"><div class="window-dots"><i></i><i></i><i></i></div><span data-t="windowTitle">معاينة لوحة الإدارة</span><span>● LIVE UI</span></div>
+            <div class="dash-body">
+              <aside class="dash-side"><div class="dash-logo"><span class="demo-logo-mark">P</span><span data-t="previewBrand">متجرك</span></div><div class="side-line active"></div><div class="side-line"></div><div class="side-line mid"></div><div class="side-line short"></div><div class="side-line"></div><div class="side-line mid"></div></aside>
+              <div class="dash-main">
+                <div class="dash-heading"><strong data-t="dashWelcome">نظرة عامة على المتجر</strong><span data-t="dashToday">لوحة توضيحية</span></div>
+                <div class="dash-stats"><div class="mini-stat"><span data-t="dashSales">إجمالي المبيعات</span><strong>— —</strong><i class="stat-up" data-t="dashDelivered">حسب الطلبات المسلّمة</i></div><div class="mini-stat"><span data-t="dashOrders">الطلبات</span><strong>— —</strong><i class="stat-up" data-t="dashTrack">متابعة الحالات</i></div><div class="mini-stat"><span data-t="dashProducts">المنتجات</span><strong>— —</strong><i class="stat-up" data-t="dashStock">والمخزون</i></div></div>
+                <div class="dash-lower"><div class="chart-card"><div class="chart-title" data-t="dashActivity">ملخص النشاط</div><svg class="chart-svg" viewBox="0 0 300 110" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#e3263d" stop-opacity=".25"/><stop offset="1" stop-color="#e3263d" stop-opacity="0"/></linearGradient></defs><path d="M0 88 C22 82 25 58 49 68 S83 91 104 59 S140 71 161 40 S196 66 220 32 S264 47 300 12 L300 110 L0 110Z" fill="url(#chartFill)"/><path d="M0 88 C22 82 25 58 49 68 S83 91 104 59 S140 71 161 40 S196 66 220 32 S264 47 300 12" fill="none" stroke="#e3263d" stroke-width="3" stroke-linecap="round"/><path d="M0 105H300M0 70H300M0 35H300" stroke="currentColor" opacity=".09" stroke-dasharray="3 5"/></svg></div><div class="stock-card"><div class="chart-title" data-t="dashStockTitle">متابعة المخزون</div><div class="stock-row"><span data-t="stockPhones">هواتف</span><b>•••</b></div><div class="stock-row"><span data-t="stockAudio">إكسسوارات</span><b>•••</b></div><div class="stock-row"><span data-t="stockVariants">النسخ والألوان</span><b>•••</b></div></div></div>
+                <div class="dash-orders"><div class="orders-head"><span data-t="dashRecent">آخر الطلبات</span><span class="muted" data-t="dashViewAll">إدارة الطلبات</span></div><div class="order-line"><b>#ORD-2048</b><span data-t="orderNew">طلب جديد</span><span class="order-pill" data-t="orderStatus">قيد المعالجة</span></div><div class="order-line"><b>#ORD-2047</b><span data-t="orderReady">تم التأكيد</span><span class="order-pill" data-t="orderStatus2">مؤكد</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="float-card one"><span class="float-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span><b data-t="floatOrder">طلبية من الموقع</b><small data-t="floatOrderSub">تظهر في لوحة الإدارة</small></span></div>
+          <div class="float-card two"><span class="float-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16l-1.5 13h-13L4 7Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg></span><span><b data-t="floatStock">مخزون منظّم</b><small data-t="floatStockSub">حسب النسخة واللون</small></span></div>
+          <p class="hero-caption" data-t="heroCaption">تصوّر توضيحي لواجهة الإدارة — الأرقام غير معروضة لأنها تختلف حسب المتجر.</p>
         </div>
-        <div class="px-4 py-2 text-[11px] text-gray-400 border-t border-white/10 flex flex-wrap gap-x-3 gap-y-1 justify-between"><span>🚚 Yalidine · ZR Express</span><span>💳 BaridiMob</span><span>🧾 Facture A4</span></div>
       </div>
-      <p class="text-xs text-gray-500 mt-3">هذه معاينة توضيحية: التصميم النهائي يُبنى حسب هويتك الكاملة.</p>
-      <button class="btn btn-p w-full justify-center mt-3" data-wa="shop">🚀 أريد هذا النظام باسم محلي</button>
-    </div>
-  </div>
-</section>
+    </section>
 
-<div class="border-y border-white/10 bg-white/[.03] py-3 overflow-hidden mb-14" dir="ltr"><div class="mq flex w-max whitespace-nowrap f font-bold text-gray-300"><span class="mx-5">IMEI <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Yalidine <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">ZR Express <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Maystro <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">BaridiMob <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">CCP <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Neuf Scellé <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Caba <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Bon Occasion <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Échange <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Facture A4 <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Ticket Caisse <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">IMEI <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Yalidine <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">ZR Express <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Maystro <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">BaridiMob <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">CCP <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Neuf Scellé <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Caba <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Bon Occasion <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Échange <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Facture A4 <b class="text-blue-400 mx-3">✦</b></span><span class="mx-5">Ticket Caisse <b class="text-blue-400 mx-3">✦</b></span></div></div>
-<!-- 3. Stats -->
-<section class="max-w-6xl mx-auto px-4 pb-12 md:pb-16 grid grid-cols-2 md:grid-cols-4 gap-4 rv">
-  <div class="glass p-5 text-center"><div class="f font-black text-3xl text-emerald-400"><span data-n="5">0</span></div><div class="text-sm mt-1">وحدات متكاملة في منصة واحدة</div></div>
-  <div class="glass p-5 text-center"><div class="f font-black text-3xl text-blue-400"><span data-n="100">0</span>%</div><div class="text-sm mt-1">مُحسَّن للسوق الجزائري: Yalidine، BaridiMob، Caba/Neuf/Occasion</div></div>
-  <div class="glass p-5 text-center"><div class="f font-black text-3xl text-violet-400"><span data-n="7">0</span></div><div class="text-sm mt-1">أيام فقط لتسليم نسختك جاهزة</div></div>
-  <div class="glass p-5 text-center"><div class="f font-black text-3xl text-amber-400">⚡</div><div class="text-sm mt-1">سرعة خارقة حتى مع اتصال ضعيف</div></div>
-</section>
-
-<!-- 4. Features -->
-<section id="features" class="max-w-6xl mx-auto px-4 pb-12 md:pb-16">
-  <div class="text-center mb-10 rv"><h2 class="f font-black text-2xl md:text-4xl text-white">5 وحدات متكاملة، <span class="grad">مصنوعة لمحلك</span></h2><p class="mt-3 text-gray-400">كل ما يحتاجه صاحب محل هواتف في الجزائر، في منصة واحدة تحمل علامتك التجارية.</p></div>
-  <div id="mods" class="grid md:grid-cols-2 gap-5"></div>
-  <div id="extra" class="mt-6 flex flex-wrap justify-center gap-2 rv"></div>
-</section>
-
-<!-- 5. Compare -->
-<section id="compare" class="max-w-5xl mx-auto px-4 pb-12 md:pb-16">
-  <div class="text-center mb-8 rv"><h2 class="f font-black text-2xl md:text-3xl text-white">لماذا نحن؟ <span class="grad">الدفتر مقابل منصتك</span></h2></div>
-  <div class="glass rv md:overflow-x-auto"><table id="cmpT" class="w-full text-sm md:text-base">
-    <thead><tr class="text-white f"><th class="p-4 text-right">الجانب</th><th class="p-4 text-red-300">😩 الطريقة التقليدية</th><th class="p-4 text-emerald-300">🚀 منصتك المخصصة</th></tr></thead>
-    <tbody id="cmp"></tbody></table></div>
-</section>
-
-<!-- 6. Pricing -->
-<section id="pricing" class="relative max-w-6xl mx-auto px-4 pb-12 md:pb-16">
-  <div class="blob w-96 h-96 bg-emerald-600 top-20 left-1/2"></div>
-  <div class="text-center mb-10 rv"><h2 class="f font-black text-2xl md:text-4xl text-white">استثمار واحد، <span class="grad">بدون اشتراك شهري</span></h2>
-  <p class="mt-3 text-gray-400">يبدأ من <b class="text-emerald-300">50,000.00 دج</b> ويصل إلى <b class="text-emerald-300">100,000.00 دج</b> حسب التعديلات والميزات الإضافية والتخصيص الذي يطلبه صاحب المحل.</p></div>
-  <div id="tiers" class="grid md:grid-cols-3 gap-5 items-stretch"></div>
-
-  <div class="glass p-6 mt-8 rv" style="--c:#10b981">
-    <div class="f font-extrabold text-xl text-white mb-4">🧮 احسب تكلفة نظام محلك</div>
-    <div class="grid sm:grid-cols-2 gap-3" id="est"></div>
-    <div class="mt-5 flex flex-wrap items-center justify-between gap-4">
-      <div>التكلفة التقديرية: <b id="tot" class="f text-3xl text-emerald-400">50,000</b> <span class="text-emerald-400">دج</span></div>
-      <button id="sendEst" class="btn btn-w">💬 أرسل هذا التقدير عبر واتساب</button>
-    </div>
-  </div>
-</section>
-
-<!-- 7. Process -->
-<section class="max-w-6xl mx-auto px-4 pb-12 md:pb-16">
-  <div class="text-center mb-10 rv"><h2 class="f font-black text-2xl md:text-4xl text-white">من الفكرة إلى <span class="grad">محلك الرقمي</span> في 4 خطوات</h2></div>
-  <div id="steps" class="grid md:grid-cols-4 gap-5"></div>
-</section>
-
-<!-- 8. FAQ -->
-<section id="faq" class="max-w-3xl mx-auto px-4 pb-12 md:pb-16">
-  <div class="text-center mb-8 rv"><h2 class="f font-black text-2xl md:text-3xl text-white">الأسئلة <span class="grad">الشائعة</span></h2></div>
-  <div id="fq" class="space-y-3"></div>
-</section>
-
-<!-- 9. Footer CTA -->
-<section class="relative max-w-5xl mx-auto px-4 pb-12 md:pb-16 rv">
-  <div class="glass p-6 md:p-10 text-center overflow-hidden" style="--c:#7c3aed">
-    <div class="blob w-72 h-72 bg-violet-600 -top-20 right-10"></div>
-    <h2 class="f font-black text-2xl md:text-4xl text-white relative">لا تترك محلك متأخراً عن المنافسة.</h2>
-    <p class="mt-4 text-lg text-gray-300 relative">تواصل معنا اليوم واحجز نسختك الخاصة، باسم محلك وشعارك وهويتك.</p>
-    <button class="btn btn-w mt-7 relative" data-wa="shop">💬 احجز نسختك الخاصة عبر واتساب</button>
-  </div>
-</section>
-<footer class="border-t border-white/10 py-8 text-center text-sm text-gray-500">
-  <div class="f font-black text-white text-lg mb-1">Saiv<span class="text-blue-400">CORE</span></div>
-  📞 0793390349 · ✉️ saivcoredz@gmail.com · © 2026 جميع الحقوق محفوظة
-</footer>
-
-<a id="fwa" class="wab fixed bottom-5 left-5 z-50 w-14 h-14 rounded-full bg-[#25d366] grid place-items-center text-3xl cursor-pointer shadow-2xl" title="واتساب">💬</a>
-
-<script>
-const PH='213793390349', $=s=>document.querySelector(s);
-let shop='';
-const msg=x=>`السلام عليكم، أنا صاحب محل ${shop?'«'+shop+'»':'هواتف'} وأريد تصميم متجر إلكتروني + نظام ERP مخصص لمحلي (باسمي وشعاري). ${x||''}`;
-const wa=m=>window.open(`https://wa.me/${PH}?text=${encodeURIComponent(m)}`,'_blank','noopener');
-
-const MODS=[
- {i:'📱',c:'#3b82f6',t:'إدارة المخزون والهواتف و IMEI الإلزامي',l:['تتبع كل هاتف حسب حالته السوقية: Neuf Scellé · Neuf · Caba · Bon Occasion','تسجيل إلزامي لرقم IMEI لكل قطعة، متوافق مع قارئ الباركود','إدخال الألوان والسعات لكل موديل بدقة','إدارة الإكسسوارات وربط ذكي (Smart Cross-Selling) يقترح الشواحن والأغلفة تلقائياً']},
- {i:'🚚',c:'#10b981',t:'محرك الشحن الجزائري ونظام العربون (Avance)',l:['توصيل لكل ولايات الجزائر مع Yalidine وZR Express وMaystro','شحن مجاني تلقائي داخل ولاية المحل','عربون إلزامي (مثلاً 4000 دج) يُخصم من سعر الهاتف الأصلي','رفع وصل CCP / BaridiMob أو التأكيد عبر واتساب']},
- {i:'🧾',c:'#8b5cf6',t:'الكاشير الداخلي والتبادل (POS & Échange)',l:['واجهة بيع سريعة جداً داخل المحل','نظام Trade-In: التكملة (Soulte) = سعر هاتف المحل − تقييم هاتف الزبون القديم','هاتف الزبون القديم يتحول فوراً إلى مخزون Bon Occasion','سجل كامل لكل عملية بيع وتبادل ومن قام بها']},
- {i:'📊',c:'#f59e0b',t:'المحاسبة العميقة وصافي الأرباح',l:['الرواتب مع التسبيقات، والمستهلكات (أكياس المحل، العلب)','التكاليف الثابتة: الإيجار، الإنترنت، إعلانات فيسبوك','هدايا الزبائن تُسجَّل بسعر تكلفتها ضمن المصاريف','صافي الربح الحقيقي = المبيعات − تكلفة السلع − كل المصاريف، بدقة متناهية']},
- {i:'🖨️',c:'#ec4899',t:'الفوترة الاحترافية وتتبع الديون',l:['طباعة Facture A4 رسمية و Ticket Caisse حراري بالفرنسية مع شعار محلك','إدارة ديون وكريدي الزبائن بسجل واضح','معرفة المتبقي على كل زبون في أي لحظة','تقارير يومية وشهرية جاهزة للطباعة']}
-];
-$('#mods').innerHTML=MODS.map((m,k)=>`<div class="glass lift p-6 rv ${k==4?'md:col-span-2':''}" style="--c:${m.c}"><div class="flex items-center gap-3 mb-4"><div class="ic">${m.i}</div><h3 class="f font-extrabold text-lg text-white">وحدة ${k+1}: ${m.t}</h3></div><ul class="space-y-2 text-gray-300">${m.l.map(x=>`<li class="li">${x}</li>`).join('')}</ul></div>`).join('');
-$('#extra').innerHTML=['👥 صلاحيات مختلفة لكل موظف','📲 لوحة تحكم تعمل من هاتفك','🔔 تنبيه نفاد المخزون','🔍 متجر محسّن لمحركات البحث','📈 تقارير يومية وشهرية','🔒 نسخ احتياطي تلقائي'].map(x=>`<span class="glass px-4 py-2 text-sm">${x}</span>`).join('');
-
-$('#cmp').innerHTML=[['تسجيل الهواتف','دفتر وأوراق تضيع','قاعدة بيانات مع IMEI لكل قطعة'],['البيع عبر الإنترنت','منشورات فيسبوك وردود يدوية','متجر باسمك يستقبل الطلبات 24/7'],['الشحن والتوصيل','مكالمات وتسجيل يدوي','ربط مباشر مع شركات الشحن'],['العربون','وعود شفهية والزبون يختفي','عربون إلزامي مع وصل مرفوع'],['التبادل Échange','حسابات على الورقة وأخطاء','التكملة تُحسب آلياً والهاتف يدخل المخزون'],['صافي الربح','تخمين نهاية الشهر','رقم دقيق لحظة بلحظة'],['ديون الزبائن','دفتر كريدي منسي','سجل واضح لكل زبون والمتبقي عليه'],['الفواتير','وصل مكتوب باليد','Facture A4 وTicket Caisse بشعارك']].map(r=>`<tr class="border-t border-white/10"><td class="p-4 font-bold text-white">${r[0]}</td><td data-l="😩 التقليدية" class="p-4 text-center text-gray-400">${r[1]}</td><td data-l="🚀 منصتك" class="p-4 text-center text-emerald-300">${r[2]}</td></tr>`).join('');
-
-const T=[
- {n:'الأساسية',p:'50,000',c:'#3b82f6',l:['متجر إلكتروني بالاسم والشعار والألوان','لوحة تحكم المنتجات والطلبات','ربط الطلبات بالواتساب','واجهة سريعة ومتوافقة مع الهاتف']},
- {n:'المحترفة',p:'75,000',c:'#8b5cf6',hot:1,l:['كل ما في الأساسية','وحدة المخزون + IMEI + الحالات','الشحن لكل الولايات + العربون','الكاشير الداخلي + الفوترة A4 وTicket','تدريب الموظفين']},
- {n:'الإمبراطورية',p:'100,000',c:'#10b981',l:['كل ما في المحترفة','نظام التبادل (Échange / Soulte)','المحاسبة الكاملة وصافي الأرباح','الديون + صلاحيات الموظفين','تدريب شامل + دعم لمدة سنة']}
-];
-$('#tiers').innerHTML=T.map(t=>`<div class="glass lift p-6 rv flex flex-col ${t.hot?'hot':''}" style="--c:${t.c}">${t.hot?'<span class="self-start text-xs bg-violet-600 text-white px-3 py-1 rounded-full mb-2">⭐ الأكثر طلباً</span>':''}<h3 class="f font-black text-2xl text-white">${t.n}</h3><div class="my-3"><span class="f font-black text-4xl" style="color:${t.c}">${t.p}</span> <span class="text-gray-400">دج</span><div class="text-xs text-gray-500">تبدأ من · دفعة واحدة</div></div><ul class="space-y-2 flex-1 mb-5">${t.l.map(x=>`<li class="li">${x}</li>`).join('')}</ul><button class="btn btn-p justify-center" data-wa="أريد الباقة ${t.n} (${t.p} دج).">اختر هذه الباقة</button></div>`).join('');
-
-const ADD=[['ERP: المخزون و IMEI والحالات',12000],['الشحن + نظام العربون',10000],['الكاشير + التبادل (Échange)',9000],['المحاسبة وصافي الأرباح',8000],['تخصيص إضافي للهوية والتصميم',5000],['تدريب الموظفين + دعم سنة',6000]];
-$('#est').innerHTML=ADD.map((a,k)=>`<label class="glass p-3 flex items-center gap-3 cursor-pointer !rounded-xl"><input type="checkbox" data-p="${a[1]}" class="w-5 h-5 accent-emerald-500"><span class="flex-1">${a[0]}</span><b class="text-emerald-300 text-sm">+${a[1].toLocaleString('en-US')}</b></label>`).join('');
-const calc=()=>{let s=50000,sel=[];document.querySelectorAll('#est input').forEach((c,k)=>{if(c.checked){s+=+c.dataset.p;sel.push(ADD[k][0])}});$('#tot').textContent=s.toLocaleString('en-US');return {s,sel}};
-document.querySelectorAll('#est input').forEach(c=>c.onchange=calc);
-$('#sendEst').onclick=()=>{const r=calc();wa(msg(`التقدير: ${r.s.toLocaleString('en-US')} دج. الميزات: ${r.sel.join('، ')||'المنصة الأساسية'}.`))};
+    <section class="proof-strip" aria-label="Solution highlights"><div class="container proof-inner" id="proofGrid"></div></section>
 
 
-$('#fq').innerHTML=[['هل أحتاج إلى مهارات تقنية؟','لا إطلاقاً. نسلّمك النظام جاهزاً، وندرّبك أنت وموظفيك خطوة بخطوة، والواجهة بسيطة كاستعمال واتساب.'],['هل هناك اشتراك شهري؟','لا. تدفع مرة واحدة حسب الباقة، بدون أي اشتراك شهري.'],['كم تستغرق مدة التجهيز؟','نسلّمك نظامك جاهزاً خلال 7 أيام بعد استلام اسم المحل والشعار. وإن طلبت تخصيصات إضافية كبيرة نتفق معك على المدة مسبقاً.'],['هل يمكنني إدارة عدة موظفين بصلاحيات مختلفة؟','نعم. تحدد لكل موظف ما يراه وما يفعله: البيع فقط، المخزون، أو المحاسبة، بينما تبقى أنت المالك الوحيد لأرقام الأرباح.'],['هل سيظهر اسم محلي وشعاري فعلاً؟','نعم. المتجر والفواتير ولوحة التحكم كلها تحمل اسمك وشعارك وألوانك، ونبنيها لك من الصفر.'],['هل يدعم الدفع والشحن المحلي؟','نعم: BaridiMob وCCP، والدفع عند الاستلام، والشحن مع Yalidine وZR Express وMaystro وغيرها.']].map(q=>`<details class="glass p-5 rv"><summary class="flex justify-between items-center f font-bold text-white">${q[0]}<span class="pl text-2xl text-blue-400">+</span></summary><p class="mt-3 leading-8 text-gray-400">${q[1]}</p></details>`).join('');
+    <section class="section owner-section section-anchor" id="ownership">
+      <div class="container">
+        <div class="owner-intro reveal">
+          <span class="eyebrow" data-t="ownerEyebrow">فكرة مختلفة لصاحب المحل</span>
+          <h2 class="section-title" data-t="ownerTitle">ما تشريش اشتراك في منصة…<br><span class="accent">طوّر متجر يكون ملك مشروعك.</span></h2>
+          <p class="owner-lead" data-t="ownerDesc">راك ما تحتاجش غير صفحة تعرض السلع. تحتاج <strong>نظام بيع وتسيير</strong> يخدم على طريقتك، باسم محلك، وتقدر تطوّرو كل ما تكبر تجارتك.</p>
+        </div>
+        <div class="owner-grid" id="ownerGrid"></div>
+        <div class="model-note reveal" data-t="ownerNote">الفكرة مختلفة عن نموذج المنصات الجاهزة مثل Shopify وYouCan وHanoutify: هنا نتفقوا على تطوير متجر خاص بمحلك من الألف للياء بيد جزائرية، بدل الاعتماد على متجر عام داخل منصة. ماكانش اشتراك شهري من عندي مقابل رخصة منصة. ومن البداية نوضّحوا الدومين والحسابات والصلاحيات والملفات اللي تتسلمها حسب الاتفاق؛ أما الخدمات الخارجية أو ترقية الاستضافة عند تجاوز المجاني فقد تكون عندها تكاليف مستقلة وبموافقتك.</div>
+      </div>
+    </section>
 
-// personalization
-const upd=()=>{const n=shop.trim();$('#mn').textContent=n||'اسم محلك هنا';$('#mi').textContent=n?[...n][0].toUpperCase():'S'};
-$('#sn').oninput=e=>{shop=e.target.value;upd()};
-$('#lg').onchange=e=>{const f=e.target.files[0];if(!f)return;const g=$('#mg');g.src=URL.createObjectURL(f);g.classList.remove('hidden');$('#mi').classList.add('hidden')};
-document.querySelectorAll('.sw').forEach(s=>s.onclick=()=>document.documentElement.style.setProperty('--acc',s.dataset.c));
-document.querySelectorAll('[data-wa]').forEach(b=>b.onclick=()=>wa(msg(b.dataset.wa==='shop'?'':b.dataset.wa)));
-$('#fwa').onclick=()=>wa(msg());
+    <section class="section problem-section" id="why">
+      <div class="container">
+        <div class="section-head reveal"><span class="eyebrow" data-t="problemEyebrow">المشاكل اللي نحلّوها</span><h2 class="section-title" data-t="problemTitle">خلي الخدمة تمشي بنظام،<br>ماشي بالتخمين.</h2><p class="section-desc" data-t="problemDesc">كي يكبر المحل وتكثر المنتجات والطلبات، التسيير اليدوي يولي متعب. النظام يجمع العمليات الأساسية في مكان واحد.</p></div>
+        <div class="problem-grid" id="problemGrid"></div>
+      </div>
+    </section>
 
-$('#steps').innerHTML=[['📝','أرسل اسم محلك وشعارك','عبر واتساب: الاسم، الشعار، ألوانك، وأنواع الهواتف التي تبيعها.','#3b82f6'],['🛠️','نبنيه من الصفر لك','نصمم المتجر والنظام بهويتك ونفعّل الوحدات التي اخترتها.','#8b5cf6'],['🎓','تسليم وتدريب','نسلّمك النظام جاهزاً وندرّبك أنت وموظفيك خطوة بخطوة.','#10b981'],['🚀','انطلق وبِع أكثر','متجرك يستقبل الطلبات وأنت تتابع المخزون والأرباح من هاتفك.','#f59e0b']].map((x,i)=>`<div class="glass lift p-6 rv text-center" style="--c:${x[3]}"><div class="ic mx-auto mb-3 st">${x[0]}</div><div class="f font-black text-sm" style="color:${x[3]}">الخطوة ${i+1}</div><h3 class="f font-extrabold text-white my-2">${x[1]}</h3><p class="text-sm text-gray-400 leading-7">${x[2]}</p></div>`).join('');
-document.querySelectorAll('.grid>.rv').forEach((el,i)=>el.style.transitionDelay=(i%4)*90+'ms');
-// reveal + counters
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');e.target.querySelectorAll('[data-n]').forEach(c=>{const t=+c.dataset.n;let v=0;const id=setInterval(()=>{v=Math.min(t,v+Math.ceil(t/40)||1);c.textContent=v;if(v>=t)clearInterval(id)},35)});io.unobserve(e.target);setTimeout(()=>e.target.style.transitionDelay='',1600)}}),{threshold:.12});
-document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head reveal"><span class="eyebrow" data-t="featuresEyebrow">من الواجهة حتى الإدارة</span><h2 class="section-title" data-t="featuresTitle">كل الأدوات اللي يحتاجها<br><span class="accent">متجر الهواتف</span></h2><p class="section-desc" data-t="featuresDesc">تجربة شراء واضحة للزبون، وأدوات تسيير عملية لصاحب المحل والفريق.</p></div>
+        <div class="feature-grid" id="featureGrid"></div>
+      </div>
+    </section>
 
-// effects
-const W=['إمبراطورية رقمية','ماكينة مبيعات','متجر بعلامتك','مصنع أرباح'];let wi=0;
-if(innerWidth>767)setInterval(()=>{const r=$('#rot');r.style.opacity=0;r.style.transform='translateY(10px)';setTimeout(()=>{wi=(wi+1)%W.length;r.textContent=W[wi];r.style.opacity=1;r.style.transform='none'},350)},2800);
-if(innerWidth>767)['📱','🔌','🎧','💳','🚚','🧾','⚡','🔋'].forEach((e,i)=>{const s=document.createElement('span');s.textContent=e;s.className='pt';s.style.cssText=`left:${(i*13+7)%92}%;top:${(i*29+8)%80}%;animation-delay:${i*-1.3}s;animation-duration:${7+i%4*2}s;font-size:${1.2+i%3*.5}rem`;$('#top').appendChild(s)});
-addEventListener('scroll',()=>{$('#bar').style.transform='scaleX('+scrollY/(document.body.scrollHeight-innerHeight)+')'},{passive:true});
-document.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;const g=e.target.closest&&e.target.closest('.glass');if(g){const r=g.getBoundingClientRect();g.style.setProperty('--mx',e.clientX-r.left+'px');g.style.setProperty('--my',e.clientY-r.top+'px')}});
-document.querySelectorAll('.lift').forEach(c=>{c.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(900px) rotateY(${x*8}deg) rotateX(${-y*8}deg) translateY(-6px)`});c.addEventListener('pointerleave',()=>c.style.transform='')});
-// numbers stay left-to-right inside Arabic text (fixes "3 000" showing as "000 3")
-(()=>{const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),L=[];while(w.nextNode())L.push(w.currentNode);L.forEach(n=>{const p=n.parentNode;if(/^(SCRIPT|STYLE|BDI|TEXTAREA)$/.test(p.tagName)||p.dataset.n!==undefined||p.id==='tot'||!/\d/.test(n.nodeValue))return;const f=document.createDocumentFragment();n.nodeValue.split(/(\+?\d[\d,.]*\d|\d)/).forEach((t,i)=>{if(i%2){const b=document.createElement('bdi');b.dir='ltr';b.textContent=t;f.append(b)}else if(t)f.append(t)});p.replaceChild(f,n)})})();
-</script>
+    <section class="section journey" id="workflow">
+      <div class="container">
+        <div class="section-head reveal"><span class="eyebrow" data-t="journeyEyebrow">رحلة شراء منظّمة</span><h2 class="section-title" data-t="journeyTitle">من أول نقرة حتى تأكيد الطلب</h2><p class="section-desc" data-t="journeyDesc">خطوات سهلة للعميل، ومعلومات منظمة للفريق داخل لوحة الإدارة.</p></div>
+        <div class="step-grid" id="stepGrid"></div>
+      </div>
+    </section>
+
+    <section class="section preview-section" id="preview">
+      <div class="container preview-layout">
+        <div class="preview-copy reveal"><span class="eyebrow" data-t="previewEyebrow">تجربة من الجهتين</span><h2 class="section-title" data-t="previewTitle">واجهة تقنع الزبون.<br><span class="accent">ولوحة تريح صاحب المحل.</span></h2><p class="section-desc" data-t="previewDesc">ماشي غير موقع يعرض الصور والأسعار؛ الواجهة مرتبطة بنظام يدير المنتجات والطلبات والمخزون من الخلف.</p><div class="preview-points" id="previewPoints"></div><a class="btn btn-primary" data-wa href="https://wa.me/213793390349" target="_blank" rel="noopener"><span data-t="previewCta">نناقش تفاصيل متجرك</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        <div class="preview-shell reveal delay-1">
+          <div class="preview-tabs"><button class="preview-tab active" data-preview="store" type="button" data-t="tabStore">واجهة الزبون</button><button class="preview-tab" data-preview="admin" type="button" data-t="tabAdmin">لوحة الإدارة</button></div>
+          <div class="preview-scene">
+            <div class="store-preview active" id="storePreview">
+              <div class="store-preview-head"><div class="store-brand"><span class="demo-logo-mark">P</span><span data-t="previewBrand">متجرك</span></div><div class="store-actions"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2 11h11l2-8H6"/><circle cx="9" cy="19" r="1"/><circle cx="18" cy="19" r="1"/></svg></span></div></div>
+              <div class="store-banner"><small data-t="storeBannerSmall">اكتشف الجديد عندنا</small><strong data-t="storeBannerTitle">اختار جهازك بكل سهولة</strong><span data-t="storeBannerSub">منتجات • تفاصيل • طلب مباشر</span></div>
+              <div class="store-products"><div class="store-product"><div class="product-art"><div class="mini-phone"></div></div><div class="product-info"><span data-t="samplePhone">Smartphone</span><b data-t="samplePhoneName">هاتف ذكي</b><em>— — دج</em></div></div><div class="store-product"><div class="product-art headphone"><div class="mini-headphone"></div></div><div class="product-info"><span data-t="sampleAccessory">Accessoire</span><b data-t="sampleAccessoryName">سماعات لاسلكية</b><em>— — دج</em></div></div><div class="store-product"><div class="product-art watch"><div class="mini-watch"></div></div><div class="product-info"><span data-t="sampleWearable">Wearable</span><b data-t="sampleWearableName">ساعة ذكية</b><em>— — دج</em></div></div></div>
+            </div>
+            <div class="admin-preview" id="adminPreview">
+              <aside class="admin-menu"><strong data-t="previewBrand">متجرك</strong><i></i><i></i><i></i><i></i><i></i><i></i></aside>
+              <div class="admin-content"><h4 data-t="adminPanelTitle">لوحة إدارة المتجر</h4><div class="admin-kpis"><div class="admin-kpi"><span data-t="dashSales">إجمالي المبيعات</span><b>— —</b></div><div class="admin-kpi"><span data-t="dashOrders">الطلبات</span><b>— —</b></div><div class="admin-kpi"><span data-t="dashProducts">المنتجات</span><b>— —</b></div></div><div class="admin-table"><div class="admin-table-head"><span data-t="inventoryTitle">المخزون</span><span data-t="manageProducts">إدارة المنتجات</span></div><div class="admin-table-row"><b data-t="samplePhoneName">هاتف ذكي</b><span data-t="sampleVariant">نسخة / لون</span><div class="progress-mini"><i></i></div></div><div class="admin-table-row"><b data-t="sampleAccessoryName">سماعات لاسلكية</b><span data-t="sampleStock">متوفر</span><div class="progress-mini"><i style="width:45%"></i></div></div><div class="admin-table-row"><b data-t="sampleWearableName">ساعة ذكية</b><span data-t="sampleStockLow">مخزون محدود</span><div class="progress-mini"><i style="width:23%"></i></div></div></div></div>
+            </div>
+          </div>
+          <p class="hero-caption" data-t="previewCaption">هذه معاينة تصميمية لتوضيح الفكرة، وليست لوحة متصلة ببيانات متجر حقيقي.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="architecture">
+      <div class="container">
+        <div class="section-head reveal"><span class="eyebrow" data-t="architectureEyebrow">تقنيات سحابية</span><h2 class="section-title" data-t="architectureTitle">بنية حديثة تخدم المشروع</h2><p class="section-desc" data-t="architectureDesc">اعتماد على خدمات متخصصة لتشغيل الواجهة، منطق الخادم، قاعدة البيانات، وتخزين الصور.</p></div>
+        <div class="architecture-box reveal">
+          <div class="tech-item"><div class="tech-logo cf">CF</div><div><b>Cloudflare Pages</b><span data-t="techPages">استضافة الواجهة</span></div></div><div class="tech-arrow">←</div>
+          <div class="tech-item"><div class="tech-logo">API</div><div><b>Cloudflare Workers + D1</b><span data-t="techData">الخادم وقاعدة البيانات</span></div></div><div class="tech-arrow">←</div>
+          <div class="tech-item"><div class="tech-logo storage">S</div><div><b>Supabase Storage</b><span data-t="techImages">تخزين الصور</span></div></div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section tracking-section section-anchor" id="analytics">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow" data-t="analyticsEyebrow">ما تخليش أرقام تجارتك مجهولة</span>
+          <h2 class="section-title" data-t="analyticsTitle">شوف الزيارات والطلبات…<br><span class="accent">وافهم واش راه يجيب البيع.</span></h2>
+          <p class="section-desc" data-t="analyticsDesc">الطلبية والمبيعات عندها مكان في لوحة الإدارة، والزيارات نقدروا نقيسوها بأداة مجانية، أو نطوّرولك إحصائيات خاصة داخل اللوحة.</p>
+        </div>
+        <div class="metric-grid" id="metricGrid"></div>
+        <p class="tracking-note" data-t="analyticsNote">مهم: إحصائيات الطلبات والمبيعات موجودة في المشروع. عدّاد الزيارات اليومية الفريدة داخل لوحة المتجر ليس مفعّلاً في النسخة الحالية؛ Cloudflare Web Analytics يوفّر قياس الزيارات والصفحات مجاناً من لوحة Cloudflare، وإظهاره داخل لوحة متجرك يتطلب تطوير إضافة مستقلة.</p>
+      </div>
+    </section>
+    <section class="hosting-section section-anchor" id="hosting">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow" data-t="hostingEyebrow">انطلق بخطة مجانية وتوسّع وقت الحاجة</span>
+          <h2 class="section-title" data-t="hostingTitle">ما نبيعلكش كلمة «بلا حدود».<br><span class="accent">نشرحلك السعة ونكبروا معاك.</span></h2>
+          <p class="section-desc" data-t="hostingDesc">نقدروا نطلقوا المتجر على حصص الخدمات المجانية في البداية، نراقبوا الاستهلاك، ونطوّروا الاستضافة أو التخزين كي تكبر الزيارات والطلبات.</p>
+        </div>
+        <div class="hosting-grid" id="hostingGrid"></div>
+        <div class="hosting-footnote reveal">
+          <strong data-t="hostingFootTitle">كيفاش نفهموا هاذ الأرقام؟</strong>
+          <span data-t="hostingFootnote">100 ألف طلب Worker في اليوم ما تعنيش 100 ألف زائر؛ الزائر الواحد يقدر يدير عدة طلبات تقنية. وحدود D1 محسوبة بالصفوف المقروءة والمكتوبة، ماشي بعدد الطلبيات مباشرة. عند الاقتراب من الحصص نراجعوا الأداء ونقترحوا ترقية قبل ما نوسّعوا، وما يكون حتى اشتراك مدفوع بلا موافقتك. مشاريع Supabase المجانية قد تتوقف بعد أسبوع من عدم النشاط حسب سياسة المزوّد؛ نتابعوا هاذ النقطة ونقيّموا الترقية إذا كان التشغيل المستمر مطلوباً. الدومين الاحترافي تشتريه باسمك ويتجدد برسوم سنوية من جهة التسجيل.</span>
+          <div class="hosting-sources">
+            <a href="https://developers.cloudflare.com/workers/platform/limits/" target="_blank" rel="noopener" data-t="hostingSource1">حدود Cloudflare Workers</a>
+            <a href="https://developers.cloudflare.com/d1/platform/pricing/" target="_blank" rel="noopener" data-t="hostingSource2">حصص Cloudflare D1</a>
+            <a href="https://supabase.com/pricing" target="_blank" rel="noopener" data-t="hostingSource3">خطط Supabase Storage</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section offer-section section-anchor" id="offer">
+      <div class="container offer-wrap">
+        <div class="offer-copy reveal">
+          <span class="eyebrow" data-t="offerEyebrow">عرض واضح من البداية</span>
+          <h2 data-t="offerTitle">ابدأ متجرك الخاص<br><span class="accent">بسعر يناسب مشروعك.</span></h2>
+          <p data-t="offerDesc">السعر الابتدائي لتطوير متجر إلكتروني خاص بمحلك يبدأ من 80,000 دج. السعر النهائي قابل للتفاوض ويتحدد حسب عدد المنتجات، الخصائص، الربط بالخدمات، ومستوى التخصيص اللي تحتاجه.</p>
+          <ul class="offer-includes" id="offerPoints"></ul>
+        </div>
+        <div class="price-card reveal offer-card">
+          <span class="price-label" data-t="offerPriceLabel">السعر الابتدائي</span>
+          <strong class="price-value" data-t="offerPrice">80,000 <small>DZD</small></strong>
+          <span class="price-negotiable" data-t="offerNegotiate">قابل للتفاوض حسب احتياجات محلك</span>
+          <p data-t="offerIncludes">يشمل شهر كامل بعد التسليم للدعم ومتابعة التعديلات المطلوبة، حسب نطاق المشروع والاتفاق بيناتنا.</p>
+          <a class="btn btn-primary" data-wa href="https://wa.me/213793390349" target="_blank" rel="noopener"><span data-t="offerCta">ناقش مشروعك على WhatsApp</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <p class="price-disclaimer" data-t="offerDisclaimer">الدومين المدفوع، والخدمات أو الترقيات الخارجية عند الحاجة، غير داخلة في السعر إلا إذا ذُكرت صراحة في عرض السعر.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-head reveal"><span class="eyebrow" data-t="faqEyebrow">أسئلة تتعاود بزاف</span><h2 class="section-title" data-t="faqTitle">قبل ما تطلق متجرك</h2><p class="section-desc" data-t="faqDesc">جاوبنا على أهم الأسئلة حول الملكية والسعر والاستضافة والإحصائيات.</p></div>
+        <div class="faq-list" id="faqList"></div>
+      </div>
+    </section>
+
+    <section class="closing-band" id="contact">
+      <div class="container"><div class="closing-card reveal"><div class="closing-copy"><span class="eyebrow" data-t="closingEyebrow">جاهز تطوّر خدمتك؟</span><h2 data-t="closingTitle">خلّي زبونك يلقاك ويطلب منك أونلاين.</h2><p data-t="closingDesc">ابعثلي رسالة على WhatsApp، احكيلي على نشاطك وعدد المنتجات وطريقة خدمتك، ونشوفو مع بعض الحل المناسب لمتجرك.</p></div><a class="btn btn-primary" data-wa href="https://wa.me/213793390349" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.08 0C5.5 0 .16 5.34.16 11.92c0 2.1.55 4.15 1.6 5.96L.06 24l6.28-1.65a11.9 11.9 0 0 0 5.73 1.46h.01C18.66 23.81 24 18.47 24 11.9c0-3.18-1.24-6.17-3.48-8.42ZM12.08 21.8a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.73.98 1-3.64-.24-.38a9.85 9.85 0 0 1-1.52-5.25c0-5.45 4.44-9.89 9.9-9.89 2.64 0 5.12 1.03 6.98 2.9a9.82 9.82 0 0 1 2.9 6.98c0 5.46-4.44 9.9-9.89 9.9Zm5.43-7.41c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.38-.03-.53-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.21 5.1 4.5.71.31 1.27.5 1.7.64.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z"/></svg><span data-t="closingCta">تواصل عبر WhatsApp</span></a></div></div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container footer-inner"><div class="footer-brand"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10 5h4M11 18.5h2"/></svg></span><strong>PHONE STORE</strong></div><div class="footer-note" data-t="footerNote">حلول رقمية عملية لمحلات الهواتف والإكسسوارات.</div><div class="footer-links"><a href="#home" data-t="footerTop">العودة للأعلى</a><a data-wa href="https://wa.me/213793390349" target="_blank" rel="noopener">WhatsApp · +213 793 390 349</a></div></div></footer>
+  <a class="floating-wa" data-wa href="https://wa.me/213793390349" target="_blank" rel="noopener" aria-label="Contact on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.08 0C5.5 0 .16 5.34.16 11.92c0 2.1.55 4.15 1.6 5.96L.06 24l6.28-1.65a11.9 11.9 0 0 0 5.73 1.46h.01C18.66 23.81 24 18.47 24 11.9c0-3.18-1.24-6.17-3.48-8.42ZM12.08 21.8a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.73.98 1-3.64-.24-.38a9.85 9.85 0 0 1-1.52-5.25c0-5.45 4.44-9.89 9.9-9.89 2.64 0 5.12 1.03 6.98 2.9a9.82 9.82 0 0 1 2.9 6.98c0 5.46-4.44 9.9-9.89 9.9Zm5.43-7.41c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.38-.03-.53-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.21 5.1 4.5.71.31 1.27.5 1.7.64.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z"/></svg></a>
+
+  <script>
+    const WHATSAPP_NUMBER = '213793390349';
+    const iconPaths = {
+      phone:'<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 5h4M11 18h2"/>',
+      layers:'<path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/>',
+      boxes:'<path d="m3 7 9-4 9 4-9 4-9-4Z"/><path d="M3 7v10l9 4 9-4V7M12 11v10"/>',
+      clipboard:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M8 9h8M8 13h8M8 17h5"/>',
+      gift:'<rect x="3" y="9" width="18" height="12" rx="2"/><path d="M12 9v12M3 13h18M12 9H7.5a2.5 2.5 0 1 1 2.5-2.5V9Zm0 0h4.5A2.5 2.5 0 1 0 14 6.5V9Z"/>',
+      chart:'<path d="M4 19V5M4 19h17"/><path d="m7 15 4-4 3 2 6-7"/><path d="M16 6h4v4"/>',
+      users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+      tag:'<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1"/>',
+      shield:'<path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/>',
+      image:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>',
+      file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
+      truck:'<path d="M3 6h11v12H3zM14 10h4l3 3v5h-7"/><circle cx="7.5" cy="19" r="1.5"/><circle cx="17.5" cy="19" r="1.5"/>',
+      search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',
+      cart:'<path d="M3 4h2l2 12h11l2-8H6"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/>',
+      settings:'<circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.6.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.6-.9l-1.7.6-1.4-2.4 1.4-1.1a7 7 0 0 1 0-1.9l-1.4-1.1 1.4-2.4 1.7.6a8 8 0 0 1 1.6-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.6.9l1.7-.6 1.4 2.4-1.4 1.1a7 7 0 0 1 0 1.9Z"/>',
+      star:'<path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/>',
+      alert:'<path d="M10.3 3.9 2.6 17.2A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4m0 3h.01"/>',
+      clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+      globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/>',
+      lock:'<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3"/>',
+      wallet:'<rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 9h18M16 14h2"/>',
+      return:'<path d="M3 7v6h6M21 17v-6h-6"/><path d="M5 13a7 7 0 0 0 12 3l4-5M19 11A7 7 0 0 0 7 8L3 13"/>',
+      check:'<path d="m5 12 4 4L19 6"/>'
+    };
+    const icon = (name) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${iconPaths[name] || iconPaths.star}</svg>`;
+
+    const C = {
+      ar:{
+        brandSub:'متجر خاص بتجارتك',navOwner:'الفكرة',previewBrand:'متجرك',navFeatures:'المميزات',navAnalytics:'الإحصائيات',navOffer:'السعر',navFaq:'الأسئلة',navContact:'اطلب عرضك',
+        heroBadge:'لصاحب محل الهواتف والإكسسوارات',heroLine1:'راك صاحب محل؟',heroLine2:'كبّر تجارتك بمتجر',heroLine3:'إلكتروني خاص بيك.',
+        heroDesc:'بدل ما يبقى البيع مربوط غير بالمحل والرسائل، نعطيك متجر إلكتروني باسم محلك: الزبون يتصفح ويطلب من هاتفه، وانت تسيّر المنتجات والمخزون والطلبات من لوحة واحدة. مشروع يتبنى على احتياجاتك، ماشي اشتراك في منصة جاهزة.',heroCta:'اطلب عرض خاص بمحلك',heroSecondary:'شوف كيفاش يخدم',trust1:'متجر خاص باسمك',trust2:'تطوير جزائري مباشر',trust3:'بدون اشتراك منصة شهري',
+        ownerEyebrow:'فكرة مختلفة لصاحب المحل',ownerTitle:'ما تشريش اشتراك في منصة جاهزة…<br><span class="accent">طوّر متجر يكون ملك مشروعك.</span>',ownerDesc:'راك ما تحتاجش غير صفحة تعرض السلع. تحتاج <strong>نظام بيع وتسيير</strong> يخدم على طريقتك، باسم محلك، وتقدر تطوّرو كل ما تكبر تجارتك.',ownerNote:'الفكرة مختلفة عن نموذج المنصات الجاهزة مثل Shopify وYouCan وHanoutify: هنا نتفقوا على تطوير متجر خاص بمحلك من الألف للياء بيد جزائرية، بدل الاعتماد على متجر عام داخل منصة. ماكانش اشتراك شهري من عندي مقابل رخصة منصة. ومن البداية نوضّحوا الدومين والحسابات والصلاحيات والملفات اللي تتسلمها حسب الاتفاق؛ أما الخدمات الخارجية أو ترقية الاستضافة عند تجاوز المجاني فقد تكون عندها تكاليف مستقلة وبموافقتك.',
+        ownerCards:[['shield','مش كراء متجر جاهز','تدفع على تطوير حل خاص بمحلك، ماشي على اشتراك في منصة عامة تحكم طريقة خدمتك.'],['users','تطوير من الألف للياء بيد جزائرية','تتعامل مباشرة مع المطوّر اللي يبني مشروعك، وتشرحله احتياجات تجارتك بلا وسيط.'],['settings','يتفصل على طريقة خدمتك','الهوية، المنتجات، الطلبات، التوصيل والخصائص تتناقش وتتضبط حسب احتياج محلك.'],['layers','قابل للتطوير مع الوقت','تقدر تبدأ بالأساسيات، وبعدها تزيد دومين احترافي، تحليلات، تكاملات أو سعة استضافة أكبر.']],
+        analyticsEyebrow:'ما تخليش أرقام تجارتك مجهولة',analyticsTitle:'شوف الزيارات والطلبات…<br><span class="accent">وافهم واش راه يجيب البيع.</span>',analyticsDesc:'الطلبية والمبيعات عندها مكان في لوحة الإدارة، والزيارات نقدروا نقيسوها بأداة مجانية، أو نطوّرولك إحصائيات خاصة داخل اللوحة.',analyticsNote:'مهم: إحصائيات الطلبات والمبيعات موجودة في المشروع. عدّاد الزيارات اليومية الفريدة داخل لوحة المتجر ليس مفعّلاً في النسخة الحالية؛ Cloudflare Web Analytics يوفّر قياس الزيارات والصفحات مجاناً من لوحة Cloudflare، وإظهاره داخل لوحة متجرك يتطلب تطوير إضافة مستقلة.',
+        analyticsCards:[['clipboard','الطلبات والمبيعات','تابع عدد الطلبات وحالاتها، المبيعات المرتبطة بالطلبات المسلّمة، والمنتجات والعملاء من لوحة الإدارة.','متوفر في النظام'],['globe','عدد الزيارات والصفحات','فعّل Cloudflare Web Analytics مجاناً لمشاهدة الزيارات ومشاهدات الصفحات من لوحة Cloudflare.','حل مجاني خارجي'],['chart','إحصائيات داخل لوحة متجرك','نقدروا نطوّروا إضافة تسجل زيارات الصفحات والمنتجات، السلة، إتمام الطلب ونسبة التحويل في لوحة واحدة.','إضافة حسب الطلب'],['tag','قياس نتائج الإعلانات','النظام يدعم إعداد Meta Pixel وTikTok Pixel وإرسال أحداث التسويق بعد موافقة المستخدم.','مدعوم في المشروع']],
+        hostingEyebrow:'انطلق بخطة مجانية وتوسّع وقت الحاجة',hostingTitle:'ما نبيعلكش كلمة «بلا حدود».<br><span class="accent">نشرحلك السعة ونكبروا معاك.</span>',hostingDesc:'نقدروا نطلقوا المتجر على حصص الخدمات المجانية في البداية، نراقبوا الاستهلاك، ونطوّروا الاستضافة أو التخزين كي تكبر الزيارات والطلبات.',hostingCards:[['globe','واجهة المتجر','Cloudflare Pages','استضافة الملفات الثابتة ضمن حدود الخطة المجانية.'],['layers','طلبات الخادم','100,000 / يوم','حصة طلبات Worker اليومية على الخطة المجانية؛ ليست عدد زوار.'],['database','قاعدة البيانات','5M قراءة / يوم','و100 ألف صف مكتوب يومياً على D1 Free؛ قاعدة واحدة حتى 500MB.'],['image','مساحة الصور','1GB مجاني','Supabase Storage Free مع 5GB نقل مخزّن مؤقتاً و5GB غير مخزّن.']],hostingFootTitle:'كيفاش نفهموا هاذ الأرقام؟',hostingFootnote:'100 ألف طلب Worker في اليوم ما تعنيش 100 ألف زائر؛ الزائر الواحد يقدر يدير عدة طلبات تقنية. وحدود D1 محسوبة بالصفوف المقروءة والمكتوبة، ماشي بعدد الطلبيات مباشرة. عند الاقتراب من الحصص نراجعوا الأداء ونقترحوا ترقية قبل ما نوسّعوا، وما يكون حتى اشتراك مدفوع بلا موافقتك. مشاريع Supabase المجانية قد تتوقف بعد أسبوع من عدم النشاط حسب سياسة المزوّد؛ نتابعوا هاذ النقطة ونقيّموا الترقية إذا كان التشغيل المستمر مطلوباً. الدومين الاحترافي تشتريه باسمك ويتجدد برسوم سنوية من جهة التسجيل.',hostingSource1:'حدود Cloudflare Workers',hostingSource2:'حصص Cloudflare D1',hostingSource3:'خطط Supabase Storage',
+        offerEyebrow:'عرض واضح من البداية',offerTitle:'ابدأ متجرك الخاص<br><span class="accent">بسعر يناسب مشروعك.</span>',offerDesc:'السعر الابتدائي لتطوير متجر إلكتروني خاص بمحلك يبدأ من 80,000 دج. السعر النهائي قابل للتفاوض ويتحدد حسب عدد المنتجات، الخصائص، الربط بالخدمات، ومستوى التخصيص اللي تحتاجه.',offerPriceLabel:'السعر الابتدائي',offerPrice:'80,000 <small>دج</small>',offerNegotiate:'تكلفة تطوير، ماشي اشتراك شهري — قابلة للتفاوض',offerIncludes:'يشمل شهر كامل بعد التسليم للدعم ومتابعة التعديلات المطلوبة، حسب نطاق المشروع والاتفاق بيناتنا.',offerCta:'ناقش مشروعك على WhatsApp',offerDisclaimer:'الدومين المدفوع، والخدمات أو الترقيات الخارجية عند الحاجة، غير داخلة في السعر إلا إذا ذُكرت صراحة في عرض السعر.',offerPoints:['متجر باسم محلك وهوية بصرية خاصة بيك.','لوحة لإدارة المنتجات والمخزون والطلبات والعروض.','تهيئة ونشر أولي ومساعدة في ربط الخدمات المتفق عليها.','شهر كامل بعد التسليم للدعم والتعديلات المتفق عليها.'],
+
+        windowTitle:'معاينة لوحة الإدارة',dashWelcome:'نظرة عامة على المتجر',dashToday:'لوحة توضيحية',dashSales:'إجمالي المبيعات',dashDelivered:'حسب الطلبات المسلّمة',dashOrders:'الطلبات',dashTrack:'متابعة الحالات',dashProducts:'المنتجات',dashStock:'والمخزون',dashActivity:'ملخص النشاط',dashStockTitle:'متابعة المخزون',stockPhones:'هواتف',stockAudio:'إكسسوارات',stockVariants:'النسخ والألوان',dashRecent:'آخر الطلبات',dashViewAll:'إدارة الطلبات',orderNew:'طلب جديد',orderStatus:'قيد المعالجة',orderReady:'تم التأكيد',orderStatus2:'مؤكد',floatOrder:'طلبية من الموقع',floatOrderSub:'تظهر في لوحة الإدارة',floatStock:'مخزون منظّم',floatStockSub:'حسب النسخة واللون',heroCaption:'تصوّر توضيحي لواجهة الإدارة — الأرقام غير معروضة لأنها تختلف حسب المتجر.',
+        proof:[['clock','متجر متاح دائماً','الزبون يتصفح من أي جهاز وفي أي وقت'],['globe','3 لغات','العربية والفرنسية والإنجليزية'],['layers','حل متكامل','واجهة بيع مع نظام إدارة'],['shield','منطق آمن للطلبات','التحقق من السعر والمخزون بالخادم']],
+        problemEyebrow:'المشاكل اللي نحلّوها',problemTitle:'خلي الخدمة تمشي بنظام،<br>ماشي بالتخمين.',problemDesc:'كي يكبر المحل وتكثر المنتجات والطلبات، التسيير اليدوي يولي متعب. النظام يجمع العمليات الأساسية في مكان واحد.',
+        problems:[['clipboard','الطلبات متفرّقة','بدل الرسائل والملاحظات المتناثرة، اجمع الطلبات في لوحة واحدة وتابع حالتها.'],['boxes','المخزون غير واضح','نظّم الكميات حسب المنتج والنسخة واللون، وتابع التغييرات المرتبطة بالطلبات.'],['phone','الزبون يحتاج تفاصيل','اعرض الصور والأسعار والمواصفات والاختيارات في صفحات واضحة وسهلة.'],['chart','العروض صعيب تسييرها','أنشئ كوبونات وهدايا مرتبطة بالمنتجات وقدّم عروضاً منظمة.']],
+        featuresEyebrow:'من الواجهة حتى الإدارة',featuresTitle:'كل الأدوات اللي يحتاجها<br><span class="accent">متجر الهواتف</span>',featuresDesc:'تجربة شراء واضحة للزبون، وأدوات تسيير عملية لصاحب المحل والفريق.',
+        features:[
+          ['phone','متجر إلكتروني متجاوب','واجهة عرض للهواتف والإكسسوارات، تخدم على الهاتف والكمبيوتر مع بحث وتصنيفات وترتيب.','واجهة الزبون'],
+          ['layers','إدارة المنتجات والنسخ','أضف المنتجات بالصور والأسعار والوصف، مع نسخ وألوان ومخزون مستقل حسب الحاجة.','Catalog'],
+          ['boxes','مخزون مرتبط بالطلبات','تحديث الكميات على مستوى الخادم عند تأكيد الطلب، مع معالجة الإلغاء والإرجاع.','Inventory'],
+          ['clipboard','إدارة الطلبات','راجع تفاصيل الطلب والزبون والمنتجات، وبدّل الحالات واطبع الفاتورة.','Orders'],
+          ['image','صفحة بيع مستقلة لكل منتج','فعّل رابطاً خاصاً بالمنتج يجمع التفاصيل والاختيارات والهدايا والإضافات وبيانات الطلب.','Product landing'],
+          ['gift','هدايا وإضافات مدفوعة','اربط هدية مجانية بمنتج، أو اعرض إكسسوارات اختيارية مدفوعة ضمن نفس عملية الشراء.','Gift bundles'],
+          ['tag','كوبونات وعروض','أنشئ خصومات بقيم وشروط وحدود استعمال وتواريخ انتهاء، مع دعم كوبون منتج مجاني.','Coupons'],
+          ['users','العملاء والفريق','تابع سجلات العملاء المحتملين، وأنشئ حسابات للموظفين بصلاحيات حسب دور كل واحد.','CRM & Roles'],
+          ['file','مواصفات الهواتف','ابحث وأدر مواصفات الأجهزة من لوحة مستقلة؛ النسخة المرفقة تتضمن بيانات أولية لـ 1,647 سجل.','Phone specs'],
+          ['truck','إعدادات التوصيل والدفع','اضبط معلومات المحل والتوصيل وطرق الدفع، مع إعداد Yalidine عند تفعيل التكامل.','Settings'],
+          ['chart','ربط Meta وTikTok Pixel','إعداد Pixel ID للمنصتين من لوحة الإدارة، وإرسال أحداث التسويق بعد موافقة المستخدم.','Marketing'],
+          ['image','ضغط الصور وإدارتها','ضغط صور المنتجات في المتصفح قبل رفعها وتخزينها في مساحة الصور المخصصة.','Image handling']
+        ],
+        journeyEyebrow:'رحلة شراء منظّمة',journeyTitle:'من أول نقرة حتى تأكيد الطلب',journeyDesc:'خطوات سهلة للعميل، ومعلومات منظمة للفريق داخل لوحة الإدارة.',
+        steps:[['01','يتصفح المنتجات','الزبون يبحث ويستعمل التصنيفات والفلاتر للوصول للجهاز أو الإكسسوار.'],['02','يختار التفاصيل','يحدد النسخة واللون والكمية، ويشوف الملحقات والهدايا المتاحة.'],['03','يرسل الطلب','يدخل بياناته ومعلومات التوصيل ويؤكد الطلب حسب إعدادات المحل.'],['04','تتابع من اللوحة','يظهر الطلب للإدارة، ويتعامل النظام مع التحقق من المخزون وحركاته.']],
+        previewEyebrow:'تجربة من الجهتين',previewTitle:'واجهة تقنع الزبون.<br><span class="accent">ولوحة تريح صاحب المحل.</span>',previewDesc:'ماشي غير موقع يعرض الصور والأسعار؛ الواجهة مرتبطة بنظام يدير المنتجات والطلبات والمخزون من الخلف.',
+        previewPoints:['الزبون يشوف المعلومات الأساسية قبل ما يطلب.','الاختيارات والنسخ والألوان مرتبطة بالمخزون.','صاحب المحل يتابع الطلبات والمنتجات من لوحة واحدة.'],previewCta:'نناقش تفاصيل متجرك',tabStore:'واجهة الزبون',tabAdmin:'لوحة الإدارة',storeBannerSmall:'اكتشف الجديد عندنا',storeBannerTitle:'اختار جهازك بكل سهولة',storeBannerSub:'منتجات • تفاصيل • طلب مباشر',samplePhone:'Smartphone',samplePhoneName:'هاتف ذكي',sampleAccessory:'Accessoire',sampleAccessoryName:'سماعات لاسلكية',sampleWearable:'Wearable',sampleWearableName:'ساعة ذكية',adminPanelTitle:'لوحة إدارة المتجر',inventoryTitle:'المخزون',manageProducts:'إدارة المنتجات',sampleVariant:'نسخة / لون',sampleStock:'متوفر',sampleStockLow:'مخزون محدود',previewCaption:'هذه معاينة تصميمية لتوضيح الفكرة، وليست لوحة متصلة ببيانات متجر حقيقي.',
+        architectureEyebrow:'تقنيات سحابية',architectureTitle:'بنية حديثة تخدم المشروع',architectureDesc:'اعتماد على خدمات متخصصة لتشغيل الواجهة، منطق الخادم، قاعدة البيانات، وتخزين الصور.',techPages:'استضافة الواجهة',techData:'الخادم وقاعدة البيانات',techImages:'تخزين الصور',
+        faqEyebrow:'أسئلة تتعاود بزاف',faqTitle:'قبل ما تطلق متجرك',faqDesc:'جاوبنا على أهم الأسئلة حول الملكية والسعر والاستضافة والإحصائيات.',
+        faqs:[['هل هذا اشتراك كيما المنصات الجاهزة؟','لا. نتفقوا على تطوير متجر خاص بمحلك، وماكانش اشتراك شهري من عندي مقابل رخصة منصة. لكن الدومين والخدمات الخارجية أو ترقية الاستضافة عند تجاوز الخطة المجانية ممكن تكون عندها تكاليف مستقلة، ونوضحها قبل أي التزام.'],['هل نقدر نبدّل الاسم والشعار والألوان؟','نعم، نبنيو الهوية حسب محلك: الاسم، الشعار، الألوان، البنرات ومعلومات التواصل، مع خصائص تتفق عليها قبل التطوير.'],['هل نقدر نسيّر المخزون والطلبات وحدي؟','نعم، لوحة الإدارة فيها المنتجات والمخزون والطلبات والعملاء والكوبونات والإعدادات، وتقدر تتابع الحالات وتطبع الفواتير.'],['كيفاش نشوف عدد الزيارات؟','تقدر تستعمل Cloudflare Web Analytics المجاني لمشاهدة الزيارات ومشاهدات الصفحات من حساب Cloudflare. وإذا تحب الأرقام داخل لوحة متجرك، نقدروا نطوّروا وحدة إحصائيات مستقلة.'],['هل كاين حد للطلبات أو الزوار؟','ماكانش رقم ثابت للطلبيات اليومية داخل كود التطبيق، لكن الاستقبال الفعلي تابع لحصص Worker وD1 والتخزين. طلبات الخادم ماشي نفس عدد الزوار، ونراقبوا الاستهلاك ونوسّعوا عند الحاجة.'],['هل الدومين والاستضافة مجانيين؟','نقدروا نبدأوا بحصص الاستضافة المجانية إذا كان الاستعمال داخل حدودها. اسم النطاق الاحترافي تشريه باسمك برسوم تسجيل وتجديد، والاستضافة المدفوعة ما تتفعّلش إلا عند الحاجة وبموافقتك.'],['واش داخل في السعر؟','السعر الابتدائي 80,000 دج وقابل للتفاوض حسب حجم المشروع. يشمل شهر كامل بعد التسليم للدعم والتعديلات المتفق عليها ضمن نطاق المشروع.']],
+        closingEyebrow:'محلك جاهز للخطوة الجاية؟',closingTitle:'خلّي زبونك يلقاك ويطلب منك أونلاين.',closingDesc:'ابعثلي رسالة، قولّي واش تبيع وكيفاش تسير محلك، ونقترح عليك متجر يخدم احتياجاتك وميزانيتك. نهدرو مباشرة بلا وسيط.',closingCta:'تواصل عبر WhatsApp',footerNote:'متجر خاص بتجارتك، تطوير ومرافقة مباشرة من مطوّر جزائري.',footerTop:'العودة للأعلى',waMessage:'سلام، أنا صاحب محل وشفت عرض المتجر الإلكتروني. حاب نعرف كيفاش نقدر نطلق متجر خاص بمحلي ابتداءً من 80,000 دج.'
+      },
+      fr:{
+        brandSub:'Une boutique à votre nom',navOwner:'Le concept',previewBrand:'Votre magasin',navFeatures:'Fonctionnalités',navAnalytics:'Statistiques',navOffer:'Tarif',navFaq:'FAQ',navContact:'Demander un devis',
+        heroBadge:'Pour les propriétaires de magasins de téléphones et accessoires',heroLine1:'Vous avez un magasin ?',heroLine2:'Développez votre activité',heroLine3:'avec votre propre boutique.',
+        heroDesc:'Ne limitez plus vos ventes au magasin et aux messages. Nous développons une boutique en ligne à votre nom : vos clients consultent et commandent depuis leur téléphone, tandis que vous gérez les produits, le stock et les commandes depuis un seul tableau de bord. Un projet adapté à vos besoins, pas un abonnement à une plateforme standard.',heroCta:'Demander une offre pour mon magasin',heroSecondary:'Voir comment ça marche',trust1:'Boutique à votre nom',trust2:'Développement algérien direct',trust3:'Sans abonnement mensuel de plateforme',
+        ownerEyebrow:'Une approche différente pour votre magasin',ownerTitle:'Ne louez pas une boutique sur une plateforme…<br><span class="accent">Développez votre propre solution.</span>',ownerDesc:'Vous avez besoin de plus qu’une page de produits. Il vous faut <strong>un outil de vente et de gestion</strong> adapté à votre façon de travailler, à votre nom, et évolutif avec votre activité.',ownerNote:'L’approche est différente des plateformes prêtes à l’emploi comme Shopify, YouCan ou Hanoutify : nous développons de A à Z une boutique dédiée à votre magasin, en Algérie. Aucun abonnement mensuel de licence ne vous est facturé par le développeur. Nous clarifions dès le départ le domaine, les comptes, les accès et les fichiers remis selon l’accord ; les services externes ou une extension d’hébergement peuvent toutefois entraîner des frais séparés, avec votre accord.',
+        ownerCards:[['shield','Pas de boutique louée','Vous payez le développement d’une solution adaptée à votre magasin, plutôt qu’un abonnement à une plateforme générique.'],['users','Développé de A à Z en Algérie','Vous échangez directement avec le développeur qui construit votre projet, sans intermédiaire.'],['settings','Adaptée à votre activité','L’identité visuelle, les produits, les commandes, la livraison et les fonctions sont définis selon vos besoins.'],['layers','Évolutive dans le temps','Commencez avec les fonctions essentielles, puis ajoutez un domaine professionnel, des analyses, des intégrations ou davantage de capacité.']],
+        analyticsEyebrow:'Pilotez votre activité avec des chiffres',analyticsTitle:'Visites et commandes…<br><span class="accent">comprenez ce qui génère vos ventes.</span>',analyticsDesc:'Les commandes et les ventes sont déjà suivies dans l’administration. Pour les visites, une solution gratuite est disponible, avec la possibilité d’ajouter des statistiques personnalisées au tableau de bord.',analyticsNote:'À noter : les statistiques de commandes et de ventes sont déjà présentes. Le compteur interne des visiteurs uniques quotidiens n’est pas activé dans la version actuelle. Cloudflare Web Analytics mesure gratuitement les visites et pages vues dans le tableau de bord Cloudflare ; son intégration dans votre propre administration nécessite un développement complémentaire.',
+        analyticsCards:[['clipboard','Commandes et ventes','Suivez le nombre et le statut des commandes, les ventes liées aux commandes livrées, les produits et les clients.','Déjà disponible'],['globe','Visiteurs et pages vues','Activez gratuitement Cloudflare Web Analytics pour consulter les visites et pages vues dans le tableau de bord Cloudflare.','Outil externe gratuit'],['chart','Statistiques dans votre administration','Nous pouvons ajouter le suivi des pages et produits consultés, du panier, des commandes finalisées et du taux de conversion.','Développement optionnel'],['tag','Résultats publicitaires','Le système prend en charge Meta Pixel et TikTok Pixel, avec envoi des événements après consentement.','Pris en charge']],
+        hostingEyebrow:'Démarrez gratuitement, augmentez la capacité si nécessaire',hostingTitle:'Pas de promesse « illimitée ».<br><span class="accent">Des limites claires et une évolution maîtrisée.</span>',hostingDesc:'Nous pouvons lancer la boutique avec les quotas gratuits, surveiller l’utilisation, puis augmenter l’hébergement ou le stockage lorsque le trafic et les commandes grandissent.',hostingCards:[['globe','Vitrine en ligne','Cloudflare Pages','Hébergement des fichiers statiques dans les limites du forfait gratuit.'],['layers','Requêtes serveur','100 000 / jour','Quota quotidien Workers Free ; ce chiffre ne représente pas le nombre de visiteurs.'],['database','Base de données','5 M lectures / jour','Et 100 000 lignes écrites par jour sur D1 Free ; une base peut atteindre 500 MB.'],['image','Stockage des images','1 GB gratuit','Supabase Storage Free avec 5 GB de transfert mis en cache et 5 GB non mis en cache.']],hostingFootTitle:'Comment lire ces quotas ?',hostingFootnote:'100 000 requêtes Worker par jour ne signifient pas 100 000 visiteurs : un visiteur peut déclencher plusieurs requêtes techniques. Les quotas D1 comptent les lignes lues et écrites, pas directement le nombre de commandes. Lorsque l’utilisation approche des limites, nous optimisons puis proposons une mise à niveau avant extension, uniquement avec votre accord. Les projets Supabase gratuits peuvent être mis en pause après une semaine d’inactivité selon la politique du fournisseur ; nous vérifions ce point et évaluons une mise à niveau si un fonctionnement continu est nécessaire. Le domaine professionnel est acheté à votre nom et renouvelé selon les frais du registraire.',hostingSource1:'Limites Cloudflare Workers',hostingSource2:'Quotas Cloudflare D1',hostingSource3:'Offres Supabase Storage',
+        offerEyebrow:'Une offre claire dès le départ',offerTitle:'Lancez votre boutique dédiée<br><span class="accent">avec un budget adapté.</span>',offerDesc:'Le développement d’une boutique en ligne dédiée à votre magasin commence à 80 000 DZD. Le prix final est négociable et dépend du catalogue, des fonctionnalités, des intégrations et du niveau de personnalisation souhaité.',offerPriceLabel:'Prix de départ',offerPrice:'80 000 <small>DA</small>',offerNegotiate:'Coût de développement, pas un abonnement mensuel — négociable',offerIncludes:'Un mois complet après livraison est inclus pour l’assistance et le suivi des modifications demandées, dans le périmètre convenu ensemble.',offerCta:'Discuter de mon projet sur WhatsApp',offerDisclaimer:'Le domaine payant, les services externes et les mises à niveau éventuelles ne sont pas inclus, sauf mention explicite dans le devis.',offerPoints:['Une boutique au nom de votre magasin avec une identité dédiée.','Un tableau de bord pour les produits, le stock, les commandes et les offres.','Configuration initiale et aide à la connexion des services convenus.','Un mois après livraison pour l’assistance et les ajustements convenus.'],
+
+        windowTitle:'Aperçu du tableau de bord',dashWelcome:'Vue d’ensemble du magasin',dashToday:'Aperçu illustratif',dashSales:'Ventes totales',dashDelivered:'Commandes livrées',dashOrders:'Commandes',dashTrack:'Suivi des statuts',dashProducts:'Produits',dashStock:'et stock',dashActivity:'Résumé de l’activité',dashStockTitle:'Suivi du stock',stockPhones:'Téléphones',stockAudio:'Accessoires',stockVariants:'Versions et couleurs',dashRecent:'Dernières commandes',dashViewAll:'Gestion des commandes',orderNew:'Nouvelle commande',orderStatus:'En traitement',orderReady:'Confirmée',orderStatus2:'Confirmée',floatOrder:'Commande en ligne',floatOrderSub:'Visible dans le tableau de bord',floatStock:'Stock organisé',floatStockSub:'Par version et couleur',heroCaption:'Aperçu illustratif de l’administration — les chiffres ne sont pas affichés car ils varient selon le magasin.',
+        proof:[['clock','Boutique toujours accessible','Les clients naviguent depuis tout appareil'],['globe','3 langues','Arabe, français et anglais'],['layers','Solution complète','Vitrine en ligne et gestion'],['shield','Commandes contrôlées','Prix et stock vérifiés côté serveur']],
+        problemEyebrow:'Les problèmes résolus',problemTitle:'Une gestion structurée,<br>pas au hasard.',problemDesc:'Quand le magasin grandit, les produits et commandes deviennent difficiles à suivre manuellement. La solution rassemble les opérations essentielles.',
+        problems:[['clipboard','Commandes dispersées','Centralisez les commandes dans un tableau de bord et suivez leur statut.'],['boxes','Stock peu lisible','Gérez les quantités par produit, variante et couleur, avec les mouvements liés aux commandes.'],['phone','Informations incomplètes','Présentez les photos, prix, caractéristiques et options sur des pages claires.'],['chart','Promotions difficiles','Créez des coupons, cadeaux liés aux produits et offres structurées.']],
+        featuresEyebrow:'De la vitrine à l’administration',featuresTitle:'Les outils essentiels pour<br><span class="accent">un magasin de téléphones</span>',featuresDesc:'Une expérience d’achat claire pour vos clients et des outils de gestion pratiques pour votre équipe.',
+        features:[
+          ['phone','Boutique responsive','Vitrine pour téléphones et accessoires, adaptée au mobile et à l’ordinateur avec recherche, catégories et tri.','Vitrine'],
+          ['layers','Produits et variantes','Ajoutez images, prix et descriptions, avec variantes, couleurs et stocks séparés si nécessaire.','Catalogue'],
+          ['boxes','Stock lié aux commandes','Mise à jour des quantités côté serveur lors de la confirmation, avec gestion des annulations et retours.','Inventaire'],
+          ['clipboard','Gestion des commandes','Consultez les détails des commandes et clients, modifiez les statuts et imprimez les factures.','Commandes'],
+          ['image','Page de vente par produit','Activez un lien dédié regroupant détails, options, cadeaux, accessoires et informations de commande.','Landing page'],
+          ['gift','Cadeaux et options payantes','Associez un cadeau gratuit à un produit ou proposez des accessoires payants dans le même achat.','Coffrets cadeaux'],
+          ['tag','Coupons et promotions','Créez des remises avec conditions, limites d’utilisation et dates d’expiration, ainsi que des coupons produit gratuit.','Coupons'],
+          ['users','Clients et équipe','Suivez les prospects et créez des comptes employés avec des permissions selon leur rôle.','CRM et rôles'],
+          ['file','Fiches techniques','Recherchez et gérez les caractéristiques des téléphones ; cette version contient 1 647 fiches initiales.','Spécifications'],
+          ['truck','Livraison et paiement','Configurez les informations du magasin, la livraison et les moyens de paiement, avec Yalidine lorsque l’intégration est activée.','Paramètres'],
+          ['chart','Meta et TikTok Pixel','Configurez les identifiants Pixel dans l’administration et envoyez les événements marketing après consentement.','Marketing'],
+          ['image','Optimisation des images','Compression des images produit dans le navigateur avant leur envoi vers le stockage dédié.','Images']
+        ],
+        journeyEyebrow:'Parcours d’achat structuré',journeyTitle:'Du premier clic à la commande',journeyDesc:'Un parcours simple pour le client et des informations organisées pour votre équipe.',
+        steps:[['01','Découvrir les produits','Le client utilise la recherche, les catégories et les filtres pour trouver un appareil ou un accessoire.'],['02','Choisir les options','Il sélectionne la version, la couleur et la quantité, puis consulte les cadeaux et accessoires disponibles.'],['03','Envoyer la commande','Il saisit ses coordonnées et les informations de livraison selon les paramètres du magasin.'],['04','Suivre depuis le tableau','La commande apparaît dans l’administration et le système contrôle le stock.']],
+        previewEyebrow:'Deux expériences connectées',previewTitle:'Une vitrine qui convainc.<br><span class="accent">Une gestion qui simplifie.</span>',previewDesc:'Plus qu’un site de photos et de prix : la boutique est reliée à un système de gestion des produits, commandes et stocks.',
+        previewPoints:['Le client consulte les informations avant de commander.','Les variantes et couleurs sont reliées au stock.','Le propriétaire suit commandes et produits depuis un seul espace.'],previewCta:'Discutons de votre magasin',tabStore:'Vitrine client',tabAdmin:'Administration',storeBannerSmall:'Découvrez les nouveautés',storeBannerTitle:'Choisissez votre appareil facilement',storeBannerSub:'Produits • Détails • Commande directe',samplePhone:'Smartphone',samplePhoneName:'Téléphone intelligent',sampleAccessory:'Accessoire',sampleAccessoryName:'Écouteurs sans fil',sampleWearable:'Wearable',sampleWearableName:'Montre connectée',adminPanelTitle:'Administration du magasin',inventoryTitle:'Stock',manageProducts:'Gérer les produits',sampleVariant:'Version / couleur',sampleStock:'Disponible',sampleStockLow:'Stock limité',previewCaption:'Aperçu visuel pour illustrer le concept ; ce panneau n’est pas connecté aux données d’un vrai magasin.',
+        architectureEyebrow:'Infrastructure cloud',architectureTitle:'Une architecture moderne',architectureDesc:'Des services spécialisés pour héberger l’interface, exécuter la logique serveur, gérer la base de données et stocker les images.',techPages:'Hébergement du site',techData:'API et base de données',techImages:'Stockage des images',
+        faqEyebrow:'Questions fréquentes',faqTitle:'Avant de lancer votre boutique',faqDesc:'Voici quelques réponses initiales ; les détails finaux dépendent de votre activité et de vos besoins.',
+        faqs:[['Est-ce un abonnement comme les plateformes prêtes à l’emploi ?','Non. Nous convenons du développement d’une boutique dédiée à votre magasin, sans abonnement mensuel de licence facturé par le développeur. Le domaine, les services externes ou une mise à niveau d’hébergement peuvent toutefois entraîner des frais séparés, annoncés avant tout engagement.'],['Puis-je modifier le nom, le logo et les couleurs ?','Oui. Nous adaptons l’identité à votre magasin : nom, logo, couleurs, bannières et coordonnées, ainsi que les fonctions convenues avant le développement.'],['Puis-je gérer moi-même le stock et les commandes ?','Oui. Le tableau de bord comprend les produits, stocks, commandes, clients, coupons et paramètres. Vous pouvez suivre les statuts et imprimer les factures.'],['Comment connaître le nombre de visites ?','Cloudflare Web Analytics est disponible gratuitement pour consulter les visites et pages vues dans votre compte Cloudflare. Pour afficher ces chiffres dans votre propre administration, nous pouvons développer un module dédié.'],['Y a-t-il une limite de visiteurs ou de commandes ?','Le code de l’application ne fixe pas de quota journalier de commandes, mais la capacité réelle dépend des quotas Workers, D1 et du stockage. Les requêtes serveur ne correspondent pas au nombre de visiteurs. Nous surveillons l’utilisation et faisons évoluer la capacité si nécessaire.'],['Le domaine et l’hébergement sont-ils gratuits ?','Nous pouvons commencer avec les quotas d’hébergement gratuits si l’utilisation reste dans leurs limites. Le domaine professionnel est acheté à votre nom avec ses frais d’enregistrement et de renouvellement. Un hébergement payant n’est activé qu’en cas de besoin et avec votre accord.'],['Que comprend le prix ?','Le prix de départ est de 80 000 DZD, négociable selon le projet. Un mois après livraison est inclus pour l’assistance et les ajustements convenus dans le périmètre du projet.']],
+        closingEyebrow:'Prêt pour la prochaine étape ?',closingTitle:'Permettez à vos clients de vous trouver et commander en ligne.',closingDesc:'Écrivez-moi, présentez vos produits et votre organisation. Je vous proposerai une boutique adaptée à vos besoins et à votre budget, avec un contact direct et sans intermédiaire.',closingCta:'Contacter sur WhatsApp',footerNote:'Une boutique pour votre activité, développée et suivie directement par un développeur algérien.',footerTop:'Retour en haut',waMessage:'Bonjour, je possède un magasin et j’ai vu votre offre de boutique en ligne. Je souhaite lancer ma propre boutique à partir de 80 000 DZD.'
+      },
+      en:{
+        brandSub:'A store built around your business',navOwner:'The concept',previewBrand:'Your store',navFeatures:'Features',navAnalytics:'Analytics',navOffer:'Pricing',navFaq:'FAQ',navContact:'Get a quote',
+        heroBadge:'For phone and accessories store owners',heroLine1:'Own a phone shop?',heroLine2:'Grow your business with',heroLine3:'your own online store.',
+        heroDesc:'Do not limit sales to your physical shop and messages. We build an online store in your shop’s name: customers browse and order from their phones while you manage products, inventory and orders from one dashboard. A solution shaped around your needs, not a subscription to a generic platform.',heroCta:'Get a quote for my store',heroSecondary:'See how it works',trust1:'A store in your name',trust2:'Direct Algerian development',trust3:'No monthly platform subscription',
+        ownerEyebrow:'A different model for shop owners',ownerTitle:'Do not rent a storefront on a platform…<br><span class="accent">Build a store for your own business.</span>',ownerDesc:'You need more than a product page. You need <strong>a sales and management system</strong> shaped around how you work, branded for your shop and ready to grow with your business.',ownerNote:'This is a different approach from ready-made platforms such as Shopify, YouCan and Hanoutify: we build a dedicated store for your business from start to finish in Algeria. The developer does not charge a monthly platform-licence subscription. We agree in advance on the domain, accounts, access rights and project files to be handed over; external services or hosting upgrades may still involve separate costs, with your approval.',
+        ownerCards:[['shield','Not a rented storefront','You pay for a solution developed for your shop, rather than a subscription to a generic platform.'],['users','Built from A to Z in Algeria','Work directly with the developer building your project, with no intermediary.'],['settings','Designed around your workflow','Branding, products, orders, delivery and features are planned around your shop’s needs.'],['layers','Ready to grow over time','Start with essentials, then add a professional domain, analytics, integrations or more hosting capacity.']],
+        analyticsEyebrow:'Make business decisions with data',analyticsTitle:'See visits and orders…<br><span class="accent">understand what drives sales.</span>',analyticsDesc:'Orders and sales are already tracked in the admin system. For website visits, you can use a free analytics option or add custom reporting to your own dashboard.',analyticsNote:'Important: order and sales reporting is already available. A first-party daily unique-visitor counter is not enabled inside the current store dashboard. Cloudflare Web Analytics can measure visitors and page views for free in the Cloudflare dashboard; displaying those reports inside your own admin panel requires additional development.',
+        analyticsCards:[['clipboard','Orders and sales','Track order counts and statuses, sales based on delivered orders, products and customer records.','Already available'],['globe','Visitors and page views','Enable Cloudflare Web Analytics for free to view visits and page views in the Cloudflare dashboard.','Free external tool'],['chart','Analytics in your admin panel','We can add reporting for page and product views, add-to-cart, completed orders and conversion rate.','Optional development'],['tag','Ad campaign measurement','The system supports Meta Pixel and TikTok Pixel setup, with marketing events sent after user consent.','Supported']],
+        hostingEyebrow:'Start on free tiers, scale when needed',hostingTitle:'No “unlimited” promises.<br><span class="accent">Clear limits and a planned upgrade path.</span>',hostingDesc:'We can launch using the providers’ free quotas, monitor usage, and expand hosting or storage as traffic and orders grow.',hostingCards:[['globe','Storefront hosting','Cloudflare Pages','Static site hosting within the free plan limits.'],['layers','Backend requests','100,000 / day','Workers Free daily request allowance; this is not a visitor count.'],['database','Database capacity','5M reads / day','And 100,000 rows written per day on D1 Free; one database can be up to 500 MB.'],['image','Image storage','1 GB free','Supabase Storage Free, with 5 GB cached and 5 GB uncached bandwidth.']],hostingFootTitle:'How should you read these limits?',hostingFootnote:'100,000 Worker requests per day does not mean 100,000 visitors: one visitor can trigger several technical requests. D1 quotas count rows read and written, not orders directly. As usage approaches the limits, we review performance and propose an upgrade before expanding, only with your approval. Free Supabase projects may be paused after one week of inactivity under the provider’s current policy; we monitor this and consider an upgrade if continuous operation is required. A professional domain is purchased in your name and renewed under the registrar’s annual fees.',hostingSource1:'Cloudflare Workers limits',hostingSource2:'Cloudflare D1 quotas',hostingSource3:'Supabase Storage plans',
+        offerEyebrow:'Clear pricing from the start',offerTitle:'Launch your own online store<br><span class="accent">with a budget that fits.</span>',offerDesc:'Development of a dedicated online store for your business starts at 80,000 DZD. The final price is negotiable and depends on your catalogue, features, integrations and requested customization.',offerPriceLabel:'Starting price',offerPrice:'80,000 <small>DZD</small>',offerNegotiate:'Development cost, not a monthly subscription — negotiable',offerIncludes:'One full month after delivery is included for support and requested adjustments, within the scope agreed together.',offerCta:'Discuss my project on WhatsApp',offerDisclaimer:'Paid domains, external services and any hosting upgrades are excluded unless explicitly listed in the quote.',offerPoints:['An online store in your shop’s name with its own identity.','An admin dashboard for products, stock, orders and promotions.','Initial setup and help connecting the agreed services.','One month after delivery for support and agreed adjustments.'],
+
+        windowTitle:'Admin dashboard preview',dashWelcome:'Store overview',dashToday:'Illustrative preview',dashSales:'Total sales',dashDelivered:'Based on delivered orders',dashOrders:'Orders',dashTrack:'Status tracking',dashProducts:'Products',dashStock:'and inventory',dashActivity:'Activity summary',dashStockTitle:'Stock overview',stockPhones:'Phones',stockAudio:'Accessories',stockVariants:'Variants & colors',dashRecent:'Recent orders',dashViewAll:'Manage orders',orderNew:'New order',orderStatus:'Processing',orderReady:'Confirmed',orderStatus2:'Confirmed',floatOrder:'Online order',floatOrderSub:'Appears in the admin panel',floatStock:'Organized inventory',floatStockSub:'By variant and color',heroCaption:'Illustrative admin interface — figures are omitted because they vary by store.',
+        proof:[['clock','Always-accessible store','Customers browse from any device'],['globe','3 languages','Arabic, French and English'],['layers','Connected solution','Online storefront and management'],['shield','Validated orders','Server-side price and stock checks']],
+        problemEyebrow:'Problems this solves',problemTitle:'Run your store with a system,<br>not guesswork.',problemDesc:'As a store grows, products and orders become harder to manage manually. This solution brings the essential operations together.',
+        problems:[['clipboard','Scattered orders','Bring orders into one dashboard and follow each order status.'],['boxes','Unclear inventory','Manage quantities by product, variant and color, including order-related stock movements.'],['phone','Missing product details','Present photos, prices, specifications and options on clear product pages.'],['chart','Hard-to-manage offers','Create coupons, product-linked gifts and structured promotions.']],
+        featuresEyebrow:'From storefront to admin',featuresTitle:'The essential tools for a<br><span class="accent">phone store</span>',featuresDesc:'A clear shopping experience for customers and practical management tools for the store owner and team.',
+        features:[
+          ['phone','Responsive online store','A storefront for phones and accessories, optimized for mobile and desktop with search, categories and sorting.','Storefront'],
+          ['layers','Products and variants','Add images, prices and descriptions, with variants, colors and separate stock where needed.','Catalog'],
+          ['boxes','Inventory connected to orders','Server-side stock updates when orders are confirmed, with cancellation and return handling.','Inventory'],
+          ['clipboard','Order management','Review order and customer details, update statuses and print invoices.','Orders'],
+          ['image','Dedicated product landing page','Enable a product-specific page with details, options, gifts, add-ons and order information.','Product landing'],
+          ['gift','Gifts and paid add-ons','Attach a free gift to a product or offer optional paid accessories in the same purchase.','Gift bundles'],
+          ['tag','Coupons and promotions','Create discounts with conditions, usage limits and expiry dates, including free-product coupons.','Coupons'],
+          ['users','Customers and team','Track customer leads and create staff accounts with permissions based on their roles.','CRM & Roles'],
+          ['file','Phone specifications','Search and manage device specifications; this source version includes 1,647 initial records.','Phone specs'],
+          ['truck','Delivery and payment settings','Configure store details, delivery and payment methods, with Yalidine when the integration is enabled.','Settings'],
+          ['chart','Meta and TikTok Pixel','Configure Pixel IDs in the admin panel and send marketing events after user consent.','Marketing'],
+          ['image','Image optimization','Compress product images in the browser before uploading them to dedicated image storage.','Image handling']
+        ],
+        journeyEyebrow:'A structured buying journey',journeyTitle:'From the first click to order confirmation',journeyDesc:'A simple flow for customers and organized order details for your team.',
+        steps:[['01','Browse products','Customers use search, categories and filters to find a phone or accessory.'],['02','Choose options','They select a variant, color and quantity, then view available gifts and add-ons.'],['03','Place the order','They enter customer and delivery information based on store settings.'],['04','Manage in admin','The order appears in the dashboard and the system validates inventory movements.']],
+        previewEyebrow:'Two connected experiences',previewTitle:'A storefront that converts.<br><span class="accent">An admin panel that simplifies.</span>',previewDesc:'More than a page of images and prices: the storefront connects to a system managing products, orders and inventory.',
+        previewPoints:['Customers review key information before ordering.','Variants and colors are connected to stock.','Owners manage products and orders from one workspace.'],previewCta:'Discuss your store',tabStore:'Customer storefront',tabAdmin:'Admin dashboard',storeBannerSmall:'Discover what’s new',storeBannerTitle:'Find your next device with ease',storeBannerSub:'Products • Details • Direct order',samplePhone:'Smartphone',samplePhoneName:'Smartphone',sampleAccessory:'Accessory',sampleAccessoryName:'Wireless earbuds',sampleWearable:'Wearable',sampleWearableName:'Smart watch',adminPanelTitle:'Store administration',inventoryTitle:'Inventory',manageProducts:'Manage products',sampleVariant:'Variant / color',sampleStock:'Available',sampleStockLow:'Low stock',previewCaption:'A visual mockup to explain the concept; this panel is not connected to a real store database.',
+        architectureEyebrow:'Cloud infrastructure',architectureTitle:'A modern technical foundation',architectureDesc:'Specialized services for hosting the storefront, running server logic, managing data and storing images.',techPages:'Frontend hosting',techData:'API and database',techImages:'Image storage',
+        faqEyebrow:'Frequently asked questions',faqTitle:'Before launching your store',faqDesc:'Here are initial answers; final details depend on your business and requirements.',
+        faqs:[['Is this a subscription like ready-made platforms?','No. We agree on developing a store dedicated to your business, without a monthly platform-licence subscription charged by the developer. Domains, external services or hosting upgrades may still involve separate costs, disclosed before any commitment.'],['Can I change the name, logo and colors?','Yes. We tailor the identity to your shop: name, logo, colors, banners and contact details, along with the functions agreed before development.'],['Can I manage stock and orders myself?','Yes. The admin panel includes products, inventory, orders, customers, coupons and settings. You can follow order statuses and print invoices.'],['How can I see visitor numbers?','Cloudflare Web Analytics is available for free to view visitors and page views in your Cloudflare account. To display those metrics inside your own admin panel, we can develop a dedicated module.'],['Is there a visitor or order limit?','The application code does not set a fixed daily order cap, but real capacity depends on Workers, D1 and storage quotas. Backend requests are not the same as visitors. We monitor usage and scale when needed.'],['Are the domain and hosting free?','We can start on free hosting quotas while usage remains within their limits. A professional domain is purchased in your name and has registration and renewal fees. Paid hosting is enabled only when needed and with your approval.'],['What is included in the price?','The starting price is 80,000 DZD and is negotiable based on the project. One month after delivery is included for support and agreed adjustments within the project scope.']],
+        closingEyebrow:'Ready for the next step?',closingTitle:'Help customers find your shop and order online.',closingDesc:'Message me with what you sell and how your shop operates. I will suggest a store shaped around your needs and budget, with direct communication and no intermediary.',closingCta:'Contact via WhatsApp',footerNote:'A store for your business, developed and supported directly by an Algerian developer.',footerTop:'Back to top',waMessage:'Hello, I own a shop and saw your online store offer. I would like to launch my own store starting from 80,000 DZD.'
+      }
+    };
+
+    const $ = (s,root=document)=>root.querySelector(s);
+    const $$ = (s,root=document)=>Array.from(root.querySelectorAll(s));
+    const safe = (str='') => String(str).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    let currentLang = 'ar';
+
+    function renderCollections(){
+      const t = C[currentLang];
+      $('#proofGrid').innerHTML = t.proof.map(([ic,title,desc])=>`<div class="proof-item reveal"><span class="proof-icon">${icon(ic)}</span><span><strong>${safe(title)}</strong><span>${safe(desc)}</span></span></div>`).join('');
+      $('#ownerGrid').innerHTML = t.ownerCards.map(([ic,title,desc],i)=>`<article class="owner-card reveal delay-${i%3}"><span class="feature-icon">${icon(ic)}</span><h3>${safe(title)}</h3><p>${safe(desc)}</p></article>`).join('');
+      $('#metricGrid').innerHTML = t.analyticsCards.map(([ic,title,desc,status],i)=>`<article class="metric-card ${i===0?'featured':''} reveal delay-${i%3}"><span class="feature-icon">${icon(ic)}</span><h3>${safe(title)}</h3><p>${safe(desc)}</p><span class="metric-status ${i===2?'optional':''}">${safe(status)}</span></article>`).join('');
+      $('#hostingGrid').innerHTML = t.hostingCards.map(([ic,title,value,desc],i)=>`<article class="hosting-card reveal delay-${i%3}"><span class="feature-icon">${icon(ic)}</span><h3>${safe(title)}</h3><strong class="hosting-value">${safe(value)}</strong><p>${safe(desc)}</p></article>`).join('');
+      $('#offerPoints').innerHTML = t.offerPoints.map(x=>`<li>${icon('check')}<span>${safe(x)}</span></li>`).join('');
+      $('#problemGrid').innerHTML = t.problems.map(([ic,title,desc],i)=>`<article class="problem-card reveal delay-${i%3}"><span class="problem-icon">${icon(ic)}</span><h3>${safe(title)}</h3><p>${safe(desc)}</p></article>`).join('');
+      $('#featureGrid').innerHTML = t.features.map(([ic,title,desc,tag],i)=>`<article class="feature-card reveal delay-${i%3}"><div class="feature-top"><span class="feature-icon">${icon(ic)}</span><span class="feature-num">${String(i+1).padStart(2,'0')}</span></div><h3>${safe(title)}</h3><p>${safe(desc)}</p><span class="feature-tag">${safe(tag)}</span></article>`).join('');
+      $('#stepGrid').innerHTML = t.steps.map(([n,title,desc],i)=>`<article class="step-card reveal delay-${i%3}"><span class="step-number">${safe(n)}</span><h3>${safe(title)}</h3><p>${safe(desc)}</p></article>`).join('');
+      $('#previewPoints').innerHTML = t.previewPoints.map(x=>`<div class="preview-point"><span class="check">${icon('check')}</span><span>${safe(x)}</span></div>`).join('');
+      $('#faqList').innerHTML = t.faqs.map(([q,a],i)=>`<details class="faq-item reveal" ${i===0?'open':''}><summary>${safe(q)}</summary><div class="faq-answer">${safe(a)}</div></details>`).join('');
+    }
+    function applyTranslations(){
+      const t=C[currentLang];
+      $$('[data-t]').forEach(el=>{const key=el.dataset.t;if(t[key]!==undefined)el.innerHTML=t[key]});
+      document.documentElement.lang=currentLang;
+      document.documentElement.dir=currentLang==='ar'?'rtl':'ltr';
+      document.title=currentLang==='ar'?'متجر إلكتروني خاص بمحلك | يبدأ من 80,000 دج':currentLang==='fr'?'Boutique en ligne dédiée | Dès 80 000 DZD':'A dedicated online store | From 80,000 DZD';
+      const desc=currentLang==='ar'?'متجر إلكتروني خاص بمحلك من تطوير جزائري، إدارة المنتجات والمخزون والطلبات، إحصائيات الزيارات، يبدأ من 80,000 دج دون اشتراك منصة شهري إجباري.':currentLang==='fr'?'Une boutique en ligne dédiée à votre magasin, développée en Algérie, avec gestion des stocks et commandes. Dès 80 000 DZD.':'A dedicated online store developed in Algeria, with inventory and order management. Starting at 80,000 DZD.';
+      $('meta[name="description"]').setAttribute('content',desc);
+      $('#languageSelect').value=currentLang;
+      $('#navLinks').classList.remove('open');
+      $$('[data-wa]').forEach(a=>a.href=`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(t.waMessage)}`);
+      renderCollections();observeReveals();
+    }
+    function setTheme(theme){
+      document.documentElement.dataset.theme=theme;
+      try{localStorage.setItem('phonestore-theme',theme)}catch(e){}
+      $('#themeIcon').innerHTML=theme==='dark'?'<path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.6 8.6 0 1 0 20.4 15.2Z"/>':'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>';
+      const themeColor=theme==='dark'?'#071322':'#f5f7fb';$('meta[name="theme-color"]').setAttribute('content',themeColor);
+      try{localStorage.setItem('phonestore-theme',theme)}catch(e){}
+    }
+    function observeReveals(){
+      const els=$$('.reveal:not(.visible)');
+      if(!('IntersectionObserver' in window)){els.forEach(el=>el.classList.add('visible'));return}
+      const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');io.unobserve(entry.target)}}),{threshold:.12});
+      els.forEach(el=>io.observe(el));
+    }
+    $('#languageSelect').addEventListener('change',e=>{currentLang=e.target.value;try{localStorage.setItem('phonestore-lang',currentLang)}catch(err){}applyTranslations()});
+    $('#themeToggle').addEventListener('click',()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
+    $('#menuToggle').addEventListener('click',()=>$('#navLinks').classList.toggle('open'));
+    $$('#navLinks a').forEach(a=>a.addEventListener('click',()=>$('#navLinks').classList.remove('open')));
+    $$('.preview-tab').forEach(btn=>btn.addEventListener('click',()=>{
+      $$('.preview-tab').forEach(b=>b.classList.toggle('active',b===btn));
+      const showAdmin=btn.dataset.preview==='admin';$('#storePreview').classList.toggle('active',!showAdmin);$('#adminPreview').classList.toggle('active',showAdmin);
+    }));
+    window.addEventListener('scroll',()=>{const h=document.documentElement;const max=h.scrollHeight-h.clientHeight;$('#progressBar').style.width=(max>0?(h.scrollTop/max)*100:0)+'%'},{passive:true});
+    try{const savedTheme=localStorage.getItem('phonestore-theme');if(savedTheme==='dark'||savedTheme==='light')setTheme(savedTheme);const savedLang=localStorage.getItem('phonestore-lang');if(savedLang&&C[savedLang])currentLang=savedLang}catch(e){}
+    applyTranslations();
+  </script>
 </body>
 </html>
